@@ -1,0 +1,22 @@
+{
+    "items": [
+        {
+            "id": "10",
+            "tripdetails": "Zahle SDC",
+            "username": "Tarek Moubarak",
+            "tripdate": "10/2/2015"
+        },
+        {
+            "id": "11",
+            "tripdetails": "Tyre Field office",
+            "username": "Tarek Moubarak",
+            "tripdate": "10/2/2015"
+        },
+        {
+            "id": "12",
+            "tripdetails": "Trip to Brital",
+            "username": "Tarek Moubarak",
+            "tripdate": "10/2/2015"
+        }
+        ]
+}

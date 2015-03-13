@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Employee Directory</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<!--link rel="stylesheet" href="css/jquery.mobile-1.0rc1.min.css" /-->
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+    
+<body>
+   
+<div id="tripListPage" data-role="page" >
+  <div data-role="panel" id="myPanel" data-position="left" data-display="push"> 
+    <h4 class="back2">OPTIONS</h4>
+       <ul id="menuList" data-role="listview" data-filter="false" class="menu1">
+
+         <li class="back"><a href="">Logout</a></li>
+
+        </ul>
+  </div> 
+	<div data-role="header" data-position="fixed">
+	    <a href="#myPanel" data-theme="c" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side">Open left panel</a>
+	     <a href="" data-theme="c" data-icon="plus" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
+	    <h1>EquiTrip</h1>
+	    <div data-role="navbar" class="custom-navbar">
+        <ul>
+         <li class="back"><a href="">Current Trips</a></li>
+         <li class="back"><a href="">All Trips</a></li>
+         <li class="back"><a href="">Supervised Trips</a></li>
+        </ul>
+        </div>
+
+
+	</div>
+
+	<div data-role="content">
+         <ul id="tripList" data-role="listview" data-filter="true"></ul>
+       
+    </div>	
+
+</div>
+
+<!--script src="js/jquery.js"></script-->
+<!--script src="js/jquery.mobile-1.0rc1.min.js"></script-->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="js/triplist.js"></script>
+<script src="js/employeedetails.js"></script>
+
+</body>
+
+</html>

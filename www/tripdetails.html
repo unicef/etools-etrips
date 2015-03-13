@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+    
+<body>
+
+<div id="detailsPage" data-role="page" data-add-back-btn="true" >
+
+	<div data-role="header">
+		<h1>EquiTrip</h1>
+	</div>
+
+  <!--div data-role="content"> 
+
+  	<img id="employeePic"/>
+	<div id="employeeDetails">
+       <h3 id="fullName"></h3>
+       <p id="employeeTitle"></p>
+       <p id="city"></p>
+   	</div>
+	 
+    <ul id="actionList" data-role="listview" data-inset="true"></ul>
+
+  </div-->
+
+<div data-role="main" class="ui-content">
+    <form method="post" action="demoform.asp">
+      <label for="Traveller">Traveller</label>
+      <input type="text" name="Traveller" id="Traveller">
+      <label for="Supervisor">Supervisor</label>
+      <input type="text" name="Supervisor" id="Supervisor">
+      <label for="Section">Section</label>
+      <input type="text" name="Section" id="Section">
+      <label for="Office">Office</label>
+      <input type="text" name="Office" id="Office">
+      <label for="travelP">Purpose of Travel</label>
+      <input type="text" name="travelP" id="travelP">
+      <label for="from">From Date</label>
+      <input data-role="date" type="text" name="from" id="from">
+      <label data-role="date" for="to">To Date</label>
+      <input type="text" name="to" id="to">
+      <label for="type">Travel Type</label>
+      <input type="text" name="type" id="type">
+      <label for="focal">Travel Focal Point</label>
+      <input type="text" name="focal" id="focal">
+
+      <input type="button" value="Back" class="sub">
+      <input type="submit" value="Next" class="sub">
+    </form>
+  </div>
+
+</div>
+
+</body>
+
+</html>

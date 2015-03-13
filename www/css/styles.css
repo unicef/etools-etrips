@@ -1,0 +1,54 @@
+
+
+#actionList {
+	clear: both;
+}
+
+p.refNum {
+ font-size: 20.0px;
+}
+
+.blueFont{
+	color:#599CE0;
+}
+
+.custom-navbar ul li a {
+    background: #599CE0;
+}
+
+.menu1  li a {
+    background: #599CE0;
+    color:#111111;
+}
+
+.back a{
+    background: #599CE0;
+    color:#111111;
+}
+
+.back2 {
+	    color:#111111;
+}
+
+.ui-page .ui-header {
+    background: #599CE0;
+}
+
+.ui-icon-side {
+  background: url(menu.png) 50% 50% no-repeat;
+  background-size: 38px 38px;
+  width: 30px;
+  height: 30px;
+  box-shadow: none;
+  margin: -2px !important;
+  margin-left:0px!important;
+}
+
+#myPanel
+{
+	 background: #599CE0;
+}
+
+.sub{
+	width: 50%;
+}
