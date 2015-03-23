@@ -5,10 +5,11 @@
     
 <body>
 
-<div id="detailsPage" data-role="page" data-add-back-btn="true" >
+<div id="detailsPage" data-role="page" >
 
-	<div data-role="header">
-		<h1>EquiTrip</h1>
+	<div data-role="header" data-add-back-btn="false" >
+        <a href="#" data-rel="back" data-theme="c" data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
+		<h1 class="back2">Trip Details</h1>
 	</div>
 
   <!--div data-role="content"> 
@@ -25,30 +26,73 @@
   </div-->
 
 <div data-role="main" class="ui-content">
-    <form method="post" action="demoform.asp">
+    <form method="post" action="tripIntervals.html" class="ui-filterable">
       <label for="Traveller">Traveller</label>
-      <input type="text" name="Traveller" id="Traveller">
+       <input data-type="search" id="traveller" value= "Tarek Moubarak">
+         <!--ul data-role="listview"
+          id="listview"
+          data-filter="true"
+          data-filter-reveal="true"
+          data-inset="true" data-input="#traveller">
+          <li><a href="#">Tarek Moubarak</a></li>
+          <li><a href="#">James Cranwell Ward</a></li>
+          <li><a href="#">Hrayr Wannis</a></li>
+          <li><a href="#">Juan Santander</a></li>
+        </ul-->
+
       <label for="Supervisor">Supervisor</label>
-      <input type="text" name="Supervisor" id="Supervisor">
+       <input data-type="search" id="supervisor" >
+            <!--ul data-role="listview"
+          data-filter="true"
+          data-filter-reveal="true"
+          placeHolder=""
+          data-inset="true" data-input="#supervisor">
+          <li><a href="#">Tarek Moubarak</a></li>
+          <li><a href="#">James Cranwell Ward</a></li>
+          <li><a href="#">Hrayr Wannis</a></li>
+          <li><a href="#">Juan Santander</a></li>
+        </ul-->
       <label for="Section">Section</label>
-      <input type="text" name="Section" id="Section">
+      <input type="text" name="Section" id="Section"  value="SPPME">
       <label for="Office">Office</label>
-      <input type="text" name="Office" id="Office">
+      <input type="text" name="Office" id="Office" value="Beirut">
       <label for="travelP">Purpose of Travel</label>
-      <input type="text" name="travelP" id="travelP">
+      <textarea name="travelP" id="travelP"></textarea>
       <label for="from">From Date</label>
-      <input data-role="date" type="text" name="from" id="from">
-      <label data-role="date" for="to">To Date</label>
-      <input type="text" name="to" id="to">
+       <input name="from" id="from" type="text" data-role="datebox" data-options='{"mode":"calbox"}' />     
+        <label  for="to">To Date</label>
+      <input name="to" id="to" type="text" data-role="datebox" data-options='{"mode":"calbox"}' /> 
       <label for="type">Travel Type</label>
       <input type="text" name="type" id="type">
       <label for="focal">Travel Focal Point</label>
       <input type="text" name="focal" id="focal">
+      <div data-role="collapsible">
+      <h1>TA Required</h1>
+       <label for="budgetOwner">Budget Owner</label>
+      <input type="text" name="budgetOwner" id="budgetOwner">
+      <label for="resp">Staff Responsible for TA</label>
+      <input type="text" name="resp" id="resp">
+    </div>
+ <div data-role="collapsible">
+      <h1>Internation Travel</h1>
+      <label for="travel">Select Representative</label>
+      <input type="text" name="travel" id="travel">
 
-      <input type="button" value="Back" class="sub">
-      <input type="submit" value="Next" class="sub">
+    </div>
+
+      <input type="button" value="Back" data-role="button" data-inline="true" onclick="history.go(-1);" class="sub">
+      <input type="submit" value="Next" data-role="button" data-inline="true" class="sub">
     </form>
+
+
+<!--form class="ui-filterable">
+    <input id="filterBasic-input" data-type="search">
+</form-->
+
+
   </div>
+
+
 
 </div>
 

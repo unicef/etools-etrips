@@ -25,10 +25,13 @@ function getTripList() {
 		trips = data.items;
 		$.each(trips, function(index, trip) {
 			$('#tripList').append('<li data-icon="false"><a href="tripdetails.html?id=' + trip.id + '">' +
-					
+
 					'<h6 class="blueFont">' + trip.tripdetails + '</h6>' +
 					'<p>' + trip.username + '</p>' +
 					'<p>' + trip.tripdate + '</p>' +
+
+					'<img class="icon-right" src="pics/paper-tick.png"/>' +
+
 					/*'<span class="ui-li-count">' + employee.reportCount + '</span>*/'</a></li>');
 
 
