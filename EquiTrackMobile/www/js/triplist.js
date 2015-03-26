@@ -15,6 +15,10 @@ $('#tripListPage').bind('pageinit', function(event) {
 	getTripList();
 });
 
+$('.ui-li-has-thumb').click(function(){
+$(this).css('background','#ffffff');
+});
+
 function getTripList() {
 	$.ajax({
 	   type: "GET",	   

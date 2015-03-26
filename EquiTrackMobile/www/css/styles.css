@@ -13,7 +13,10 @@ p.refNum {
   padding-right: 20px;
 }
 
-.blueFont:active {color: #FFFFFF};
+.blueFont:active {
+  text-shadow:none !important;
+}
+
 /*
 /*
 .custom-navbar ul li a {
@@ -50,7 +53,7 @@ p.refNum {
   background-size: 38px 38px;
   width: 30px;
   height: 30px;
-  box-shadow: none;
+  box-shadow: none !important;
   margin: -2px !important;
   margin-left:0px!important;
 }
@@ -71,8 +74,8 @@ p.refNum {
   position: absolute;
   top: 0px;
   right: 0px;
-    width: 71px;
-    height: 71px;
+    width: 61px;
+    height: 61px;
 }
 
 .texts-left{
@@ -83,8 +86,14 @@ p.refNum {
 .wrap {
     white-space: normal !important;
 }
+
+.ui-page-theme-a .ui-btn{
+  text-shadow:none !important;
+}
+
 .ui-listview > li h6 {
 font-size: 0.8em !important;
 margin: 0em 1.5em 0 0 !important;
 }
+
 
