@@ -52,13 +52,13 @@ $('.ui-li-has-thumb').click(function(){
 });
 
 function getTripList(ulId) {
-	var query = "http://127.0.0.1:8000/trips/approved/";
+	var query = "http://192.168.88.34:8000/trips/approved/";
 	if(ulId == "tripList")
 	{
-		query = "http://127.0.0.1:8000/trips/approved/";
+		query = "http://192.168.88.34:8000/trips/approved/";
 	}
 	else if(ulId == "prevList"){
-		query = "http://127.0.0.1:8000/trips/approved/";
+		query = "http://192.168.88.34:8000/trips/approved/";
 	}
 
 	$.ajax({
