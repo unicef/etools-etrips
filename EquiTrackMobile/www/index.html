@@ -33,24 +33,17 @@
     color: #80b636 !important;
     text-shadow:0 1px 0 #f3f3f3;
 }
-.ui-page-theme-a .ui-btn.ui-btn-active, html .ui-bar-a .ui-btn.ui-btn-active, html .ui-body-a .ui-btn.ui-btn-active, html body .ui-group-theme-a .ui-btn.ui-btn-active, html head + body .ui-btn.ui-btn-a.ui-btn-active, .ui-page-theme-a .ui-checkbox-on:after, html .ui-bar-a .ui-checkbox-on:after, html .ui-body-a .ui-checkbox-on:after, html body .ui-group-theme-a .ui-checkbox-on:after, .ui-btn.ui-checkbox-on.ui-btn-a:after, .ui-page-theme-a .ui-flipswitch-active, html .ui-bar-a .ui-flipswitch-active, html .ui-body-a .ui-flipswitch-active, html body .ui-group-theme-a .ui-flipswitch-active, html body .ui-flipswitch.ui-bar-a.ui-flipswitch-active, .ui-page-theme-a .ui-slider-track .ui-btn-active, html .ui-bar-a .ui-slider-track .ui-btn-active, html .ui-body-a .ui-slider-track .ui-btn-active, html body .ui-group-theme-a .ui-slider-track .ui-btn-active, html body div.ui-slider-track.ui-body-a .ui-btn-active {
-    background-color:#ffffff !important;
-    border-color:#0099ff;
-    color: #333333 !important ;
-    text-shadow:0 0px 0 #005599;
-}
+
 </style>
 </head>
     
 <body>
-   
+
 <div id="tripListPage" data-role="page" >
   <div data-role="panel" id="myPanel" data-position="left" data-display="push"> 
     <h4 class="back2">OPTIONS</h4>
        <ul id="menuList" data-role="listview" data-filter="false" class="menu1">
-
-         <li class="back"><a href="">Logout</a></li>
-
+         <li class="back"><a href="">Logout</a></li>-
         </ul>
   </div> 
 	<div data-role="header" data-position="fixed">
@@ -59,21 +52,32 @@
 	    <h1 class="back2">EquiTrip</h1>
 	    <div data-role="navbar" class="custom-navbar">
         <ul>
-         <li class="back"><a href="index.html">Current Trips</a></li>
-         <li class="back"><a href="">All Trips</a></li>
-         <li class="back"><a href="">Supervised</a></li>
+         <li class="back"><a id="currentTrips" class="ui-btn-active" href="">Current</a></li>
+         <li class="back"><a id="prevTrips" href="">Previous</a></li>
+         <li class="back"><a id="superTrips" href="">Supervised</a></li>
         </ul>
-        </div>
-
-
+      </div>
 	</div>
 
-	<div data-role="content">
-         <ul id="tripList" data-role="listview" data-filter="true"></ul>
-       
-    </div>	
+  <!-- start of current trips page -->
+	<div id="currentTripsList" data-role="content">
+     <ul id="tripList" data-role="listview" data-filter="true"></ul>       
+  </div>	
+
+
+
+<!-- start of previous trips page -->
+  <div id="prevTripsList" data-role="content" style="display:none;">
+     <ul id="prevList" data-role="listview" data-filter="true"></ul>       
+  </div>  
+
+<!-- start of supervised trips page -->
+  <div id="superTripsList" data-role="content" style="display:none;">
+     <ul id="superList" data-role="listview" data-filter="true"></ul>       
+  </div>  
 
 </div>
+
 
 <!--script src="js/jquery.js"></script-->
 <!--script src="js/jquery.mobile-1.0rc1.min.js"></script-->
