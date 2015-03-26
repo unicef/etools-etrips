@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>EquitrackMobile</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<!--link rel="stylesheet" href="css/jquery.mobile-1.0rc1.min.css" /-->
+  <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css"/>
+  <link rel="stylesheet" href="css/unicef-theme.min.css" />
+  <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+    
+
+    <link rel="stylesheet" href="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.min.css" />
+   <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.js"></script>
+
+    <!--script src="http://code.jquery.com/jquery-1.9.1.min.js"></script-->
+    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/external/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="http://dev.jtsage.com/jQM-DateBox/js/doc.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.core.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.calbox.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.datebox.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.slidebox.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.customflip.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jqm-datebox.lang.utf8.js"></script>
+
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+    
+<body>
+   
+<div id="tripListPage" data-role="page" >
+  <div data-role="panel" id="myPanel" data-position="left" data-display="push"> 
+    <h4 class="back2">OPTIONS</h4>
+       <ul id="menuList" data-role="listview" data-filter="false" class="menu1">
+
+         <li class="back"><a href="">Logout</a></li>
+
+        </ul>
+  </div> 
+	<div data-role="header" data-position="fixed">
+	    <a href="#myPanel" data-theme="c" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side">Open left panel</a>
+	     <a href="tripdetails.html" data-theme="c" data-icon="plus" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
+	    <h1 class="back2">EquiTrip</h1>
+	    <div data-role="navbar" class="custom-navbar">
+        <ul>
+         <li class="back"><a href="index.html">Current Trips</a></li>
+         <li class="back"><a href="">All Trips</a></li>
+         <li class="back"><a href="">Supervised</a></li>
+        </ul>
+        </div>
+
+
+	</div>
+
+	<div data-role="content">
+         <ul id="tripList" data-role="listview" data-filter="true"></ul>
+       
+    </div>	
+
+</div>
+
+<!--script src="js/jquery.js"></script-->
+<!--script src="js/jquery.mobile-1.0rc1.min.js"></script-->
+        <script src="js/triplist.js"></script>
+        
+</body>
+
+</html>
