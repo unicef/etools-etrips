@@ -1,0 +1,42 @@
+2015-03-25 18:36:14.314 Hello World[12806:664552] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/Tarek/Library/Developer/CoreSimulator/Devices/4E9661FC-8FA1-4277-BBB4-85E4A65F233D/data/Containers/Data/Application/28F61B7A-E45D-4614-A563-E738306EEF02/Library/Cookies/Cookies.binarycookies
+2015-03-25 18:36:14.699 Hello World[12806:664552] Apache Cordova native platform version 3.7.0 is starting.
+2015-03-25 18:36:14.700 Hello World[12806:664552] Multi-tasking -> Device: YES, App: YES
+2015-03-25 18:36:14.714 Hello World[12806:664552] Unlimited access to network resources
+2015-03-25 18:36:14.729 Hello World[12806:664552] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-03-25 18:36:16.627 Hello World[12806:664552] Resetting plugins due to page load.
+2015-03-25 18:36:17.646 Hello World[12806:664552] Finished load of: file:///Users/Tarek/Library/Developer/CoreSimulator/Devices/4E9661FC-8FA1-4277-BBB4-85E4A65F233D/data/Containers/Bundle/Application/EAB0FA65-9785-457D-8732-1A6C27120A26/Hello%20World.app/www/index.html
+2015-03-25 18:36:59.797 Hello World[12965:665950] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/Tarek/Library/Developer/CoreSimulator/Devices/4E9661FC-8FA1-4277-BBB4-85E4A65F233D/data/Containers/Data/Application/4988091A-ED3A-48EE-90C0-36AE0F1BBECF/Library/Cookies/Cookies.binarycookies
+2015-03-25 18:36:59.941 Hello World[12965:665950] Apache Cordova native platform version 3.7.0 is starting.
+2015-03-25 18:36:59.942 Hello World[12965:665950] Multi-tasking -> Device: YES, App: YES
+2015-03-25 18:36:59.945 Hello World[12965:665950] Unlimited access to network resources
+2015-03-25 18:36:59.949 Hello World[12965:665950] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-03-25 18:37:00.541 Hello World[12965:665950] Resetting plugins due to page load.
+2015-03-25 18:37:00.877 Hello World[12965:665950] Finished load of: file:///Users/Tarek/Library/Developer/CoreSimulator/Devices/4E9661FC-8FA1-4277-BBB4-85E4A65F233D/data/Containers/Bundle/Application/465E4FB1-D28E-49D7-B2CC-26028C3DC5E1/Hello%20World.app/www/index.html
+2015-03-25 20:56:50.076 Hello World[13160:685422] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/Tarek/Library/Developer/CoreSimulator/Devices/4E9661FC-8FA1-4277-BBB4-85E4A65F233D/data/Containers/Data/Application/AA558471-4ACF-428A-811D-DA96AD3B5BC5/Library/Cookies/Cookies.binarycookies
+2015-03-25 20:56:50.418 Hello World[13160:685422] Apache Cordova native platform version 3.7.0 is starting.
+2015-03-25 20:56:50.419 Hello World[13160:685422] Multi-tasking -> Device: YES, App: YES
+2015-03-25 20:56:50.432 Hello World[13160:685422] Unlimited access to network resources
+2015-03-25 20:56:50.445 Hello World[13160:685422] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-03-25 20:56:51.374 Hello World[13160:685422] Resetting plugins due to page load.
+2015-03-25 20:56:51.903 Hello World[13160:685422] Finished load of: file:///Users/Tarek/Library/Developer/CoreSimulator/Devices/4E9661FC-8FA1-4277-BBB4-85E4A65F233D/data/Containers/Bundle/Application/C9579769-A20F-43DB-B400-7ECB65450F71/Hello%20World.app/www/index.html
