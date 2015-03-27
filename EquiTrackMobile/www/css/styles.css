@@ -17,8 +17,13 @@ p.refNum {
   text-shadow:none !important;
 }
 
-.ui-loader .ui-icon-loading{
+.ui-loader .ui-icon-loading .ui-loading{
   background: transparent !important;
+  
+}
+
+.ui-loading .ui-loader {
+  display: none !important;
 }
 
 /*

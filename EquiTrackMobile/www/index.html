@@ -39,49 +39,111 @@
     
 <body>
 
-<div id="tripListPage" data-role="page" >
-  <div data-role="panel" id="myPanel" data-position="left" data-display="push"> 
-    <h4 class="back2">OPTIONS</h4>
-       <ul id="menuList" data-role="listview" data-filter="false" class="menu1">
-         <li class="back"><a href="">Logout</a></li>-
-        </ul>
-  </div> 
-	<div data-role="header" data-position="fixed">
-	    <a href="#myPanel" data-theme="c" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side">Open left panel</a>
-	     <a href="tripdetails.html" data-theme="c" data-icon="plus" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
-	    <h1 class="back2">EquiTrip</h1>
-	    <div data-role="navbar" class="custom-navbar">
-        <ul>
-         <li class="back"><a id="currentTrips" class="ui-btn-active" href="">Current</a></li>
-         <li class="back"><a id="prevTrips" href="">Previous</a></li>
-         <li class="back"><a id="superTrips" href="">Supervised</a></li>
-        </ul>
-      </div>
-	</div>
+<!-- ***** START TRIPS LIST PAGE WITH TABS ***** -->
+<div id="tripListPage" data-role="page">
+    <div data-role="panel" id="myPanel" data-position="left" data-display="push">
+         <h4 class="back2">OPTIONS</h4>
 
-  <!-- start of current trips page -->
-	<div id="currentTripsList" data-role="content">
-     <ul id="tripList" data-role="listview" data-filter="true"></ul>       
-  </div>	
+        <ul id="menuList" data-role="listview" data-filter="false" class="menu1">
+            <li class="back"><a href="">Logout</a>
+            </li>-</ul>
+    </div>
+    <div data-role="header" data-position="fixed"> <a href="#myPanel" data-theme="c" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side">Open left panel</a>
+ <a href="tripdetails.html" data-theme="c" data-icon="plus" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
 
+         <h1 class="back2">EquiTrip</h1>
 
-
-<!-- start of previous trips page -->
-  <div id="prevTripsList" data-role="content" style="display:none;">
-     <ul id="prevList" data-role="listview" data-filter="true"></ul>       
-  </div>  
-
-<!-- start of supervised trips page -->
-  <div id="superTripsList" data-role="content" style="display:none;">
-     <ul id="superList" data-role="listview" data-filter="true"></ul>       
-  </div>  
-
+        <div data-role="navbar" class="custom-navbar">
+            <ul>
+                <li class="back"><a id="currentTrips" class="ui-btn-active" href="">Current</a>
+                </li>
+                <li class="back"><a id="prevTrips" href="">Previous</a>
+                </li>
+                <li class="back"><a id="superTrips" href="">Supervised</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- start of current trips page -->
+    <div id="currentTripsList" data-role="content">
+        <ul id="tripList" data-role="listview" data-filter="true"></ul>
+    </div>
+    <!-- start of previous trips page -->
+    <div id="prevTripsList" data-role="content" style="display:none;">
+        <ul id="prevList" data-role="listview" data-filter="true"></ul>
+    </div>
+    <!-- start of supervised trips page -->
+    <div id="superTripsList" data-role="content" style="display:none;">
+        <ul id="superList" data-role="listview" data-filter="true"></ul>
+    </div>
 </div>
+<!-- ***** END OF TRIPS LIST PAGE ***** -->
 
 
-<!--script src="js/jquery.js"></script-->
-<!--script src="js/jquery.mobile-1.0rc1.min.js"></script-->
-        <script src="js/triplist.js"></script>
+<!-- ***** START TRIPS DETAILS PAGE TABS ***** -->
+<div id="tripDetailsPage" data-role="page" >
+  <div data-role="header" data-add-back-btn="false" >
+        <a href="#" data-rel="back" data-theme="c" data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
+    <h1 class="back2">Trip Details</h1>
+  </div>
+  <div data-role="main" class="ui-content">
+    <form method="post" action="tripIntervals.html" class="ui-filterable">
+        <label for="Traveller">Traveller</label>
+        <input data-type="search" id="traveller" value="Tarek Moubarak">
+        <ul data-role="listview" id="listview" data-filter="true" data-filter-reveal="true" data-inset="true" data-input="#traveller">
+            <li><a href="#">Tarek Moubarak</a>
+            </li>
+            <li><a href="#">James Cranwell Ward</a>
+            </li>
+            <li><a href="#">Hrayr Wannis</a>
+            </li>
+            <li><a href="#">Juan Santander</a>
+            </li>
+        </ul>
+        <label for="Supervisor">Supervisor</label>
+        <input data-type="search" id="supervisor">
+        <!--ul data-role="listview" data-filter="true" data-filter-reveal="true" placeHolder="" data-inset="true" data-input="#supervisor">
+          <li><a href="#">Tarek Moubarak</a></li>
+          <li><a href="#">James Cranwell Ward</a></li>
+          <li><a href="#">Hrayr Wannis</a></li>
+          <li><a href="#">Juan Santander</a></li>
+        </ul-->
+        <label for="Section">Section</label>
+        <input type="text" name="Section" id="Section" value="SPPME">
+        <label for="Office">Office</label>
+        <input type="text" name="Office" id="Office" value="Beirut">
+        <label for="travelP">Purpose of Travel</label>
+        <textarea name="travelP" id="travelP"></textarea>
+        <label for="from">From Date</label>
+        <input name="from" id="from" type="text" data-role="datebox" data-options='{"mode":"calbox"}' />
+        <label for="to">To Date</label>
+        <input name="to" id="to" type="text" data-role="datebox" data-options='{"mode":"calbox"}' />
+        <label for="type">Travel Type</label>
+        <input type="text" name="type" id="type">
+        <label for="focal">Travel Focal Point</label>
+        <input type="text" name="focal" id="focal">
+        <div data-role="collapsible">
+             <h4>TA Required</h4>
+
+            <label for="budgetOwner">Budget Owner</label>
+            <input type="text" name="budgetOwner" id="budgetOwner">
+            <label for="resp">Staff Responsible for TA</label>
+            <input type="text" name="resp" id="resp">
+        </div>
+        <div data-role="collapsible">
+             <h4>Internation Travel</h4>
+
+            <label for="travel">Select Representative</label>
+            <input type="text" name="travel" id="travel">
+        </div>
+        <input type="button" value="Back" data-role="button" data-inline="true" onclick="history.go(-1);" class="sub">
+        <input type="submit" value="Next" data-role="button" data-inline="true" class="sub">
+    </form>
+  </div>
+</div>  
+<!-- ***** END OF TRIPS DETAILS PAGE ***** -->
+
+<script src="js/triplist.js"></script>
         
 </body>
 

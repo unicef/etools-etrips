@@ -1,9 +1,9 @@
 //var serviceURL = "http://localhost/dirApp/EmployeeDirectoryJQM/www/data/";
 
 var trips;
+var filteredTrips;
 
 $(document).ready(function(){
-
 });
 
 $('#prevTrips').click( function(){
@@ -78,8 +78,8 @@ function getTripList(ulId) {
    			var myTrips = getObjects(data, "traveller_id", userId )	
 	   		if(ulId == "superList")
    		   		myTrips = getObjects(data, "supervisor", userId )	
-	   		
-	   		formatTrips(myTrips, ulId)			
+	   		filteredTrips = myTrips;
+	   		formatTrips(myTrips, ulId);			
 		}
 	});
 }
@@ -116,9 +116,10 @@ function formatTrips(data, ulId){
 		 	case "completed":
 		 		imgRight = '<img class="icon-right" src="pics/Paper.png"/>';
 		 		break;
-		 	}	
+		 	}
+	 	var tripJson = getObjects(data, "id", trip.id)	
 
-		$('#' + ulId).append('<li data-icon="false"><a href="/tripdetails.html?id=' + trip.id + '">' +
+		$('#' + ulId).append('<li data-icon="false"><a id="tripDetail' + trip.id + '" href="javascript:tripDetail(' + trip.id + ');" >' +
 		'<h6 class="blueFont wrap">' + trip.purpose_of_travel + '</h6>' +
 			'<p>' + trip.traveller + '</p>' +
 			'<p>' + tripFromDay + '-' + tripFromMonth + '-' + tripFromYear + ' to ' + trip.to_date.substring(8) + '-' + m_names[parseInt(trip.to_date.substring(5,7))-1] + '-' + trip.to_date.substring(2,4) + '</p>' +
@@ -128,6 +129,13 @@ function formatTrips(data, ulId){
 	$('#' + ulId).listview('refresh');
 
 }
+
+function tripDetail(tripId){
+	var tripDetails = getObjects(filteredTrips, "id", tripId)
+	localStorage.tripDetail=JSON.stringify(tripDetails);
+	$.mobile.changePage("#tripDetailsPage", { transition: "slideup"});
+}
+
 
 //querying JSON
 function getObjects(obj, key, val) {
@@ -142,3 +150,23 @@ function getObjects(obj, key, val) {
     }
     return objects;
 }
+
+$(document).on('pagebeforeshow', '#tripDetailsPage', function(){       
+    //alert('My name is ' + localStorage.tripDetail);
+        var data = JSON.parse(localStorage.tripDetail);   
+    	$("#traveller").val(data[0].traveller);
+    	$("#supervisor").val(data[0].supervisor_name);
+    	$("#Section").val(data[0].section);    	
+    	$("#travelP").val(data[0].purpose_of_travel);
+    	var fromDate = new Date(data[0].from_date);
+    	$("#from").val((fromDate.getMonth() + 1) + '/' + fromDate.getDate() + '/' +  fromDate.getFullYear());
+    	var toDate = new Date(data[0].to_date);
+    	$("#to").val((toDate.getMonth() + 1) + '/' + toDate.getDate() + '/' +  toDate.getFullYear());
+});
+
+$(document).on('pageshow', '#tripDetailsPage', function(){      
+
+    // var data = JSON.parse(localStorage.tripDetail);    
+
+    // $("#traveller").val(data[0].traveller)
+});
