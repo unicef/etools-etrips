@@ -27,7 +27,7 @@ $('#currentTrips').click( function(){
 $('#superTrips').click( function(){
 	$('#currentTripsList').hide();
 	$('#prevTripsList').hide();
-	//getTripList("superList");
+	getTripList("superList");
 	$('#superTripsList').show();
 
 	//$.mobile.changePage( "previousTrips.html", { transition: "slide", changeHash: false });
@@ -43,6 +43,7 @@ $(document).on("swiperight", "#tripListPage", function( e ) {
 
 
 $('#tripListPage').bind('pageinit', function(event) {
+	$.mobile.loadingMessage = false;
 
 	getTripList("tripList");
 });
@@ -55,11 +56,15 @@ function getTripList(ulId) {
 	var query = "http://192.168.88.34:8000/trips/approved/";
 	if(ulId == "tripList")
 	{
-		query = "http://192.168.88.34:8000/trips/approved/";
+		query = "http://192.168.88.34:8000/trips/approved/?status=planned,submitted,approved";
 	}
 	else if(ulId == "prevList"){
-		query = "http://192.168.88.34:8000/trips/approved/";
+		query = "http://192.168.88.34:8000/trips/approved/?status=completed,cancelled";
 	}
+	else if(ulId == "superList"){
+		query = "http://192.168.88.34:8000/trips/approved/?status=submitted,approved";
+	}
+	var userId = 62
 
 	$.ajax({
 	   type: "GET",	   
@@ -69,7 +74,12 @@ function getTripList(ulId) {
             alert(xhr.status + ": " + xhr.statusText);
         },
 	   success: function (data) {
-	   		formatTrips(data, ulId)			
+   			//filter for traveller or supervisor
+   			var myTrips = getObjects(data, "traveller_id", userId )	
+	   		if(ulId == "superList")
+   		   		myTrips = getObjects(data, "supervisor", userId )	
+	   		
+	   		formatTrips(myTrips, ulId)			
 		}
 	});
 }
@@ -117,4 +127,18 @@ function formatTrips(data, ulId){
 	});
 	$('#' + ulId).listview('refresh');
 
+}
+
+//querying JSON
+function getObjects(obj, key, val) {
+    var objects = [];
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) continue;
+        if (typeof obj[i] == 'object') {
+            objects = objects.concat(getObjects(obj[i], key, val));
+        } else if (i == key && obj[key] == val) {
+            objects.push(obj);
+        }
+    }
+    return objects;
 }

@@ -17,6 +17,10 @@ p.refNum {
   text-shadow:none !important;
 }
 
+.ui-loader .ui-icon-loading{
+  background: transparent !important;
+}
+
 /*
 /*
 .custom-navbar ul li a {
