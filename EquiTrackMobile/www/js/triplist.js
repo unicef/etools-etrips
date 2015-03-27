@@ -11,17 +11,13 @@ $('#prevTrips').click( function(){
 	$('#superTripsList').hide();
 	getTripList("prevList");
 	$('#prevTripsList').show();
-
-	//$.mobile.changePage( "previousTrips.html", { transition: "slide", changeHash: false });
 });
-
 
 $('#currentTrips').click( function(){
 	$('#prevTripsList').hide();
 	$('#superTripsList').hide();
 	getTripList("tripList");
 	$('#currentTripsList').show();
-	//$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
 });
 
 $('#superTrips').click( function(){
@@ -29,8 +25,6 @@ $('#superTrips').click( function(){
 	$('#prevTripsList').hide();
 	getTripList("superList");
 	$('#superTripsList').show();
-
-	//$.mobile.changePage( "previousTrips.html", { transition: "slide", changeHash: false });
 });
 
 $(document).on("swiperight", "#tripListPage", function( e ) {
@@ -87,15 +81,9 @@ function getTripList(ulId) {
 function formatTrips(data, ulId){
 	$('#' + ulId + ' li').remove();
 
-	//localStorage.setItem("obj", JSON.stringify(data));
-
 	var m_names = new Array("Jan", "Feb", "Mar", 
 	"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
 	"Oct", "Nov", "Dec");
-
-	//document.write(curr_date + "-" + m_names[curr_month] 
-	//+ "-" + curr_year);
-
 
 	$.each(data, function(index, trip) {
 		var tripFromMonth = m_names[parseInt(trip.from_date.substring(5,7))-1];
@@ -127,7 +115,6 @@ function formatTrips(data, ulId){
 			'</a></li>');
 	});
 	$('#' + ulId).listview('refresh');
-
 }
 
 function tripDetail(tripId){
@@ -135,7 +122,6 @@ function tripDetail(tripId){
 	localStorage.tripDetail=JSON.stringify(tripDetails);
 	$.mobile.changePage("#tripDetailsPage", { transition: "slideup"});
 }
-
 
 //querying JSON
 function getObjects(obj, key, val) {
@@ -152,16 +138,26 @@ function getObjects(obj, key, val) {
 }
 
 $(document).on('pagebeforeshow', '#tripDetailsPage', function(){       
-    //alert('My name is ' + localStorage.tripDetail);
-        var data = JSON.parse(localStorage.tripDetail);   
-    	$("#traveller").val(data[0].traveller);
-    	$("#supervisor").val(data[0].supervisor_name);
-    	$("#Section").val(data[0].section);    	
-    	$("#travelP").val(data[0].purpose_of_travel);
-    	var fromDate = new Date(data[0].from_date);
-    	$("#from").val((fromDate.getMonth() + 1) + '/' + fromDate.getDate() + '/' +  fromDate.getFullYear());
-    	var toDate = new Date(data[0].to_date);
-    	$("#to").val((toDate.getMonth() + 1) + '/' + toDate.getDate() + '/' +  toDate.getFullYear());
+	//alert('My name is ' + localStorage.tripDetail);
+	var data = JSON.parse(localStorage.tripDetail);
+	$("#Status").val(data[0].status);
+	$("#traveller").val(data[0].traveller);
+	$("#supervisor").val(data[0].supervisor_name);
+	$("#Section").val(data[0].section);    	
+	$("#travelP").val(data[0].purpose_of_travel);
+	var fromDate = new Date(data[0].from_date);
+	$("#from").val((fromDate.getMonth() + 1) + '/' + fromDate.getDate() + '/' +  fromDate.getFullYear());
+	var toDate = new Date(data[0].to_date);
+	$("#to").val((toDate.getMonth() + 1) + '/' + toDate.getDate() + '/' +  toDate.getFullYear());
+	$("#type").val(data[0].travel_type);
+	$("#focal").val(data[0].travel_assistant);	
+	$("#secClearReq").val(data[0].security_clearance_required);
+	$("#taReq").val(data[0].ta_required);
+	$("#budgetOwner").val(data[0].budget_owner);
+	$("#resp").val(data[0].staff_responsible_ta);
+	$("#intTravel").val(data[0].international_travel);
+	$("#selRep").val(data[0].representative);
+	$("#certHr").val(data[0].approved_by_human_resources);		
 });
 
 $(document).on('pageshow', '#tripDetailsPage', function(){      

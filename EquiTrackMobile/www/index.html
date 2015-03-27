@@ -88,8 +88,10 @@
   </div>
   <div data-role="main" class="ui-content">
     <form method="post" action="tripIntervals.html" class="ui-filterable">
+        <label for="Status">Status</label>
+        <input type="text" id="Status">
         <label for="Traveller">Traveller</label>
-        <input data-type="search" id="traveller" value="Tarek Moubarak">
+        <input data-type="search" id="traveller" value="">
         <ul data-role="listview" id="listview" data-filter="true" data-filter-reveal="true" data-inset="true" data-input="#traveller">
             <li><a href="#">Tarek Moubarak</a>
             </li>
@@ -122,19 +124,33 @@
         <input type="text" name="type" id="type">
         <label for="focal">Travel Focal Point</label>
         <input type="text" name="focal" id="focal">
+        <label for="secClearReq">Security Clearance Reuired</label>
+        <input type="checkbox" name="focal" id="secClearReq">
+        <label for="taReq">TA Reuired</label>
+        <input type="checkbox" name="focal" id="taReq">
+        <label for="budgetOwner">Budget Owner</label>
+        <input type="text" name="budgetOwner" id="budgetOwner">
+        <label for="resp">Staff Responsible for TA</label>
+        <input type="text" name="resp" id="resp">        
+        <label for="intTravel">International Travel</label>
+        <input type="checkbox" name="resp" id="intTravel">
+        <label for="travel">Select Representative</label>
+        <input type="text" name="travel" id="travel"> 
+        <label for="certHr">Certified by HR</label>
+        <input type="select" name="travel" id="certHr">       
+             
+        <!--
         <div data-role="collapsible">
              <h4>TA Required</h4>
-
             <label for="budgetOwner">Budget Owner</label>
             <input type="text" name="budgetOwner" id="budgetOwner">
             <label for="resp">Staff Responsible for TA</label>
             <input type="text" name="resp" id="resp">
         </div>
+        -->
         <div data-role="collapsible">
-             <h4>Internation Travel</h4>
+             <h4>PCA Details</h4>
 
-            <label for="travel">Select Representative</label>
-            <input type="text" name="travel" id="travel">
         </div>
         <input type="button" value="Back" data-role="button" data-inline="true" onclick="history.go(-1);" class="sub">
         <input type="submit" value="Next" data-role="button" data-inline="true" class="sub">
@@ -142,6 +158,7 @@
   </div>
 </div>  
 <!-- ***** END OF TRIPS DETAILS PAGE ***** -->
+
 
 <script src="js/triplist.js"></script>
         
