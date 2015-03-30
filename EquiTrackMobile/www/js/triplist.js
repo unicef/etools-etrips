@@ -6,30 +6,40 @@ var nikpswd = '12345';
 $('#tripListPage').on('pagecreate', function(event) {
 	$.mobile.loadingMessage = false;
 	getTripList("tripList");
-		// your login page code here
 });
 
+//item swipe left
+$('#tripListPage').on('pageshow',function(event,ui){
+    swipeLeft("tripList");
+});
+
+//tabs click
 $('#prevTrips').click( function(){
 	$('#currentTripsList').hide();
-	$('#superTripsList').hide();
-	getTripList("prevList");
-	$('#prevTripsList').show();
+	$('#superTripsList').hide();	
+	$('#prevTripsList').show("fast");
+	getTripList("prevList");	
 });
 
 $('#currentTrips').click( function(){
 	$('#prevTripsList').hide();
-	$('#superTripsList').hide();
+	$('#superTripsList').hide();	
 	getTripList("tripList");
-	$('#currentTripsList').show();
+	$('#currentTripsList').show("fast", function() {
+		swipeLeft("tripList");	
+	});
 });
 
 $('#superTrips').click( function(){
 	$('#currentTripsList').hide();
 	$('#prevTripsList').hide();
 	getTripList("superList");
-	$('#superTripsList').show();
+	$('#superTripsList').show("fast", function() {	
+		swipeLeft("superList");
+	});
 });
 
+//swipe right
 $(document).on("swiperight", "#tripListPage", function( e ) {
 	// We check if there is no open panel on the page because otherwise
 	// a swipe to close the left panel would also open the right panel (and v.v.).
@@ -38,16 +48,17 @@ $(document).on("swiperight", "#tripListPage", function( e ) {
 });
 
 
-$('#tripListPage').bind('pageinit', function(event) {
+//$('#tripListPage').bind('pageinit', function(event) {
 	//$.mobile.loadingMessage = false;
 
 	//getTripList("tripList");
-});
+//});
 
 $('.ui-li-has-thumb').click(function(){
 	$(this).css('background','#ffffff');
 });
 
+//getting trips from Equitrack server
 function getTripList(ulId) {
 	var query = "http://192.168.88.34:8000/trips/approved/";
 	if(ulId == "tripList")
@@ -80,8 +91,11 @@ function getTripList(ulId) {
 	});
 }
 
+//formatting trips into a list
 function formatTrips(data, ulId){
 	$('#' + ulId + ' li').remove();
+	var swipeBtn = "Submit";
+	if(ulId == "superList") swipeBtn = "Approve";
 
 	var m_names = new Array("Jan", "Feb", "Mar", 
 	"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
@@ -111,9 +125,8 @@ function formatTrips(data, ulId){
 
 		$('#' + ulId).append('<li data-icon="false">' + 
                         '<div class="behind">' +
-                        	'<a href="#" class="ui-btn delete-btn">Submit</a>' +
+                        	'<a href="#" class="ui-btn swipe-btn">' + swipeBtn + '</a>' +
                         '</div>' +
-
 						'<a id="tripDetail' + trip.id + '" href="javascript:tripDetail(' + trip.id + ');" >' +
 						'<h6 class="blueFont wrap">' + trip.purpose_of_travel + '</h6>' +
 						'<p>' + trip.traveller + '</p>' +
@@ -143,36 +156,22 @@ function getObjects(obj, key, val) {
     }
     return objects;
 }
-/*
 
-$('#tripListPage').on('pageshow',function(event,ui){
-	if ( event.target.id.indexOf('tripList') >= 0) {
-		// remove any existing swipe areas
-		$('.aDeleteBtn').remove();
-		// add swipe event to the list item
-		$('ul li').bind('swipeleft', function(e){
-			// reference the just swiped list item
-			var $li = $(this);
-			// remove all buttons first
-			$('.aDeleteBtn').remove();
-			// create buttons and div container
-			var $deleteBtn = $('<a>Delete</a>').attr({
-					'class': 'aDeleteBtn ui-btn-up-r',
-					'href': 'some/link/page.html?nID=' + $li.data('nid')
-				});
-			// insert swipe div into list item
-			$li.animate({left: "-100px"}, 200)
-			$li.prepend($deleteBtn);
+//swiping function
+function swipeLeft(list){
+	function prevent_default(e) {
+	        e.preventDefault();
+	    }
+	    function disable_scroll() {
+	        $(document).on('touchmove', prevent_default);
+	    }
+	    function enable_scroll() {
+	        $(document).unbind('touchmove', prevent_default)
+	    }
 
-		});
-	}
-});
-*/
-
-
-$('#tripListPage').on('pageshow',function(event,ui){
 	var x;
-	$('#tripList li > a')
+	
+	$('#' + list + ' li > a')
     .on('touchstart', function(e) {
         console.log(e.originalEvent.pageX)
         $('#tripList li > a.open').css('left', '0px').removeClass('open') // close em all
@@ -191,15 +190,19 @@ $('#tripListPage').on('pageshow',function(event,ui){
         if (left < -35) {
             new_left = '-100px'
         } 
-        //else if (left > 35) {
-           // new_left = '100px'
-        //} 
         else {
             new_left = '0px'
         }
         $(e.currentTarget).animate({left: new_left}, 200)
         enable_scroll()
     });
+}
+
+$(document).on('click', "a.swipe-btn", function() {
+	$(this).parents("li").find('img').attr("src", "pics/Paper-ticktick.png");
+	$(this).parents("li").animate({right: "-100px"}, 200)
+    //$(this).parents("li").remove();
+
 });
 
 

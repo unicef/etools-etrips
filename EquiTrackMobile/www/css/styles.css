@@ -123,11 +123,12 @@ margin: 0em 1.5em 0 0 !important;
     float: right;
     border: none;
 }
-.behind a.delete-btn, .behind a.delete-btn:active, .behind a.delete-btn:visited, .behind a.delete-btn:focus, .behind a.delete-btn:hover {
+.behind a.swipe-btn, .behind a.swipe-btn:active, .behind a.swipe-btn:visited, .behind a.swipe-btn:focus, .behind a.swipe-btn:hover {
     color: white;
-    background-color: green;
+    background-color: #80b636;
     text-shadow: none;
     height: 100%;
+    font-size: small;
   }
 .behind a.ui-btn.pull-left {
     float: left;
