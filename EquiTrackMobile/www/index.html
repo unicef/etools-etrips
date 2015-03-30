@@ -6,7 +6,7 @@
     <!-- jqeury core styles-->
     <link rel="stylesheet" href="js/jqm/jquery.mobile-1.4.5.css"/>
     <link rel="stylesheet" href="css/unicef-theme.min.css" />
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.5.min.css" />  
     <link rel="stylesheet" href="js/jqm/jquery.mobile.icons-1.4.5.css" />  
 
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.flipbox.min.js"></script>
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.slidebox.min.js"></script>
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.customflip.min.js"></script>
-    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jqm-datebox.lang.utf8.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jqm-datebox.lang.utf8.js"></script> 
 
 <style type="text/css">
   .ui-page-theme-a .ui-btn:active, html .ui-bar-a .ui-btn:active, html .ui-body-a .ui-btn:active, html body .ui-group-theme-a .ui-btn:active, html head + body .ui-btn.ui-btn-a:active {
@@ -37,6 +37,10 @@
 }
 
 </style>
+<script>
+  $.mobile.changePage.defaults.changeHash = false;
+
+</script>
 </head>
     
 <body>
@@ -91,7 +95,7 @@
   <div data-role="main" class="ui-content">
     <form method="post" action="tripIntervals.html" class="ui-filterable">
         <label for="Status">Status</label>
-        <input type="text" id="Status">
+        <input type="text" id="Status" />
         <label for="Traveller">Traveller</label>
         <input data-type="search" id="traveller" value="">
         <ul data-role="listview" id="listview" data-filter="true" data-filter-reveal="true" data-inset="true" data-input="#traveller">
@@ -155,7 +159,7 @@
 
         </div>
         <input type="button" value="Back" data-role="button" data-inline="true" onclick="history.go(-1);" class="sub">
-        <input type="submit" value="Next" data-role="button" data-inline="true" class="sub">
+        <input type="submit" value="Next" data-role="button" data-inline="true" class="sub" >
     </form>
   </div>
 </div>  
