@@ -111,8 +111,7 @@ function formatTrips(data, ulId){
 
 		$('#' + ulId).append('<li data-icon="false">' + 
                         '<div class="behind">' +
-                        	'<a href="#" class="ui-btn delete-btn">Delete</a>' +
-                        	'<a href="#" class="ui-btn edit-btn pull-left">Edit</a>' +
+                        	'<a href="#" class="ui-btn delete-btn">Submit</a>' +
                         '</div>' +
 
 						'<a id="tripDetail' + trip.id + '" href="javascript:tripDetail(' + trip.id + ');" >' +
@@ -144,10 +143,36 @@ function getObjects(obj, key, val) {
     }
     return objects;
 }
+/*
+
+$('#tripListPage').on('pageshow',function(event,ui){
+	if ( event.target.id.indexOf('tripList') >= 0) {
+		// remove any existing swipe areas
+		$('.aDeleteBtn').remove();
+		// add swipe event to the list item
+		$('ul li').bind('swipeleft', function(e){
+			// reference the just swiped list item
+			var $li = $(this);
+			// remove all buttons first
+			$('.aDeleteBtn').remove();
+			// create buttons and div container
+			var $deleteBtn = $('<a>Delete</a>').attr({
+					'class': 'aDeleteBtn ui-btn-up-r',
+					'href': 'some/link/page.html?nID=' + $li.data('nid')
+				});
+			// insert swipe div into list item
+			$li.animate({left: "-100px"}, 200)
+			$li.prepend($deleteBtn);
+
+		});
+	}
+});
+*/
 
 
-var x;
-$('#tripList li > a')
+$('#tripListPage').on('pageshow',function(event,ui){
+	var x;
+	$('#tripList li > a')
     .on('touchstart', function(e) {
         console.log(e.originalEvent.pageX)
         $('#tripList li > a.open').css('left', '0px').removeClass('open') // close em all
@@ -165,15 +190,17 @@ $('#tripList li > a')
         var new_left;
         if (left < -35) {
             new_left = '-100px'
-        } else if (left > 35) {
-            new_left = '100px'
-        } else {
+        } 
+        //else if (left > 35) {
+           // new_left = '100px'
+        //} 
+        else {
             new_left = '0px'
         }
-        // e.currentTarget.style.left = new_left
         $(e.currentTarget).animate({left: new_left}, 200)
         enable_scroll()
     });
+});
 
 
 /*
