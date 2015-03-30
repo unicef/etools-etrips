@@ -37,16 +37,44 @@
 }
 
 </style>
-<script>
-  $.mobile.changePage.defaults.changeHash = false;
-
-</script>
 </head>
     
 <body>
+  <!-- ***** START SIGN IN PAGE ***** -->
+  <div data-role="page" id="signin">
+    <div data-role="header" data-theme="a">
+        <h1>EquiTrip</h1>
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+        <h3>Sign In</h3>
+        <label for="txt-email">Email Address</label>
+        <input type="text" name="txt-email" id="txt-email" value="">
+        <label for="txt-password">Password</label>
+        <input type="password" name="txt-password" id="txt-password" value="">
+        <fieldset data-role="controlgroup">
+            <input type="checkbox" name="chck-rememberme" id="chck-rememberme" checked="">
+            <label for="chck-rememberme">Remember me</label>
+        </fieldset>
+        <a href="#" data-rel="popup" data-transition="pop" data-position-to="window" id="btn-submit" class="ui-btn ui-btn-a ui-corner-all mc-top-margin-1-5">Submit</a>
+        <p class="mc-top-margin-1-5"><a href="http://equitrack.uniceflebanon.org/password/reset/">Can't access your account?</a></p>
+        
+        <!-- popup -->
+        <div data-role="popup" id="dlg-invalid-credentials" data-dismissible="false" style="max-width:400px;">
+            <div role="main" class="ui-content">
+                <h3 class="mc-text-danger">Login Failed</h3>
+                <p>Did you enter the right credentials?</p>
+                <div class="mc-text-center"><a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a mc-top-margin-1-5">OK</a></div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+  </div><!-- /page -->
+  <!-- ***** END SIGN IN PAGE***** -->
+
 
 <!-- ***** START TRIPS LIST PAGE WITH TABS ***** -->
 <div id="tripListPage" data-role="page">
+
     <div data-role="panel" id="myPanel" data-position="left" data-display="push">
          <h4 class="back2">OPTIONS</h4>
 
@@ -82,6 +110,18 @@
     <div id="superTripsList" data-role="content" style="display:none;">
         <ul id="superList" data-role="listview" data-filter="true"></ul>
     </div>
+
+     <div id="confirm" class="ui-content" data-role="popup" data-theme="none">
+        <p id="question">Are you sure you want to delete</p>
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <a id="yes" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Yes</a>
+            </div>
+            <div class="ui-block-b">
+                <a id="cancel" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Cancel</a>
+            </div>
+        </div>
+    </div><!-- /popup -->    
 </div>
 <!-- ***** END OF TRIPS LIST PAGE ***** -->
 
@@ -164,7 +204,6 @@
   </div>
 </div>  
 <!-- ***** END OF TRIPS DETAILS PAGE ***** -->
-
 
 <script src="js/triplist.js"></script>
         
