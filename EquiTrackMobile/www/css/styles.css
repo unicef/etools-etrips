@@ -19,11 +19,15 @@ p.refNum {
 
 .ui-loader .ui-icon-loading .ui-loading{
   background: transparent !important;
-  
+
 }
 
 .ui-loading .ui-loader {
   display: none !important;
+}
+
+.ui-listview > .ui-li-has-thumb > .ui-btn, .ui-listview > .ui-li-static.ui-li-has-thumb {
+    padding-left: 1.25em !important;
 }
 
 /*

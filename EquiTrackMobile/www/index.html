@@ -3,18 +3,21 @@
 <head>
 <title>EquitrackMobile</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<!--link rel="stylesheet" href="css/jquery.mobile-1.0rc1.min.css" /-->
-  <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css"/>
-  <link rel="stylesheet" href="css/unicef-theme.min.css" />
-  <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-    
+    <!-- jqeury core styles-->
+    <link rel="stylesheet" href="js/jqm/jquery.mobile-1.4.5.css"/>
+    <link rel="stylesheet" href="css/unicef-theme.min.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.5.min.css" />  
+    <link rel="stylesheet" href="js/jqm/jquery.mobile.icons-1.4.5.css" />  
 
-    <link rel="stylesheet" href="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.min.css" />
-   <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.js"></script>
+    <!-- additional styles for page -->
+    <link rel="stylesheet" href="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.min.css" />   
 
-    <!--script src="http://code.jquery.com/jquery-1.9.1.min.js"></script-->
-    <script src="js/jquery.mobile-1.4.5.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <!-- jqeury core files-->
+    <script type="text/javascript" src="js/jquery/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/jqm/jquery.mobile-1.4.5.min.js"></script>
+
+    <!-- additional js files for current page -->
     <script type="text/javascript" src="http://cdn.jtsage.com/external/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="http://dev.jtsage.com/jQM-DateBox/js/doc.js"></script>
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.core.min.js"></script>
@@ -25,7 +28,6 @@
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.customflip.min.js"></script>
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jqm-datebox.lang.utf8.js"></script>
 
-<link rel="stylesheet" href="css/styles.css">
 <style type="text/css">
   .ui-page-theme-a .ui-btn:active, html .ui-bar-a .ui-btn:active, html .ui-body-a .ui-btn:active, html body .ui-group-theme-a .ui-btn:active, html head + body .ui-btn.ui-btn-a:active {
     background-color:#ffffff !important;
@@ -134,8 +136,8 @@
         <input type="text" name="resp" id="resp">        
         <label for="intTravel">International Travel</label>
         <input type="checkbox" name="resp" id="intTravel">
-        <label for="travel">Select Representative</label>
-        <input type="text" name="travel" id="travel"> 
+        <label for="selRep">Select Representative</label>
+        <input type="text" name="travel" id="selRep"> 
         <label for="certHr">Certified by HR</label>
         <input type="select" name="travel" id="certHr">       
              
