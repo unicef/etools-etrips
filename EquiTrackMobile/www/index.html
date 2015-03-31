@@ -46,6 +46,7 @@
         <h1>EquiTrip</h1>
     </div><!-- /header -->
     <div role="main" class="ui-content">
+      <div style="text-align: center;"><img src="pics/Logo.png" style="width: 15%;"></div>
         <h3>Sign In</h3>
         <label for="txt-email">Email Address</label>
         <input type="text" name="txt-email" id="txt-email" value="">
@@ -83,20 +84,20 @@
             </li>-</ul>
     </div>
     <div data-role="header" data-position="fixed"> <a href="#myPanel" data-theme="c" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side">Open left panel</a>
- <a href="tripdetails.html" data-theme="c" data-icon="plus" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
+    <a href="tripdetails.html" data-theme="c" data-icon="plus" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
 
-         <h1 class="back2">EquiTrip</h1>
+      <h1 class="back2">EquiTrip</h1>
 
-        <div data-role="navbar" class="custom-navbar">
-            <ul>
-                <li class="back"><a id="currentTrips" class="ui-btn-active" href="">Current</a>
-                </li>
-                <li class="back"><a id="prevTrips" href="">Previous</a>
-                </li>
-                <li class="back"><a id="superTrips" href="">Supervised</a>
-                </li>
-            </ul>
-        </div>
+      <div data-role="navbar" class="custom-navbar">
+          <ul>
+              <li class="back"><a id="currentTrips" class="ui-btn-active" href="">Current</a>
+              </li>
+              <li class="back"><a id="prevTrips" href="">Previous</a>
+              </li>
+              <li class="back"><a id="superTrips" href="">Supervised</a>
+              </li>
+          </ul>
+      </div>
     </div>
     <!-- start of current trips page -->
     <div id="currentTripsList" data-role="content">
@@ -110,7 +111,8 @@
     <div id="superTripsList" data-role="content" style="display:none;">
         <ul id="superList" data-role="listview" data-filter="true"></ul>
     </div>
-
+     
+     <!-- pop up delete -->
      <div id="confirm" class="ui-content" data-role="popup" data-theme="none">
         <p id="question">Are you sure you want to delete</p>
         <div class="ui-grid-a">
