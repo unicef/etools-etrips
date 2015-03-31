@@ -1,7 +1,8 @@
 var trips;
 var filteredTrips;
-var nikuser = 'ntrncic';
+var nikuser = 'test';
 var nikpswd = '12345';
+var userId = 62
 
 $('#tripListPage').on('pagecreate', function(event) {
 	$.mobile.loadingMessage = false;
@@ -47,7 +48,6 @@ $(document).on("swiperight", "#tripListPage", function( e ) {
     $("#myPanel").panel("open");
 });
 
-
 //$('#tripListPage').bind('pageinit', function(event) {
 	//$.mobile.loadingMessage = false;
 
@@ -71,7 +71,7 @@ function getTripList(ulId) {
 	else if(ulId == "superList"){
 		query = "http://192.168.88.34:8000/trips/approved/?status=submitted,approved";
 	}
-	var userId = 62
+	
 
 	$.ajax({
 	   type: "GET",	   
@@ -173,34 +173,44 @@ function swipeLeft(list){
 	
 	$('#' + list + ' li > a')
     .on('touchstart', function(e) {
-        console.log(e.originalEvent.pageX)
-        $('#tripList li > a.open').css('left', '0px').removeClass('open') // close em all
-        $(e.currentTarget).addClass('open')
-        x = e.originalEvent.targetTouches[0].pageX // anchor point
+        console.log(e.originalEvent.pageX);
+        $('#tripList li > a.open').css('left', '0px').removeClass('open') ;// close em all
+        $(e.currentTarget).addClass('open');
+        x = e.originalEvent.targetTouches[0].pageX; // anchor point
     })
     .on('touchmove', function(e) {
-        var change = e.originalEvent.targetTouches[0].pageX - x
-        change = Math.min(Math.max(-100, change), 100) // restrict to -100px left, 0px right
-        e.currentTarget.style.left = change + 'px'
-        if (change < -10) disable_scroll() // disable scroll once we hit 10px horizontal slide
+        
+        //get trip details 
+        var tripId = e.currentTarget.toString().substring(e.currentTarget.toString().indexOf('(') + 1, e.currentTarget.toString().indexOf(')'));
+    	var tripDetails = getObjects(filteredTrips, "id", tripId);    	
+
+    	if(tripDetails[0].status == "planned" || (tripDetails[0].status == "submitted" && tripDetails[0].supervisor == userId.toString())){ //if status of trip is planned allow swipe
+            var change = e.originalEvent.targetTouches[0].pageX - x;
+        	change = Math.min(Math.max(-100, change), 100); // restrict to -100px left, 0px right
+        	e.currentTarget.style.left = change + 'px';
+        	if (change < -10) disable_scroll(); // disable scroll once we hit 10px horizontal slide
+    	}
+
+
     })
     .on('touchend', function(e) {
         var left = parseInt(e.currentTarget.style.left)
         var new_left;
         if (left < -35) {
-            new_left = '-100px'
+            new_left = '-90px';
         } 
         else {
-            new_left = '0px'
+            new_left = '0px';
         }
-        $(e.currentTarget).animate({left: new_left}, 200)
-        enable_scroll()
+        $(e.currentTarget).animate({left: new_left}, 200);
+	    enable_scroll();
     });
 }
 
 $(document).on('click', "a.swipe-btn", function() {
+	
 	$(this).parents("li").find('img').attr("src", "pics/Paper-ticktick.png");
-	$(this).parents("li").animate({right: "-100px"}, 200)
+	$(this).parents("li").animate({right: "-90px"}, 200);
     //$(this).parents("li").remove();
 
 });
