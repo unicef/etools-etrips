@@ -118,7 +118,7 @@ function formatTrips(data, ulId){
 		 		imgRight = '<img class="icon-right" src="pics/Paper-X.png"/>';
 		 		break;
 		 	case "completed":
-		 		imgRight = '<img class="icon-right" src="pics/Paper.png"/>';
+		 		imgRight = '<img class="icon-right" src="pics/Paper-done.png"/>';
 		 		break;
 		 	}
 	 	var tripJson = getObjects(data, "id", trip.id)	
@@ -275,7 +275,7 @@ function confirmAndDelete( listitem, transition ) {
 $(document).on('pagebeforeshow', '#tripDetailsPage', function(){       
 	//alert('My name is ' + localStorage.tripDetail);
 	var data = JSON.parse(localStorage.tripDetail);
-	$("#Status").val(data[0].status);
+	$("#Status").val(data[0].status).selectmenu('refresh');
 	$("#traveller").val(data[0].traveller);
 	$("#supervisor").val(data[0].supervisor_name);
 	$("#Section").val(data[0].section);    	
@@ -292,7 +292,9 @@ $(document).on('pagebeforeshow', '#tripDetailsPage', function(){
 	$("#resp").val(data[0].staff_responsible_ta);
 	$("#intTravel").val(data[0].international_travel);
 	$("#selRep").val(data[0].representative);
-	$("#certHr").val(data[0].approved_by_human_resources);		
+	$("#certHr").val(data[0].approved_by_human_resources);
+
+	$('#tripForm').children(':input').attr('disabled', 'disabled');		
 });
 
 // *************************************** sign in page ****************************************

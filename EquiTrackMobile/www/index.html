@@ -135,11 +135,17 @@
     <h1 class="back2">Trip Details</h1>
   </div>
   <div data-role="main" class="ui-content">
-    <form method="post" action="tripIntervals.html" class="ui-filterable">
-        <label for="Status">Status</label>
-        <input type="text" id="Status" />
+    <form id="tripForm" method="post" action="tripIntervals.html" class="ui-filterable">
+        <label for="Status" class="select">Status</label>
+        <select name="Status" id="Status" readonly>
+          <option value="planned">planned</option>
+          <option value="submitted">submitted</option>
+          <option value="approved">approved</option>
+          <option value="completed">completed</option>
+          <option value="cancelled">cancelled</option>
+        </select>
         <label for="Traveller">Traveller</label>
-        <input data-type="search" id="traveller" value="">
+        <input data-type="search" id="traveller" value="" readonly>
         <ul data-role="listview" id="listview" data-filter="true" data-filter-reveal="true" data-inset="true" data-input="#traveller">
             <li><a href="#">Tarek Moubarak</a>
             </li>
@@ -151,7 +157,7 @@
             </li>
         </ul>
         <label for="Supervisor">Supervisor</label>
-        <input data-type="search" id="supervisor">
+        <input data-type="search" id="supervisor" readonly>
         <!--ul data-role="listview" data-filter="true" data-filter-reveal="true" placeHolder="" data-inset="true" data-input="#supervisor">
           <li><a href="#">Tarek Moubarak</a></li>
           <li><a href="#">James Cranwell Ward</a></li>
@@ -159,47 +165,94 @@
           <li><a href="#">Juan Santander</a></li>
         </ul-->
         <label for="Section">Section</label>
-        <input type="text" name="Section" id="Section" value="SPPME">
+        <input type="text" name="Section" id="Section" value="SPPME" readonly>
         <label for="Office">Office</label>
-        <input type="text" name="Office" id="Office" value="Beirut">
+        <input type="text" name="Office" id="Office" value="Beirut" readonly>
         <label for="travelP">Purpose of Travel</label>
-        <textarea name="travelP" id="travelP"></textarea>
+        <textarea name="travelP" id="travelP" readonly></textarea> 
         <label for="from">From Date</label>
-        <input name="from" id="from" type="text" data-role="datebox" data-options='{"mode":"calbox"}' />
+        <input name="from" id="from" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />
         <label for="to">To Date</label>
-        <input name="to" id="to" type="text" data-role="datebox" data-options='{"mode":"calbox"}' />
+        <input name="to" id="to" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />
         <label for="type">Travel Type</label>
-        <input type="text" name="type" id="type">
+        <input type="text" name="type" id="type" readonly>
         <label for="focal">Travel Focal Point</label>
-        <input type="text" name="focal" id="focal">
+        <input type="text" name="focal" id="focal" readonly>
         <label for="secClearReq">Security Clearance Reuired</label>
-        <input type="checkbox" name="focal" id="secClearReq">
+        <input type="checkbox" name="focal" id="secClearReq" readonly>
         <label for="taReq">TA Reuired</label>
-        <input type="checkbox" name="focal" id="taReq">
+        <input type="checkbox" name="focal" id="taReq" readonly>
         <label for="budgetOwner">Budget Owner</label>
-        <input type="text" name="budgetOwner" id="budgetOwner">
+        <input type="text" name="budgetOwner" id="budgetOwner" readonly>
         <label for="resp">Staff Responsible for TA</label>
-        <input type="text" name="resp" id="resp">        
+        <input type="text" name="resp" id="resp" readonly>        
         <label for="intTravel">International Travel</label>
-        <input type="checkbox" name="resp" id="intTravel">
+        <input type="checkbox" name="resp" id="intTravel" readonly>
         <label for="selRep">Select Representative</label>
-        <input type="text" name="travel" id="selRep"> 
+        <input type="text" name="travel" id="selRep" readonly> 
         <label for="certHr">Certified by HR</label>
-        <input type="select" name="travel" id="certHr">       
+        <input type="select" name="travel" id="certHr" readonly>       
              
-        <!--
-        <div data-role="collapsible">
-             <h4>TA Required</h4>
-            <label for="budgetOwner">Budget Owner</label>
-            <input type="text" name="budgetOwner" id="budgetOwner">
-            <label for="resp">Staff Responsible for TA</label>
-            <input type="text" name="resp" id="resp">
-        </div>
-        -->
-        <div data-role="collapsible">
-             <h4>PCA Details</h4>
 
+        <div data-role="collapsible">
+          <h4>PCA Details</h4>
+            <div style="background:#F6F6F6"><label for="relatedPCA">Related PCAs</label></div>
+            <ul data-role="listview" id="relatedPCA" name="relatedPCA">
+              <li>PCA1</li>
+              <li>PCA2</li>
+            </ul>
+
+            <div style="background:#F6F6F6; padding-top:10px"><label for="relatedPartners">Partners</label></div>
+            <ul data-role="listview" id="relatedPartners" name="relatedPartners">
+              <li>ACTED</li>
+              <li>DRC</li>
+            </ul>            
         </div>
+
+        <div data-role="collapsible">
+            <h4>Approval</h4>
+            <label for="aprrovedSuper">Approved by supervisor</label>
+            <input type="checkbox" name="aprrovedSuper" id="aprrovedSuper" readonly>            
+            <label for="aprrovedSuperDate">Date supervisor approved</label>
+            <input name="aprrovedSuperDate" id="aprrovedSuperDate" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />            
+            
+            <label for="aprrovedBudget">Approved by budget owner</label>
+            <input type="checkbox" name="aprrovedBudget" id="aprrovedBudget" />            
+            <label for="aprrovedBudgetDate">Date budget owner approved</label>
+            <input name="aprrovedBudgetDate" id="aprrovedBudgetDate" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />
+
+            <label for="hrApprvoedDate">Date human resources approved</label>
+            <input name="hrApprvoedDate" id="hrApprvoedDate" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />           
+            <label for="aprrovedHr">Human resources</label>
+            <input type="text" name="aprrovedHr" id="aprrovedHr" readonly> 
+
+            <label for="repApproved">Representative approval</label>
+            <input type="text" name="repApproved" id="repApproved" readonly> 
+
+            <label for="repApprovedDate">Date representative approved</label>
+            <input name="repApprovedDate" id="repApprovedDate" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />      
+
+            <label for="approvedDate">Approved date</label>
+            <input name="approvedDate" id="approvedDate" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />        
+        </div>
+
+        <div data-role="collapsible">
+          <h4>Travel/Admin</h4>
+            <label for="transBooked">Transport Booked</label>
+            <input type="checkbox" name="transBooked" id="transBooked" readonly>   
+            <label for="secGranted">Security Granted</label>
+            <input type="checkbox" name="secGranted" id="secGranted" readonly>  
+            <label for="taDrafted">TA drafted</label>
+            <input type="checkbox" name="taDrafted" id="taDrafted" readonly>  
+            <label for="taRef">TA reference</label>
+            <input type="text" name="taRef" id="taRef" readonly>  
+            <label for="taDraftDate">TA drafted date</label>
+            <input name="taDraftDate" id="taDraftDate" type="text" data-role="datebox" data-options='{"mode":"calbox"}' readonly />  
+            <label for="visionApprover">VISION approver</label>
+            <input type="text" name="visionApprover" id="visionApprover" readonly> 
+        </div>
+
+
         <input type="button" value="Back" data-role="button" data-inline="true" onclick="history.go(-1);" class="sub">
         <input type="submit" value="Next" data-role="button" data-inline="true" class="sub" >
     </form>
