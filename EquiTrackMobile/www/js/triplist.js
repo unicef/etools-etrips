@@ -186,7 +186,7 @@ function swipeLeft(list){
 
     	if(tripDetails[0].status == "planned" || (tripDetails[0].status == "submitted" && tripDetails[0].supervisor == userId.toString())){ //if status of trip is planned allow swipe
             var change = e.originalEvent.targetTouches[0].pageX - x;
-        	change = Math.min(Math.max(-100, change), 100); // restrict to -100px left, 0px right
+        	change = Math.min(Math.max(-90, change), 100); // restrict to -100px left, 0px right
         	e.currentTarget.style.left = change + 'px';
         	if (change < -10) disable_scroll(); // disable scroll once we hit 10px horizontal slide
     	}
