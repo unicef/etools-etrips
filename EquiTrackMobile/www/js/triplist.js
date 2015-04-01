@@ -11,10 +11,18 @@ $('#tripListPage').on('pagecreate', function(event) {
 
 //item swipe left
 $('#tripListPage').on('pageshow',function(event,ui){
-	
 	$('.ui-li-has-thumb').on("swipeleft", function( e ) {
-		$('#tripDetail2670').animate({left: "-90px"}, 200);
-		//alert(e.currentTarget);
+		$(this).find("a[id*='tripDetail']").each(function(){
+
+	        //get trip details 
+	        var tripId = $(this).attr('id').toString().substring($(this).attr('id').toString().indexOf('l') + 1);
+	    	var tripDetails = getObjects(filteredTrips, "id", tripId);    	
+
+	    	if(tripDetails[0].status == "planned" || (tripDetails[0].status == "submitted" && tripDetails[0].supervisor == userId.toString())){ //if status of trip is planned allow swipe
+				$(this).animate({left: "-90px"}, 200);
+			}
+			//alert(e.currentTarget);
+		});
 	});
     //swipeLeft("tripList");
 });
@@ -41,6 +49,7 @@ $('#superTrips').click( function(){
 	$('#currentTripsList').hide();
 	$('#prevTripsList').hide();
 	getTripList("superList");
+	
 	$('#superTripsList').show("fast", function() {	
 		swipeLeft("superList");
 	});
@@ -66,16 +75,16 @@ $('.ui-li-has-thumb').click(function(){
 
 //getting trips from Equitrack server
 function getTripList(ulId) {
-	var query = "http://192.168.0.152:8000/trips/approved/";
+	var query = "http://192.168.88.34:8000/trips/approved/";
 	if(ulId == "tripList")
 	{
-		query = "http://192.168.0.152:8000/trips/approved/?status=planned,submitted,approved";
+		query = "http://192.168.88.34:8000/trips/approved/?status=planned,submitted,approved";
 	}
 	else if(ulId == "prevList"){
-		query = "http://192.168.0.152:8000/trips/approved/?status=completed,cancelled";
+		query = "http://192.168.88.34:8000/trips/approved/?status=completed,cancelled";
 	}
 	else if(ulId == "superList"){
-		query = "http://192.168.0.152:8000/trips/approved/?status=submitted,approved";
+		query = "http:/192.168.88.34:8000/trips/approved/?status=submitted,approved";
 	}
 	
 
