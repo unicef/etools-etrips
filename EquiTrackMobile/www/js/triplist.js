@@ -165,8 +165,23 @@ function formatTrips(data, ulId){
 function tripDetail(tripId){
 	var tripDetails = getObjects(filteredTrips, "id", tripId)
 	localStorage.tripDetail=JSON.stringify(tripDetails);
-	$.mobile.changePage("#tripDetailsPage", { transition: "slideup"});
+	$.mobile.changePage("#tripDetailsPage", { transition: "slideright"});
 }
+
+function newTrip(){
+
+	$.mobile.changePage("#tripDetailsPage", { transition: "slideright"});
+
+}
+
+
+
+$('#btn-next').click( function(){	
+
+	$.mobile.changePage("#tripIteneraryPage", { transition: "slideright"});
+
+
+});
 
 //querying JSON
 function getObjects(obj, key, val) {
@@ -289,6 +304,10 @@ $(document).on('pagebeforeshow', '#tripDetailsPage', function(){
 	$("#taDraftDate").val(data[0].ta_drafted_date);
 	$("#visionApprover").val(data[0].vision_approver);
 
+//<<<<<<< Updated upstream
+//=======
+	//$('#tripForm').children(':input').attr('disabled', 'disabled');		
+//>>>>>>> Stashed changes
 });
 
 // *************************************** sign in page ****************************************

@@ -17,8 +17,17 @@ p.refNum {
   text-shadow:none !important;
 }
 
-.ui-loader .ui-icon-loading{
+.ui-loader .ui-icon-loading .ui-loading{
   background: transparent !important;
+
+}
+
+.ui-loading .ui-loader {
+  display: none !important;
+}
+
+.ui-listview > .ui-li-has-thumb > .ui-btn, .ui-listview > .ui-li-static.ui-li-has-thumb {
+    padding-left: 1.25em !important;
 }
 
 /*
@@ -99,5 +108,31 @@ p.refNum {
 font-size: 0.8em !important;
 margin: 0em 1.5em 0 0 !important;
 }
+
+
+.behind {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.behind a.ui-btn {
+    width: 68px;
+    margin: 0px;
+    float: right;
+    border: none;
+}
+.behind a.swipe-btn, .behind a.swipe-btn:active, .behind a.swipe-btn:visited, .behind a.swipe-btn:focus, .behind a.swipe-btn:hover {
+    color: white;
+    background-color: #80b636;
+    text-shadow: none;
+    height: 80%;
+    font-size: small;
+  }
+.behind a.ui-btn.pull-left {
+    float: left;
+}
+
 
 

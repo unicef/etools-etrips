@@ -25,7 +25,8 @@
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/1.4.5/jqm-datebox-1.4.5.mode.customflip.min.js"></script>
     <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jqm-datebox.lang.utf8.js"></script>
 
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css" />
+
 <style type="text/css">
   .ui-page-theme-a .ui-btn:active, html .ui-bar-a .ui-btn:active, html .ui-body-a .ui-btn:active, html body .ui-group-theme-a .ui-btn:active, html head + body .ui-btn.ui-btn-a:active {
     background-color:#ffffff !important;
@@ -38,12 +39,14 @@
 </head>
     
 <body>
-
+   
 <div id="tripListPage" data-role="page" >
   <div data-role="panel" id="myPanel" data-position="left" data-display="push"> 
     <h4 class="back2">OPTIONS</h4>
        <ul id="menuList" data-role="listview" data-filter="false" class="menu1">
-         <li class="back"><a href="">Logout</a></li>-
+
+         <li class="back"><a href="">Logout</a></li>
+
         </ul>
   </div> 
 	<div data-role="header" data-position="fixed">
@@ -52,36 +55,50 @@
 	    <h1 class="back2">EquiTrip</h1>
 	    <div data-role="navbar" class="custom-navbar">
         <ul>
-         <li class="back"><a id="currentTrips" class="ui-btn-active" href="">Current</a></li>
-         <li class="back"><a id="prevTrips" href="">Previous</a></li>
+         <li class="back"><a id="currentTrips" href="index.html">Current</a></li>
+         <li class="back"><a id="prevTrips" class="ui-btn-active" href="previousTrips.html">Previous</a></li>
          <li class="back"><a id="superTrips" href="">Supervised</a></li>
         </ul>
       </div>
 	</div>
 
-  <!-- start of current trips page -->
-	<div id="currentTripsList" data-role="content">
-     <ul id="tripList" data-role="listview" data-filter="true"></ul>       
+	<div data-role="content">
+    <ul id="tripList" data-role="listview" data-filter="true"></ul>       
   </div>	
 
+</div>
 
+<div id="previousPage" data-role="page" >
+  <div data-role="panel" id="myPanel" data-position="left" data-display="push"> 
+    <h4 class="back2">OPTIONS</h4>
+       <ul id="menuList" data-role="listview" data-filter="false" class="menu1">
 
-<!-- start of previous trips page -->
-  <div id="prevTripsList" data-role="content" style="display:none;">
-     <ul id="prevList" data-role="listview" data-filter="true"></ul>       
-  </div>  
+         <li class="back"><a href="">Logout</a></li>
 
-<!-- start of supervised trips page -->
-  <div id="superTripsList" data-role="content" style="display:none;">
-     <ul id="superList" data-role="listview" data-filter="true"></ul>       
+        </ul>
+  </div> 
+  <div data-role="header" data-position="fixed">
+      <a href="#myPanel" data-theme="c" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side">Open left panel</a>
+       <a href="tripdetails.html" data-theme="c" data-icon="plus" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-side"></a>
+      <h1 class="back2">EquiTrip</h1>
+      <div data-role="navbar" class="custom-navbar">
+        <ul>
+         <li class="back"><a id="currentTrips" href="index.html">Current</a></li>
+         <li class="back"><a id="prevTrips" class="ui-btn-active" href="previousTrips.html">Previous</a></li>
+         <li class="back"><a id="superTrips" href="">Supervised</a></li>
+        </ul>
+      </div>
+  </div>
+
+  <div data-role="content">
+    <ul id="tripList" data-role="listview" data-filter="true"></ul>       
   </div>  
 
 </div>
 
-
 <!--script src="js/jquery.js"></script-->
 <!--script src="js/jquery.mobile-1.0rc1.min.js"></script-->
-        <script src="js/triplist.js"></script>
+       <script src="js/triplist.js"></script> 
         
 </body>
 
