@@ -11,7 +11,12 @@ $('#tripListPage').on('pagecreate', function(event) {
 
 //item swipe left
 $('#tripListPage').on('pageshow',function(event,ui){
-    swipeLeft("tripList");
+	
+	$('.ui-li-has-thumb').on("swipeleft", function( e ) {
+		$('#tripDetail2670').animate({left: "-90px"}, 200);
+		//alert(e.currentTarget);
+	});
+    //swipeLeft("tripList");
 });
 
 //tabs click
@@ -26,6 +31,7 @@ $('#currentTrips').click( function(){
 	$('#prevTripsList').hide();
 	$('#superTripsList').hide();	
 	getTripList("tripList");
+	
 	$('#currentTripsList').show("fast", function() {
 		swipeLeft("tripList");	
 	});
@@ -60,16 +66,16 @@ $('.ui-li-has-thumb').click(function(){
 
 //getting trips from Equitrack server
 function getTripList(ulId) {
-	var query = "http://192.168.88.34:8000/trips/approved/";
+	var query = "http://192.168.0.152:8000/trips/approved/";
 	if(ulId == "tripList")
 	{
-		query = "http://192.168.88.34:8000/trips/approved/?status=planned,submitted,approved";
+		query = "http://192.168.0.152:8000/trips/approved/?status=planned,submitted,approved";
 	}
 	else if(ulId == "prevList"){
-		query = "http://192.168.88.34:8000/trips/approved/?status=completed,cancelled";
+		query = "http://192.168.0.152:8000/trips/approved/?status=completed,cancelled";
 	}
 	else if(ulId == "superList"){
-		query = "http://192.168.88.34:8000/trips/approved/?status=submitted,approved";
+		query = "http://192.168.0.152:8000/trips/approved/?status=submitted,approved";
 	}
 	
 
@@ -273,8 +279,10 @@ function confirmAndDelete( listitem, transition ) {
 // *************************************** trip detail page ****************************************
 
 $(document).on('pagebeforeshow', '#tripDetailsPage', function(){       
-	//alert('My name is ' + localStorage.tripDetail);
+	//get trip from local storage and populate page
 	var data = JSON.parse(localStorage.tripDetail);
+
+	//Traveller
 	$("#Status").val(data[0].status).selectmenu('refresh');
 	$("#traveller").val(data[0].traveller);
 	$("#supervisor").val(data[0].supervisor_name);
@@ -286,15 +294,34 @@ $(document).on('pagebeforeshow', '#tripDetailsPage', function(){
 	$("#to").val((toDate.getMonth() + 1) + '/' + toDate.getDate() + '/' +  toDate.getFullYear());
 	$("#type").val(data[0].travel_type);
 	$("#focal").val(data[0].travel_assistant);	
-	$("#secClearReq").val(data[0].security_clearance_required);
+	if(data[0].security_clearance_required == true) $("#secClearReq").prop("checked", true).checkboxradio('refresh');
 	$("#taReq").val(data[0].ta_required);
+	if(data[0].ta_required == true) $("#taReq").prop("checked", true).checkboxradio('refresh');	
 	$("#budgetOwner").val(data[0].budget_owner);
 	$("#resp").val(data[0].staff_responsible_ta);
-	$("#intTravel").val(data[0].international_travel);
+	if(data[0].international_travel == true) $("#intTravel").prop("checked", true).checkboxradio('refresh');	
 	$("#selRep").val(data[0].representative);
-	$("#certHr").val(data[0].approved_by_human_resources);
+	$("#certHr").val(data[0].human_resources);
+	
+	//Approval
+	if(data[0].approved_by_supervisor == true) $("#aprrovedSuper").prop("checked", true).checkboxradio('refresh');
+	$("#aprrovedSuperDate").val(data[0].date_supervisor_approved);
+	if(data[0].approved_by_budget_owner == true) $("#aprrovedBudget").prop("checked", true).checkboxradio('refresh');
+	$("#aprrovedBudgetDate").val(data[0].date_budget_owner_approved);	
+	$("#hrApprvoedDate").val(data[0].date_human_resources_approved);	
+	$("#aprrovedHr").val(data[0].approved_by_human_resources);	
+	$("#repApproved").val(data[0].representative_approval);	
+	$("#repApprovedDate").val(data[0].date_representative_approved);	
+	$("#approvedDate").val(data[0].approved_date);
 
-	$('#tripForm').children(':input').attr('disabled', 'disabled');		
+	//Travel/Admin
+	if(data[0].transport_booked == true) $("#transBooked").prop("checked", true).checkboxradio('refresh');
+	if(data[0].security_granted == true) $("#secGranted").prop("checked", true).checkboxradio('refresh');
+	if(data[0].ta_drafted == true) $("#taDrafted").prop("checked", true).checkboxradio('refresh');
+	$("#taRef").val(data[0].ta_reference);
+	$("#taDraftDate").val(data[0].ta_drafted_date);
+	$("#visionApprover").val(data[0].vision_approver);
+
 });
 
 // *************************************** sign in page ****************************************
