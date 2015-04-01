@@ -211,7 +211,7 @@ function swipeLeft(list){
 
     	if(tripDetails[0].status == "planned" || (tripDetails[0].status == "submitted" && tripDetails[0].supervisor == userId.toString())){ //if status of trip is planned allow swipe
             var change = e.originalEvent.targetTouches[0].pageX - x;
-        	change = Math.min(Math.max(-90, change), 100); // restrict to -100px left, 0px right
+        	change = Math.min(Math.max(-90, change), 0); // restrict to -100px left, 0px right
         	e.currentTarget.style.left = change + 'px';
         	if (change < -10) disable_scroll(); // disable scroll once we hit 10px horizontal slide
     	}
@@ -224,18 +224,22 @@ function swipeLeft(list){
         } 
         else {
             new_left = '0px';
-        }
+        }                
         $(e.currentTarget).animate({left: new_left}, 200);
 	    enable_scroll();
     });
 }
 
+//submit or approve clicked
 $(document).on('click', "a.swipe-btn", function() {
-	
-	$(this).parents("li").find('img').attr("src", "pics/Paper-ticktick.png");
-	$(this).parents("li").animate({right: "-90px"}, 200);
-    //$(this).parents("li").remove();
+	$(this).parents("li").find("a[id*='tripDetail']").animate({left: "0px"}, 200);
 
+	if($(this).parents("li").find('img').attr("src") == "pics/paper-tick.png"){
+		$(this).parents("li").find('img').attr("src", "pics/Paper-ticktick.png");
+	}
+	else if($(this).parents("li").find('img').attr("src") == "pics/Paper.png"){
+		$(this).parents("li").find('img').attr("src", "pics/paper-tick.png");
+	}
 });
 
 
