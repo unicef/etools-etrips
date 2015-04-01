@@ -11,6 +11,13 @@ $('#tripListPage').on('pagecreate', function(event) {
 
 //item swipe left
 $('#tripListPage').on('pageshow',function(event,ui){
+	//newSwipeLeft();
+    //swipeLeft("tripList");
+});
+
+
+function newSwipeLeft()
+{
 	$('.ui-li-has-thumb').on("swipeleft", function( e ) {
 		$(this).find("a[id*='tripDetail']").each(function(){
 
@@ -24,8 +31,7 @@ $('#tripListPage').on('pageshow',function(event,ui){
 			//alert(e.currentTarget);
 		});
 	});
-    //swipeLeft("tripList");
-});
+}
 
 //tabs click
 $('#prevTrips').click( function(){
@@ -38,23 +44,29 @@ $('#prevTrips').click( function(){
 $('#currentTrips').click( function(){
 	$('#prevTripsList').hide();
 	$('#superTripsList').hide();	
+	
 	getTripList("tripList");
 	
 	$('#currentTripsList').show("fast", function() {
-		swipeLeft("tripList");	
+		//swipeLeft("tripList");
+		//newSwipeLeft();	
 	});
 });
 
 $('#superTrips').click( function(){
 	$('#currentTripsList').hide();
 	$('#prevTripsList').hide();
-	getTripList("superList");
 	
+	getTripList("superList");	
 	$('#superTripsList').show("fast", function() {	
-		swipeLeft("superList");
+		//swipeLeft("superList");
+		//newSwipeLeft();
 	});
+
+
 });
 
+/*
 //swipe right
 $(document).on("swiperight", "#tripListPage", function( e ) {
 	// We check if there is no open panel on the page because otherwise
@@ -62,12 +74,7 @@ $(document).on("swiperight", "#tripListPage", function( e ) {
 	// We do this by checking the data that the framework stores on the page element (panel: open).
     $("#myPanel").panel("open");
 });
-
-//$('#tripListPage').bind('pageinit', function(event) {
-	//$.mobile.loadingMessage = false;
-
-	//getTripList("tripList");
-//});
+*/
 
 $('.ui-li-has-thumb').click(function(){
 	$(this).css('background','#ffffff');
@@ -92,6 +99,7 @@ function getTripList(ulId) {
 	   type: "GET",	   
 	   dataType: "jsonp",	   
 	   url: query,
+	   async: false,
 	   error: function (xhr) {
             alert(xhr.status + ": " + xhr.statusText);
         },
@@ -150,6 +158,8 @@ function formatTrips(data, ulId){
 						'</a></li>');
 	});
 	$('#' + ulId).listview('refresh');
+	swipeLeft(ulId);
+	//newSwipeLeft();
 }
 
 function tripDetail(tripId){
@@ -205,8 +215,6 @@ function swipeLeft(list){
         	e.currentTarget.style.left = change + 'px';
         	if (change < -10) disable_scroll(); // disable scroll once we hit 10px horizontal slide
     	}
-
-
     })
     .on('touchend', function(e) {
         var left = parseInt(e.currentTarget.style.left)
@@ -230,60 +238,6 @@ $(document).on('click', "a.swipe-btn", function() {
 
 });
 
-
-/*
-//swipe function
-$( document ).on( "swipeleft swiperight", "#tripList li.ui-li-has-thumb", function( event ) {
-	var listitem = $( this ),
-	// These are the classnames used for the CSS transition
-	dir = event.type === "swipeleft" ? "left" : "right",
-	// Check if the browser supports the transform (3D) CSS transition
-	transition = $.support.cssTransform3d ? dir : false;
-	
-	confirmAndDelete( listitem, transition );
-});
-
-function confirmAndDelete( listitem, transition ) {
-	// Highlight the list item that will be removed
-	listitem.addClass( "ui-btn-down-d" );
-	// Inject topic in confirmation popup after removing any previous injected topics
-	//$( "#confirm .topic" ).remove();
-	//listitem.find( ".topic" ).clone().insertAfter( "#question" );
-	// Show the confirmation popup
-	$( "#confirm" ).popup( "open" );
-	// Proceed when the user confirms
-	$( "#confirm #yes" ).on( "click", function() {
-		// Remove with a transition
-		if ( transition ) {
-			
-			listitem
-				// Remove the highlight
-				.removeClass( "ui-btn-down-d" )
-				// Add the class for the transition direction
-				.addClass( transition )
-				// When the transition is done...
-				.on( "webkitTransitionEnd transitionend otransitionend", function() {
-					// ...the list item will be removed
-					listitem.remove();
-					// ...the list will be refreshed and the temporary class for border styling removed
-					$( "#list" ).listview( "refresh" ).find( ".ui-li.border" ).removeClass( "border" );
-				})
-				// During the transition the previous list item should get bottom border
-				.prev( "li.ui-li" ).addClass( "border" );
-		}
-		// If it's not a touch device or the CSS transition isn't supported just remove the list item and refresh the list
-		else {
-			listitem.remove();
-			$( "#list" ).listview( "refresh" );
-		}
-	});
-	// Remove active state and unbind when the cancel button is clicked
-	$( "#confirm #cancel" ).on( "click", function() {
-		listitem.removeClass( "ui-btn-down-d" );
-		$( "#confirm #yes" ).off();	
-	});
-}
-*/
 
 // *************************************** trip detail page ****************************************
 
@@ -354,7 +308,6 @@ $('#btn-submit').click( function(){
 			$.mobile.changePage("#tripListPage", { transition: "slideup"});
 		}
 		else{
-			//$('#dlg-invalid-credentials').show();
 			$('#dlg-invalid-credentials').popup('open', {positionTo: 'window'});
 		}
 	}
