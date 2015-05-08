@@ -15,15 +15,17 @@ p.refNum {
 
 .blueFont:active {
   text-shadow:none !important;
+  color:#FFFFFF;
 }
 
 .ui-loader .ui-icon-loading .ui-loading{
   background: transparent !important;
-
+  color: #0099ff;
 }
 
 .ui-loading .ui-loader {
-  display: none !important;
+  background: transparent !important;
+  color: #0099ff;
 }
 
 .ui-listview > .ui-li-has-thumb > .ui-btn, .ui-listview > .ui-li-static.ui-li-has-thumb {
@@ -133,6 +135,20 @@ margin: 0em 1.5em 0 0 !important;
 .behind a.ui-btn.pull-left {
     float: left;
 }
+
+.success-light{
+  color: #32ad32;
+}
+
+.danger-light{
+  color: #d63232;
+}
+
+.font-small{
+  font-size: 0.8em !important
+}
+
+ 
 
 
 
