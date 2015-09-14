@@ -1,0 +1,11 @@
+<ion-view view-title="{{trip.traveller}}">
+  <ion-content class="padding">
+    <p>
+      {{trip.id}}
+      {{ trip.traveller }}
+        <div ng-repeat="(key, value) in trip">
+            <p>{{ key }} : {{ value }}</p>
+       </div>
+    </p>
+  </ion-content>
+</ion-view>

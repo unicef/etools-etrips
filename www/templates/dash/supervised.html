@@ -1,0 +1,21 @@
+<ion-view view-title="Supervised">
+
+  <ion-content>
+      <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+      </ion-refresher>
+      <!-- <p>{{ trips }}</p> -->
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="trip in trips | filter:onlySupervised" type="item-text-wrap" href="#/app/dash/supervised/{{trip.id}}">
+        <h2>{{trip.id}}</h2>
+        <p>{{trip.travel_type}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button ng-hide="trip.status=='approved'" class="button-positive" ng-click="approve(trip.id)">
+          I Approve
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
