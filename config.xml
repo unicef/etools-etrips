@@ -4,8 +4,8 @@
   <description>
         An Ionic Framework and Cordova project.
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="ravram@unicef.org" href="http://equitrack.unicef.org/">
+      Unicef eTools Team
     </author>
   <content src="index.html"/>
   <access origin="*"/>
