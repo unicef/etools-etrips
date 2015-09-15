@@ -119,9 +119,10 @@ angular.module('equitrack.services', [])
   // Might use a resource here that returns a JSON array;
 
     function tripAction(id, action, data){
-        //Data.refresh_trips()
-        result  = $http.post(API_urls.BASE+'/trips/api/'+id+'/'+action+'/', data);
+        var url = API_urls.BASE + '/trips/api/' + id + '/';
+        var result = $http.post(url + action + '/', data);
         return result
+
     }
 
 	return {

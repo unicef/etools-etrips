@@ -1,6 +1,6 @@
 // app UnicefEquitrackMobile
 //  author @robertavram
-angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.services', 'equitrack.utils'])
+angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.services', 'equitrack.utils', 'equitrack.tripControllers'])
 
 .run(function($ionicPlatform, $rootScope, $state, $http, API_urls, $localStorage) {
 
@@ -65,45 +65,44 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
         requireLogin: true // this property, if set on app will apply to all of its children
     }
   })
-
-  .state('app.search', {
-    url: '/search',
-    views: {
-        'menuContent': {
-            templateUrl: 'templates/search.html'
-        }
-    }
-  })
-
-  .state('app.trips', {
-      url: '/trips',
+  .state('app.trip', {
+      url: '/trip',
+      abstract: true,
       views: {
         'menuContent': {
-          templateUrl: 'templates/trips.html',
-          controller: 'TripsCtrl'
+            templateUrl: 'templates/trip.html',
+            controller: 'TripCtrl'
         }
       }
   })
-  .state('app.playlists', {
-      url: '/playlists',
+  .state('app.trip.reporting', {
+      url: '/reporting/:tripId',
+      abstract: true,
       views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
+          'tripContent': {
+              templateUrl: 'templates/trip/reporting.html',
+              controller: 'ReportingCtrl'
+          }
       }
   })
-
-  .state('app.single', {
-      url: '/playlists/:playlistId',
+  .state('app.trip.reporting.text',{
+      url: '/text',
       views: {
-        'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+          'tab-text': {
+              templateUrl: 'templates/trip/reporting-text.html',
+              controller: 'ReportingTextCtrl'
+          }
       }
-    }
   })
-
+  .state('app.trip.reporting.picture',{
+      url: '/picture',
+      views: {
+          'tab-pic': {
+              templateUrl: 'templates/trip/reporting-picture.html',
+              controller: 'ReportingPictureCtrl'
+          }
+      }
+  })
   .state('app.dash', {
       url: '/dash',
       abstract: true,
