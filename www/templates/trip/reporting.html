@@ -1,16 +1,16 @@
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
   <!-- My Trips Tab -->
-  <ion-tab title="Text" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#app/trip/reporting/{{ trip.id }}/text">
+  <ion-tab title="Text" icon-off="ion-document" icon-on="ion-document-text" href="#app/trip/reporting/{{ trip.id }}/text">
     <ion-nav-view name="tab-text"></ion-nav-view>
   </ion-tab>
 
   <!-- Supervised Tab -->
-  <ion-tab title="picture" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#app/trip/reporting/{{ trip.id }}/picture">
+  <ion-tab title="Picture" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" href="#app/trip/reporting/{{ trip.id }}/picture">
     <ion-nav-view name="tab-pic"></ion-nav-view>
   </ion-tab>
 
   <!-- Other Tab -->
-  <ion-tab title="Other" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#app/dash/three">
-    <ion-nav-view name="tab-three"></ion-nav-view>
+  <ion-tab title="Actions" icon-off="ion-ios-personadd-outline" icon-on="ion-ios-personadd" href="#app/trip/reporting/{{ trip.id }}/aps">
+    <ion-nav-view name="tab-aps"></ion-nav-view>
   </ion-tab>

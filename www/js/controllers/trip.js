@@ -28,6 +28,11 @@ angular.module('equitrack.tripControllers', [])
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
 
 })
+.controller('ReportingAPSCtrl',function($scope, $stateParams, TripsFactory){
+
+        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+
+})
 .controller('ReportingPictureCtrl',function($scope, $stateParams, TripsFactory){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);

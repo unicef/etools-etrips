@@ -101,6 +101,15 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
           }
       }
   })
+  .state('app.trip.reporting.aps',{
+      url: '/aps',
+      views: {
+          'tab-aps': {
+              templateUrl: 'templates/trip/reporting-aps.html',
+              controller: 'ReportingAPSCtrl'
+          }
+      }
+  })
   .state('app.dash', {
       url: '/dash',
       abstract: true,
@@ -145,14 +154,6 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
         'tab-supervised': {
           templateUrl: 'templates/dash/trip.html',
           controller: 'TripDetailCtrl'
-        }
-      }
-  })
-  .state('app.dash.three', {
-      url: '/three',
-      views: {
-        'tab-three': {
-          templateUrl: 'templates/dash/three.html'
         }
       }
   })
