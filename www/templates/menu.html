@@ -14,15 +14,18 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
+      <h1 class="title">eTrip Menu</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
         <ion-item menu-close href="#/app/dash/my_trips">
             Trips
         </ion-item>
-          <ion-item menu-close href="#/app/trip/reporting/1">
-            Reporting
+        <ion-item menu-close href="#/app/resources">
+            Resources
+        </ion-item>
+        <ion-item menu-close ng-click="logout()">
+            Logout
         </ion-item>
 
       </ion-list>

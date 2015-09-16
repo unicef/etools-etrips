@@ -1,6 +1,6 @@
 angular.module('equitrack.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $state, LoginService) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -8,39 +8,17 @@ angular.module('equitrack.controllers', [])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+  $scope.logout = function(){
+      console.log('logout goes here')
+      $state.go("login")
+      LoginService.logout()
 
+  };
   // Form data for the login modal
   $scope.data = {};
 
 })
-//.controller('TripsCtrl', ['$scope', '$localStorage', 'Data', '$ionicPopup',
-//        function($scope, $localStorage, Data, $ionicPopup){
-//        $scope.data = {"user": $localStorage.currentUser}
-//        $scope.profile = {}
-//
-//        $scope.get_profile = function(){
-//            Data.get_profile(function(res){
-//                    console.log("success", res)
-//                    $scope.data.profile = res
-//                },
-//                function(res){
-//                    console.log("fail", res)
-//            })
-//        }
-//        $scope.get_trips = function(){
-//            Data.get_trips(
-//                function(res){
-//                    $scope.data.trips = res
-//                },
-//                function(res){
-//                    $ionicPopup.alert({
-//                        title: 'Something went wrong',
-//                        template: 'Please try again later!'
-//                    })
-//                }
-//            )
-//        }
-//}])
+
 .controller('DashCtrl', function($scope) {
 
 })
@@ -77,10 +55,12 @@ angular.module('equitrack.controllers', [])
     };
 
     $scope.login = function(){
+        var loginData = $scope.data
         $ionicLoading.show({
                       template: 'Loading...'
         });
-        LoginService.loginUser($scope.data, login_success, login_fail)
+        LoginService.loginUser(loginData, login_success, login_fail)
+        $scope.data = {}
     };
 
 }]);

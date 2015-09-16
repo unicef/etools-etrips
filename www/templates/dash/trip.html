@@ -1,11 +1,73 @@
-<ion-view view-title="{{trip.traveller}}">
+<ion-view view-title="{{trip.travel_type | underscoreless | TitleCase}}">
+
   <ion-content class="padding">
-    <p>
-      {{trip.id}}
-      {{ trip.traveller }}
-        <div ng-repeat="(key, value) in trip">
-            <p>{{ key }} : {{ value }}</p>
-       </div>
-    </p>
+      <button ng-show="checks.owner && checks.is_approved"  class="button button-block button-calm" ng-click="go_report(trip.id)">Report</button>
+      <button ng-show="checks.owner && checks.is_planned"  class="button button-block button-calm" ng-click="submit(trip.id)">Submit</button>
+      <button ng-show="checks.supervisor && checks.is_submitted" class="button button-block button-balanced" ng-click="approve(trip.id)">Approve</button>
+      <div class="card padding" ng-show="checks.supervisor && checks.is_approved">
+          <h3 class="balanced"> Approved </h3>
+      </div>
+      <div class="card padding" ng-show="checks.owner && checks.is_submitted">
+          <h3 class="calm"> Awaiting Approval </h3>
+      </div>
+
+
+
+      <div ng-repeat="(key, value) in trip"
+           ng-if="['id', 'supervisor', 'traveller_id',
+           'travel_routes', 'files', 'action_points',
+           'trip_funds', 'url'].indexOf(key) == -1"
+           class="card" ng-hide="value == null">
+          <h6 class="txt-grey">{{ key | underscoreless | TitleCase }}</h6>
+          <p class="item item-text-wrap li-center">{{ value }}</p>
+
+      </div>
+      <div class="card padding" ng-show="trip.travel_routes.length">
+          <div class="item-devider">
+              <h4 class="txt-grey li-center">Travel Routes</h4>
+          </div>
+          <div class="item-divider" ng-repeat="route in trip.travel_routes">
+              {{ route.origin }} -> {{ route.destination }}
+              <br>
+              {{ route.depart | date:'short'}} -> {{ route.arrive | date:'short'}}
+          </div>
+      </div>
+
+      <div class="card padding" ng-show="trip.files.length">
+          <div class="item-devider">
+              <h4 class="txt-grey li-center">Travel Routes</h4>
+          </div>
+          <div class="item-divider" ng-repeat="route in trip.travel_routes">
+              {{ route.origin }} -> {{ route.destination }}
+              <br>
+              {{ route.depart | date:'short'}} -> {{ route.arrive | date:'short'}}
+          </div>
+      </div>
+      <div class="card padding" ng-show="trip.action_points.length">
+          <div class="item-devider">
+              <h4 class="txt-grey li-center">Action Points</h4>
+          </div>
+          <div class="item-divider" ng-repeat="ap in trip.action_points">
+              Person Responsible: {{ ap.person_responsible }}
+              <br>
+              Due Date: {{ ap.due_date | date}}
+              <br>
+              Description: {{ ap.description }}
+          </div>
+      </div>
+      <div class="card padding" ng-show="trip.trip_funds.length">
+          <div class="item-devider">
+              <h4 class="txt-grey li-center">Trip Funds</h4>
+          </div>
+          <div class="item-divider" ng-repeat="tf in trip.trip_funds">
+              WBS: {{ tf.wbs }}
+              <br>
+              Grant: {{ tf.grant }}
+              <br>
+              Amount: {{ tf.amount | currency }}
+          </div>
+      </div>
+
+
   </ion-content>
 </ion-view>

@@ -18,6 +18,10 @@ angular.module('equitrack.services', [])
                 Auth.login({"name":name, "password":password}, successAuth, failAuth)
 
         }
+        function logout(){
+            delete $localStorage.jwtoken;
+            delete $localStorage.currentUser;
+        }
 
         return {
             loginUser: function(data, retSuccess, retFail){
@@ -25,7 +29,8 @@ angular.module('equitrack.services', [])
                 Auth.login(data).then(function(res){
                         successAuth(res, retSuccess)
                     } ,function(err){retFail(err)})
-            }
+            },
+            logout: logout
 
         }
 
@@ -116,7 +121,7 @@ angular.module('equitrack.services', [])
 
 
 .factory('TripsFactory', ['Data', '$localStorage', '$http', 'API_urls', function(Data, $localStorage, $http, API_urls) {
-  // Might use a resource here that returns a JSON array;
+
 
     function tripAction(id, action, data){
         var url = API_urls.BASE + '/trips/api/' + id + '/';
@@ -124,8 +129,23 @@ angular.module('equitrack.services', [])
         return result
 
     }
+    function localAction(id, action){
+        for(var i=0;i<$localStorage.trips.length;i++){
+				if($localStorage.trips[i].id == id){
+                    $localStorage.trips[i].status = action;
+					return true;
+				}
+			}
+            return false
+    }
 
 	return {
+        localApprove: function(id){
+            return localAction(id, 'approved')
+        },
+        localSubmit: function(id){
+            return localAction(id, 'submitted')
+        },
 		getTrip: function(id){
             console.log("getting trip from", $localStorage.trips)
 			for(i=0;i<$localStorage.trips.length;i++){

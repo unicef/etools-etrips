@@ -7,12 +7,10 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
 
         var requireLogin = toState.data.requireLogin;
-        console.log(event)
 
         console.log('loginstatechange', requireLogin, $localStorage.currentUser);
 
         if (requireLogin && typeof $localStorage.currentUser === 'undefined') {
-            console.log("why?")
           event.preventDefault();
           $state.go('login');
           // get me to the login page!
@@ -160,6 +158,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
   })
   .state('login', {
       url: '/login',
+      cache: false,
       templateUrl: 'templates/login.html',
       controller: 'LoginCtrl',
       data: {
@@ -171,5 +170,20 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
 
 
 }])
-.constant('API_urls', {'BASE':'http://192.168.99.100:8080'});
+.constant('API_urls', {'BASE':'http://192.168.99.100:8080'})
+.constant('TripVars', {'checkboxes':['ta_drafted', 'security_granted'],
+                       'cards': ['travel_routes', 'files', 'action_points',
+                                 'trip_funds']
+                      }
+)
 
+.filter('underscoreless', function () {
+  return function (input) {
+      return input.replace(/_/g, ' ');
+  };
+})
+.filter('TitleCase', function(){
+    return function(input){
+        return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+})

@@ -7,14 +7,20 @@
   </ion-refresher>
  <!-- <p>{{ trips }}</p> -->
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="trip in trips | filter:onlyMe" type="item-text-wrap" href="#/app/dash/my_trips/{{trip.id}}">
-        <h2>{{trip.id}}</h2>
-        <p>{{trip.travel_type}}</p>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="trip in filteredTrips" type="item-text-wrap" href="#/app/dash/my_trips/{{trip.id}}">
+        <h2>{{trip.traveller}}</h2>
+        <p>{{trip.travel_type | underscoreless | TitleCase}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="go_report(trip.id)">
-          Action
+        <ion-option-button ng-show="trip.status=='approved'" class="button-calm" ng-click="go_report(trip.id)">
+          Report
         </ion-option-button>
+        <ion-option-button ng-show="trip.status=='planned'" class="button-balanced" ng-click="submit(trip.id)">
+          Submit
+        </ion-option-button>
+      </ion-item>
+      <ion-item ng-hide="filteredTrips.length">
+          <h2>No current approved trips found</h2>
       </ion-item>
     </ion-list>
   </ion-content>
