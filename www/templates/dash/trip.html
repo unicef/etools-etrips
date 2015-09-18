@@ -4,10 +4,10 @@
       <button ng-show="checks.owner && checks.is_approved"  class="button button-block button-calm" ng-click="go_report(trip.id)">Report</button>
       <button ng-show="checks.owner && checks.is_planned"  class="button button-block button-calm" ng-click="submit(trip.id)">Submit</button>
       <button ng-show="checks.supervisor && checks.is_submitted" class="button button-block button-balanced" ng-click="approve(trip.id)">Approve</button>
-      <div class="card padding" ng-show="checks.supervisor && checks.is_approved">
+      <div class="list list-inset padding" ng-show="checks.supervisor && checks.is_approved">
           <h3 class="balanced"> Approved </h3>
       </div>
-      <div class="card padding" ng-show="checks.owner && checks.is_submitted">
+      <div class="list list-inset padding" ng-show="checks.owner && checks.is_submitted">
           <h3 class="calm"> Awaiting Approval </h3>
       </div>
 
@@ -17,12 +17,11 @@
            ng-if="['id', 'supervisor', 'traveller_id',
            'travel_routes', 'all_files', 'actionpoint_set',
            'trip_funds', 'url'].indexOf(key) == -1"
-           class="card" ng-hide="value == null">
-          <h6 class="txt-grey">{{ key | underscoreless | TitleCase }}</h6>
-          <p class="item item-text-wrap li-center">{{ value }}</p>
-
+           class="list list-inset" ng-hide="value == null">
+          <h5 class="txt-grey padding-left">{{ key | underscoreless | TitleCase }}</h5>
+          <p class="item item-text-wrap li-center less-padding">{{ value }}</p>
       </div>
-      <div class="card padding" ng-show="trip.travel_routes.length">
+      <div class="list list-inset padding" ng-show="trip.travel_routes.length">
           <div class="item-devider">
               <h4 class="txt-grey li-center">Travel Routes</h4>
           </div>
@@ -33,7 +32,7 @@
           </div>
       </div>
 
-      <div class="card padding" ng-show="trip.all_files.length">
+      <div class="list list-inset padding" ng-show="trip.all_files.length">
           <div class="item-devider">
               <h4 class="txt-grey li-center">Files</h4>
           </div>
@@ -41,7 +40,7 @@
               <p>{{ file.report }}</p>
           </div>
       </div>
-      <div class="card padding" ng-show="trip.actionpoint_set.length">
+      <div class="list list-inset padding" ng-show="trip.actionpoint_set.length">
           <div class="item-divider">
               <h4 class="txt-grey li-center">Action Points</h4>
           </div>
@@ -54,7 +53,7 @@
               <hr>
           </div>
       </div>
-      <div class="card padding" ng-show="trip.trip_funds.length">
+      <div class="list list-inset padding" ng-show="trip.trip_funds.length">
           <div class="item-devider">
               <h4 class="txt-grey li-center">Trip Funds</h4>
           </div>

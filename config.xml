@@ -39,4 +39,6 @@
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
+    <access origin="https://etools-staging.uniceflebanon.org" />
+	<access origin="https://uniceflebanon.org" subdomains="true" />
 </widget>
