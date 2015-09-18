@@ -2,7 +2,7 @@
 <widget id="com.ionicframework.myside685543" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>eTrips</name>
   <description>
-        An Ionic Framework and Cordova project.
+        UNICEF eTrips application, an application for managing missions within UNICEF
     </description>
   <author email="ravram@unicef.org" href="http://equitrack.unicef.org/">
       Unicef eTools Team
@@ -19,6 +19,7 @@
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
+  <allow-navigation href="http://*/*" />
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
@@ -39,6 +40,4 @@
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
-    <access origin="https://etools-staging.uniceflebanon.org" />
-	<access origin="https://uniceflebanon.org" subdomains="true" />
 </widget>
