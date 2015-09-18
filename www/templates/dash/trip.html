@@ -15,7 +15,7 @@
 
       <div ng-repeat="(key, value) in trip"
            ng-if="['id', 'supervisor', 'traveller_id',
-           'travel_routes', 'files', 'action_points',
+           'travel_routes', 'all_files', 'actionpoint_set',
            'trip_funds', 'url'].indexOf(key) == -1"
            class="card" ng-hide="value == null">
           <h6 class="txt-grey">{{ key | underscoreless | TitleCase }}</h6>
@@ -33,26 +33,25 @@
           </div>
       </div>
 
-      <div class="card padding" ng-show="trip.files.length">
+      <div class="card padding" ng-show="trip.all_files.length">
           <div class="item-devider">
-              <h4 class="txt-grey li-center">Travel Routes</h4>
+              <h4 class="txt-grey li-center">Files</h4>
           </div>
-          <div class="item-divider" ng-repeat="route in trip.travel_routes">
-              {{ route.origin }} -> {{ route.destination }}
-              <br>
-              {{ route.depart | date:'short'}} -> {{ route.arrive | date:'short'}}
+          <div class="item-divider" ng-repeat="file in trip.all_files">
+              <p>{{ file.report }}</p>
           </div>
       </div>
-      <div class="card padding" ng-show="trip.action_points.length">
-          <div class="item-devider">
+      <div class="card padding" ng-show="trip.actionpoint_set.length">
+          <div class="item-divider">
               <h4 class="txt-grey li-center">Action Points</h4>
           </div>
-          <div class="item-divider" ng-repeat="ap in trip.action_points">
+          <div class="item-divider" ng-repeat="ap in trip.actionpoint_set">
               Person Responsible: {{ ap.person_responsible }}
               <br>
               Due Date: {{ ap.due_date | date}}
               <br>
               Description: {{ ap.description }}
+              <hr>
           </div>
       </div>
       <div class="card padding" ng-show="trip.trip_funds.length">

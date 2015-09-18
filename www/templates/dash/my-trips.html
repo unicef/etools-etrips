@@ -7,9 +7,16 @@
   </ion-refresher>
  <!-- <p>{{ trips }}</p> -->
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="trip in filteredTrips" type="item-text-wrap" href="#/app/dash/my_trips/{{trip.id}}">
+      <ion-item ng-switch="trip.status" class="item-remove-animate item-avatar item-icon-left item-icon-right" ng-repeat="trip in filteredTrips" type="item-text-wrap" href="#/app/dash/my_trips/{{trip.id}}">
+
+        <i ng-switch-when="planned" class="icon ion-android-checkbox-outline-blank"></i>
+        <i ng-switch-when="submitted" class="icon ion-android-done"></i>
+        <i ng-switch-when="approved" class="icon ion-android-done-all"></i>
+
+
         <h2>{{trip.traveller}}</h2>
         <p>{{trip.travel_type | underscoreless | TitleCase}}</p>
+        <p> {{trip.from_date | date:short}} -> {{ trip.to_date | date:short }}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button ng-show="trip.status=='approved'" class="button-calm" ng-click="go_report(trip.id)">
