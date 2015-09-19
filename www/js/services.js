@@ -122,7 +122,14 @@ angular.module('equitrack.services', [])
 
 .factory('TripsFactory', ['Data', '$localStorage', '$http', 'API_urls', function(Data, $localStorage, $http, API_urls) {
 
-
+    function getAP(trip, ap_id){
+        for(var i=0;i<trip.actionpoint_set.length;i++){
+            if (trip.actionpoint_set[i].id == ap_id){
+                return trip.actionpoint_set[i]
+            }
+        }
+        return null
+    }
     function tripAction(id, action, data){
         var url = API_urls.BASE + '/trips/api/' + id + '/';
         var result = $http.post(url + action + '/', data);
@@ -155,6 +162,7 @@ angular.module('equitrack.services', [])
 			}
 			return null;
 		},
-        tripAction: tripAction
+        tripAction: tripAction,
+        getAP:getAP
 	}
 }]);

@@ -1,6 +1,17 @@
 <ion-view view-title="{{ trip.id }} Action Points">
 
   <ion-content class="padding">
+      <h3>Current Action-Points</h3>
+      <ion-list>
+          <ion-item ng-repeat="ap in trip.actionpoint_set" href="#/app/trip/reporting/{{trip.id}}/aps/{{ap.id}}" class="item-remove-animate item-avatar item-icon-left item-icon-right">
+              <p>{{ ap }}</p>
+
+          </ion-item>
+      </ion-list>
+      <br>
     <p>Action Points reporting functionality comming soon</p>
+      <a href="#/app/trip/reporting/{{trip.id}}/aps/new" class="button button-block button-positive padding-botom">
+          New Action Point
+      </a>
   </ion-content>
 </ion-view>

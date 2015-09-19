@@ -110,6 +110,16 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
           }
       }
   })
+  .state('app.trip.reporting.ap_detail', {
+      url: '/aps/:apId',
+      views: {
+        'tab-aps': {
+          templateUrl: 'templates/trip/reporting-ap_edit.html',
+          controller: 'TripApsEditCtrl'
+        }
+      }
+
+  })
   .state('app.dash', {
       url: '/dash',
       abstract: true,

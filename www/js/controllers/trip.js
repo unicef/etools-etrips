@@ -31,6 +31,9 @@ angular.module('equitrack.tripControllers', [])
 .controller('ReportingAPSCtrl',function($scope, $stateParams, TripsFactory){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+        $scope.newAP = function(){
+            $state.go('')
+        }
 
 })
 .controller('ReportingPictureCtrl',function($scope, $stateParams, TripsFactory){
@@ -215,6 +218,19 @@ angular.module('equitrack.tripControllers', [])
                     console.error("Action failed")
                 }
             )
+        }
+
+})
+.controller('TripApsEditCtrl',
+    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state) {
+        if ($stateParams.apId == 'new') {
+            $scope.ap = {}
+        } else {
+            $scope.ap = TripsFactory.getAP($scope.$parent.trip, $stateParams.apId)
+        }
+
+        $scope.submit = function (){
+            console.log('submitting')
         }
 
 });
