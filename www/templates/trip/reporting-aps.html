@@ -4,7 +4,7 @@
       <h3>Current Action-Points</h3>
       <ion-list>
           <ion-item ng-repeat="ap in trip.actionpoint_set" href="#/app/trip/reporting/{{trip.id}}/aps/{{ap.id}}" class="item-remove-animate item-avatar item-icon-left item-icon-right">
-              <h2>{{ ap.person_responsible }}</h2>
+              <h2>{{ ap.person_responsible_name }}</h2>
               <p>{{ ap.description }}</p>
               <p>Due by: {{ ap.due_date | date:short }}</p>
 

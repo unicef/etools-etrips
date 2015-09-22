@@ -102,7 +102,7 @@ angular.module('equitrack.tripControllers', [])
 
 
 })
-.controller('MyTripsCtrl', function($scope, $localStorage, Data, $state, TripsFactory,
+.controller('MyTripsCtrl', function($scope, $localStorage, Data, $state, TripsFactory, $stateParams,
                                     $ionicLoading, $ionicPopup, $ionicListDelegate, $filter) {
 
         $scope.doRefresh = function() {
@@ -160,7 +160,7 @@ angular.module('equitrack.tripControllers', [])
                     template: 'Please try again later!'
                 })
         }
-        Data.get_trips(data_success,data_failed)
+        Data.get_trips(data_success,data_failed, $stateParams.refreshed)
 
 })
 .controller('SupervisedCtrl', function($scope, $localStorage,
@@ -263,9 +263,11 @@ angular.module('equitrack.tripControllers', [])
                 $ionicLoading.show({
                     template: 'Loading... <br> Creating Action Point...'
                 });
-                TripsFactory.sendAP($scope.$parent.trip.id, $scope.ap, function (success) {
+                TripsFactory.sendAP($scope.$parent.trip.id, $scope.ap,
+                 function (success) {
                     $ionicLoading.hide();
-                    $ionicHistory.goBack()
+                    $ionicHistory.goBack();
+                    TripsFactory.localTripUpdate($scope.$parent.trip.id, success.data)
                     $ionicPopup.alert({
                         title: 'Action Point Updated',
                         template: 'Edited action point has been saved!'

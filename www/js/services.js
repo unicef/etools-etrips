@@ -92,13 +92,14 @@ angular.module('equitrack.services', [])
         var get_trips_remote = function get_from_server(success, error){
                    return $http.get(API_urls.BASE + '/trips/api/list/').then(
                        function(succ){
-                           $localStorage.trips = succ.data
+                           $localStorage.trips = succ.data;
                            success(succ.data)
                        },
                        function(err){
                            error(err)
                        })
        }
+
         var patchTrip = function patchTrip(tripId, data, success, fail){
             return $http.patch(API_urls.BASE + '/trips/api/' + tripId +"/", data).then(
                 function(succ){
@@ -178,6 +179,15 @@ angular.module('equitrack.services', [])
         return result
 
     }
+    function localTripUpdate(id, trip){
+        for(var i=0;i<$localStorage.trips.length;i++){
+				if($localStorage.trips[i].id == id){
+                    $localStorage.trips[i] = trip;
+					return true;
+				}
+			}
+            return false
+    }
     function localAction(id, action){
         for(var i=0;i<$localStorage.trips.length;i++){
 				if($localStorage.trips[i].id == id){
@@ -205,6 +215,7 @@ angular.module('equitrack.services', [])
 			return null;
 		},
         tripAction: tripAction,
+        localTripUpdate: localTripUpdate,
         getAP:getAP,
         sendAP:sendAP,
 	}
