@@ -222,15 +222,67 @@ angular.module('equitrack.tripControllers', [])
 
 })
 .controller('TripApsEditCtrl',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state) {
+    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data) {
+        $scope.today = new Date();
+        $scope.padded_num = function(limit){
+            var result = []
+            for (var i=1; i<limit+1; i++){
+                result.push(i>9 ? i+'' : "0"+i)
+            }
+            return result
+        }
+        $scope.allMonths = ["Jan","Feb","Mar","Apr",
+                            "May","Jun","Jul","Aug",
+                            "Sept","Oct","Nov","Dec"]
+        $scope.yearOptions = [$scope.today.getFullYear()+"",
+                              $scope.today.getFullYear()+1+""]
+
+        Data.get_user_base(function(successData){
+                $scope.users = successData.data
+            }, function(error){console.log(error)})
+
         if ($stateParams.apId == 'new') {
-            $scope.ap = {}
+            $scope.new_ap = true;
+            var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+            $scope.ap = {'status':'open',
+                         'due_year': tomorrow.getFullYear()+"",
+                         'due_month': ("0" + tomorrow.getMonth()).slice(-2),
+                         'due_day': ("0" + tomorrow.getDay()).slice(-2)
+                        }
         } else {
+            $scope.new_ap = false;
             $scope.ap = TripsFactory.getAP($scope.$parent.trip, $stateParams.apId)
         }
 
         $scope.submit = function (){
-            console.log('submitting')
+            // do some validation here.
+            if (typeof ($scope.ap.person_responsible) == "undefined"){
+                $scope.error = true;
+                return;
+            } else {
+                $ionicLoading.show({
+                    template: 'Loading... <br> Creating Action Point...'
+                });
+                TripsFactory.sendAP($scope.$parent.trip.id, $scope.ap, function (success) {
+                    $ionicLoading.hide();
+                    $ionicHistory.goBack()
+                    $ionicPopup.alert({
+                        title: 'Action Point Updated',
+                        template: 'Edited action point has been saved!'
+                    })
+                    console.log(success)
+                }, function (err) {
+                    $ionicLoading.hide();
+                    $ionicHistory.goBack()
+                    $ionicPopup.alert({
+                        title: 'Something Went Wrong',
+                        template: err.data
+                    })
+                    console.log(err)
+                })
+                console.log("submitting")
+            }
         }
+
 
 });

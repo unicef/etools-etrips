@@ -102,6 +102,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
       }
   })
   .state('app.trip.reporting.aps',{
+      cache: false,
       url: '/aps',
       views: {
           'tab-aps': {

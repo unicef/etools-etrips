@@ -98,7 +98,16 @@ angular.module('equitrack.services', [])
                        function(err){
                            error(err)
                        })
-               }
+       }
+        var patchTrip = function patchTrip(tripId, data, success, fail){
+            return $http.patch(API_urls.BASE + '/trips/api/' + tripId +"/", data).then(
+                function(succ){
+                    success(succ)
+                },
+                function(err){
+                    fail(err)
+                });
+        }
 
        return {
            get_profile: function (success, error) {
@@ -114,7 +123,11 @@ angular.module('equitrack.services', [])
                    return success($localStorage.trips)
                }} , 50)
            },
+           get_user_base: function(success, error) {
+               $http.get(API_urls.BASE + '/users/').then(success, error)
+           },
            refresh_trips: refresh_trips,
+           patch_trip: patchTrip,
        };
    }
 ])
@@ -122,13 +135,42 @@ angular.module('equitrack.services', [])
 
 .factory('TripsFactory', ['Data', '$localStorage', '$http', 'API_urls', function(Data, $localStorage, $http, API_urls) {
 
+    function formatAP(ap, for_upload){
+
+            if (for_upload == true){
+                ap.due_date = ap.due_year+"-"+
+                        ap.due_month+"-"+
+                        ap.due_day;
+                delete ap.due_day;
+                delete ap.due_year;
+                delete ap.due_month;
+                delete ap.person_responsible_name;
+                return ap
+
+
+            } else {
+                ap.person_responsible += "";
+                var date_array = ap.due_date.split("-")
+                ap.due_year = date_array[0]
+                ap.due_day = date_array[2]
+                ap.due_month = date_array[1]
+                return ap
+            }
+
+
+    }
     function getAP(trip, ap_id){
         for(var i=0;i<trip.actionpoint_set.length;i++){
             if (trip.actionpoint_set[i].id == ap_id){
-                return trip.actionpoint_set[i]
+                return formatAP(trip.actionpoint_set[i])
             }
         }
         return null
+    }
+    function sendAP(tripId, ap, success, fail){
+        data = {"actionpoint_set":[formatAP(ap, true)]}
+        Data.patch_trip(tripId, data, success, fail)
+
     }
     function tripAction(id, action, data){
         var url = API_urls.BASE + '/trips/api/' + id + '/';
@@ -163,6 +205,7 @@ angular.module('equitrack.services', [])
 			return null;
 		},
         tripAction: tripAction,
-        getAP:getAP
+        getAP:getAP,
+        sendAP:sendAP,
 	}
 }]);

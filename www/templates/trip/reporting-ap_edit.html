@@ -1,5 +1,71 @@
 <ion-view view-title="Edit Action Point">
-<ion-content>
-    <p>{{ ap }}</p>
+<ion-content class="padding">
+    <label class="item item-input item-select">
+        <div class="input-label">
+            Status
+        </div>
+        <select ng-model="ap.status" required>
+            <option value="open" >Open</option>
+            <option vaule="closed">Closed</option>
+            <option vaule="ongoing">On-going</option>
+            <option vaule="canceled">Canceled</option>
+        </select>
+    </label>
+    <div class="item item-divider">
+        Description:
+    </div>
+    <label class="item padding-top item-input">
+        <textarea ng-model="ap.description" placeholder="Insert findings here" rows="6" cols="10">
+        </textarea>
+    </label>
+    <div class="item item-divider">
+        Comments:
+    </div>
+    <label class="item padding-top item-input">
+        <textarea ng-model="ap.comments" placeholder="Insert findings here" rows="6" cols="10">
+        </textarea>
+    </label>
+
+    <div class="item item-divider">
+        Due Date:
+    </div>
+    <label class="item row">
+      <select ng-model="ap.due_day" class="item-select col"
+              ng-options="option as option for option in padded_num(31)" >
+
+      </select>
+      <select class="item-select col" ng-model="ap.due_month"
+              ng-options="option as allMonths[option-1] for option in padded_num(12)">
+      </select>
+      <select class="item-select col" ng-model="ap.due_year"
+              ng-options="option as option for option in yearOptions">
+      </select>
+    </label>
+    <div class="item item-divider">
+        Person Responsible:
+    </div>
+
+    <label class="item item-input item-select">
+        <div class="input-label">
+            Assign to ->
+        </div>
+        <select required ng-options="u.user_id as u.full_name for u in users"
+                ng-model="ap.person_responsible">
+        </select>
+
+    </label>
+    <div class="item item-icon-left assertive" ng-if="error">
+        <i class="icon ion-alert-circled icon-assertive"></i>
+        <p>Please assign the action point to a person</p>
+
+    </div>
+
+
+    <br>
+    <br>
+    <button ng-click="submit()" class="button button-block button-positive padding-botom">
+          NI Submit
+    </button>
+    <br>
 </ion-content>
 </ion-view>
