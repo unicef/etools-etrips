@@ -36,9 +36,79 @@ angular.module('equitrack.tripControllers', [])
         }
 
 })
-.controller('ReportingPictureCtrl',function($scope, $stateParams, TripsFactory){
+.controller('ReportingPictureCtrl',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+
+
+        var mobileUploadPhoto = function(fileURI){
+
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+            options.params = {};
+            options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
+            var ft = new FileTransfer();
+            ft.upload(fileURI,
+                      encodeURI("http://192.168.99.100:8080/trips/api/8268/upload/"),
+                      function(mdata){
+                          var alertPopup = $ionicPopup.alert({
+                            title: 'Photo Submission Succeeded',
+                            template: 'Thank you'
+                        });
+                      },
+                      function(err){
+                          var alertPopup = $ionicPopup.alert({
+                            title: 'Photo Submission Failed',
+                            template: 'Please try again later.'
+                        });
+                      },
+                      options);
+
+            var alertPopup = $ionicPopup.alert({
+                            title: 'Photo Submission Started',
+                            template: 'Uploading photo in the background...'
+                        });
+        };
+        $scope.uploadExisting = function(){
+            navigator.camera.getPicture(mobileUploadPhoto,
+                function(message) { alert('Failed to access your library'); },
+                {quality: 50,
+                    destinationType: navigator.camera.DestinationType.FILE_URI,
+                    sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY }
+            );
+        }
+        $scope.takePicture = function(){
+            navigator.camera.getPicture(mobileUploadPhoto,
+                function(message) { alert('Failed to access camera'); },
+                {quality: 50,
+                    destinationType: navigator.camera.DestinationType.FILE_URI,
+                    sourceType: navigator.camera.PictureSourceType.CAMERA }
+            );
+        }
+        //this is for local testing only
+        $scope.uploadFile = function(files) {
+            var fd = new FormData();
+            //Take the first selected file
+            fd.append("file", files[0]);
+            fd.append('trip', $stateParams.tripId);
+
+            $http.post("http://192.168.99.100:8080/trips/api/8268/upload/", fd,
+                {
+                    headers: {'Content-Type': undefined },
+                    transformRequest: angular.identity
+                }).then(
+                    function(data){
+                        console.log(data)
+                    },
+                    function(err){
+                        console.log(err)
+                    }
+                )
+
+};
+
 
 })
 .controller('TripDetailCtrl',

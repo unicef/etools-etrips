@@ -1,6 +1,23 @@
 <ion-view view-title="{{ trip.id }} Add Picture">
 
   <ion-content class="padding">
-    <p>Add picture functionality comming soon</p>
+      <p>Add picture functionality dev in progress</p>
+      <br>
+      <br>
+      <br>
+      <button ng-click="uploadExisting()" class="button button-block button-positive padding-botom">
+          Upload Existing Photo
+      </button>
+      <br>
+      <br>
+      <br>
+      <button ng-click="takePicture()" class="button button-block button-positive padding-botom">
+          Take Picture
+      </button>
+
+      <!-- this is for local testing only -->
+      <!--
+      <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+      -->
   </ion-content>
 </ion-view>

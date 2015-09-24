@@ -24,9 +24,9 @@ angular.module('equitrack.controllers', [])
 })
 
 
-.controller('LoginCtrl', ['$scope', '$ionicLoading',  '$ionicViewService', '$localStorage',
+.controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
             'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls',
-             function($scope, $ionicLoading, $ionicViewService, $localStorage, Data, LoginService,
+             function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
                       Auth, $ionicPopup, $state, API_urls) {
 
     $scope.data = {};
@@ -35,7 +35,7 @@ angular.module('equitrack.controllers', [])
         Data.get_trips(
             function(res){
                 $ionicLoading.hide();
-                $ionicViewService.nextViewOptions({
+                $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
                 console.log("got trips", res)
