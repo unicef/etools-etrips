@@ -198,6 +198,17 @@ angular.module('equitrack.services', [])
             return false
     }
 
+    function reportText(data, trip){
+        for (var k in data) {
+            if (data.hasOwnProperty(k)) {
+                console.log(k)
+               trip[k] = data[k]
+            }
+        }
+        console.log(trip)
+        console.log('here is where we update the trip')
+    }
+
 	return {
         localApprove: function(id){
             return localAction(id, 'approved')
@@ -214,6 +225,7 @@ angular.module('equitrack.services', [])
 			}
 			return null;
 		},
+        reportText: reportText,
         tripAction: tripAction,
         localTripUpdate: localTripUpdate,
         getAP:getAP,

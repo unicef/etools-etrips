@@ -15,7 +15,7 @@ angular.module('equitrack.controllers', [])
 
   };
   // Form data for the login modal
-  $scope.data = {};
+
 
 })
 

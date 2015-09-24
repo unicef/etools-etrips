@@ -26,6 +26,20 @@ angular.module('equitrack.tripControllers', [])
 .controller('ReportingTextCtrl',function($scope, $stateParams, TripsFactory){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+        var main_obs_template = 'Access to inputs/services:  \n \n \n \n' +
+            'Quality of inputs/services: \n \n \n \n' +
+            'Utilisation of inputs/services: \n \n \n \n' +
+            'Enabling Environment: \n \n \n \n'
+
+        $scope.data = {
+            main_observations : ($scope.trip.main_observations) ? $scope.trip.main_observations : main_obs_template,
+            constraints : ($scope.trip.constraints) ? $scope.trip.constraints : "",
+            lessons_learned : ($scope.trip.lessons_learned) ? $scope.trip.lessons_learned : "",
+            opportunities: ($scope.trip.opportunities) ? $scope.trip.opportunities : "",
+        }
+        $scope.textReport = function(){
+            TripsFactory.reportText($scope.data, $scope.trip)
+        }
 
 })
 .controller('ReportingAPSCtrl',function($scope, $stateParams, TripsFactory){
@@ -36,7 +50,7 @@ angular.module('equitrack.tripControllers', [])
         }
 
 })
-.controller('ReportingPictureCtrl',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http){
+.controller('ReportingPictureCtrl',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http, API_urls){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
 
@@ -51,7 +65,7 @@ angular.module('equitrack.tripControllers', [])
             options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
             var ft = new FileTransfer();
             ft.upload(fileURI,
-                      encodeURI("http://192.168.99.100:8080/trips/api/8268/upload/"),
+                      encodeURI(API_urls.BASE +"/trips/api/"+$stateParams.tripId+"/upload/"),
                       function(mdata){
                           var alertPopup = $ionicPopup.alert({
                             title: 'Photo Submission Succeeded',
@@ -66,10 +80,7 @@ angular.module('equitrack.tripControllers', [])
                       },
                       options);
 
-            var alertPopup = $ionicPopup.alert({
-                            title: 'Photo Submission Started',
-                            template: 'Uploading photo in the background...'
-                        });
+
         };
         $scope.uploadExisting = function(){
             navigator.camera.getPicture(mobileUploadPhoto,
@@ -94,7 +105,7 @@ angular.module('equitrack.tripControllers', [])
             fd.append("file", files[0]);
             fd.append('trip', $stateParams.tripId);
 
-            $http.post("http://192.168.99.100:8080/trips/api/8268/upload/", fd,
+            $http.post(API_urls.BASE +"/trips/api/"+$stateParams.tripId+"/upload/", fd,
                 {
                     headers: {'Content-Type': undefined },
                     transformRequest: angular.identity

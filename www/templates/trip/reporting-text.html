@@ -4,50 +4,32 @@
     <!-- <p>{{ trip }}</p> -->
       <h3>Progress Reporting<h3>
       <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Access to inputs/services</span>
-        <textarea ng-model="data.a_acc_is" placeholder="Insert findings here" rows="6" cols="10">
+        <textarea ng-model="data.main_observations" placeholder="Insert findings here" rows="10" cols="10">
         </textarea>
       </label>
-      <br>
-      <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Quality of inputs/services</span>
-        <textarea ng-model="data.a_qo_is" placeholder="Insert findings here" rows="6" cols="10">
-        </textarea>
-      </label>
-      <br>
-      <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Utilisation of inputs/services:</span>
-        <textarea ng-model="data.a_util_is" placeholder="Insert findings here" rows="6" cols="10">
-        </textarea>
-      </label>
-      <br>
-      <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Enabling environment:</span>
-        <textarea ng-model="data.a_util_is" placeholder="Insert findings here" rows="6" cols="10">
-        </textarea>
-      </label>
+
 
       <br>
       <h3>Constraints, Challenges, Opportunities</h3>
       <label class="item padding-top item-input item-stacked-label">
         <span class="input-label">Constraints/Challenges:</span>
-        <textarea ng-model="data.c_constraints" placeholder="Implementation constraints that affect achievement of Project" rows="4" cols="10">
+        <textarea ng-model="data.constraints" placeholder="Implementation constraints that affect achievement of Project" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <label class="item padding-top item-input item-stacked-label">
         <span class="input-label">Lessons Learned:</span>
-        <textarea ng-model="data.c_lessons" placeholder="Lessons learned from addressing the constraints in the course of the reporting period" rows="4" cols="10">
+        <textarea ng-model="data.lessons_learned" placeholder="Lessons learned from addressing the constraints in the course of the reporting period" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <label class="item padding-top item-input item-stacked-label">
         <span class="input-label">Opportunities:</span>
-        <textarea ng-model="data.c_opportunities" placeholder="Key partnerships/collaboration and other highlights" rows="4" cols="10">
+        <textarea ng-model="data.opportunities" placeholder="Key partnerships/collaboration and other highlights" rows="4" cols="10">
         </textarea>
       </label>
       <br>
-      <button class="button button-block button-positive padding-botom">
+      <button ng-click="textReport()" class="button button-block button-positive padding-botom">
           NI Submit
       </button>
           <br>
