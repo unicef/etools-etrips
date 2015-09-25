@@ -54,7 +54,7 @@ angular.module('equitrack.controllers', [])
         $ionicLoading.hide();
         var alertPopup = $ionicPopup.alert({
             title: 'Login failed!',
-            template: 'Please check your credentials!' + data.data
+            template: 'Please check your credentials!'
         });
     };
 

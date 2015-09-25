@@ -23,7 +23,7 @@ angular.module('equitrack.tripControllers', [])
             )
         }
 })
-.controller('ReportingTextCtrl',function($scope, $stateParams, TripsFactory){
+.controller('ReportingTextCtrl',function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         var main_obs_template = 'Access to inputs/services:  \n \n \n \n' +
@@ -38,13 +38,28 @@ angular.module('equitrack.tripControllers', [])
             opportunities: ($scope.trip.opportunities) ? $scope.trip.opportunities : "",
         }
         $scope.textReport = function(){
+            $ionicLoading.show({
+                    template: 'Loading... <br> Sending Report...'
+                });
             TripsFactory.reportText($scope.data, $scope.trip.id,
                 function(succ){
-                    console.log('data got set, here is the return:')
+                    $ionicLoading.hide();
+                    $ionicHistory.goBack(-1);
+                    TripsFactory.localTripUpdate($scope.trip.id, succ.data)
+                    $ionicPopup.alert({
+                        title: 'Report Submitted',
+                        template: 'Text has been succcessfully submitted'
+                    })
                     console.log(succ)
                 },
                 function (err){
                     console.log("got an error")
+                    $ionicLoading.hide();
+                    $ionicHistory.goBack();
+                    $ionicPopup.alert({
+                        title: 'Something went wrong',
+                        template: 'Please try again later'
+                    })
                     console.log(err)
             })
         }
@@ -69,8 +84,16 @@ angular.module('equitrack.tripControllers', [])
             options.fileKey = "file";
             options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
             options.mimeType = "image/jpeg";
-            options.params = {};
-            options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
+
+            if (ionic.Platform.isAndroid()){
+                var params = new Object();
+                params.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
+                options.params = params;
+            } else {
+                options.params = {};
+                options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
+            }
+
             var ft = new FileTransfer();
             ft.upload(fileURI,
                       encodeURI(API_urls.BASE +"/trips/api/"+$stateParams.tripId+"/upload/"),
@@ -83,10 +106,10 @@ angular.module('equitrack.tripControllers', [])
                       function(err){
                           var alertPopup = $ionicPopup.alert({
                             title: 'Photo Submission Failed',
-                            template: 'Please try again later.'
+                            template: 'Please try again later. ' + err.detail
                         });
                       },
-                      options);
+                      options, true);
 
 
         };
