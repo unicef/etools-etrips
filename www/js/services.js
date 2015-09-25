@@ -98,7 +98,17 @@ angular.module('equitrack.services', [])
                        function(err){
                            error(err)
                        })
-       }
+        }
+        var get_users_remote = function get_from_server(success, error){
+                   return $http.get(API_urls.BASE + '/users/').then(
+                       function(succ){
+                           $localStorage.users = succ.data;
+                           success(succ.data)
+                       },
+                       function(err){
+                           error(err)
+                       })
+        }
 
         var patchTrip = function patchTrip(tripId, data, success, fail){
             return $http.patch(API_urls.BASE + '/trips/api/' + tripId +"/", data).then(
@@ -116,16 +126,18 @@ angular.module('equitrack.services', [])
            },
            get_trips: function (success, error, refresh) {
 
-               $timeout(function(){
-
                if ((refresh === true) || (typeof ($localStorage.trips) === 'undefined')){
                    get_trips_remote(success, error)
                } else {
                    return success($localStorage.trips)
-               }} , 50)
+               }
            },
-           get_user_base: function(success, error) {
-               $http.get(API_urls.BASE + '/users/').then(success, error)
+           get_user_base: function(success, error, refresh) {
+               if ((refresh === true) || (typeof ($localStorage.users) === 'undefined')){
+                   get_users_remote(success, error)
+               } else {
+                   return success($localStorage.users)
+               }
            },
            refresh_trips: refresh_trips,
            patch_trip: patchTrip,

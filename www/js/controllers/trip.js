@@ -329,7 +329,7 @@ angular.module('equitrack.tripControllers', [])
                               $scope.today.getFullYear()+1+""]
 
         Data.get_user_base(function(successData){
-                $scope.users = successData.data
+                $scope.users = successData
             }, function(error){console.log(error)})
 
         console.log("id = "+$stateParams.apId)

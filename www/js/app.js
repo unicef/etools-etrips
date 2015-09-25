@@ -61,7 +61,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
         requireLogin: true // this property, if set on app will apply to all of its children
     }
   })
-  
+
   .state('app.reporting', {
       url: '/reporting/:tripId',
       abstract: true,
