@@ -198,15 +198,17 @@ angular.module('equitrack.services', [])
             return false
     }
 
-    function reportText(data, trip){
-        for (var k in data) {
-            if (data.hasOwnProperty(k)) {
-                console.log(k)
-               trip[k] = data[k]
-            }
-        }
-        console.log(trip)
-        console.log('here is where we update the trip')
+    function reportText(data, tripId, success, fail){
+        // if we need any extra data proccessing here would be the place
+        Data.patch_trip(tripId, data, success, fail)
+        //for (var k in data) {
+        //    if (data.hasOwnProperty(k)) {
+        //        console.log(k)
+        //        trip[k] = data[k]
+        //    }
+        //}
+        //console.log(trip)
+        //console.log('here is where we update the trip')
     }
 
 	return {

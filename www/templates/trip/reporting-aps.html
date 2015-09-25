@@ -3,7 +3,7 @@
   <ion-content class="padding">
       <h3>Current Action-Points</h3>
       <ion-list>
-          <ion-item ng-repeat="ap in trip.actionpoint_set" href="#/app/trip/reporting/{{trip.id}}/aps/{{ap.id}}" class="item-remove-animate item-avatar item-icon-left item-icon-right">
+          <ion-item ng-repeat="ap in trip.actionpoint_set" href="#/app/reporting/{{trip.id}}/aps/{{ap.id}}" class="item-remove-animate item-avatar item-icon-left item-icon-right">
               <h2>{{ ap.person_responsible_name }}</h2>
               <p>{{ ap.description }}</p>
               <p>Due by: {{ ap.due_date | date:short }}</p>
@@ -11,7 +11,7 @@
           </ion-item>
       </ion-list>
       <br>
-      <a href="#/app/trip/reporting/{{trip.id}}/aps/new" class="button button-block button-positive padding-botom">
+      <a href="#/app/reporting/{{trip.id}}/aps/new" class="button button-block button-positive padding-botom">
           New Action Point
       </a>
   </ion-content>

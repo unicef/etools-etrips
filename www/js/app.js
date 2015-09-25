@@ -8,8 +8,6 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
 
         var requireLogin = toState.data.requireLogin;
 
-        console.log('loginstatechange', requireLogin, $localStorage.currentUser);
-
         if (requireLogin && typeof $localStorage.currentUser === 'undefined') {
           event.preventDefault();
           $state.go('login');
@@ -63,27 +61,18 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
         requireLogin: true // this property, if set on app will apply to all of its children
     }
   })
-  .state('app.trip', {
-      url: '/trip',
-      abstract: true,
-      views: {
-        'menuContent': {
-            templateUrl: 'templates/trip.html',
-            controller: 'TripCtrl'
-        }
-      }
-  })
-  .state('app.trip.reporting', {
+  
+  .state('app.reporting', {
       url: '/reporting/:tripId',
       abstract: true,
       views: {
-          'tripContent': {
+          'menuContent': {
               templateUrl: 'templates/trip/reporting.html',
               controller: 'ReportingCtrl'
           }
       }
   })
-  .state('app.trip.reporting.text',{
+  .state('app.reporting.text',{
       url: '/text',
       views: {
           'tab-text': {
@@ -92,7 +81,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
           }
       }
   })
-  .state('app.trip.reporting.picture',{
+  .state('app.reporting.picture',{
       url: '/picture',
       views: {
           'tab-pic': {
@@ -101,7 +90,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
           }
       }
   })
-  .state('app.trip.reporting.aps',{
+  .state('app.reporting.aps',{
       cache: false,
       url: '/aps',
       views: {
@@ -111,7 +100,8 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
           }
       }
   })
-  .state('app.trip.reporting.ap_detail', {
+  .state('app.reporting.ap_detail', {
+      cache: false,
       url: '/aps/:apId',
       views: {
         'tab-aps': {

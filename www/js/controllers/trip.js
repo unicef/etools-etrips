@@ -38,7 +38,15 @@ angular.module('equitrack.tripControllers', [])
             opportunities: ($scope.trip.opportunities) ? $scope.trip.opportunities : "",
         }
         $scope.textReport = function(){
-            TripsFactory.reportText($scope.data, $scope.trip)
+            TripsFactory.reportText($scope.data, $scope.trip.id,
+                function(succ){
+                    console.log('data got set, here is the return:')
+                    console.log(succ)
+                },
+                function (err){
+                    console.log("got an error")
+                    console.log(err)
+            })
         }
 
 })
@@ -178,7 +186,7 @@ angular.module('equitrack.tripControllers', [])
             )
         };
         $scope.go_report = function(tripId){
-            $state.go('app.trip.reporting.text', {"tripId":tripId})
+            $state.go('app.reporting.text', {"tripId":tripId})
         };
 
 
@@ -207,7 +215,7 @@ angular.module('equitrack.tripControllers', [])
             return trip.traveller_id == $localStorage.currentUser.user_id;
         };
         $scope.go_report = function(tripId){
-            $state.go('app.trip.reporting.text', {"tripId":tripId})
+            $state.go('app.reporting.text', {"tripId":tripId})
         };
         $scope.submit = function (tripId){
             $ionicListDelegate.closeOptionButtons();
@@ -312,6 +320,8 @@ angular.module('equitrack.tripControllers', [])
             }
             return result
         }
+        var currentTrip = TripsFactory.getTrip($stateParams.tripId)
+
         $scope.allMonths = ["Jan","Feb","Mar","Apr",
                             "May","Jun","Jul","Aug",
                             "Sept","Oct","Nov","Dec"]
@@ -322,6 +332,7 @@ angular.module('equitrack.tripControllers', [])
                 $scope.users = successData.data
             }, function(error){console.log(error)})
 
+        console.log("id = "+$stateParams.apId)
         if ($stateParams.apId == 'new') {
             $scope.new_ap = true;
             var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
@@ -331,8 +342,9 @@ angular.module('equitrack.tripControllers', [])
                          'due_day': ("0" + tomorrow.getDay()).slice(-2)
                         }
         } else {
+
             $scope.new_ap = false;
-            $scope.ap = TripsFactory.getAP($scope.$parent.trip, $stateParams.apId)
+            $scope.ap = TripsFactory.getAP(currentTrip, $stateParams.apId)
         }
 
         $scope.submit = function (){
@@ -344,11 +356,11 @@ angular.module('equitrack.tripControllers', [])
                 $ionicLoading.show({
                     template: 'Loading... <br> Creating Action Point...'
                 });
-                TripsFactory.sendAP($scope.$parent.trip.id, $scope.ap,
+                TripsFactory.sendAP(currentTrip.id, $scope.ap,
                  function (success) {
                     $ionicLoading.hide();
                     $ionicHistory.goBack();
-                    TripsFactory.localTripUpdate($scope.$parent.trip.id, success.data)
+                    TripsFactory.localTripUpdate(currentTrip.id, success.data)
                     $ionicPopup.alert({
                         title: 'Action Point Updated',
                         template: 'Edited action point has been saved!'
