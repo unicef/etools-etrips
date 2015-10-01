@@ -155,6 +155,7 @@ angular.module('equitrack.tripControllers', [])
             supervisor : $scope.trip.supervisor == uid,
             owner: $scope.trip.traveller_id == uid,
             is_approved: $scope.trip.status == "approved",
+            not_supervisor_approved: (!$scope.trip.approved_by_supervisor),
             is_planned: $scope.trip.status == "planned",
             is_canceled: $scope.trip.status == "cancelled",
             is_submitted: $scope.trip.status == "submitted",

@@ -18,7 +18,7 @@
         <p> {{trip.from_date | date:short}} -> {{ trip.to_date | date:short }}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button ng-hide="trip.status=='approved'" class="button-positive" ng-click="approve(trip.id)">
+        <ion-option-button ng-hide="trip.approved_by_supervisor" class="button-positive" ng-click="approve(trip.id)">
           I Approve
         </ion-option-button>
       </ion-item>

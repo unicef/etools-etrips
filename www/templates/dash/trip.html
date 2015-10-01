@@ -1,14 +1,17 @@
 <ion-view view-title="{{trip.travel_type | underscoreless | TitleCase}}">
 
   <ion-content class="padding">
-      <button ng-show="checks.owner && checks.is_approved"  class="button button-block button-calm" ng-click="go_report(trip.id)">Report</button>
-      <button ng-show="checks.owner && checks.is_planned"  class="button button-block button-calm" ng-click="submit(trip.id)">Submit</button>
-      <button ng-show="checks.supervisor && checks.is_submitted" class="button button-block button-balanced" ng-click="approve(trip.id)">Approve</button>
-      <div class="list list-inset padding" ng-show="checks.supervisor && checks.is_approved">
+      <button ng-if="checks.owner && checks.is_approved"  class="button button-block button-calm" ng-click="go_report(trip.id)">Report</button>
+      <button ng-if="checks.owner && checks.is_planned"  class="button button-block button-calm" ng-click="submit(trip.id)">Submit</button>
+      <button ng-if="checks.supervisor && checks.not_supervisor_approved" class="button button-block button-balanced" ng-click="approve(trip.id)">Approve</button>
+      <div class="list list-inset padding" ng-if="checks.supervisor && checks.is_approved">
           <h3 class="balanced"> Approved </h3>
       </div>
-      <div class="list list-inset padding" ng-show="checks.owner && checks.is_submitted">
+      <div class="list list-inset padding" ng-if="checks.owner && checks.is_submitted">
           <h3 class="calm"> Awaiting Approval </h3>
+      </div>
+      <div class="list list-inset padding" ng-if="checks.is_submitted && trip.approved_by_supervisor">
+          <h3 class="calm"> Awaiting Rep Approval </h3>
       </div>
 
 
