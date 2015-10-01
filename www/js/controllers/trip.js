@@ -82,18 +82,8 @@ angular.module('equitrack.tripControllers', [])
 
             var options = new FileUploadOptions();
             options.fileKey = "file";
-            options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+            options.fileName = "picture";
             options.mimeType = "image/jpeg";
-
-            //if (ionic.Platform.isAndroid()){
-            //    var params = new Object();
-            //    params.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
-            //    options.params = params;
-            //} else {
-            //    options.params = {};
-            //    options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
-            //}
-
             options.params = {};
             options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
 

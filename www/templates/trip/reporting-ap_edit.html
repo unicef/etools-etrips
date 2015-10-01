@@ -29,18 +29,25 @@
     <div class="item item-divider">
         Due Date:
     </div>
-    <label class="item row">
-      <select ng-model="ap.due_day" class="item-select col"
-              ng-options="option as option for option in padded_num(31)" >
+    <div class="item row">
 
-      </select>
-      <select class="item-select col" ng-model="ap.due_month"
-              ng-options="option as allMonths[option-1] for option in padded_num(12)">
-      </select>
-      <select class="item-select col" ng-model="ap.due_year"
-              ng-options="option as option for option in yearOptions">
-      </select>
-    </label>
+          <select class="item item-select col" ng-model="ap.due_day"
+                  ng-options="option as option for option in padded_num(31)" >
+
+          </select>
+
+
+          <select class="item item-select col" ng-model="ap.due_month"
+                  ng-options="option as allMonths[option-1] for option in padded_num(12)">
+          </select>
+
+
+          <select class="item item-select col" ng-model="ap.due_year"
+                  ng-options="option as option for option in yearOptions">
+          </select>
+
+    <br>
+    </div>
     <div class="item item-divider">
         Person Responsible:
     </div>
