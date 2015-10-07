@@ -26,17 +26,23 @@ angular.module('equitrack.services', [])
         return {
             loginUser: function(data, retSuccess, retFail){
                 console.log("loginUser called")
-                Auth.login(data).then(function(res){
+                console.log(data)
+                Auth.login(data).then(
+                    function(res){
                         successAuth(res, retSuccess)
-                    } ,function(err){retFail(err)})
+                    } ,
+                    function(err){
+                        console.log("logingUser.err")
+                        retFail(err)
+                    })
             },
             logout: logout
 
         }
 
 }])
-.service('Auth', ['$http', '$localStorage', 'API_urls', "$window",
-    function ($http, $localStorage, API_urls, $window){
+.service('Auth', ['$http', '$localStorage', 'API_urls', "$window", "SoapEnv",
+    function ($http, $localStorage, API_urls, $window, SoapEnv){
 
         function urlBase64Decode(str) {
            var output = str.replace('-', '+').replace('_', '/');
@@ -72,7 +78,18 @@ angular.module('equitrack.services', [])
                $http.post(API_urls.BASE + '/signup', data).success(success).error(error)
            },
            login: function (data) {
+               //console.log("in Auth.login")
+               //console.log(data)
+               //var req = {
+               //      method: 'POST',
+               //      url: SoapEnv.adfsEndpoint,
+               //      headers: SoapEnv.headers,
+               //      data: SoapEnv.body(data.username, data.password)
+               //     }
+               //console.log(req)
+               //return $http(req)
                return $http.post(API_urls.BASE + '/api-token-auth/', data)
+
            },
            logout: function (success) {
                delete $localStorage.currentUser
