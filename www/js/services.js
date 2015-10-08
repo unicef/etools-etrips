@@ -117,7 +117,7 @@ angular.module('equitrack.services', [])
                        })
         }
         var get_users_remote = function get_from_server(success, error){
-                   return $http.get(API_urls.BASE + '/users/').then(
+                   return $http.get(API_urls.BASE + '/users/api/').then(
                        function(succ){
                            $localStorage.users = succ.data;
                            success(succ.data)
@@ -139,7 +139,7 @@ angular.module('equitrack.services', [])
 
        return {
            get_profile: function (success, error) {
-               $http.get(API_urls.BASE + '/users/profile/').then(success, error)
+               $http.get(API_urls.BASE + '/users/api/profile/').then(success, error)
            },
            get_trips: function (success, error, refresh) {
 
