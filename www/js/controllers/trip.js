@@ -85,7 +85,7 @@ angular.module('equitrack.tripControllers', [])
             options.fileName = "picture";
             options.mimeType = "image/jpeg";
             options.params = {};
-            options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
+            options.headers = {Authorization: 'JWT  ' + $localStorage.get('jwtoken')};
 
             var ft = new FileTransfer();
             ft.upload(fileURI,
@@ -150,7 +150,8 @@ angular.module('equitrack.tripControllers', [])
     function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-        uid = $localStorage.currentUser.user_id;
+        uid = $localStorage.getObject('currentUser').user_id;
+
         $scope.checks = {
             supervisor : $scope.trip.supervisor == uid,
             owner: $scope.trip.traveller_id == uid,
@@ -226,10 +227,10 @@ angular.module('equitrack.tripControllers', [])
 
         };
         console.log("in mytrips")
-        console.log($localStorage.trips)
+        console.log($localStorage.getObject('trips'))
 
         $scope.onlyMe = function(trip) {
-            return trip.traveller_id == $localStorage.currentUser.user_id;
+            return trip.traveller_id == $localStorage.getObject('currentUser').user_id;
         };
         $scope.go_report = function(tripId){
             $state.go('app.reporting.text', {"tripId":tripId})
@@ -290,9 +291,9 @@ angular.module('equitrack.tripControllers', [])
         };
 
         console.log("in supervised");
-        console.log($localStorage.trips);
+        console.log($localStorage.getObject('trips'));
         $scope.onlySupervised = function(trip) {
-            return trip.supervisor == $localStorage.currentUser.user_id;
+            return trip.supervisor == $localStorage.getObject('currentUser').user_id;
         };
         Data.get_trips(
             function(res){

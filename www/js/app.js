@@ -8,10 +8,14 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
 
         var requireLogin = toState.data.requireLogin;
 
-        if (requireLogin && typeof $localStorage.currentUser === 'undefined') {
+        if (requireLogin && !Object.keys($localStorage.getObject('currentUser')).length) {
           event.preventDefault();
           $state.go('login');
           // get me to the login page!
+        }
+        if (toState.data.redirect){
+            event.preventDefault();
+            $state.go(toState.data.redirect);
         }
     });
     $ionicPlatform.ready(function() {
@@ -36,8 +40,8 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
        return {
            'request': function (config) {
                config.headers = config.headers || {};
-               if ($localStorage.jwtoken) {
-                   config.headers.Authorization = 'JWT  ' + $localStorage.jwtoken;
+               if ($localStorage.get('jwtoken')) {
+                   config.headers.Authorization = 'JWT  ' + $localStorage.get('jwtoken');
                }
                return config;
            },
@@ -165,6 +169,13 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
       controller: 'LoginCtrl',
       data: {
         requireLogin: false
+      }
+  })
+  .state('home', {
+      url: '',
+      data: {
+        requireLogin: false,
+        redirect: "app.dash.my_trips",
       }
   });
   // if none of the above states are matched, use this as the fallback

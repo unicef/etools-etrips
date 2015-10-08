@@ -3,14 +3,14 @@ angular.module('equitrack.services', [])
 .service('LoginService',['$q', '$rootScope', '$localStorage', '$state', 'Auth',
     function($q, $rootScope, $localStorage, $state, Auth) {
         function successAuth(res, retSuccess) {
-               console.log("successAuth")
-               $localStorage.jwtoken = res.data.token;
-               $localStorage.currentUser = Auth.getTokenClaims()
-               console.log($localStorage.currentUser)
-               retSuccess($localStorage.jwtoken);
+               //console.log("successAuth")
+               $localStorage.set('jwtoken', res.data.token);
+               $localStorage.setObject('currentUser', Auth.getTokenClaims());
+               //console.log($localStorage.getObject('currentUser'));
+               retSuccess($localStorage.get('jwtoken'));
         }
         function failAuth(res){
-               console.log("failAuth")
+               //console.log("failAuth")
                $rootScope.error = 'Invalid credentials.';
         }
 
@@ -19,20 +19,22 @@ angular.module('equitrack.services', [])
 
         }
         function logout(){
-            delete $localStorage.jwtoken;
-            delete $localStorage.currentUser;
+            $localStorage.delete('jwtoken');
+            $localStorage.delete('currentUser');
+            $localStorage.delete('trips');
+            $localStorage.delete('users');
         }
 
         return {
             loginUser: function(data, retSuccess, retFail){
-                console.log("loginUser called")
-                console.log(data)
+                //console.log("loginUser called")
+                //console.log(data)
                 Auth.login(data).then(
                     function(res){
                         successAuth(res, retSuccess)
                     } ,
                     function(err){
-                        console.log("logingUser.err")
+                        //console.log("logingUser.err")
                         retFail(err)
                     })
             },
@@ -62,8 +64,8 @@ angular.module('equitrack.services', [])
        }
 
        function getClaimsFromToken() {
-           var token = $localStorage.jwtoken;
-           console.log("getclaims", token);
+           var token = $localStorage.get('jwtoken');
+           //console.log("getclaims", token);
            var user = {"no":"no"};
            if (typeof token !== 'undefined') {
                var encoded = token.split('.')[1];
@@ -92,8 +94,10 @@ angular.module('equitrack.services', [])
 
            },
            logout: function (success) {
-               delete $localStorage.currentUser
-               delete $localStorage.jwttoken;
+               $localStorage.delete('currentUser');
+               $localStorage.delete('jwttoken');
+               $localStorage.delete('trips');
+               $localStorage.delete('users');
                success();
            },
            getTokenClaims: getClaimsFromToken
@@ -106,10 +110,21 @@ angular.module('equitrack.services', [])
             get_trips_remote(function(){}, function(){})
         }
 
+        var check_timestamp = function(resource){
+            var myt = $localStorage.get(resource);
+            if (!myt) {
+                return false
+            }
+            myt = new Date(Number(myt));
+            var now = new Date();
+
+            return (now < myt)
+        }
+
         var get_trips_remote = function get_from_server(success, error){
                    return $http.get(API_urls.BASE + '/trips/api/list/').then(
                        function(succ){
-                           $localStorage.trips = succ.data;
+                           $localStorage.setObject('trips',succ.data);
                            success(succ.data)
                        },
                        function(err){
@@ -119,7 +134,11 @@ angular.module('equitrack.services', [])
         var get_users_remote = function get_from_server(success, error){
                    return $http.get(API_urls.BASE + '/users/api/').then(
                        function(succ){
-                           $localStorage.users = succ.data;
+                           $localStorage.setObject('users', succ.data);
+
+                           var expires = new Date()
+                           expires.setMinutes(expires.getMinutes()+5)
+                           $localStorage.set('users_timestamp', expires.getTime()+'')
                            success(succ.data)
                        },
                        function(err){
@@ -143,17 +162,24 @@ angular.module('equitrack.services', [])
            },
            get_trips: function (success, error, refresh) {
 
-               if ((refresh === true) || (typeof ($localStorage.trips) === 'undefined')){
+               if ((refresh === true) || (!Object.keys($localStorage.getObject('trips')).length)){
                    get_trips_remote(success, error)
                } else {
-                   return success($localStorage.trips)
+                   return success($localStorage.getObject('trips'))
                }
            },
            get_user_base: function(success, error, refresh) {
-               if ((refresh === true) || (typeof ($localStorage.users) === 'undefined')){
+
+
+               if ((refresh === true) ||
+                   (!Object.keys($localStorage.getObject('users')).length) ||
+                   (!check_timestamp('users_timestamp'))){
+
+                   console.log("getting the users from outside")
                    get_users_remote(success, error)
+
                } else {
-                   return success($localStorage.users)
+                   return success($localStorage.getObject('users'))
                }
            },
            refresh_trips: refresh_trips,
@@ -209,18 +235,22 @@ angular.module('equitrack.services', [])
 
     }
     function localTripUpdate(id, trip){
-        for(var i=0;i<$localStorage.trips.length;i++){
-				if($localStorage.trips[i].id == id){
-                    $localStorage.trips[i] = trip;
+        var currentTrips = $localStorage.getObject('trips')
+        for(var i=0;i<currentTrips.length;i++){
+				if(currentTrips[i].id == id){
+                    currentTrips[i] = trip;
+                    $localStorage.setObject("trips", currentTrips)
 					return true;
 				}
 			}
             return false
     }
     function localAction(id, action){
-        for(var i=0;i<$localStorage.trips.length;i++){
-				if($localStorage.trips[i].id == id){
-                    $localStorage.trips[i].status = action;
+        var currentTrips = $localStorage.getObject('trips')
+        for(var i=0;i<currentTrips.length;i++){
+				if(currentTrips[i].id == id){
+                    currentTrips[i].status = action;
+                    $localStorage.setObject("trips", currentTrips)
 					return true;
 				}
 			}
@@ -248,10 +278,10 @@ angular.module('equitrack.services', [])
             return localAction(id, 'submitted')
         },
 		getTrip: function(id){
-            console.log("getting trip from", $localStorage.trips)
-			for(i=0;i<$localStorage.trips.length;i++){
-				if($localStorage.trips[i].id == id){
-					return $localStorage.trips[i];
+            console.log("getting trip from", $localStorage.getObject('trips'))
+			for(var i=0;i<$localStorage.getObject('trips').length;i++){
+				if($localStorage.getObject('trips')[i].id == id){
+					return $localStorage.getObject('trips')[i];
 				}
 			}
 			return null;
