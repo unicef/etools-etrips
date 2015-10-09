@@ -1,10 +1,24 @@
 angular.module('equitrack.services', [])
 
-.service('LoginService',['$q', '$rootScope', '$localStorage', '$state', 'Auth',
-    function($q, $rootScope, $localStorage, $state, Auth) {
+.service('LoginService',['$q', '$rootScope', '$localStorage', '$state', 'Auth', 'API_urls',
+    function($q, $rootScope, $localStorage, $state, Auth, API_urls) {
         function successAuth(res, retSuccess) {
-               //console.log("successAuth")
-               $localStorage.set('jwtoken', res.data.token);
+               var JWToken;
+               if (API_urls.ADFS){
+                    console.log(res)
+                    var mys;
+                    var r;
+                    var encoded_token;
+                    mys = res.data.substr(res.data.indexOf('BinarySecurityToken'));
+                    r = mys.substr(mys.indexOf('>'));
+                    encoded_token = r.substr(1,r.indexOf('<')-1);
+
+                    JWToken = Auth.urlBase64Decode(encoded_token);
+               } else {
+                    JWToken = res.data.token
+               }
+
+               $localStorage.set('jwtoken', JWToken);
                $localStorage.setObject('currentUser', Auth.getTokenClaims());
                //console.log($localStorage.getObject('currentUser'));
                retSuccess($localStorage.get('jwtoken'));
@@ -80,17 +94,22 @@ angular.module('equitrack.services', [])
                $http.post(API_urls.BASE + '/signup', data).success(success).error(error)
            },
            login: function (data) {
-               //console.log("in Auth.login")
-               //console.log(data)
-               //var req = {
-               //      method: 'POST',
-               //      url: SoapEnv.adfsEndpoint,
-               //      headers: SoapEnv.headers,
-               //      data: SoapEnv.body(data.username, data.password)
-               //     }
-               //console.log(req)
-               //return $http(req)
-               return $http.post(API_urls.BASE + '/api-token-auth/', data)
+               if (API_urls.ADFS){
+                   console.log("in Auth.login")
+                   console.log(data)
+                   var req = {
+                         method: 'POST',
+                         url: SoapEnv.adfsEndpoint,
+                         headers: SoapEnv.headers,
+                         data: SoapEnv.body(data.username, data.password)
+                        }
+                   console.log(req)
+                   return $http(req)
+               } else {
+                   return $http.post(API_urls.BASE + '/api-token-auth/', data)
+               }
+
+
 
            },
            logout: function (success) {
@@ -100,7 +119,8 @@ angular.module('equitrack.services', [])
                $localStorage.delete('users');
                success();
            },
-           getTokenClaims: getClaimsFromToken
+           getTokenClaims: getClaimsFromToken,
+           urlBase64Decode : urlBase64Decode
        };
 }])
 .factory('Data', ['$timeout', '$http', 'API_urls', '$localStorage',

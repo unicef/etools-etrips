@@ -102,7 +102,7 @@ angular.module('equitrack.tripControllers', [])
                             template: 'Please try again later. ' + err.detail
                         });
                       },
-                      options, true);
+                      options);
 
 
         };
