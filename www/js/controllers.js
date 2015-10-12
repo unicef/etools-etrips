@@ -32,20 +32,26 @@ angular.module('equitrack.controllers', [])
     $scope.data = {};
     function login_success(token){
         console.log("LoginCtrl: login_success");
-        Data.get_trips(
-            function(res){
-                $ionicLoading.hide();
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-                console.log("got trips", res)
-                $state.go('app.dash.my_trips');
-            },
-            function(res){
-                $ionicLoading.hide();
-                console.log("failed to get trips")
-            }, true
-        )
+        Data.get_profile(function(success){
+            Data.get_trips(
+                function(res){
+                    $ionicLoading.hide();
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+                    console.log("got trips", res)
+                    $state.go('app.dash.my_trips');
+                },
+                function(res){
+                    $ionicLoading.hide();
+                    console.log("failed to get trips")
+                }, true
+            )
+        },
+            function(profile_fail){
+
+        })
+
 
     };
 

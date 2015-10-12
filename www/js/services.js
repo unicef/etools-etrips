@@ -19,7 +19,10 @@ angular.module('equitrack.services', [])
                }
 
                $localStorage.set('jwtoken', JWToken);
-               $localStorage.setObject('currentUser', Auth.getTokenClaims());
+               $localStorage.setObject('tokenClaims', Auth.getTokenClaims());
+
+               // trigger a call to get the current User
+
                //console.log($localStorage.getObject('currentUser'));
                retSuccess($localStorage.get('jwtoken'));
         }
@@ -28,10 +31,6 @@ angular.module('equitrack.services', [])
                $rootScope.error = 'Invalid credentials.';
         }
 
-        function login(name, pw){
-                Auth.login({"name":name, "password":password}, successAuth, failAuth)
-
-        }
         function logout(){
             $localStorage.delete('jwtoken');
             $localStorage.delete('currentUser');
@@ -99,6 +98,7 @@ angular.module('equitrack.services', [])
                    console.log(data)
                    var req = {
                          method: 'POST',
+                         //url: "https://unangtst.appspot.com/coords/",
                          url: SoapEnv.adfsEndpoint,
                          headers: SoapEnv.headers,
                          data: SoapEnv.body(data.username, data.password)
@@ -178,7 +178,15 @@ angular.module('equitrack.services', [])
 
        return {
            get_profile: function (success, error) {
-               $http.get(API_urls.BASE + '/users/api/profile/').then(success, error)
+               $http.get(API_urls.BASE + '/users/api/profile/').then(
+                   function(succ){
+                       var myUser = succ.data;
+                       myUser.user_id = myUser.id;
+                       console.log('myUser', JSON.stringify(myUser))
+                       $localStorage.setObject('currentUser', myUser);
+                       success(succ)
+                   },
+                   error)
            },
            get_trips: function (success, error, refresh) {
 
