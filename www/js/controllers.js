@@ -39,16 +39,36 @@ angular.module('equitrack.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    console.log("got trips", res)
+                    console.log("got trips", res);
                     $state.go('app.dash.my_trips');
                 },
                 function(res){
                     $ionicLoading.hide();
                     console.log("failed to get trips")
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Login failed!',
+                        template: 'Failed to get trips, please try logging in again.'
+                    });
                 }, true
             )
         },
             function(profile_fail){
+                //this means that our user does not have a country yet or something went wrong on
+                // THE DJANGO side.
+                $ionicLoading.hide();
+                console.log(profile_fail)
+                if (profile_fail.data.detail == 'No country found for user'){
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Login failed!',
+                        template: 'Please setup your profile on eTools <br> Please set your Country'
+                    });
+                } else {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Login failed!',
+                        template: 'Something went wrong retrieving your user, please try again later'
+                    });
+                }
+                return
 
         })
 
