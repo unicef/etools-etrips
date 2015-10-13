@@ -23,7 +23,7 @@ angular.module('equitrack.tripControllers', [])
             )
         }
 })
-.controller('ReportingTextCtrl',function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup){
+.controller('ReportingTextCtrl', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         var main_obs_template = 'Access to inputs/services:  \n \n \n \n' +
@@ -85,7 +85,11 @@ angular.module('equitrack.tripControllers', [])
             options.fileName = "picture";
             options.mimeType = "image/jpeg";
             options.params = {};
-            options.headers = {Authorization: 'JWT  ' + $localStorage.get('jwtoken')};
+            options.chunkedMode = false;
+            options.headers = {
+                Authorization: 'JWT  ' + $localStorage.get('jwtoken'),
+                Connection: "close"
+            };
 
             var ft = new FileTransfer();
             ft.upload(fileURI,
@@ -99,10 +103,10 @@ angular.module('equitrack.tripControllers', [])
                       function(err){
                           var alertPopup = $ionicPopup.alert({
                             title: 'Photo Submission Failed',
-                            template: 'Please try again later. ' + err.detail
+                            template: '' + JSON.stringify(err)
                         });
                       },
-                      options);
+                      options, true);
 
 
         };
@@ -119,7 +123,8 @@ angular.module('equitrack.tripControllers', [])
                 function(message) { alert('Failed to access camera'); },
                 {quality: 50,
                     destinationType: navigator.camera.DestinationType.FILE_URI,
-                    sourceType: navigator.camera.PictureSourceType.CAMERA }
+                    sourceType: navigator.camera.PictureSourceType.CAMERA,
+                    saveToPhotoAlbum: true}
             );
         }
         //this is for local testing only

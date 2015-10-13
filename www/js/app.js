@@ -187,7 +187,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
 .constant('API_urls', {'BASE':'https://etools-staging.unicef.org',
                         'ADFS':true})
 //.constant('API_urls', {'BASE':'https://22191e85.ngrok.com',
-//                        'ADFS':true})
+//                        'ADFS':false})
 //.constant('API_urls', {'BASE':'http://192.168.99.100:8080'})
 //.constant('API_urls', {'BASE':'http://192.168.86.10:8080'})
 .constant('TripVars', {'checkboxes':['ta_drafted', 'security_granted'],
