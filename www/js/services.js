@@ -297,6 +297,44 @@ angular.module('equitrack.services', [])
         //console.log(trip)
         //console.log('here is where we update the trip')
     }
+    function getDraft(tripId, dtype){
+        // if there isn't a currentUser in here we're in big trouble anyway
+        var country = $localStorage.getObject('currentUser').profile.country
+        var my_obj = $localStorage.getObject('draft-' + country);
+
+
+        if (Object.keys(my_obj).length) {
+            // check for trip
+            if (my_obj[tripId]) {
+                if (( dtype == 'text') && (my_obj[tripId][dtype])) {
+                    return my_obj[tripId][dtype]
+                }
+            }
+        }
+        return {}
+
+    }
+    function setDraft(tripId, dtype, draft){
+        // if there isn't a currentUser in here we're in big trouble anyway
+        var country = $localStorage.getObject('currentUser').profile.country
+        var my_obj = $localStorage.getObject('draft-' + country);
+
+        // if there is an object stored
+        if (Object.keys(my_obj).length){
+            // if this object has the tripId
+            if (my_obj[tripId]){
+                my_obj[tripId][dtype] = draft
+            } else {
+                my_obj[tripId]={}
+                my_obj[tripId][dtype] = draft
+            }
+        } else {
+            my_obj = {}
+            my_obj[tripId]={}
+            my_obj[tripId][dtype] = draft
+        }
+        $localStorage.setObject('draft-'+country, my_obj)
+    }
 
 	return {
         localApprove: function(id){
@@ -319,5 +357,7 @@ angular.module('equitrack.services', [])
         localTripUpdate: localTripUpdate,
         getAP:getAP,
         sendAP:sendAP,
+        getDraft:getDraft,
+        setDraft:setDraft
 	}
 }]);

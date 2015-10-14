@@ -64,6 +64,97 @@ angular.module('equitrack.tripControllers', [])
             })
         }
 
+}).controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup){
+
+        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+        $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text');
+        $scope.dangeZone = false;
+        console.log('here are the drafts')
+        console.log($scope.draft)
+
+        var main_obs_template = 'Access to inputs/services:  \n \n \n \n' +
+            'Quality of inputs/services: \n \n \n \n' +
+            'Utilisation of inputs/services: \n \n \n \n' +
+            'Enabling Environment: \n \n \n \n'
+
+        function reset_data(){
+            $scope.data = {
+                main_observations : ($scope.draft.main_observations) ? $scope.draft.main_observations : main_obs_template,
+                constraints : ($scope.draft.constraints) ? $scope.draft.constraints : "",
+                lessons_learned : ($scope.draft.lessons_learned) ? $scope.draft.lessons_learned : "",
+                opportunities: ($scope.draft.opportunities) ? $scope.draft.opportunities : "",
+            }
+        }
+        reset_data()
+
+        $scope.saveDrafts = function(){
+            TripsFactory.setDraft($stateParams.tripId, 'text', $scope.data)
+            $ionicPopup.alert({
+                        title: 'Draft Saved',
+                        template: 'Text has been successfully saved'
+                    })
+        };
+        $scope.discardDrafts = function(){
+            TripsFactory.setDraft($stateParams.tripId, 'text', {})
+            $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text')
+            reset_data()
+            $ionicPopup.alert({
+                        title: 'Draft Discarded',
+                        template: 'Text has been successfully discarded'
+                    })
+        };
+        $scope.discardCurrentChanges = function(){
+            $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text')
+            reset_data();
+            $ionicPopup.alert({
+                        title: 'Current Changes Discarded',
+                        template: 'Text restored to previous state'
+                    })
+        };
+        $scope.replaceWithCurrentReport = function(){
+            $scope.draft = {
+                main_observations : ($scope.trip.main_observations) ? $scope.trip.main_observations : main_obs_template,
+                constraints : ($scope.trip.constraints) ? $scope.trip.constraints : "",
+                lessons_learned : ($scope.trip.lessons_learned) ? $scope.trip.lessons_learned : "",
+                opportunities: ($scope.trip.opportunities) ? $scope.trip.opportunities : "",
+            };
+            reset_data();
+            $ionicPopup.alert({
+                        title: 'Drafts updated',
+                        template: "Current Drafts are reflecting current report, changes aren't saved until your action"
+                    })
+        };
+        $scope.textReport = function(){
+            $ionicLoading.show({
+                    template: 'Loading... <br> Sending Report...'
+                });
+            TripsFactory.setDraft($stateParams.tripId, 'text', $scope.data)
+            TripsFactory.reportText($scope.data, $scope.trip.id,
+                function(succ){
+                    $ionicLoading.hide();
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+                    $state.go('app.dash.my_trips');
+                    TripsFactory.localTripUpdate($scope.trip.id, succ.data)
+                    $ionicPopup.alert({
+                        title: 'Report Submitted',
+                        template: 'Text has been successfully submitted'
+                    })
+                    console.log(succ)
+                },
+                function (err){
+                    console.log("got an error")
+                    $ionicLoading.hide();
+                    $state.go('app.dash.my_trips');
+                    $ionicPopup.alert({
+                        title: 'Something went wrong',
+                        template: 'Please try again later'
+                    })
+                    console.log(err)
+            })
+        }
+
 })
 .controller('ReportingAPSCtrl',function($scope, $stateParams, TripsFactory){
 

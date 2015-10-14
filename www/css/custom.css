@@ -26,3 +26,10 @@
 .bck-white{
     background-color: #ffffff;
 }
+.margin-lr-2{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+.default-lh{
+    line-height: inherit;
+}

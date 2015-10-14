@@ -76,8 +76,18 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
           }
       }
   })
+  .state('app.reporting.drafts',{
+      url: '/drafts',
+      views: {
+          'tab-drafts': {
+              templateUrl: 'templates/trip/reporting-drafts.html',
+              controller: 'ReportingDraftsCtrl'
+          }
+      }
+  })
   .state('app.reporting.text',{
       url: '/text',
+      cache: false,
       views: {
           'tab-text': {
               templateUrl: 'templates/trip/reporting-text.html',
@@ -127,6 +137,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
   })
   .state('app.dash.my_trip-detail', {
       url: '/my_trips/:tripId',
+      cache: false,
       views: {
         'tab-trips': {
           templateUrl: 'templates/dash/trip.html',
