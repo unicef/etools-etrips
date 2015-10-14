@@ -184,8 +184,8 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
 
 }])
 //.constant('API_urls', {'BASE':'https://etools-staging.uniceflebanon.org'})
-.constant('API_urls', {'BASE':'https://etools-staging.unicef.org',
-                        'ADFS':true})
+//.constant('API_urls', {'BASE':'https://etools-staging.unicef.org',
+//                        'ADFS':true})
 //.constant('API_urls', {'BASE':'https://22191e85.ngrok.com',
 //                        'ADFS':false})
 //.constant('API_urls', {'BASE':'http://192.168.99.100:8080'})

@@ -1,6 +1,6 @@
 angular.module('equitrack.controllers', [])
 
-.controller('AppCtrl', function($scope, $state, LoginService) {
+.controller('AppCtrl', function($scope, $state, LoginService, $localStorage) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -14,6 +14,8 @@ angular.module('equitrack.controllers', [])
       LoginService.logout()
 
   };
+  $scope.currentUser = $localStorage.getObject('currentUser');
+
   // Form data for the login modal
 
 
