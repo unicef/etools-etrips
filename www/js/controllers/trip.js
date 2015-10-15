@@ -256,6 +256,7 @@ angular.module('equitrack.tripControllers', [])
             is_planned: $scope.trip.status == "planned",
             is_canceled: $scope.trip.status == "cancelled",
             is_submitted: $scope.trip.status == "submitted",
+            report_filled: Boolean($scope.trip.main_observations)
         }
         $scope.approve = function (tripId){
             $ionicLoading.show({
@@ -289,6 +290,27 @@ angular.module('equitrack.tripControllers', [])
                     var alertPopup = $ionicPopup.alert({
                         title: 'Trip Submission',
                         template: 'You succesfully submitted the trip'
+                    });
+                    $ionicHistory.goBack()//('app.dash.my_trips');
+                    console.log("Action succeded")
+                },
+                function(actionFailed){
+                    $ionicLoading.hide();
+                    console.error("Action failed")
+                }
+            )
+        };
+        $scope.complete_trip = function(tripId){
+            $ionicLoading.show({
+                                  template: 'Loading... <br> Submitting Trip'
+                                });
+            TripsFactory.tripAction(tripId, 'completed', {}).then(
+                function(actionSuccess){
+                    $ionicLoading.hide();
+                    TripsFactory.localTripUpdate(tripId, actionSuccess.data);
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Trip Submission',
+                        template: 'You completed the trip'
                     });
                     $ionicHistory.goBack()//('app.dash.my_trips');
                     console.log("Action succeded")

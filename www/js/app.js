@@ -50,6 +50,40 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
                    $location.path('/login');
                }
                return $q.reject(response);
+
+               //var deferred = $q.defer();
+               //if (response.status === 401 || response.status === 403) {
+               //    //$location.path('/login');
+               //    var $injector = angular.injector();
+               //    var tokenExpired = false;
+               //    var token_claims = $localStorage.getObject('tokenClaims')
+               //    if (token_claims){
+               //        var exp_point = new Date(token_claims.exp)
+               //        var now = new Date()
+               //        console.log('here1')
+               //        console.log(exp_point, now, exp_point<now)
+               //        if (now > exp_point){
+               //            var loginService = $injector.get('LoginService')
+               //            console.log('here11')
+               //            loginService.refreshLogin(function(){
+               //                console.log('got here')
+               //                _retryHttpRequest(response.config, deferred);
+               //            }, function(){
+               //                loginService.logout()
+               //                $location.path('/login');
+               //                deferred.reject(response);
+               //            })
+               //        } else {
+               //            $location.path('/login');
+               //            deferred.reject(response);
+               //        }
+               //    }
+               //} else {
+               //    $location.path('/login');
+               //    deferred.reject(response);
+               //}
+               //return deferred.promise;
+
            }
        };
   }]);

@@ -1,7 +1,7 @@
 angular.module('equitrack.services', [])
 
-.service('LoginService',['$q', '$rootScope', '$localStorage', '$state', 'Auth', 'API_urls',
-    function($q, $rootScope, $localStorage, $state, Auth, API_urls) {
+.service('LoginService',['$q', '$rootScope', '$localStorage', 'Auth', 'API_urls',
+    function($q, $rootScope, $localStorage, Auth, API_urls) {
         function successAuth(res, retSuccess) {
                var JWToken;
                if (API_urls.ADFS){
@@ -42,6 +42,22 @@ angular.module('equitrack.services', [])
             loginUser: function(data, retSuccess, retFail){
                 //console.log("loginUser called")
                 //console.log(data)
+                Auth.login(data).then(
+                    function(res){
+                        successAuth(res, retSuccess)
+                    } ,
+                    function(err){
+                        //console.log("logingUser.err")
+                        retFail(err)
+                    })
+            },
+            refreshLogin: function(retSuccss, retFail){
+                var data = $localStorage.getObject('cred');
+                if (!data){
+                    console.log('here3')
+                    retFail();
+                    return
+                }
                 Auth.login(data).then(
                     function(res){
                         successAuth(res, retSuccess)

@@ -2,6 +2,7 @@
 
   <ion-content class="padding">
       <button ng-if="checks.owner && checks.is_approved"  class="button button-block button-calm" ng-click="go_report(trip.id)">Report</button>
+      <button ng-if="checks.owner && checks.is_approved && checks.report_filled"  class="button button-block button-energized" ng-click="complete_trip(trip.id)">Complete Trip</button>
       <button ng-if="checks.owner && checks.is_planned"  class="button button-block button-calm" ng-click="submit(trip.id)">Submit</button>
       <button ng-if="checks.supervisor && checks.not_supervisor_approved" class="button button-block button-balanced" ng-click="approve(trip.id)">Approve</button>
       <div class="list padding" ng-if="checks.supervisor && checks.is_approved">
