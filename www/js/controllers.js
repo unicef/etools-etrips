@@ -24,6 +24,22 @@ angular.module('equitrack.controllers', [])
 .controller('DashCtrl', function($scope) {
 
 })
+.controller('SettingsCtrl', function($scope) {
+
+})
+.controller('SettingsConnectionCtrl', function($scope, API_urls, LoginService, $state, $ionicHistory) {
+
+    $scope.conn_str = API_urls.get_option_name();
+
+    $scope.changeConnection = function(conn_str){
+
+        API_urls.set_base(conn_str);
+        console.log('logging out now');
+        LoginService.logout();
+        $ionicHistory.clearCache().then(function(){ $state.go('login')})
+
+    }
+})
 
 
 .controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
@@ -31,7 +47,8 @@ angular.module('equitrack.controllers', [])
              function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
                       Auth, $ionicPopup, $state, API_urls) {
 
-    $scope.data = {};
+    $scope.data = $localStorage.getObject('user_cred');
+    $scope.other = {};
     function login_success(token){
         console.log("LoginCtrl: login_success");
         Data.get_profile(function(success){
@@ -92,7 +109,14 @@ angular.module('equitrack.controllers', [])
     };
 
     $scope.login = function(){
-        var loginData = $scope.data
+        var loginData = $scope.data;
+
+        if ($scope.other.rememberMe){
+            // won't save the password
+            $localStorage.setObject("user_cred",{username:loginData.username, password:""})
+        } else {
+            $localStorage.delete("user_cred")
+        };
         $ionicLoading.show({
                       template: 'Loading...'
         });

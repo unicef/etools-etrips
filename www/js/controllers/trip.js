@@ -184,7 +184,7 @@ angular.module('equitrack.tripControllers', [])
 
             var ft = new FileTransfer();
             ft.upload(fileURI,
-                      encodeURI(API_urls.BASE +"/trips/api/"+$stateParams.tripId+"/upload/"),
+                      encodeURI(API_urls.BASE() +"/trips/api/"+$stateParams.tripId+"/upload/"),
                       function(mdata){
                           var alertPopup = $ionicPopup.alert({
                             title: 'Photo Submission Succeeded',
@@ -225,7 +225,7 @@ angular.module('equitrack.tripControllers', [])
             fd.append("file", files[0]);
             fd.append('trip', $stateParams.tripId);
 
-            $http.post(API_urls.BASE +"/trips/api/"+$stateParams.tripId+"/upload/", fd,
+            $http.post(API_urls.BASE() +"/trips/api/"+$stateParams.tripId+"/upload/", fd,
                 {
                     headers: {'Content-Type': undefined },
                     transformRequest: angular.identity

@@ -99,6 +99,27 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
         requireLogin: true // this property, if set on app will apply to all of its children
     }
   })
+  .state('app.settings',{
+      url: '/settings',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/settings/settings.html',
+              controller: 'SettingsCtrl'
+          }
+      }
+  })
+  .state('app.connection',{
+      url: '/settings/connection',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/settings/connection.html',
+              controller: 'SettingsConnectionCtrl'
+          }
+      },
+      data: {
+        requireLogin: false
+      }
+  })
 
   .state('app.reporting', {
       url: '/reporting/:tripId',
@@ -231,8 +252,8 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
 //.constant('API_urls', {'BASE':'https://etools-staging.uniceflebanon.org'})
 //.constant('API_urls', {'BASE':'https://etools-staging.unicef.org',
 //                        'ADFS':true})
-.constant('API_urls', {'BASE':'https://22191e85.ngrok.com',
-                        'ADFS':false})
+//.constant('API_urls', {'BASE':'https://22191e85.ngrok.com',
+//                        'ADFS':false})
 //.constant('API_urls', {'BASE':'http://192.168.99.100:8080'})
 //.constant('API_urls', {'BASE':'http://192.168.86.10:8080'})
 .constant('TripVars', {'checkboxes':['ta_drafted', 'security_granted'],

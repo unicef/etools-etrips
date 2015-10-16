@@ -1,5 +1,39 @@
 angular.module('equitrack.services', [])
 
+.service('API_urls', function($localStorage) {
+        var defaultConn = 'stg';
+        var options = { dev :'https://22191e85.ngrok.com',
+                        stg: 'https://etools-staging.unicef.org',
+                        prd: 'https://etools-staging.unicef.org'};
+
+        function get_base(){
+            console.log('getting base_url')
+            var base_url = $localStorage.get('base_url')
+            if (base_url){
+                return options[base_url]
+            }
+            return options[defaultConn]
+
+        }
+        function get_option_name(){
+            var base_url = $localStorage.get('base_url');
+            if (base_url){
+                return base_url
+            }
+            return defaultConn
+        }
+        function set_base(base){
+            console.log(base)
+            $localStorage.set('base_url', base)
+        }
+        return {
+            BASE: get_base,
+            ADFS: (get_option_name() == 'dev') ? false: true,
+            get_option_name: get_option_name,
+            set_base: set_base
+        }
+
+})
 .service('LoginService',['$q', '$rootScope', '$localStorage', 'Auth', 'API_urls',
     function($q, $rootScope, $localStorage, Auth, API_urls) {
         function successAuth(res, retSuccess) {
@@ -36,6 +70,7 @@ angular.module('equitrack.services', [])
             $localStorage.delete('currentUser');
             $localStorage.delete('trips');
             $localStorage.delete('users');
+            $localStorage.delete('tokenClaims');
         }
 
         return {
@@ -106,7 +141,7 @@ angular.module('equitrack.services', [])
 
        return {
            signup: function (data, success, error) {
-               $http.post(API_urls.BASE + '/signup', data).success(success).error(error)
+               $http.post(API_urls.BASE() + '/signup', data).success(success).error(error)
            },
            login: function (data) {
                if (API_urls.ADFS){
@@ -122,7 +157,7 @@ angular.module('equitrack.services', [])
                    console.log(req)
                    return $http(req)
                } else {
-                   return $http.post(API_urls.BASE + '/api-token-auth/', data)
+                   return $http.post(API_urls.BASE() + '/api-token-auth/', data)
                }
 
 
@@ -133,6 +168,7 @@ angular.module('equitrack.services', [])
                $localStorage.delete('jwttoken');
                $localStorage.delete('trips');
                $localStorage.delete('users');
+               $localStorage.delete('tokenClaims');
                success();
            },
            getTokenClaims: getClaimsFromToken,
@@ -158,7 +194,7 @@ angular.module('equitrack.services', [])
         }
 
         var get_trips_remote = function get_from_server(success, error){
-                   return $http.get(API_urls.BASE + '/trips/api/list/').then(
+                   return $http.get(API_urls.BASE() + '/trips/api/list/').then(
                        function(succ){
                            $localStorage.setObject('trips',succ.data);
                            success(succ.data)
@@ -168,7 +204,7 @@ angular.module('equitrack.services', [])
                        })
         }
         var get_users_remote = function get_from_server(success, error){
-                   return $http.get(API_urls.BASE + '/users/api/').then(
+                   return $http.get(API_urls.BASE() + '/users/api/').then(
                        function(succ){
                            $localStorage.setObject('users', succ.data);
 
@@ -183,7 +219,7 @@ angular.module('equitrack.services', [])
         }
 
         var patchTrip = function patchTrip(tripId, data, success, fail){
-            return $http.patch(API_urls.BASE + '/trips/api/' + tripId +"/", data).then(
+            return $http.patch(API_urls.BASE() + '/trips/api/' + tripId +"/", data).then(
                 function(succ){
                     success(succ)
                 },
@@ -194,7 +230,7 @@ angular.module('equitrack.services', [])
 
        return {
            get_profile: function (success, error) {
-               $http.get(API_urls.BASE + '/users/api/profile/').then(
+               $http.get(API_urls.BASE() + '/users/api/profile/').then(
                    function(succ){
                        var myUser = succ.data;
                        myUser.user_id = myUser.id;
@@ -273,7 +309,7 @@ angular.module('equitrack.services', [])
 
     }
     function tripAction(id, action, data){
-        var url = API_urls.BASE + '/trips/api/' + id + '/';
+        var url = API_urls.BASE() + '/trips/api/' + id + '/';
         var result = $http.post(url + action + '/', data);
         return result
 
