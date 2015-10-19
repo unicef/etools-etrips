@@ -18,12 +18,16 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
+        <ion-item menu-close class="item-divider">Country: {{ currentUser.profile.country_name }}</ion-item>
         <ion-item menu-close href="#/app/dash/my_trips">
             Trips
         </ion-item>
-        <ion-item menu-close href="#/app/resources">
-            Resources
+        <ion-item menu-close href="#/app/settings">
+            Settings
         </ion-item>
+        <!-- <ion-item menu-close href="#/app/resources">
+            Resources
+        </ion-item> -->
         <ion-item menu-close ng-click="logout()">
             Logout
         </ion-item>

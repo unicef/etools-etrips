@@ -2,53 +2,144 @@
 
   <ion-content class="padding">
       <button ng-if="checks.owner && checks.is_approved"  class="button button-block button-calm" ng-click="go_report(trip.id)">Report</button>
+      <button ng-if="checks.owner && checks.is_approved && checks.report_filled"  class="button button-block button-energized" ng-click="complete_trip(trip.id)">Complete Trip</button>
       <button ng-if="checks.owner && checks.is_planned"  class="button button-block button-calm" ng-click="submit(trip.id)">Submit</button>
       <button ng-if="checks.supervisor && checks.not_supervisor_approved" class="button button-block button-balanced" ng-click="approve(trip.id)">Approve</button>
-      <div class="list list-inset padding" ng-if="checks.supervisor && checks.is_approved">
+      <div class="list padding" ng-if="checks.supervisor && checks.is_approved">
           <h3 class="balanced"> Approved </h3>
       </div>
-      <div class="list list-inset padding" ng-if="checks.owner && checks.is_submitted">
+      <div class="list padding" ng-if="checks.owner && checks.is_submitted">
           <h3 class="calm"> Awaiting Approval </h3>
       </div>
-      <div class="list list-inset padding" ng-if="checks.is_submitted && trip.approved_by_supervisor">
+      <div class="list padding" ng-if="checks.is_submitted && trip.approved_by_supervisor">
           <h3 class="calm"> Awaiting Rep Approval </h3>
       </div>
 
 
 
-      <div ng-repeat="(key, value) in trip"
-           ng-if="['id', 'supervisor', 'traveller_id',
-           'travel_routes', 'all_files', 'actionpoint_set',
-           'trip_funds', 'url'].indexOf(key) == -1"
-           class="list list-inset" ng-hide="value == null">
-          <h5 class="txt-grey padding-left">{{ key | underscoreless | TitleCase }}</h5>
-          <p class="item item-text-wrap li-center less-padding">{{ value }}</p>
+
+      <div class="list col no-padding">
+          <h5 class="txt-grey padding-left">Traveller</h5>
+          <p class="item item-text-wrap li-center less-padding">{{ trip.traveller }}</p>
       </div>
-      <div class="list list-inset padding" ng-show="trip.travel_routes.length">
-          <div class="item-devider">
-              <h4 class="txt-grey li-center">Travel Routes</h4>
+
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">Supervisor</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.supervisor_name }}</p>
           </div>
-          <div class="item-divider" ng-repeat="route in trip.travel_routes">
-              {{ route.origin }} -> {{ route.destination }}
-              <br>
-              {{ route.depart | date:'short'}} -> {{ route.arrive | date:'short'}}
+          <div ng-if="trip.travel_assistant" class="list col no-padding">
+              <h5 class="txt-grey padding-left">Travel Assistant</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.travel_assistant }}</p>
+          </div>
+      </div>
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">From</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.from_date | date }}</p>
+          </div>
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">To</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.to_date | date }}</p>
           </div>
       </div>
 
-      <div class="list list-inset padding" ng-show="trip.all_files.length">
-          <div class="item-devider">
-              <h4 class="txt-grey li-center">Files</h4>
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">Section</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.section }}</p>
           </div>
-          <div class="item-divider" ng-repeat="file in trip.all_files">
-              <p>{{ file.report }}</p>
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">Office</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.office }}</p>
           </div>
       </div>
-      <div class="list list-inset padding" ng-show="trip.actionpoint_set.length">
-          <div class="item-divider">
-              <h4 class="txt-grey li-center">Action Points</h4>
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">Travel Type</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.travel_type | underscoreless | TitleCase }}</p>
           </div>
-          <div class="item-divider" ng-repeat="ap in trip.actionpoint_set">
-              Person Responsible: {{ ap.person_responsible_name }}
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">Trip Status</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ trip.status | TitleCase }}</p>
+          </div>
+      </div>
+
+      <div class="list col no-padding">
+          <h5 class="txt-grey padding-left">Purpose Of Travel</h5>
+          <p class="item item-text-wrap less-padding">{{ trip.purpose_of_travel }}</p>
+      </div>
+
+      <div class="item item-inset item-icon-right">
+          Transport Booked
+          <i ng-class="trip.transport_booked ? 'icon balanced ion-checkmark-circled' : 'icon assertive ion-alert-circled'"></i>
+      </div>
+      <div ng-if="trip.security_clearance_required" class="item item-inset item-icon-right">
+          Security Granted
+          <i ng-class="trip.security_granted ? 'icon balanced ion-checkmark-circled' : 'icon assertive ion-alert-circled'"></i>
+      </div>
+      <div ng-if="trip.ta_required" class="list col no-padding">
+          <br>
+          <h5 class="energized padding-left">Travel Authorization is Required!</h5>
+          <h5 class="padding-left txt-grey">Staff responsible for TA:</h5>
+          <p class="item item-text-wrap less-padding">{{ trip.staff_responsible_ta }}</p>
+          <h5 class="padding-left txt-grey">Budget Owner:</h5>
+          <p class="item item-text-wrap less-padding">{{ trip.budget_owner }}</p>
+          <div class="item less-padding item-icon-right">
+              Approved by Budget Owner:
+              <i ng-class="trip.approved_by_budget_owner ? 'icon balanced ion-checkmark-circled' : 'icon assertive ion-alert-circled'"></i>
+          </div>
+          <span ng-if="trip.ta_drafted">
+              <span  class="row no-padding">
+                  <div class="list col no-padding">
+                      <h5 class="txt-grey padding-left">TA Reference:</h5>
+                      <p class="item item-text-wrap li-center less-padding">{{ trip.ta_reference }}</p>
+                  </div>
+                  <div class="list col no-padding">
+                      <h5 class="txt-grey padding-left">TA Drafted on:</h5>
+                      <p class="item item-text-wrap li-center less-padding">{{ trip.ta_drafted_date | date }}</p>
+                  </div>
+              </span>
+              <p class="padding-left txt-grey">Vision Approver:</p>
+              <p class="item item-text-wrap less-padding">{{ trip.vision_approver }}</p>
+          </span>
+      </div>
+
+      <div ng-if="trip.international_travel" class="list col no-padding">
+          <br>
+          <h5 class="energized padding-left">This is an International Trip!</h5>
+          <h5 class="padding-left txt-grey">Representative responsible:</h5>
+          <p class="item item-text-wrap less-padding">{{ trip.representative }}</p>
+      </div>
+
+      <div class="list" ng-if="trip.travel_routes.length">
+          <h4 class="item-divider txt-grey li-center">Itinerary</h4>
+          <span ng-repeat="route in trip.travel_routes" class="row no-padding">
+              <div class="list col no-padding">
+                  <span class="txt-grey padding-left">From</span>
+                  <p class="item-text-wrap li-center less-padding">
+                      {{ route.origin }}
+                      <br>
+                      {{ route.depart | date:'short'}}
+                  </p>
+              </div>
+              <div class="list col no-padding">
+                  <span class="txt-grey padding-left">To</span>
+                  <p class="item-text-wrap li-center less-padding">
+                      {{ route.destination }}
+                      <br>
+                      {{ route.arrive | date:'short' }}
+                  </p>
+              </div>
+          </span>
+      </div>
+
+
+      <div class="list" ng-if="trip.actionpoint_set.length">
+          <h4 class="item-divider txt-grey li-center">Action Points</h4>
+
+          <div class="item-inset less-padding" ng-repeat="ap in trip.actionpoint_set">
+              Assigned to: {{ ap.person_responsible_name }}
               <br>
               Due Date: {{ ap.due_date | date}}
               <br>
@@ -56,18 +147,52 @@
               <hr>
           </div>
       </div>
-      <div class="list list-inset padding" ng-show="trip.trip_funds.length">
-          <div class="item-devider">
-              <h4 class="txt-grey li-center">Trip Funds</h4>
-          </div>
-          <div class="item-divider" ng-repeat="tf in trip.trip_funds">
+      <div class="list" ng-if="trip.trip_funds.length">
+          <h4 class="item-divider txt-grey li-center">Trip Funds</h4>
+          <div class="item-inset less-padding" ng-repeat="tf in trip.trip_funds">
               WBS: {{ tf.wbs }}
               <br>
               Grant: {{ tf.grant }}
               <br>
               Amount: {{ tf.amount | currency }}
+              <hr>
           </div>
       </div>
+      <div class="list" ng-if="trip.partners.length">
+          <h4 class="item-divider txt-grey li-center">Trip Partners</h4>
+          <div class="item-inset less-padding" ng-repeat="partner in trip.partners">
+              {{ partner }}
+              <br>
+          </div>
+      </div>
+      <div class="list" ng-if="trip.partnerships.length">
+          <h4 class="item-divider txt-grey li-center">Partnerships</h4>
+          <div class="item-inset less-padding" ng-repeat="partnership in trip.partnerships">
+              {{ partnership }}
+              <br>
+          </div>
+      </div>
+      <br>
+      <span ng-if="trip.main_observations || trip.constraints || trip.lessons_learned || trip.opportunities">
+          <h4 class="item-divider txt-grey li-center">Reporting</h4>
+          <div ng-if="trip.main_observations" class="list col no-padding">
+              <h5 class="txt-grey padding-left">Main Observations:</h5>
+              <p class="item-text-wrap less-padding">{{ trip.main_observations }}</p>
+          </div>
+          <div ng-if="trip.constraints" class="list col no-padding">
+              <h5 class="txt-grey padding-left">Constraints:</h5>
+              <p class="item-text-wrap less-padding">{{ trip.constraints }}</p>
+          </div>
+          <div ng-if="trip.lessons_learned" class="list col no-padding">
+              <h5 class="txt-grey padding-left">Lessons Learned:</h5>
+              <p class="item-text-wrap less-padding">{{ trip.lessons_learned }}</p>
+          </div>
+          <div ng-if="trip.opportunities" class="list col no-padding">
+              <h5 class="txt-grey padding-left">Opportunities:</h5>
+              <p class="item-text-wrap less-padding">{{ trip.opportunities }}</p>
+          </div>
+      </span>
+
 
 
   </ion-content>

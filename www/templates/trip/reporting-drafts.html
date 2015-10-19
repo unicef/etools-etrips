@@ -1,8 +1,8 @@
-<ion-view view-title="Text Reporting">
+<ion-view view-title="Text Drafts">
 
   <ion-content class="padding">
     <!-- <p>{{ trip }}</p> -->
-      <h3>Progress Reporting<h3>
+      <h4 class="energized">Draft: Progress Reporting<h4>
       <label class="item padding-top item-input item-stacked-label">
         <textarea ng-model="data.main_observations" placeholder="Insert findings here" rows="10" cols="10">
         </textarea>
@@ -10,7 +10,7 @@
 
 
       <br>
-      <h3>Constraints, Challenges, Opportunities</h3>
+      <h4 class="energized">Draft: Constraints, Challenges, Opportunities</h4>
       <label class="item padding-top item-input item-stacked-label">
         <span class="input-label">Constraints/Challenges:</span>
         <textarea ng-model="data.constraints" placeholder="Implementation constraints that affect achievement of Project" rows="4" cols="10">
@@ -29,9 +29,30 @@
         </textarea>
       </label>
       <br>
-      <button ng-click="textReport()" class="button button-block button-positive padding-botom">
-          Submit Report
+      <button ng-click="saveDrafts()" class="button button-block button-balanced">
+          Save Drafts
       </button>
+       <div class="row no-padding">
+          <button ng-click="discardCurrentChanges()" class="col button button-block button-energized margin-lr-2 default-lh">
+              Undo Current Changes
+          </button>
+          <button ng-click="replaceWithCurrentReport()" class="col button button-block button-energized margin-lr-2 default-lh">
+              Replace Drafts With Current Report
+          </button>
+       </div>
+
+      <ion-toggle ng-model="dangerZone" toggle-class="toggle-assertive">Danger Zone</ion-toggle>
+      <div class="row no-padding">
+          <button ng-disabled="!dangerZone" ng-click="textReport()" class="col button button-block button-assertive margin-lr-2 default-lh">
+              Send As Official Report
+          </button>
+
+          <button ng-disabled="!dangerZone" ng-click="discardDrafts()" class="col button button-block button-assertive margin-lr-2 default-lh">
+              Discard Drafts
+          </button>
+      </div>
+
+
           <br>
   </ion-content>
 </ion-view>

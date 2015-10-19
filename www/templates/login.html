@@ -8,8 +8,21 @@
           <label class="item item-input">
               <input type="password" placeholder="Password" ng-model="data.password">
           </label>
+          <br>
+          <div class="item item-toggle">
+              Remember me
+              <label class="toggle toggle-balanced">
+                <input type="checkbox" ng-model="other.rememberMe">
+                <div class="track">
+                    <div class="handle"></div>
+                </div>
+              </label>
+          </div>
       </div>
+
+
       <button class="button button-block button-calm" ng-click="login()">Login</button>
       <img class="img-logo" src="img/logo.png">
+      <!-- <p class="txt-grey"><a href="#/app/settings/connection">Connection Settings?</a></p> -->
   </ion-content>
 </ion-view>

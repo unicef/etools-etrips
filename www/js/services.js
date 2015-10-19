@@ -1,42 +1,114 @@
 angular.module('equitrack.services', [])
 
-.service('LoginService',['$q', '$rootScope', '$localStorage', '$state', 'Auth',
-    function($q, $rootScope, $localStorage, $state, Auth) {
+.service('API_urls', function($localStorage) {
+        var defaultConn = 'stg';
+        var options = { dev :'https://22191e85.ngrok.com',
+                        stg: 'https://etools-staging.unicef.org',
+                        prd: 'https://etools-staging.unicef.org'};
+
+        function get_base(){
+            console.log('getting base_url')
+            var base_url = $localStorage.get('base_url')
+            if (base_url){
+                return options[base_url]
+            }
+            return options[defaultConn]
+
+        }
+        function get_option_name(){
+            var base_url = $localStorage.get('base_url');
+            if (base_url){
+                return base_url
+            }
+            return defaultConn
+        }
+        function set_base(base){
+            console.log(base)
+            $localStorage.set('base_url', base)
+        }
+        return {
+            BASE: get_base,
+            ADFS: (get_option_name() == 'dev') ? false: true,
+            get_option_name: get_option_name,
+            set_base: set_base
+        }
+
+})
+.service('LoginService',['$q', '$rootScope', '$localStorage', 'Auth', 'API_urls',
+    function($q, $rootScope, $localStorage, Auth, API_urls) {
         function successAuth(res, retSuccess) {
-               console.log("successAuth")
-               $localStorage.jwtoken = res.data.token;
-               $localStorage.currentUser = Auth.getTokenClaims()
-               console.log($localStorage.currentUser)
-               retSuccess($localStorage.jwtoken);
+               var JWToken;
+               if (API_urls.ADFS){
+                    console.log(res)
+                    var mys;
+                    var r;
+                    var encoded_token;
+                    mys = res.data.substr(res.data.indexOf('BinarySecurityToken'));
+                    r = mys.substr(mys.indexOf('>'));
+                    encoded_token = r.substr(1,r.indexOf('<')-1);
+
+                    JWToken = Auth.urlBase64Decode(encoded_token);
+               } else {
+                    JWToken = res.data.token
+               }
+
+               $localStorage.set('jwtoken', JWToken);
+               $localStorage.setObject('tokenClaims', Auth.getTokenClaims());
+
+               // trigger a call to get the current User
+
+               //console.log($localStorage.getObject('currentUser'));
+               retSuccess($localStorage.get('jwtoken'));
         }
         function failAuth(res){
-               console.log("failAuth")
+               //console.log("failAuth")
                $rootScope.error = 'Invalid credentials.';
         }
 
-        function login(name, pw){
-                Auth.login({"name":name, "password":password}, successAuth, failAuth)
-
-        }
         function logout(){
-            delete $localStorage.jwtoken;
-            delete $localStorage.currentUser;
+            $localStorage.delete('jwtoken');
+            $localStorage.delete('currentUser');
+            $localStorage.delete('trips');
+            $localStorage.delete('users');
+            $localStorage.delete('tokenClaims');
         }
 
         return {
             loginUser: function(data, retSuccess, retFail){
-                console.log("loginUser called")
-                Auth.login(data).then(function(res){
+                //console.log("loginUser called")
+                //console.log(data)
+                Auth.login(data).then(
+                    function(res){
                         successAuth(res, retSuccess)
-                    } ,function(err){retFail(err)})
+                    } ,
+                    function(err){
+                        //console.log("logingUser.err")
+                        retFail(err)
+                    })
+            },
+            refreshLogin: function(retSuccss, retFail){
+                var data = $localStorage.getObject('cred');
+                if (!data){
+                    console.log('here3')
+                    retFail();
+                    return
+                }
+                Auth.login(data).then(
+                    function(res){
+                        successAuth(res, retSuccess)
+                    } ,
+                    function(err){
+                        //console.log("logingUser.err")
+                        retFail(err)
+                    })
             },
             logout: logout
 
         }
 
 }])
-.service('Auth', ['$http', '$localStorage', 'API_urls', "$window",
-    function ($http, $localStorage, API_urls, $window){
+.service('Auth', ['$http', '$localStorage', 'API_urls', "$window", "SoapEnv",
+    function ($http, $localStorage, API_urls, $window, SoapEnv){
 
         function urlBase64Decode(str) {
            var output = str.replace('-', '+').replace('_', '/');
@@ -56,8 +128,8 @@ angular.module('equitrack.services', [])
        }
 
        function getClaimsFromToken() {
-           var token = $localStorage.jwtoken;
-           console.log("getclaims", token);
+           var token = $localStorage.get('jwtoken');
+           //console.log("getclaims", token);
            var user = {"no":"no"};
            if (typeof token !== 'undefined') {
                var encoded = token.split('.')[1];
@@ -69,17 +141,38 @@ angular.module('equitrack.services', [])
 
        return {
            signup: function (data, success, error) {
-               $http.post(API_urls.BASE + '/signup', data).success(success).error(error)
+               $http.post(API_urls.BASE() + '/signup', data).success(success).error(error)
            },
            login: function (data) {
-               return $http.post(API_urls.BASE + '/api-token-auth/', data)
+               if (API_urls.ADFS){
+                   console.log("in Auth.login")
+                   console.log(data)
+                   var req = {
+                         method: 'POST',
+                         //url: "https://unangtst.appspot.com/coords/",
+                         url: SoapEnv.adfsEndpoint,
+                         headers: SoapEnv.headers,
+                         data: SoapEnv.body(data.username, data.password)
+                        }
+                   console.log(req)
+                   return $http(req)
+               } else {
+                   return $http.post(API_urls.BASE() + '/api-token-auth/', data)
+               }
+
+
+
            },
            logout: function (success) {
-               delete $localStorage.currentUser
-               delete $localStorage.jwttoken;
+               $localStorage.delete('currentUser');
+               $localStorage.delete('jwttoken');
+               $localStorage.delete('trips');
+               $localStorage.delete('users');
+               $localStorage.delete('tokenClaims');
                success();
            },
-           getTokenClaims: getClaimsFromToken
+           getTokenClaims: getClaimsFromToken,
+           urlBase64Decode : urlBase64Decode
        };
 }])
 .factory('Data', ['$timeout', '$http', 'API_urls', '$localStorage',
@@ -89,10 +182,21 @@ angular.module('equitrack.services', [])
             get_trips_remote(function(){}, function(){})
         }
 
+        var check_timestamp = function(resource){
+            var myt = $localStorage.get(resource);
+            if (!myt) {
+                return false
+            }
+            myt = new Date(Number(myt));
+            var now = new Date();
+
+            return (now < myt)
+        }
+
         var get_trips_remote = function get_from_server(success, error){
-                   return $http.get(API_urls.BASE + '/trips/api/list/').then(
+                   return $http.get(API_urls.BASE() + '/trips/api/list/').then(
                        function(succ){
-                           $localStorage.trips = succ.data;
+                           $localStorage.setObject('trips',succ.data);
                            success(succ.data)
                        },
                        function(err){
@@ -100,9 +204,13 @@ angular.module('equitrack.services', [])
                        })
         }
         var get_users_remote = function get_from_server(success, error){
-                   return $http.get(API_urls.BASE + '/users/').then(
+                   return $http.get(API_urls.BASE() + '/users/api/').then(
                        function(succ){
-                           $localStorage.users = succ.data;
+                           $localStorage.setObject('users', succ.data);
+
+                           var expires = new Date()
+                           expires.setMinutes(expires.getMinutes()+5)
+                           $localStorage.set('users_timestamp', expires.getTime()+'')
                            success(succ.data)
                        },
                        function(err){
@@ -111,7 +219,7 @@ angular.module('equitrack.services', [])
         }
 
         var patchTrip = function patchTrip(tripId, data, success, fail){
-            return $http.patch(API_urls.BASE + '/trips/api/' + tripId +"/", data).then(
+            return $http.patch(API_urls.BASE() + '/trips/api/' + tripId +"/", data).then(
                 function(succ){
                     success(succ)
                 },
@@ -122,21 +230,36 @@ angular.module('equitrack.services', [])
 
        return {
            get_profile: function (success, error) {
-               $http.get(API_urls.BASE + '/users/profile/').then(success, error)
+               $http.get(API_urls.BASE() + '/users/api/profile/').then(
+                   function(succ){
+                       var myUser = succ.data;
+                       myUser.user_id = myUser.id;
+                       console.log('myUser', JSON.stringify(myUser))
+                       $localStorage.setObject('currentUser', myUser);
+                       success(succ)
+                   },
+                   error)
            },
            get_trips: function (success, error, refresh) {
 
-               if ((refresh === true) || (typeof ($localStorage.trips) === 'undefined')){
+               if ((refresh === true) || (!Object.keys($localStorage.getObject('trips')).length)){
                    get_trips_remote(success, error)
                } else {
-                   return success($localStorage.trips)
+                   return success($localStorage.getObject('trips'))
                }
            },
            get_user_base: function(success, error, refresh) {
-               if ((refresh === true) || (typeof ($localStorage.users) === 'undefined')){
+
+
+               if ((refresh === true) ||
+                   (!Object.keys($localStorage.getObject('users')).length) ||
+                   (!check_timestamp('users_timestamp'))){
+
+                   console.log("getting the users from outside")
                    get_users_remote(success, error)
+
                } else {
-                   return success($localStorage.users)
+                   return success($localStorage.getObject('users'))
                }
            },
            refresh_trips: refresh_trips,
@@ -186,24 +309,28 @@ angular.module('equitrack.services', [])
 
     }
     function tripAction(id, action, data){
-        var url = API_urls.BASE + '/trips/api/' + id + '/';
+        var url = API_urls.BASE() + '/trips/api/' + id + '/';
         var result = $http.post(url + action + '/', data);
         return result
 
     }
     function localTripUpdate(id, trip){
-        for(var i=0;i<$localStorage.trips.length;i++){
-				if($localStorage.trips[i].id == id){
-                    $localStorage.trips[i] = trip;
+        var currentTrips = $localStorage.getObject('trips')
+        for(var i=0;i<currentTrips.length;i++){
+				if(currentTrips[i].id == id){
+                    currentTrips[i] = trip;
+                    $localStorage.setObject("trips", currentTrips)
 					return true;
 				}
 			}
             return false
     }
     function localAction(id, action){
-        for(var i=0;i<$localStorage.trips.length;i++){
-				if($localStorage.trips[i].id == id){
-                    $localStorage.trips[i].status = action;
+        var currentTrips = $localStorage.getObject('trips')
+        for(var i=0;i<currentTrips.length;i++){
+				if(currentTrips[i].id == id){
+                    currentTrips[i].status = action;
+                    $localStorage.setObject("trips", currentTrips)
 					return true;
 				}
 			}
@@ -222,6 +349,44 @@ angular.module('equitrack.services', [])
         //console.log(trip)
         //console.log('here is where we update the trip')
     }
+    function getDraft(tripId, dtype){
+        // if there isn't a currentUser in here we're in big trouble anyway
+        var country = $localStorage.getObject('currentUser').profile.country
+        var my_obj = $localStorage.getObject('draft-' + country);
+
+
+        if (Object.keys(my_obj).length) {
+            // check for trip
+            if (my_obj[tripId]) {
+                if (( dtype == 'text') && (my_obj[tripId][dtype])) {
+                    return my_obj[tripId][dtype]
+                }
+            }
+        }
+        return {}
+
+    }
+    function setDraft(tripId, dtype, draft){
+        // if there isn't a currentUser in here we're in big trouble anyway
+        var country = $localStorage.getObject('currentUser').profile.country
+        var my_obj = $localStorage.getObject('draft-' + country);
+
+        // if there is an object stored
+        if (Object.keys(my_obj).length){
+            // if this object has the tripId
+            if (my_obj[tripId]){
+                my_obj[tripId][dtype] = draft
+            } else {
+                my_obj[tripId]={}
+                my_obj[tripId][dtype] = draft
+            }
+        } else {
+            my_obj = {}
+            my_obj[tripId]={}
+            my_obj[tripId][dtype] = draft
+        }
+        $localStorage.setObject('draft-'+country, my_obj)
+    }
 
 	return {
         localApprove: function(id){
@@ -231,10 +396,10 @@ angular.module('equitrack.services', [])
             return localAction(id, 'submitted')
         },
 		getTrip: function(id){
-            console.log("getting trip from", $localStorage.trips)
-			for(i=0;i<$localStorage.trips.length;i++){
-				if($localStorage.trips[i].id == id){
-					return $localStorage.trips[i];
+            console.log("getting trip from", $localStorage.getObject('trips'))
+			for(var i=0;i<$localStorage.getObject('trips').length;i++){
+				if($localStorage.getObject('trips')[i].id == id){
+					return $localStorage.getObject('trips')[i];
 				}
 			}
 			return null;
@@ -244,5 +409,7 @@ angular.module('equitrack.services', [])
         localTripUpdate: localTripUpdate,
         getAP:getAP,
         sendAP:sendAP,
+        getDraft:getDraft,
+        setDraft:setDraft
 	}
 }]);

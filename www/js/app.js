@@ -8,10 +8,14 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
 
         var requireLogin = toState.data.requireLogin;
 
-        if (requireLogin && typeof $localStorage.currentUser === 'undefined') {
+        if (requireLogin && !Object.keys($localStorage.getObject('currentUser')).length) {
           event.preventDefault();
           $state.go('login');
           // get me to the login page!
+        }
+        if (toState.data.redirect){
+            event.preventDefault();
+            $state.go(toState.data.redirect);
         }
     });
     $ionicPlatform.ready(function() {
@@ -36,8 +40,8 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
        return {
            'request': function (config) {
                config.headers = config.headers || {};
-               if ($localStorage.jwtoken) {
-                   config.headers.Authorization = 'JWT  ' + $localStorage.jwtoken;
+               if ($localStorage.get('jwtoken')) {
+                   config.headers.Authorization = 'JWT  ' + $localStorage.get('jwtoken');
                }
                return config;
            },
@@ -46,6 +50,40 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
                    $location.path('/login');
                }
                return $q.reject(response);
+
+               //var deferred = $q.defer();
+               //if (response.status === 401 || response.status === 403) {
+               //    //$location.path('/login');
+               //    var $injector = angular.injector();
+               //    var tokenExpired = false;
+               //    var token_claims = $localStorage.getObject('tokenClaims')
+               //    if (token_claims){
+               //        var exp_point = new Date(token_claims.exp)
+               //        var now = new Date()
+               //        console.log('here1')
+               //        console.log(exp_point, now, exp_point<now)
+               //        if (now > exp_point){
+               //            var loginService = $injector.get('LoginService')
+               //            console.log('here11')
+               //            loginService.refreshLogin(function(){
+               //                console.log('got here')
+               //                _retryHttpRequest(response.config, deferred);
+               //            }, function(){
+               //                loginService.logout()
+               //                $location.path('/login');
+               //                deferred.reject(response);
+               //            })
+               //        } else {
+               //            $location.path('/login');
+               //            deferred.reject(response);
+               //        }
+               //    }
+               //} else {
+               //    $location.path('/login');
+               //    deferred.reject(response);
+               //}
+               //return deferred.promise;
+
            }
        };
   }]);
@@ -61,6 +99,27 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
         requireLogin: true // this property, if set on app will apply to all of its children
     }
   })
+  .state('app.settings',{
+      url: '/settings',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/settings/settings.html',
+              controller: 'SettingsCtrl'
+          }
+      }
+  })
+  .state('app.connection',{
+      url: '/settings/connection',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/settings/connection.html',
+              controller: 'SettingsConnectionCtrl'
+          }
+      },
+      data: {
+        requireLogin: false
+      }
+  })
 
   .state('app.reporting', {
       url: '/reporting/:tripId',
@@ -72,8 +131,18 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
           }
       }
   })
+  .state('app.reporting.drafts',{
+      url: '/drafts',
+      views: {
+          'tab-drafts': {
+              templateUrl: 'templates/trip/reporting-drafts.html',
+              controller: 'ReportingDraftsCtrl'
+          }
+      }
+  })
   .state('app.reporting.text',{
       url: '/text',
+      cache: false,
       views: {
           'tab-text': {
               templateUrl: 'templates/trip/reporting-text.html',
@@ -123,6 +192,7 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
   })
   .state('app.dash.my_trip-detail', {
       url: '/my_trips/:tripId',
+      cache: false,
       views: {
         'tab-trips': {
           templateUrl: 'templates/dash/trip.html',
@@ -166,13 +236,24 @@ angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.servic
       data: {
         requireLogin: false
       }
+  })
+  .state('home', {
+      url: '',
+      data: {
+        requireLogin: false,
+        redirect: "app.dash.my_trips",
+      }
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('login');
 
 
 }])
-.constant('API_urls', {'BASE':'https://etools-staging.uniceflebanon.org'})
+//.constant('API_urls', {'BASE':'https://etools-staging.uniceflebanon.org'})
+//.constant('API_urls', {'BASE':'https://etools-staging.unicef.org',
+//                        'ADFS':true})
+//.constant('API_urls', {'BASE':'https://22191e85.ngrok.com',
+//                        'ADFS':false})
 //.constant('API_urls', {'BASE':'http://192.168.99.100:8080'})
 //.constant('API_urls', {'BASE':'http://192.168.86.10:8080'})
 .constant('TripVars', {'checkboxes':['ta_drafted', 'security_granted'],

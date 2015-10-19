@@ -23,7 +23,7 @@ angular.module('equitrack.tripControllers', [])
             )
         }
 })
-.controller('ReportingTextCtrl',function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup){
+.controller('ReportingTextCtrl', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         var main_obs_template = 'Access to inputs/services:  \n \n \n \n' +
@@ -64,6 +64,97 @@ angular.module('equitrack.tripControllers', [])
             })
         }
 
+}).controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup){
+
+        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+        $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text');
+        $scope.dangeZone = false;
+        console.log('here are the drafts')
+        console.log($scope.draft)
+
+        var main_obs_template = 'Access to inputs/services:  \n \n \n \n' +
+            'Quality of inputs/services: \n \n \n \n' +
+            'Utilisation of inputs/services: \n \n \n \n' +
+            'Enabling Environment: \n \n \n \n'
+
+        function reset_data(){
+            $scope.data = {
+                main_observations : ($scope.draft.main_observations) ? $scope.draft.main_observations : main_obs_template,
+                constraints : ($scope.draft.constraints) ? $scope.draft.constraints : "",
+                lessons_learned : ($scope.draft.lessons_learned) ? $scope.draft.lessons_learned : "",
+                opportunities: ($scope.draft.opportunities) ? $scope.draft.opportunities : "",
+            }
+        }
+        reset_data()
+
+        $scope.saveDrafts = function(){
+            TripsFactory.setDraft($stateParams.tripId, 'text', $scope.data)
+            $ionicPopup.alert({
+                        title: 'Draft Saved',
+                        template: 'Text has been successfully saved'
+                    })
+        };
+        $scope.discardDrafts = function(){
+            TripsFactory.setDraft($stateParams.tripId, 'text', {})
+            $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text')
+            reset_data()
+            $ionicPopup.alert({
+                        title: 'Draft Discarded',
+                        template: 'Text has been successfully discarded'
+                    })
+        };
+        $scope.discardCurrentChanges = function(){
+            $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text')
+            reset_data();
+            $ionicPopup.alert({
+                        title: 'Current Changes Discarded',
+                        template: 'Text restored to previous state'
+                    })
+        };
+        $scope.replaceWithCurrentReport = function(){
+            $scope.draft = {
+                main_observations : ($scope.trip.main_observations) ? $scope.trip.main_observations : main_obs_template,
+                constraints : ($scope.trip.constraints) ? $scope.trip.constraints : "",
+                lessons_learned : ($scope.trip.lessons_learned) ? $scope.trip.lessons_learned : "",
+                opportunities: ($scope.trip.opportunities) ? $scope.trip.opportunities : "",
+            };
+            reset_data();
+            $ionicPopup.alert({
+                        title: 'Drafts updated',
+                        template: "Current Drafts are reflecting current report, changes aren't saved until your action"
+                    })
+        };
+        $scope.textReport = function(){
+            $ionicLoading.show({
+                    template: 'Loading... <br> Sending Report...'
+                });
+            TripsFactory.setDraft($stateParams.tripId, 'text', $scope.data)
+            TripsFactory.reportText($scope.data, $scope.trip.id,
+                function(succ){
+                    $ionicLoading.hide();
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+                    $state.go('app.dash.my_trips');
+                    TripsFactory.localTripUpdate($scope.trip.id, succ.data)
+                    $ionicPopup.alert({
+                        title: 'Report Submitted',
+                        template: 'Text has been successfully submitted'
+                    })
+                    console.log(succ)
+                },
+                function (err){
+                    console.log("got an error")
+                    $ionicLoading.hide();
+                    $state.go('app.dash.my_trips');
+                    $ionicPopup.alert({
+                        title: 'Something went wrong',
+                        template: 'Please try again later'
+                    })
+                    console.log(err)
+            })
+        }
+
 })
 .controller('ReportingAPSCtrl',function($scope, $stateParams, TripsFactory){
 
@@ -85,11 +176,15 @@ angular.module('equitrack.tripControllers', [])
             options.fileName = "picture";
             options.mimeType = "image/jpeg";
             options.params = {};
-            options.headers = {Authorization: 'JWT  ' + $localStorage.jwtoken};
+            options.chunkedMode = false;
+            options.headers = {
+                Authorization: 'JWT  ' + $localStorage.get('jwtoken'),
+                Connection: "close"
+            };
 
             var ft = new FileTransfer();
             ft.upload(fileURI,
-                      encodeURI(API_urls.BASE +"/trips/api/"+$stateParams.tripId+"/upload/"),
+                      encodeURI(API_urls.BASE() +"/trips/api/"+$stateParams.tripId+"/upload/"),
                       function(mdata){
                           var alertPopup = $ionicPopup.alert({
                             title: 'Photo Submission Succeeded',
@@ -99,7 +194,7 @@ angular.module('equitrack.tripControllers', [])
                       function(err){
                           var alertPopup = $ionicPopup.alert({
                             title: 'Photo Submission Failed',
-                            template: 'Please try again later. ' + err.detail
+                            template: '' + JSON.stringify(err)
                         });
                       },
                       options, true);
@@ -119,7 +214,8 @@ angular.module('equitrack.tripControllers', [])
                 function(message) { alert('Failed to access camera'); },
                 {quality: 50,
                     destinationType: navigator.camera.DestinationType.FILE_URI,
-                    sourceType: navigator.camera.PictureSourceType.CAMERA }
+                    sourceType: navigator.camera.PictureSourceType.CAMERA,
+                    saveToPhotoAlbum: true}
             );
         }
         //this is for local testing only
@@ -129,7 +225,7 @@ angular.module('equitrack.tripControllers', [])
             fd.append("file", files[0]);
             fd.append('trip', $stateParams.tripId);
 
-            $http.post(API_urls.BASE +"/trips/api/"+$stateParams.tripId+"/upload/", fd,
+            $http.post(API_urls.BASE() +"/trips/api/"+$stateParams.tripId+"/upload/", fd,
                 {
                     headers: {'Content-Type': undefined },
                     transformRequest: angular.identity
@@ -147,10 +243,11 @@ angular.module('equitrack.tripControllers', [])
 
 })
 .controller('TripDetailCtrl',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state){
+    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $state, $ionicPopup, $state){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-        uid = $localStorage.currentUser.user_id;
+        uid = $localStorage.getObject('currentUser').user_id;
+
         $scope.checks = {
             supervisor : $scope.trip.supervisor == uid,
             owner: $scope.trip.traveller_id == uid,
@@ -159,6 +256,7 @@ angular.module('equitrack.tripControllers', [])
             is_planned: $scope.trip.status == "planned",
             is_canceled: $scope.trip.status == "cancelled",
             is_submitted: $scope.trip.status == "submitted",
+            report_filled: Boolean($scope.trip.main_observations)
         }
         $scope.approve = function (tripId){
             $ionicLoading.show({
@@ -167,7 +265,7 @@ angular.module('equitrack.tripControllers', [])
             TripsFactory.tripAction(tripId, 'approved', {}).then(
                 function(actionSuccess){
                     $ionicLoading.hide();
-                    TripsFactory.localApprove(tripId);
+                    TripsFactory.localTripUpdate(tripId, actionSuccess.data);
                     var alertPopup = $ionicPopup.alert({
                         title: 'Trip Approval',
                         template: 'You succesfully approved the trip'
@@ -181,10 +279,28 @@ angular.module('equitrack.tripControllers', [])
                 }
             )
         };
+        $scope.showConfirm = function(template, succ, fail) {
+           var confirmPopup = $ionicPopup.confirm({
+             title: 'Are you sure?',
+             okText: "Yes",
+             cancelText: "Not yet",
+             template: template
+           });
+           confirmPopup.then(function(res) {
+             if(res) {
+               console.log(succ)
+               succ()
+               console.log('You are sure');
+             } else {
+               console.log(fail)
+               console.log('You are not sure');
+             }
+           });
+         };
         $scope.submit = function (tripId){
             $ionicLoading.show({
-                                  template: 'Loading... <br> Submitting Trip'
-                                });
+                      template: 'Loading... <br> Submitting Trip'
+            });
             TripsFactory.tripAction(tripId, 'submitted', {}).then(
                 function(actionSuccess){
                     $ionicLoading.hide();
@@ -201,6 +317,41 @@ angular.module('equitrack.tripControllers', [])
                     console.error("Action failed")
                 }
             )
+        };
+        $scope.complete_trip = function(tripId){
+            var execute_req = function() {
+                $ionicLoading.show({
+                    template: 'Loading... <br> Submitting Trip'
+                });
+                TripsFactory.tripAction(tripId, 'completed', {}).then(
+                    function (actionSuccess) {
+                        $ionicLoading.hide();
+                        TripsFactory.localTripUpdate(tripId, actionSuccess.data);
+                        var alertPopup = $ionicPopup.alert({
+                            title: 'Trip Submission',
+                            template: 'You completed the trip'
+                        });
+                        $state.go('app.dash.my_trips');
+                        console.log("Action succeeded")
+                    },
+                    function (actionFailed) {
+                        $ionicLoading.hide();
+                        console.error(actionFailed)
+                        console.error("Action failed")
+                        $ionicPopup.alert({
+                            title: 'Trip Submission',
+                            template: (actionFailed.data.detail) ? actionFailed.data.detail : "Something went wrong"
+                        });
+                    })
+            };
+            var now = new Date();
+            var trip_end = new Date($scope.trip.to_date);
+            now.setHours(0,0,0,0);
+            if (now < trip_end){
+                $scope.showConfirm("The trip has not ended yet!",execute_req);
+                return
+            }
+            execute_req();
         };
         $scope.go_report = function(tripId){
             $state.go('app.reporting.text', {"tripId":tripId})
@@ -226,10 +377,10 @@ angular.module('equitrack.tripControllers', [])
 
         };
         console.log("in mytrips")
-        console.log($localStorage.trips)
+        console.log($localStorage.getObject('trips'))
 
         $scope.onlyMe = function(trip) {
-            return trip.traveller_id == $localStorage.currentUser.user_id;
+            return trip.traveller_id == $localStorage.getObject('currentUser').user_id;
         };
         $scope.go_report = function(tripId){
             $state.go('app.reporting.text', {"tripId":tripId})
@@ -290,9 +441,9 @@ angular.module('equitrack.tripControllers', [])
         };
 
         console.log("in supervised");
-        console.log($localStorage.trips);
+        console.log($localStorage.getObject('trips'));
         $scope.onlySupervised = function(trip) {
-            return trip.supervisor == $localStorage.currentUser.user_id;
+            return trip.supervisor == $localStorage.getObject('currentUser').user_id;
         };
         Data.get_trips(
             function(res){
@@ -315,7 +466,7 @@ angular.module('equitrack.tripControllers', [])
             TripsFactory.tripAction(tripId, 'approved', {}).then(
                 function(actionSuccess){
                     $ionicLoading.hide();
-                    TripsFactory.localApprove(tripId);
+                    TripsFactory.localTripUpdate(tripId, actionSuccess.data);
                     $state.go('app.dash.my_trips');
                     console.log("Action succeded")
                 },
@@ -385,7 +536,7 @@ angular.module('equitrack.tripControllers', [])
                     console.log(success)
                 }, function (err) {
                     $ionicLoading.hide();
-                    $ionicHistory.goBack()
+                    $ionicHistory.goBack();
                     $ionicPopup.alert({
                         title: 'Something Went Wrong',
                         template: err.data
