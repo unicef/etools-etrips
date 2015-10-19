@@ -120,6 +120,8 @@ angular.module('equitrack.controllers', [])
         $ionicLoading.show({
                       template: 'Loading...'
         });
+        //store the username in the background for re-login
+        $localStorage.setObject("relogin_cred",{username:loginData.username, password:""})
         LoginService.loginUser(loginData, login_success, login_fail)
         $scope.data = {}
     };

@@ -69,4 +69,49 @@ angular.module('equitrack.utils', [])
     adfsEndpoint: adfsEndpoint,
     headers: headers,
   }
-}]);
+}])
+
+
+.factory('ErrorHandler', function($ionicLoading, $ionicHistory, $ionicPopup, $state){
+
+    var default_message = "Something went wrong, try again later";
+
+    function parse(error){
+        console.log('error response:', error)
+        if (!error){
+            return default_message
+        }
+        if (typeof(error)=="string"){
+            return error;
+        } else if ((typeof(error)=="object") && (error.data)){
+            if (error.data.detail){
+                return error.data.detail
+            } else if (error.data.non_field_errors){
+                return error.data.non_field_errors.join('<br>')
+            } else if (typeof (error.data == "string") && (error.data.indexOf('security token could not be') != -1)){
+                // this means ADFS returned an XML saying invalid credentials
+                return "The password introduced was incorrect."
+            }
+        }
+        return default_message
+    };
+
+    var popError = function (err, path, stay_on_page){
+            console.log("got an error")
+            $ionicLoading.hide();
+            if (path){
+                $state.go(path);
+            } else if (!stay_on_page) {
+                $ionicHistory.goBack();
+            }
+
+            $ionicPopup.alert({
+                title: 'Something went wrong',
+                template: parse(err)
+            })
+    };
+    return {
+        parse:parse,
+        popError:popError
+    }
+})
