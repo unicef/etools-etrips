@@ -60,7 +60,7 @@ angular.module('equitrack.services', [])
                 user = JSON.parse(urlBase64Decode(encoded));
             }
             return user;
-         };
+        };
         function isTokenExpired(){
             var token = $localStorage.getObject('tokenClaims');
             var now = new Date();
@@ -70,7 +70,6 @@ angular.module('equitrack.services', [])
             } else {
                 return false
             }
-
         }
         return{
             getClaimsFromToken: getClaimsFromToken,
@@ -80,11 +79,11 @@ angular.module('equitrack.services', [])
 .service('myHttp', function($q, $http, $localStorage, $ionicPopup, LoginService, $ionicLoading, TokenService){
         var showConfirm = function(template, succ, fail) {
             var confirmPopup = $ionicPopup.prompt({
-               title: 'Session Timeout',
+               title: 'Session Expired',
                template: template,
                inputType: 'password',
                inputPlaceholder: 'Your password'
-             })
+             });
             confirmPopup.then(function (res) {
                 if (res) {
                     succ(res)
