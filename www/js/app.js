@@ -1,6 +1,6 @@
 // app UnicefEquitrackMobile
 //  author @robertavram
-angular.module('equitrack', ['ionic', 'equitrack.controllers', 'equitrack.services', 'equitrack.utils', 'equitrack.tripControllers'])
+angular.module('equitrack', ['ionic', 'ngIOS9UIWebViewPatch', 'equitrack.controllers', 'equitrack.services', 'equitrack.utils', 'equitrack.tripControllers'])
 
 .run(function($ionicPlatform, $rootScope, $state, $http, API_urls, $localStorage) {
 

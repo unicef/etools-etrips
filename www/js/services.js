@@ -1,8 +1,8 @@
 angular.module('equitrack.services', [])
 
 .service('API_urls', function($localStorage) {
-        var defaultConn = 'stg';
-        var options = { dev :'https://22191e85.ngrok.com',
+        var defaultConn = 'prd';
+        var options = { dev :'https://2930f3ca.ngrok.com',
                         stg: 'https://etools-staging.unicef.org',
                         prd: 'https://etools-staging.unicef.org'};
 
@@ -195,6 +195,7 @@ angular.module('equitrack.services', [])
                 //console.log(data)
                 Auth.login(data).then(
                     function(res){
+
                         successAuth(res, retSuccess)
                     } ,
                     function(err){

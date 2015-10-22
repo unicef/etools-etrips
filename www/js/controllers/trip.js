@@ -150,7 +150,7 @@ angular.module('equitrack.tripControllers', [])
 .controller('ReportingPictureCtrl',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http, API_urls, ErrorHandler){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-
+        $scope.data = {}
 
         var mobileUploadPhoto = function(fileURI){
 
@@ -158,7 +158,7 @@ angular.module('equitrack.tripControllers', [])
             options.fileKey = "file";
             options.fileName = "picture";
             options.mimeType = "image/jpeg";
-            options.params = {};
+            options.params = {caption:($scope.data.caption)? $scope.data.caption : ""};
             options.chunkedMode = false;
             options.headers = {
                 Authorization: 'JWT  ' + $localStorage.get('jwtoken'),
