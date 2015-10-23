@@ -2,7 +2,7 @@ angular.module('equitrack.services', [])
 
 .service('API_urls', function($localStorage) {
         var defaultConn = 'prd';
-        var options = { dev :'https://2930f3ca.ngrok.com',
+        var options = { dev :'https://etoolslocal.localtunnel.me',
                         stg: 'https://etools-staging.unicef.org',
                         prd: 'https://etools-staging.unicef.org'};
 

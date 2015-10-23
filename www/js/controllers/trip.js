@@ -487,11 +487,19 @@ angular.module('equitrack.tripControllers', [])
 
         $scope.submit = function (){
             // do some validation here.
-
-            if (typeof ($scope.ap.person_responsible) == "undefined"){
-                // TODO: make sure you can't submit an action point due in the past
-                // TODO: make sure you can't submit an action point without a description
+            $scope.errors = {}
+            $scope.error = false;
+            // TODO: make sure you can't submit an action point due in the past
+            if (!$scope.ap.person_responsible){
                 $scope.error = true;
+                $scope.errors.person_responsible = true;
+            };
+            if (!$scope.ap.description){
+                $scope.error = true;
+                $scope.errors.description = true;
+            };
+
+            if ($scope.error){
                 return;
             } else {
                 $ionicLoading.show({
