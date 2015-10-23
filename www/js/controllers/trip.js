@@ -491,15 +491,13 @@ angular.module('equitrack.tripControllers', [])
             $scope.error = false;
             // TODO: make sure you can't submit an action point due in the past
             if (!$scope.ap.person_responsible){
-                $scope.error = true;
                 $scope.errors.person_responsible = true;
-            };
+            }
             if (!$scope.ap.description){
-                $scope.error = true;
                 $scope.errors.description = true;
-            };
-
-            if ($scope.error){
+            }
+            if (Object.keys($scope.errors).length){
+                $scope.error = true;
                 return;
             } else {
                 $ionicLoading.show({
