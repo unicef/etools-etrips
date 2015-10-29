@@ -473,12 +473,16 @@ angular.module('equitrack.services', [])
                 if (( dtype == 'text') && (my_obj[tripId][dtype])) {
                     return my_obj[tripId][dtype]
                 }
+                if (( dtype == 'notes') && (my_obj[tripId][dtype])) {
+                    return my_obj[tripId][dtype]
+                }
             }
         }
         return {}
 
     }
     function setDraft(tripId, dtype, draft){
+        console.log("tripid, type, draft", tripId, dtype, draft)
         // if there isn't a currentUser in here we're in big trouble anyway
         var country = $localStorage.getObject('currentUser').profile.country
         var my_obj = $localStorage.getObject('draft-' + country);

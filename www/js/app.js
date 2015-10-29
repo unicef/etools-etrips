@@ -86,6 +86,16 @@ angular.module('equitrack', ['ionic', 'ngIOS9UIWebViewPatch', 'equitrack.control
         requireLogin: false
       }
   })
+  .state('app.notes',{
+      url: '/notes/:tripId',
+      cache: false,
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/trip/notes.html',
+              controller: 'NotesCtrl'
+          }
+      }
+  })
 
   .state('app.reporting', {
       url: '/reporting/:tripId',

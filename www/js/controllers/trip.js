@@ -5,7 +5,7 @@
 
 angular.module('equitrack.tripControllers', [])
 
-.controller('TripCtrl', function($scope, $ionicModal, $timeout) {
+.controller('TripCtrl', function($scope, $ionicModal, $timeout, $ionicHistory) {
     $scope.data = {};
 })
 
@@ -57,7 +57,46 @@ angular.module('equitrack.tripControllers', [])
             )
         }
 
-}).controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler){
+})
+.controller('NotesCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler){
+        console.log("clearing history")
+        $ionicHistory.clearHistory();
+
+        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+        $scope.notes = TripsFactory.getDraft($stateParams.tripId, 'notes');
+
+
+        console.log('here are the notes')
+        console.log($scope.notes)
+
+
+        function reset_data(){
+            $scope.data = {
+                text : ($scope.notes.text) ? $scope.notes.text : "",
+            }
+        }
+        reset_data()
+
+        $scope.saveNotes = function(){
+            TripsFactory.setDraft($stateParams.tripId, 'notes', $scope.data)
+            $ionicPopup.alert({
+                        title: 'Notes Saved',
+                        template: 'Notes have been successfully saved'
+                    })
+        };
+        $scope.discardNotes = function(){
+            TripsFactory.setDraft($stateParams.tripId, 'notes', {})
+            $scope.notes = TripsFactory.getDraft($stateParams.tripId, 'notes')
+            reset_data()
+            $ionicPopup.alert({
+                        title: 'Notes Discarded',
+                        template: 'Notes have been successfully discarded'
+                    })
+        };
+
+
+})
+.controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text');
@@ -331,11 +370,14 @@ angular.module('equitrack.tripControllers', [])
         $scope.go_report = function(tripId){
             $state.go('app.reporting.text', {"tripId":tripId})
         };
+        $scope.take_notes = function(tripId){
+            $state.go('app.notes', {"tripId":tripId})
+        };
 
 
 })
 .controller('MyTripsCtrl', function($scope, $localStorage, Data, $state, TripsFactory, $stateParams,
-                                    $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, ErrorHandler) {
+                                    $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, ErrorHandler, $ionicHistory) {
 
         $scope.doRefresh = function() {
             Data.get_trips(function(res){
