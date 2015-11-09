@@ -28,8 +28,8 @@ angular.module('equitrack.controllers', [])
 
 })
 .controller('SettingsConnectionCtrl', function($scope, API_urls, LoginService, $state, $ionicHistory) {
-
-    $scope.conn_str = API_urls.get_option_name();
+    $scope.dt = {};
+    $scope.dt.conn_str = API_urls.get_option_name();
 
     $scope.changeConnection = function(conn_str){
 

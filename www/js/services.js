@@ -1,10 +1,11 @@
 angular.module('equitrack.services', [])
 
 .service('API_urls', function($localStorage) {
-        var defaultConn = 'prd';
-        var options = { dev :'https://etoolslocal.localtunnel.me',
-                        stg: 'https://etools-staging.unicef.org',
-                        prd: 'https://etools-staging.unicef.org'};
+        var defaultConn = 2;
+        var options = { //0 : 'https://etoolslocal.localtunnel.me', //dev
+                        0 : 'http://localhost:8099', //dev
+                        1 : 'https://etools-staging.unicef.org', //stg
+                        2 : 'https://etools-staging.unicef.org'}; //prod
 
         function get_base(){
             console.log('getting base_url')
@@ -28,7 +29,7 @@ angular.module('equitrack.services', [])
         }
         return {
             BASE: get_base,
-            ADFS: (get_option_name() == 'dev') ? false: true,
+            ADFS: (get_option_name() == '0') ? false: true,
             get_option_name: get_option_name,
             set_base: set_base
         }
