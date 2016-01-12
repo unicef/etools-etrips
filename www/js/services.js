@@ -4,7 +4,7 @@ angular.module('equitrack.services', [])
         var defaultConn = 2;
         var options = { //0 : 'https://etoolslocal.localtunnel.me', //dev
                         0 : 'https://etoolsdev.localtunnel.me', //dev
-                        1 : 'https://etools-staging.unicef.org', //stg
+                        1 : 'https://etools-dev.unicef.org', //stg
                         2 : 'https://etools-staging.unicef.org'}; //prod
 
         function get_base(){
@@ -29,7 +29,7 @@ angular.module('equitrack.services', [])
         }
         return {
             BASE: get_base,
-            ADFS: true, // (get_option_name() == '0') ? false: true,
+            ADFS: true, //(get_option_name() == '0') ? false: true,
             get_option_name: get_option_name,
             set_base: set_base
         }
