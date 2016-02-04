@@ -1,10 +1,11 @@
 angular.module('equitrack.services', [])
 
 .service('API_urls', function($localStorage) {
-        var defaultConn = 'stg';
-        var options = { dev :'https://22191e85.ngrok.com',
-                        stg: 'https://etools-staging.unicef.org',
-                        prd: 'https://etools-staging.unicef.org'};
+        var defaultConn = 2;
+        var options = { //0 : 'https://etoolslocal.localtunnel.me', //dev
+                        0 : 'https://etoolsdev.localtunnel.me', //dev
+                        1 : 'https://etools-staging.unicef.org', //stg
+                        2 : 'https://etools-staging.unicef.org'}; //prod
 
         function get_base(){
             console.log('getting base_url')
@@ -28,11 +29,127 @@ angular.module('equitrack.services', [])
         }
         return {
             BASE: get_base,
-            ADFS: (get_option_name() == 'dev') ? false: true,
+            ADFS: true, // (get_option_name() == '0') ? false: true,
             get_option_name: get_option_name,
             set_base: set_base
         }
+})
+.service('TokenService', function($localStorage){
+        function urlBase64Decode(str) {
+           var output = str.replace('-', '+').replace('_', '/');
+           switch (output.length % 4) {
+               case 0:
+                   break;
+               case 2:
+                   output += '==';
+                   break;
+               case 3:
+                   output += '=';
+                   break;
+               default:
+                   throw 'Illegal base64url string!';
+           }
+           return $window.atob(output);
+        };
 
+        function getClaimsFromToken() {
+            var token = $localStorage.get('jwtoken');
+            //console.log("getclaims", token);
+            var user = {"no":"no"};
+            if (typeof token !== 'undefined') {
+                var encoded = token.split('.')[1];
+                user = JSON.parse(urlBase64Decode(encoded));
+            }
+            return user;
+        };
+        function isTokenExpired(){
+            var token = $localStorage.getObject('tokenClaims');
+            var now = new Date();
+            if ((!Object.keys(token).length) ||
+                ((token.exp*1000) < now.getTime())){
+                return true
+            } else {
+                return false
+            }
+        }
+        return{
+            getClaimsFromToken: getClaimsFromToken,
+            isTokenExpired:isTokenExpired
+        }
+})
+.service('myHttp', function($q, $http, $localStorage, $ionicPopup, LoginService, $ionicLoading, TokenService){
+        var showConfirm = function(template, succ, fail) {
+            var confirmPopup = $ionicPopup.prompt({
+               title: 'Session Expired',
+               template: template,
+               inputType: 'password',
+               inputPlaceholder: 'Your password'
+             });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    succ(res)
+                } else {
+                    fail(res)
+                }
+            });
+        };
+        var httpWrapp = function(method, path, data, ignore_expiration){
+            var def = $q.defer()
+            var req = {
+                  method: method,
+                  url: path
+                }
+            if (method != 'GET'){
+                req.data = data
+            }
+            function confirmed_reLogin(res){
+                $ionicLoading.show({template: "Loading..."});
+                console.log(res, 'we are logging in again')
+                var relogin_cred = $localStorage.getObject('relogin_cred');
+                relogin_cred.password = res;
+                LoginService.refreshLogin(
+                    function(succ){
+                        // continue with the action
+                        console.log('managed to relogin', succ)
+                        $http(req).then(
+                            function(res){$ionicLoading.hide(); def.resolve(res)},
+                            function(rej){$ionicLoading.hide(); def.reject(rej)}
+                        );
+                    },
+                    function(fail){
+                        console.log("failed to relogin", fail)
+                        def.reject(fail)
+                    },
+                    relogin_cred
+                )
+            };
+            function failed_reLogin(){
+                console.log('user chose not to continue with re-logging in')
+                def.reject('Cancelled by user')
+            }
+            if ((!ignore_expiration) && (TokenService.isTokenExpired())){
+                $ionicLoading.hide();
+                showConfirm('Your session has ended, please enter your password to proceed:', confirmed_reLogin, failed_reLogin)
+            } else {
+                $http(req).then(
+                    function(res){def.resolve(res)},
+                    function(rej){def.reject(rej)}
+                );
+            }
+            return def.promise;
+        };
+
+        return {
+            get: function(path, ignore_expiration){
+                return httpWrapp('GET', path, false, ignore_expiration)
+            },
+            post:function(path, data, ignore_expiration){
+                return httpWrapp('POST', path, data, ignore_expiration)
+            },
+            patch:function(path, data, ignore_expiration){
+                return httpWrapp('PATCH', path, data, ignore_expiration)
+            },
+        }
 })
 .service('LoginService',['$q', '$rootScope', '$localStorage', 'Auth', 'API_urls',
     function($q, $rootScope, $localStorage, Auth, API_urls) {
@@ -79,6 +196,7 @@ angular.module('equitrack.services', [])
                 //console.log(data)
                 Auth.login(data).then(
                     function(res){
+
                         successAuth(res, retSuccess)
                     } ,
                     function(err){
@@ -86,10 +204,12 @@ angular.module('equitrack.services', [])
                         retFail(err)
                     })
             },
-            refreshLogin: function(retSuccss, retFail){
-                var data = $localStorage.getObject('cred');
+            refreshLogin: function(retSuccess, retFail, data){
                 if (!data){
-                    console.log('here3')
+                    data = $localStorage.getObject('relogin_cred');
+                }
+                if (!data){
+                    console.log('No credentials were provided for relogin')
                     retFail();
                     return
                 }
@@ -175,8 +295,8 @@ angular.module('equitrack.services', [])
            urlBase64Decode : urlBase64Decode
        };
 }])
-.factory('Data', ['$timeout', '$http', 'API_urls', '$localStorage',
-        function ($timeout, $http, API_urls, $localStorage) {
+.factory('Data', ['$timeout', 'API_urls', '$localStorage', 'myHttp',
+        function ($timeout, API_urls, $localStorage, myHttp) {
 
         var refresh_trips = function(){
             get_trips_remote(function(){}, function(){})
@@ -194,7 +314,7 @@ angular.module('equitrack.services', [])
         }
 
         var get_trips_remote = function get_from_server(success, error){
-                   return $http.get(API_urls.BASE() + '/trips/api/list/').then(
+                   return myHttp.get(API_urls.BASE() + '/trips/api/list/').then(
                        function(succ){
                            $localStorage.setObject('trips',succ.data);
                            success(succ.data)
@@ -204,7 +324,7 @@ angular.module('equitrack.services', [])
                        })
         }
         var get_users_remote = function get_from_server(success, error){
-                   return $http.get(API_urls.BASE() + '/users/api/').then(
+                   return myHttp.get(API_urls.BASE() + '/users/api/').then(
                        function(succ){
                            $localStorage.setObject('users', succ.data);
 
@@ -219,7 +339,7 @@ angular.module('equitrack.services', [])
         }
 
         var patchTrip = function patchTrip(tripId, data, success, fail){
-            return $http.patch(API_urls.BASE() + '/trips/api/' + tripId +"/", data).then(
+            return myHttp.patch(API_urls.BASE() + '/trips/api/' + tripId +"/", data).then(
                 function(succ){
                     success(succ)
                 },
@@ -230,7 +350,7 @@ angular.module('equitrack.services', [])
 
        return {
            get_profile: function (success, error) {
-               $http.get(API_urls.BASE() + '/users/api/profile/').then(
+               myHttp.get(API_urls.BASE() + '/users/api/profile/').then(
                    function(succ){
                        var myUser = succ.data;
                        myUser.user_id = myUser.id;
@@ -269,7 +389,7 @@ angular.module('equitrack.services', [])
 ])
 
 
-.factory('TripsFactory', ['Data', '$localStorage', '$http', 'API_urls', function(Data, $localStorage, $http, API_urls) {
+.factory('TripsFactory', ['Data', '$localStorage', 'myHttp', 'API_urls', function(Data, $localStorage, myHttp, API_urls) {
 
     function formatAP(ap, for_upload){
 
@@ -310,7 +430,7 @@ angular.module('equitrack.services', [])
     }
     function tripAction(id, action, data){
         var url = API_urls.BASE() + '/trips/api/' + id + '/';
-        var result = $http.post(url + action + '/', data);
+        var result = myHttp.post(url + action + '/', data);
         return result
 
     }
@@ -340,14 +460,7 @@ angular.module('equitrack.services', [])
     function reportText(data, tripId, success, fail){
         // if we need any extra data proccessing here would be the place
         Data.patch_trip(tripId, data, success, fail)
-        //for (var k in data) {
-        //    if (data.hasOwnProperty(k)) {
-        //        console.log(k)
-        //        trip[k] = data[k]
-        //    }
-        //}
-        //console.log(trip)
-        //console.log('here is where we update the trip')
+
     }
     function getDraft(tripId, dtype){
         // if there isn't a currentUser in here we're in big trouble anyway
@@ -361,12 +474,16 @@ angular.module('equitrack.services', [])
                 if (( dtype == 'text') && (my_obj[tripId][dtype])) {
                     return my_obj[tripId][dtype]
                 }
+                if (( dtype == 'notes') && (my_obj[tripId][dtype])) {
+                    return my_obj[tripId][dtype]
+                }
             }
         }
         return {}
 
     }
     function setDraft(tripId, dtype, draft){
+        console.log("tripid, type, draft", tripId, dtype, draft)
         // if there isn't a currentUser in here we're in big trouble anyway
         var country = $localStorage.getObject('currentUser').profile.country
         var my_obj = $localStorage.getObject('draft-' + country);

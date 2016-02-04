@@ -1,0 +1,18 @@
+<ion-view view-title="Notes">
+  <ion-content class="padding">
+      <br>
+      <div class="row no-padding">
+          <button ng-click="discardNotes()" class="col button button-block button-assertive margin-lr-2 default-lh">
+              Discard Notes
+          </button>
+          <button ng-click="saveNotes()" class="col button button-block button-balanced margin-lr-2 default-lh">
+              Save Notes
+          </button>
+       </div>
+      <h4 class="energized">Notes for {{ trip.travel_type | underscoreless | TitleCase}}</h4>
+      <label class="item padding-top item-input item-stacked-label">
+        <textarea ng-model="data.text" placeholder="Insert notes here" rows="10" cols="10">
+        </textarea>
+      </label>
+  </ion-content>
+</ion-view>

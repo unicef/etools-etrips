@@ -8,11 +8,11 @@
                 This setting should not be used unless you are a developer or a designated tester.
             </p>
         </div>
-        <ion-radio ng-model="conn_str" ng-value="'dev'">Development</ion-radio>
-        <ion-radio ng-model="conn_str" ng-value="'stg'">Staging</ion-radio>
-        <ion-radio ng-model="conn_str" ng-value="'prd'">Production</ion-radio>
+        <ion-radio-fix ng-model="dt.conn_str" ng-value="0">Development</ion-radio-fix>
+        <ion-radio-fix ng-model="dt.conn_str" ng-value="1">Staging</ion-radio-fix>
+        <ion-radio-fix ng-model="dt.conn_str" ng-value="2">Production</ion-radio-fix>
         <br>
-        <button ng-disabled="!(dev_pin == 'c345')" class="button button-block button-calm" ng-click="changeConnection(conn_str)">
+        <button ng-disabled="!(dev_pin == 'c345')" class="button button-block button-calm" ng-click="changeConnection(dt.conn_str)">
           Change Connection
         </button>
         <label class="item item-input">

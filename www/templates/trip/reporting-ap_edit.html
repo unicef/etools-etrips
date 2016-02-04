@@ -63,7 +63,8 @@
     </label>
     <div class="item item-icon-left assertive" ng-if="error">
         <i class="icon ion-alert-circled icon-assertive"></i>
-        <p>Please assign the action point to a person</p>
+        <p ng-if="errors.description">Please enter a description before continuing</p>
+        <p ng-if="errors.person_responsible">Please assign the action point to a person</p>
 
     </div>
 

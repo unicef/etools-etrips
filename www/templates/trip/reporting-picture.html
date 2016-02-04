@@ -1,19 +1,22 @@
 <ion-view view-title="Add Picture">
 
   <ion-content class="padding">
-      <!-- <p>Add picture functionality dev in progress</p> -->
       <br>
+      <h3>Caption</h3>
+      <label class="item padding-top item-input item-stacked-label">
+        <textarea ng-model="data.caption" placeholder="Description goes here: Please enter description before choosing photo" rows="4" cols="10">
+        </textarea>
+      </label>
       <br>
-      <br>
-      <button ng-click="uploadExisting()" class="button button-block button-positive padding-botom">
-          Upload Existing Photo
-      </button>
-      <br>
-      <br>
-      <br>
-      <button ng-click="takePicture()" class="button button-block button-positive padding-botom">
-          Take Picture
-      </button>
+      <div class="row no-padding">
+          <button ng-click="uploadExisting()" class="col button button-block button-positive margin-lr-2 default-lh">
+              Upload Existing Photo
+          </button>
+
+          <button ng-click="takePicture()" class="col button button-block button-positive margin-lr-2 default-lh">
+              Take Picture
+          </button>
+      </div>
 
       <!-- this is for local testing only -->
         <!--

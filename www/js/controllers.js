@@ -28,8 +28,8 @@ angular.module('equitrack.controllers', [])
 
 })
 .controller('SettingsConnectionCtrl', function($scope, API_urls, LoginService, $state, $ionicHistory) {
-
-    $scope.conn_str = API_urls.get_option_name();
+    $scope.dt = {};
+    $scope.dt.conn_str = API_urls.get_option_name();
 
     $scope.changeConnection = function(conn_str){
 
@@ -120,6 +120,8 @@ angular.module('equitrack.controllers', [])
         $ionicLoading.show({
                       template: 'Loading...'
         });
+        //store the username in the background for re-login
+        $localStorage.setObject("relogin_cred",{username:loginData.username, password:""})
         LoginService.loginUser(loginData, login_success, login_fail)
         $scope.data = {}
     };
