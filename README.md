@@ -34,6 +34,12 @@ Install Protractor testing framework:
 $ sudo npm install -g protractor
 ```bash
 
+Install Mocha for reporting and testing:
+
+```bash
+$ sudo npm install -g mocha
+```bash
+
 Install required Ionic platforms:
 
 ```bash
