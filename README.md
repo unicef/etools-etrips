@@ -28,6 +28,12 @@ Install required development node.js packages:
 $ npm install
 ```
 
+Install Protractor testing framework:
+
+```bash
+$ sudo npm install -g protractor
+```bash
+
 Install required Ionic platforms:
 
 ```bash
@@ -74,5 +80,5 @@ $ ionic serve
 Run protractor tets:
 
 ```bash
-$ protractor tests/config_dev.js
+$ protractor tests/conf_dev.js
 ```
