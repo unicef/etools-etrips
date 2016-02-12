@@ -1,0 +1,4 @@
+{
+    "apiHost" : "https://etools-staging.unicef.org",
+    "enableADFS" : true
+}
