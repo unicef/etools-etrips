@@ -22,6 +22,7 @@
     "gulp-preprocess": "^2.0.0",
     "gulp-replace-task": "^0.11.0",
     "gulp-sass": "^2.2.0",
+    "gulp-shell": "^0.5.2",
     "gulp-util": "^2.2.14",
     "lodash": "^4.3.0",
     "protractor": "^3.1.1",
