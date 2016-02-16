@@ -89,3 +89,12 @@ Run protractor tets:
 ```bash
 $ protractor tests/conf_dev.js
 ```
+
+Setting Environment Variables
+-----------------------------
+
+Certain files must be modified based on the target environment (e.x. API hosts). To update those files:
+
+```bash
+$ gulp replace --env [prod | local | test]
+```

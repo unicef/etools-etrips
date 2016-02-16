@@ -1,38 +1,37 @@
-angular.module('equitrack.services', [])
+angular.module('equitrack.services', ['equitrack.constants'])
 
-.service('API_urls', function($localStorage) {
-        var defaultConn = 2;
-        var options = { //0 : 'https://etoolslocal.localtunnel.me', //dev
-                        0 : 'https://etoolsdev.localtunnel.me', //dev
-                        1 : 'https://etools-staging.unicef.org', //stg
-                        2 : 'https://etools-staging.unicef.org'}; //prod
+.service('API_urls', function($localStorage, apiHostDevelopment, defaultConnection) {
+        var defaultConn = defaultConnection;
+        var options = { 
+                        0 : apiHostDevelopment,                 //  development 
+                        1 : 'https://etools-dev.unicef.org',    //  staging
+                        2 : 'https://etools-staging.unicef.org' //  production
+                      };
 
         function get_base(){
-            console.log('getting base_url')
-            var base_url = $localStorage.get('base_url')
+            var base_url = $localStorage.get('base_url');
             if (base_url){
-                return options[base_url]
+                return options[base_url];
             }
-            return options[defaultConn]
+            return options[defaultConn];
 
         }
         function get_option_name(){
             var base_url = $localStorage.get('base_url');
             if (base_url){
-                return base_url
+                return base_url;
             }
-            return defaultConn
+            return defaultConn;
         }
         function set_base(base){
-            console.log(base)
-            $localStorage.set('base_url', base)
+            $localStorage.set('base_url', base);
         }
         return {
             BASE: get_base,
-            ADFS: true, // (get_option_name() == '0') ? false: true,
+            ADFS: (get_option_name() == '0') ? false: true,
             get_option_name: get_option_name,
             set_base: set_base
-        }
+        };
 })
 .service('TokenService', function($localStorage){
         function urlBase64Decode(str) {
