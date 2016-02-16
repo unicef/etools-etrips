@@ -9,11 +9,11 @@ var auth = function auth(){
     };
 
     this.logout = function (){
-        element.all(by.css('button[menu-toggle="left"].ion-navicon')).get(1).click();
+        element(by.css('div[nav-bar="active"] > ion-header-bar button[menu-toggle="left"].ion-navicon')).click();
         element(by.cssContainingText('.item', 'Logout')).click();
         waitForElement('h2.title.unicef-blue');
         element(by.css('input[type="email"]')).clear();
     };
 };
 
-module.exports = new auth();  
+module.exports = new auth();

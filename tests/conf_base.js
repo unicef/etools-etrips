@@ -1,6 +1,7 @@
 exports.config = {
     specs: [ 
-        'login.js'
+        'login.js',
+        'navigation.js'
     ],
 
     exclude: [
