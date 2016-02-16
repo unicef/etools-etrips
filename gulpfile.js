@@ -5,13 +5,14 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
-var shell = require('gulp-shell')
+var shell = require('gulp-shell');
 var preprocess = require('gulp-preprocess');
 var sh = require('shelljs');
 var args = require('yargs').argv;  
 var fs = require('fs');
 var replace = require('gulp-replace-task');  
 var _ = require('lodash');
+var protractor = require("gulp-protractor").protractor;
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -65,16 +66,28 @@ gulp.task('replace', function () {
   gulp.src('src/js/constants.js')  
     .pipe(replace({
       patterns: _.map(_.keys(settings), function(key){ 
-          return { match: key, replacement: settings[key] }
+          return { match: key, replacement: settings[key] };
         })
       }))
     .pipe(gulp.dest('www/js'));
 
   gulp.src('src/*.html')
     .pipe(preprocess({context: { NODE_ENV: env }}))
-    .pipe(gulp.dest('www/'))
+    .pipe(gulp.dest('www/'));
 });
 
 gulp.task('restore_db', shell.task([
   'dropdb postgres && createdb postgres && psql postgres < ./tests/fixtures/data.sql'
-]))
+]));
+
+gulp.task('protractor', function() {
+  gulp.src(["./tests/*.js"])
+    .pipe(protractor({
+        configFile: "./tests/conf_dev.js"
+    }))
+    .on('error', function(e) { throw e; });
+});
+
+gulp.task('protractor_watch', function () {   
+  gulp.watch(['./tests/**/*.js'], ['protractor']);
+});

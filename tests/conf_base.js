@@ -1,10 +1,22 @@
 exports.config = {
+    specs: [ 
+        'login.js'
+    ],
+
+    exclude: [
+        'conf_dev.js',
+        'conf_base.js',
+        'auth.js',
+        '*.txt'
+    ],
+
     framework: 'mocha',
-    specs: [ 'login.js'],
-    exclude: ['conf_dev.js', 'conf_base.js', '*.txt'],
+    seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
+    chromeDriver: '../node_modules/protractor/selenium/chromedriver',
 
     mochaOpts: {        
-        reporter: 'spec'
+        reporter: 'spec',
+        timeout: 10000
     },
 
     onPrepare: function () {
@@ -16,6 +28,13 @@ exports.config = {
         global.chaiAsPromised = require('chai-as-promised');
         global.chai.use(chaiAsPromised);
         global.faker = require('faker');
+        global.auth = require('./auth.js');
+
+        global.waitForElement = function(selector) {
+            browser.wait(function() {
+                return element(by.css(selector)).isPresent();
+            }, 10000);
+        };
 
         Object.defineProperty(
             protractor.promise.Promise.prototype,
@@ -24,11 +43,5 @@ exports.config = {
         );
 
         browser.manage().window().setSize(640, 1136);
-    },
-
-    // capabilities: {
-    //     browserName: 'chrome',
-    //     shardTestFiles: true,
-    //     maxInstances: 2
-    // },    
-}
+    }
+};
