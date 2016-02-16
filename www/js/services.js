@@ -1,8 +1,12 @@
 angular.module('equitrack.services', ['equitrack.constants'])
 
-.service('API_urls', function($localStorage, apiHost, enableADFS) {
-        var defaultConn = 0;
-        var options = { 0 : apiHost }; 
+.service('API_urls', function($localStorage, apiHostDevelopment, defaultConnection) {
+        var defaultConn = defaultConnection;
+        var options = { 
+                        0 : apiHostDevelopment,                 //  development 
+                        1 : 'https://etools-dev.unicef.org',    //  staging
+                        2 : 'https://etools-staging.unicef.org' //  production
+                      };
 
         function get_base(){
             var base_url = $localStorage.get('base_url');
@@ -19,12 +23,12 @@ angular.module('equitrack.services', ['equitrack.constants'])
             }
             return defaultConn;
         }
-        function set_base(base){            
+        function set_base(base){
             $localStorage.set('base_url', base);
         }
         return {
             BASE: get_base,
-            ADFS: enableADFS,
+            ADFS: (get_option_name() == '0') ? false: true,
             get_option_name: get_option_name,
             set_base: set_base
         };

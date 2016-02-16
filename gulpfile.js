@@ -58,7 +58,7 @@ gulp.task('git-check', function(done) {
 });
 
 gulp.task('replace', function () {  
-  var env = args.env || 'local';
+  var env = args.env || 'prod';
   var filename = env + '.json';
   var settings = JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
 
