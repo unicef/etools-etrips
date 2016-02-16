@@ -1,4 +1,4 @@
 {
-    "apiHost" : "https://etools-staging.unicef.org",
-    "enableADFS" : true
+    "apiHostDevelopment" : "https://etoolsdev.localtunnel.me",
+    "defaultConnection" : 2
 }

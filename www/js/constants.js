@@ -1,3 +1,3 @@
 angular.module('equitrack.constants', [])  
-  .constant('apiHost', 'https://etools-staging.unicef.org')
-  .constant('enableADFS', true);  
+  .constant('apiHostDevelopment', 'https://etoolsdev.localtunnel.me')
+  .constant('defaultConnection', 2);  

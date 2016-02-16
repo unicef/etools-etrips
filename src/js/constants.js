@@ -1,3 +1,3 @@
 angular.module('equitrack.constants', [])  
-  .constant('apiHost', '@@apiHost')
-  .constant('enableADFS', @@enableADFS);  
+  .constant('apiHostDevelopment', '@@apiHostDevelopment')
+  .constant('defaultConnection', @@defaultConnection);  
