@@ -21,8 +21,8 @@ describe('Navigation', function() {
         _.each(tabs, function(tab, tabIndex){
             var tabBarItem = element.all(by.css('a.tab-item')).get(tabIndex);
             tabBarItem.click();
-            tabBarItem.getAttribute('class').then(function(val){
-                val.indexOf('tab-item tab-item-active').should.equal(0);
+            tabBarItem.getAttribute('class').then(function(val){                
+                _.includes(val.split(' '), 'tab-item-active').should.equal.true;
             });
 
             element(by.css('div[nav-bar="active"] > ion-header-bar > div.title')).getText().should.eventually.equal(tab);

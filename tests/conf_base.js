@@ -1,7 +1,8 @@
 exports.config = {
     specs: [ 
         'login.js',
-        'navigation.js'
+        'navigation.js',
+        'sidebar_menu.js'
     ],
 
     exclude: [
@@ -10,6 +11,8 @@ exports.config = {
         'auth.js',
         '*.txt'
     ],
+
+    // seleniumAddress: 'http://192.168.99.101:32772/wd/hub', // experimental: docker
 
     framework: 'mocha',
     seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
