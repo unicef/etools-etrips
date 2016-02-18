@@ -76,5 +76,5 @@ gulp.task('replace', function () {
 });
 
 gulp.task('restore_db', shell.task([
-  'dropdb postgres && createdb postgres && psql postgres < ./tests/fixtures/data.sql'
+  'dropdb test_db && createdb test_db && psql test_db < ./tests/fixtures/data.sql'
 ]))
