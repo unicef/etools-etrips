@@ -59,7 +59,7 @@ Run Application
 In a browser:
 
 ```bash
-$ ionic serve
+$ ionic serve --all
 ```
 
 Or in iOS or Android:

@@ -36,10 +36,14 @@ exports.config = {
         global.faker = require('faker');
         global.auth = require('./auth.js');
 
-        global.waitForElement = function(selector) {
+        global.waitForElement = function(selector, timeout) {
+            if (_.isUndefined(timeout)) {
+                timeout = 10000;
+            }
+
             browser.wait(function() {
                 return element(by.css(selector)).isPresent();
-            }, 10000);
+            }, timeout);
         };
 
         Object.defineProperty(
