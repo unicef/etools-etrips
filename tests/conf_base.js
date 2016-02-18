@@ -4,7 +4,8 @@ exports.config = {
         'navigation.js',
         'sidebar_menu.js',
         'my_trips.js',
-        'supervised.js'
+        'supervised.js',
+        'notes.js'
     ],
 
     exclude: [
