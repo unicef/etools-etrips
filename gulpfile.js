@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
+var shell = require('gulp-shell')
 var preprocess = require('gulp-preprocess');
 var sh = require('shelljs');
 var args = require('yargs').argv;  
@@ -73,3 +74,7 @@ gulp.task('replace', function () {
     .pipe(preprocess({context: { NODE_ENV: env }}))
     .pipe(gulp.dest('www/'))
 });
+
+gulp.task('restore_db', shell.task([
+  'dropdb test_db && createdb test_db && psql test_db < ./tests/fixtures/data.sql'
+]))
