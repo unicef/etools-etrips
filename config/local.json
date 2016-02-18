@@ -1,4 +1,4 @@
 {
-    "apiHost" : "http://etools.local:8080",
-    "enableADFS" : false
+    "apiHostDevelopment" : "http://etools.local:8080",
+    "defaultConnection" : 0
 }
