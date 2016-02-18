@@ -2,7 +2,9 @@ exports.config = {
     specs: [ 
         'login.js',
         'navigation.js',
-        'sidebar_menu.js'
+        'sidebar_menu.js',
+        'my_trips.js',
+        'supervised.js'
     ],
 
     exclude: [

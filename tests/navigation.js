@@ -1,10 +1,6 @@
 describe('Navigation', function() {
     var tabs = ['My Trips', 'Supervised'];
 
-    it('should see the login page', function() {
-        browser.get(browser.params.url + '/');
-    });
-
     it('should be able to login', function() {
         auth.login();
     });

@@ -2,10 +2,6 @@ describe('Sidebar Menu', function() {
     var tabs = ['My Trips', 'Supervised'];
     var sideMenuButton = by.css('div[nav-bar="active"] > ion-header-bar button[menu-toggle="left"].ion-navicon');
 
-    it('should see the login page', function() {
-        browser.get(browser.params.url + '/');
-    });
-
     it('should be able to login', function() {
         auth.login();
     });
