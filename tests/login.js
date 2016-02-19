@@ -3,7 +3,7 @@ describe('Login View', function() {
     var password = faker.internet.password();
 
     it('should see the login page', function() {
-        browser.get(browser.params.url + '/');
+        browser.get(urlBase + '/');
     });
 
     it('should have a title, two fields, remember me and a login button', function() {

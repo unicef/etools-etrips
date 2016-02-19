@@ -1,6 +1,6 @@
 var auth = function auth(){  
     this.login = function(){
-        browser.get(browser.params.url + '/');        
+        browser.get(urlBase + '/');        
         element(by.css('input[type="email"]')).clear();
         element(by.css('input[type="email"]')).sendKeys('rey@force.com');
         element(by.css('input[type="password"]')).sendKeys('pass');

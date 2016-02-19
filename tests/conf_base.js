@@ -5,7 +5,9 @@ exports.config = {
         'sidebar_menu.js',
         'my_trips.js',
         'supervised.js',
-        'notes.js'
+        'notes.js',
+        'reports.js',
+        'reports_action_point.js'
     ],
 
     exclude: [
@@ -15,7 +17,7 @@ exports.config = {
         '*.txt'
     ],
 
-    // seleniumAddress: 'http://192.168.99.101:32772/wd/hub', // experimental: docker
+    // seleniumAddress: 'http://192.168.99.100:32785/wd/hub', // experimental: docker
 
     framework: 'mocha',
     seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
@@ -36,6 +38,7 @@ exports.config = {
         global.chai.use(chaiAsPromised);
         global.faker = require('faker');
         global.auth = require('./auth.js');
+        global.urlBase = 'http://192.168.1.254:8100';
 
         global.waitForElement = function(selector, timeout) {
             if (_.isUndefined(timeout)) {
