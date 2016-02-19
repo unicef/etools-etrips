@@ -53,6 +53,11 @@ describe('Reports - Action Ponts', function() {
         data.get(2).getText().should.eventually.equal('Due by: Jan 3, 2017');
     });
 
+    it('should be able to logout', function() {
+        auth.logout();
+    });
+
+
     afterEach(function() {
         browser.takeScreenshot().then(function(png) {
             var stream = fs.createWriteStream('./' + path.basename(__filename, '.js') + '_screenshot.png');
