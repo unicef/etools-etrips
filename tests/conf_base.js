@@ -7,7 +7,9 @@ exports.config = {
         'supervised.js',
         'notes.js',
         'reports.js',
-        'reports_action_point.js'
+        'reports_action_point.js',
+        'reports_text.js',
+        'reports_draft.js'
     ],
 
     exclude: [
