@@ -1129,7 +1129,8 @@ CREATE TABLE partners_partnerstaffmember (
     last_name character varying(64) NOT NULL,
     email character varying(128) NOT NULL,
     phone character varying(64) NOT NULL,
-    partner_id integer NOT NULL
+    partner_id integer NOT NULL,
+    active boolean NOT NULL
 );
 
 
@@ -3804,7 +3805,10 @@ CREATE TABLE users_country (
     domain_url character varying(128) NOT NULL,
     schema_name character varying(63) NOT NULL,
     name character varying(100) NOT NULL,
-    business_area_code character varying(10)
+    business_area_code character varying(10),
+    initial_zoom integer NOT NULL,
+    latitude numeric(8,6),
+    longitude numeric(8,6)
 );
 
 
@@ -4850,6 +4854,13 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 81	users	0007_auto_20160205_2230	2016-02-15 09:31:02.442501-05
 82	users	0008_userprofile_countries_available	2016-02-15 09:31:02.74727-05
 83	users	0009_countries_available	2016-02-15 09:31:02.821371-05
+84	admin	0002_logentry_remove_auto_add	2016-02-23 10:43:50.166945-05
+85	auth	0007_alter_validators_add_error_messages	2016-02-23 10:43:50.284455-05
+86	locations	0004_auto_20160222_1652	2016-02-23 10:43:51.670749-05
+87	partners	0021_partnerstaffmember_active	2016-02-23 10:44:01.856137-05
+88	reports	0012_auto_20160222_1652	2016-02-23 10:44:09.974328-05
+89	sites	0002_alter_domain_unique	2016-02-23 10:44:10.508358-05
+90	users	0010_auto_20160216_1814	2016-02-23 10:44:15.982261-05
 \.
 
 
@@ -4857,7 +4868,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 83, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 90, true);
 
 
 --
@@ -5149,7 +5160,7 @@ SELECT pg_catalog.setval('partners_partnershipbudget_id_seq', 1, false);
 -- Data for Name: partners_partnerstaffmember; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_partnerstaffmember (id, title, first_name, last_name, email, phone, partner_id) FROM stdin;
+COPY partners_partnerstaffmember (id, title, first_name, last_name, email, phone, partner_id, active) FROM stdin;
 \.
 
 
@@ -5931,8 +5942,8 @@ COPY auth_user (id, password, last_login, is_superuser, username, first_name, la
 1	pbkdf2_sha256$20000$oLSDagdBJZQe$GjusoFurVNg8wfUZ6TCR7w5SKz1W6QuSGNvfGfxn/oU=	2016-02-15 09:49:48-05	t	luke@force.com	luke		luke@force.com	t	t	2016-02-15 09:27:08-05
 3	pbkdf2_sha256$20000$BwvYLpZCW0cD$v8brgatQrEEYnma9CP8m+6fohtQMw0zFcb0K3Wk/qbQ=	2016-02-15 10:03:00.183242-05	t	leia@force.com	leia		leia@force.com	t	t	2016-02-15 09:27:12-05
 6	pbkdf2_sha256$20000$Ort98H5Fvhah$LZA7OhRpLW9LX0TzGJp9ge+HyJi6K7Y9DIuPhSqgmyU=	\N	t	bb8@force.com	bb8		bb8@force.com	t	t	2016-02-15 10:37:06-05
-4	pbkdf2_sha256$20000$AQGNBePK6q2s$3BjxnoDFosxgCGTrUNF6N+0Xidal3vbzC3WPEbzS9bM=	2016-02-15 11:23:02.964325-05	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-02-15 11:24:22.866018-05	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
+4	pbkdf2_sha256$24000$VwisqqQ4GOZ8$QnBb8RGbYBC8NvQ9++2kYSheZ3X5zmR+/GjrwvWJ+OM=	2016-02-15 11:23:02.964325-05	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 \.
 
 
@@ -6270,6 +6281,13 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 81	users	0007_auto_20160205_2230	2016-02-15 09:27:05.028088-05
 82	users	0008_userprofile_countries_available	2016-02-15 09:27:05.32112-05
 83	users	0009_countries_available	2016-02-15 09:27:05.347971-05
+84	admin	0002_logentry_remove_auto_add	2016-02-23 10:43:23.980643-05
+85	auth	0007_alter_validators_add_error_messages	2016-02-23 10:43:24.099567-05
+86	locations	0004_auto_20160222_1652	2016-02-23 10:43:25.422673-05
+87	partners	0021_partnerstaffmember_active	2016-02-23 10:43:35.555118-05
+88	reports	0012_auto_20160222_1652	2016-02-23 10:43:43.779917-05
+89	sites	0002_alter_domain_unique	2016-02-23 10:43:44.196252-05
+90	users	0010_auto_20160216_1814	2016-02-23 10:43:49.750313-05
 \.
 
 
@@ -6277,7 +6295,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 83, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 90, true);
 
 
 --
@@ -7884,8 +7902,8 @@ COPY spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
 -- Data for Name: users_country; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY users_country (id, domain_url, schema_name, name, business_area_code) FROM stdin;
-1	hoth	hoth	hoth	
+COPY users_country (id, domain_url, schema_name, name, business_area_code, initial_zoom, latitude, longitude) FROM stdin;
+1	hoth	hoth	hoth		8	\N	\N
 \.
 
 
@@ -8806,6 +8824,14 @@ ALTER TABLE ONLY django_migrations
 
 ALTER TABLE ONLY django_session
     ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site_domain_a2e37b91_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_site
+    ADD CONSTRAINT django_site_domain_a2e37b91_uniq UNIQUE (domain);
 
 
 --
@@ -10379,6 +10405,13 @@ CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date)
 --
 
 CREATE INDEX django_session_session_key_461cfeaa630ca218_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: django_site_domain_a2e37b91_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_site_domain_a2e37b91_like ON django_site USING btree (domain varchar_pattern_ops);
 
 
 --

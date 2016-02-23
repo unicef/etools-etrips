@@ -116,8 +116,13 @@ gulp.task('postgres_disconnect', function(){
   });
 });
 
+gulp.task('dump_db', shell.task(
+  ['pg_dump ' + integrationTestDb + ' > ./tests/fixtures/data.sql'])
+);
+
+
 gulp.task('restore_db', ['postgres_disconnect'], shell.task(
-  ['dropdb ' + integrationTestDb + ' && createdb ' + integrationTestDb + ' && psql ' + integrationTestDb + ' < ./tests/fixtures/data.sql'])
+  ['dropdb ' + integrationTestDb + ' && createdb ' + integrationTestDb + ' && psql --output=restore_db.log --quiet ' + integrationTestDb + ' < ./tests/fixtures/data.sql'])
 );
 
 gulp.task('protractor', function() {
