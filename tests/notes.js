@@ -20,6 +20,8 @@ describe('Notes', function() {
     });
 
     it('should be able save a note', function() { 
+        this.timeout(20000);
+
         var trips = element.all(by.css(allTripsCssSelector));
         var sampleNote = faker.lorem.paragraphs(5, ' ').replace(/\s+/g, ' ').trim();
 

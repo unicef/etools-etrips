@@ -28,6 +28,10 @@ describe('Reports', function() {
         });
     });
 
+    it('should be able to logout', function() {
+        auth.logout();
+    });
+
     afterEach(function() {
         browser.takeScreenshot().then(function(png) {
             var stream = fs.createWriteStream('./' + path.basename(__filename, '.js') + '_screenshot.png');

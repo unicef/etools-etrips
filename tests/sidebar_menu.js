@@ -42,11 +42,9 @@ describe('Sidebar Menu', function() {
     });
 
     it('should be able to logout', function() {
-        element(sideMenuButton).click();
-        element(by.cssContainingText('.item', 'Logout')).click();
-        waitForElement('h2.title.unicef-blue');
+        auth.logout();
     });
-
+    
     afterEach(function() {
         browser.takeScreenshot().then(function(png) {
             var stream = fs.createWriteStream('./' + path.basename(__filename, '.js') + '_screenshot.png');

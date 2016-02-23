@@ -28,7 +28,7 @@ describe('My Trips', function() {
 
         element(by.css('ion-view[view-title="My Trips"] div.scroll-refresher')).getAttribute('class').then(function(val){
             browser.sleep(500);
-            val.should.equal('scroll-refresher js-scrolling invisible');            
+            val.indexOf('scroll-refresher js-scrolling').should.be.greaterThan(-1);        
             element(by.css('div.scroll-refresher.invisible')).isPresent().should.eventually.true;
         });
     });
@@ -67,14 +67,14 @@ describe('My Trips', function() {
                 .mouseUp()
                 .perform();
 
-        browser.sleep(3000);
-
         // validate icon
         trip.element(by.css('i.ion-android-done')).isPresent().should.eventually.true;
     });
 
     it('should be able to logout', function() {
-        auth.logout();
+        element(by.css('div[nav-bar="active"] > ion-header-bar button[menu-toggle="left"].ion-navicon')).click();
+        element(by.cssContainingText('.item', 'Logout')).click();        
+        element(by.css('input[type="email"]')).clear();
     });
 
     afterEach(function() {
