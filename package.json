@@ -21,6 +21,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-exec": "^0.4.6",
     "grunt-protractor-runner": "^3.0.0",
+    "gulp-help": "^1.6.1",
     "gulp-preprocess": "^2.0.0",
     "gulp-protractor": "^2.1.0",
     "gulp-replace-task": "^0.11.0",

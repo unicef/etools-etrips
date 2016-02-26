@@ -1,4 +1,4 @@
-var gulp = require('gulp');
+var gulp = require('gulp-help')(require('gulp'));
 var gutil = require('gulp-util');
 var bower = require('bower');
 var concat = require('gulp-concat');
@@ -84,7 +84,7 @@ gulp.task('replace-circleci', function () {
   var settings = {
     "apiHostDevelopment" : args.ip,
     "defaultConnection" : 0
-}
+  };
 
   gulp.src('src/js/constants.js')  
     .pipe(replace({
@@ -144,12 +144,77 @@ gulp.task('restore_db', ['postgres_disconnect'], shell.task(
   ['dropdb ' + integrationTestDb + ' && createdb ' + integrationTestDb + ' && psql --output=restore_db.log --quiet ' + integrationTestDb + ' < ./tests/fixtures/data.sql'])
 );
 
+var exec = require('child_process').exec;
+var dockerSeleniumDebugIpPorts = '';
+
+gulp.task('docker_selenium_start', function(cb) {  
+  exec('docker run --name standalone-chrome-debug -d -P selenium/standalone-chrome-debug', function(err, stdout, stderr) {
+    if (err) {
+      console.log(err);    
+    } else {
+      console.log('started: docker selenium');
+    }
+  });
+});
+
+gulp.task('docker_selenium_stop', function(cb) {  
+  exec('docker rm -f standalone-chrome-debug', function(err, stdout, stderr) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('stopped: docker selenium');
+    }
+  });
+});
+
+gulp.task('docker_selenium_debug_ip_ports', function(cb) {  
+  async.series([
+      function(callback){
+        exec('docker-machine ip', function(err, stdout, stderr) {
+          callback(null, stdout.replace(/(\r\n|\n|\r)/gm,""));
+        });
+      },
+      function(callback){
+        exec('docker port standalone-chrome-debug 4444', function(err, stdout, stderr) {
+          callback(null, stdout.replace(/(\r\n|\n|\r)/gm,"").split('0.0.0.0:')[1] );
+        });
+      },
+      function(callback){
+        exec('docker port standalone-chrome-debug 5900', function(err, stdout, stderr) {
+          callback(null, stdout.replace(/(\r\n|\n|\r)/gm,"").split('0.0.0.0:')[1] );
+        });
+      }      
+  ],
+  function(err, results){
+    var data = {
+      'ip' : results[0],
+      'selenium_port' : results[1],
+      'vnc_port' : results[2]
+    };
+    dockerSeleniumDebugIpPorts = data;    
+    cb();
+  });
+});
+
+gulp.task('docker_selenium_vnc', ['docker_selenium_debug_ip_ports'], function(cb) {  
+  exec('open vnc://user:secret@' + dockerSeleniumDebugIpPorts.ip + ':' + dockerSeleniumDebugIpPorts.vnc_port);  
+});
+
 gulp.task('protractor', function() {
   gulp.src(["./tests/*.js"])
     .pipe(protractor({
         configFile: "./tests/conf_dev.js"
     }))
     .on('error', function(e) { throw e; });
+});
+
+gulp.task('protractor_docker', ['docker_selenium_debug_ip_ports'], function() {  
+  gulp.src(["./tests/*.js"])
+    .pipe(protractor({
+        configFile: "./tests/conf_dev.js",
+        args: ['--seleniumAddress', 'http://' + dockerSeleniumDebugIpPorts.ip + ':' + dockerSeleniumDebugIpPorts.selenium_port + '/wd/hub']
+    }))
+    .on('error', function(e) { throw e; });    
 });
 
 gulp.task('protractor_watch', function () {   

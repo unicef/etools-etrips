@@ -19,8 +19,6 @@ exports.config = {
         '*.txt'
     ],
 
-    // seleniumAddress: 'http://192.168.99.100:32785/wd/hub', // experimental: docker
-
     framework: 'mocha',
     seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
     chromeDriver: '../node_modules/protractor/selenium/chromedriver',
