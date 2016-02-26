@@ -80,6 +80,25 @@ gulp.task('replace', function () {
     .pipe(gulp.dest('www/'));
 });
 
+gulp.task('replace-circleci', function () {  
+  var settings = {
+    "apiHostDevelopment" : args.ip,
+    "defaultConnection" : 0
+}
+
+  gulp.src('src/js/constants.js')  
+    .pipe(replace({
+      patterns: _.map(_.keys(settings), function(key){ 
+          return { match: key, replacement: settings[key] };
+        })
+      }))
+    .pipe(gulp.dest('www/js'));
+
+  gulp.src('src/*.html')
+    .pipe(preprocess({context: { NODE_ENV: 'test' }}))
+    .pipe(gulp.dest('www/'));
+});
+
 // disconnect any exisiting db connections  
 gulp.task('postgres_disconnect', function(){  
   var con = 'postgres://postgres:password@localhost:5432/' + integrationTestDb;
