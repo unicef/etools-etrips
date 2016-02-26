@@ -209,19 +209,29 @@ angular.module('equitrack.tripControllers', [])
                       encodeURI(API_urls.BASE() +"/trips/api/"+$stateParams.tripId+"/upload/"),
                       function(mdata){
                           var alertPopup = $ionicPopup.alert({
-                            title: 'Photo Submission Succeeded',
+                            title: 'Picture Upload Succeeded',
                             template: 'Thank you'
                         });
                       },
                       function(err){
-                          var alertPopup = $ionicPopup.alert({
-                            title: 'Photo Submission Failed',
-                            template: '' + JSON.stringify(err)
+                        var errorMessage = '';
+
+                        if (err.code === FileTransferError.CONNECTION_ERR) {
+                            errorMessage = '<p>Error: network connection error.</p><p>Please check the network connection and try uploading the picture again.</p> Code: ' + FileTransferError.CONNECTION_ERR;
+
+                        } else if (err.code === FileTransferError.FILE_NOT_FOUND_ERR) {
+                            errorMessage = '<p>Error: file not found.</p><p>Please try uploading the picture again.</p> Code: ' + FileTransferError.FILE_NOT_FOUND_ERR;
+
+                        } else {
+                            errorMessage = '<p>Please try uploading the picture again.</p>';
+                        }
+
+                        var alertPopup = $ionicPopup.alert({
+                            title: 'Picture Upload Failed',
+                            template: errorMessage
                         });
                       },
                       options, true);
-
-
         };
         $scope.uploadExisting = function(){
             navigator.camera.getPicture(mobileUploadPhoto,
