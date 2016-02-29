@@ -1,4 +1,4 @@
-describe('Reports - Action Ponts', function() {
+describe('Reports - Action Points', function() {
     var allTripsCssSelector = 'ion-view[view-title="My Trips"] ion-item.item-avatar';
     var reportTabsCssSelector = 'ion-tabs[nav-view="active"] > div.tab-nav > a.tab-item';
 
@@ -49,14 +49,13 @@ describe('Reports - Action Ponts', function() {
         
         var data = element.all(by.css('ion-view[nav-view="active"] a.item-content p'));
         data.get(0).getText().should.eventually.equal('Status: open');
-        data.get(1).getText().should.eventually.equal(description);
+        data.get(1).getText().should.eventually.equal(description.substring(0, 254));
         data.get(2).getText().should.eventually.equal('Due by: Jan 3, 2017');
     });
 
     it('should be able to logout', function() {
         auth.logout();
     });
-
 
     afterEach(function() {
         browser.takeScreenshot().then(function(png) {
