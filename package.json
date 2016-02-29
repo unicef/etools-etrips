@@ -28,6 +28,7 @@
     "gulp-sass": "^2.2.0",
     "gulp-shell": "^0.5.2",
     "gulp-util": "^2.2.14",
+    "ionic-minify": "^2.0.8",
     "lodash": "^4.3.0",
     "mocha": "^2.4.5",
     "pg": "^4.4.6",

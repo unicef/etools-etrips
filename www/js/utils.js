@@ -10,7 +10,7 @@ angular.module('equitrack.utils', [])
       return $window.localStorage[key] || defaultValue;
     },
     delete: function(key){
-        delete $window.localStorage[key]
+        delete $window.localStorage[key];
     },
     setObject: function(key, value) {
       $window.localStorage[key] = JSON.stringify(value);
@@ -18,7 +18,7 @@ angular.module('equitrack.utils', [])
     getObject: function(key) {
       return JSON.parse($window.localStorage[key] || '{}');
     }
-  }
+  };
 }])
 .factory('SoapEnv', ['$window', function($window) {
       var adfsEndpoint = "https://sts.unicef.org/adfs/services/trust/13/UsernameMixed";
@@ -58,7 +58,7 @@ angular.module('equitrack.utils', [])
             '<trust:RequestType>http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue</trust:RequestType>' +
             '</trust:RequestSecurityToken>' +
             '</s:Body>' +
-            '</s:Envelope>'
+            '</s:Envelope>';
       }
 
 
@@ -68,7 +68,7 @@ angular.module('equitrack.utils', [])
     body: soap_body,
     adfsEndpoint: adfsEndpoint,
     headers: headers,
-  }
+  };
 }])
 
 
@@ -77,27 +77,27 @@ angular.module('equitrack.utils', [])
     var default_message = "Something went wrong, try again later";
 
     function parse(error){
-        console.log('error response:', error)
+        console.log('error response:', error);
         if (!error){
-            return default_message
+            return default_message;
         }
         if (typeof(error)=="string"){
             return error;
         } else if ((typeof(error)=="object") && (error.data)){
             if (error.data.detail){
-                return error.data.detail
+                return error.data.detail;
             } else if (error.data.non_field_errors){
-                return error.data.non_field_errors.join('<br>')
+                return error.data.non_field_errors.join('<br>');
             } else if (typeof (error.data == "string") && (error.data.indexOf('security token could not be') != -1)){
                 // this means ADFS returned an XML saying invalid credentials
-                return "The password introduced was incorrect."
+                return "The password introduced was incorrect.";
             }
         }
-        return default_message
-    };
+        return default_message;
+    }
 
     var popError = function (err, path, stay_on_page){
-            console.log("got an error")
+            console.log("got an error");
             $ionicLoading.hide();
             if (path){
                 $state.go(path);
@@ -108,10 +108,10 @@ angular.module('equitrack.utils', [])
             $ionicPopup.alert({
                 title: 'Something went wrong',
                 template: parse(err)
-            })
+            });
     };
     return {
         parse:parse,
         popError:popError
-    }
-})
+    };
+});
