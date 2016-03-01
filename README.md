@@ -122,6 +122,54 @@ Access the Docker Selenium Grid image using VNC (optional):
 $ gulp docker_selenium_vnc
 ```
 
+Optional: Run Integration Tests (Android device)
+------------------------------------------------
+
+Appium will be used to run the tests on an Android (non-emulator) device. Appium is an open source test automation framework for use with native, hybrid and mobile web apps. It drives iOS and Android apps using the WebDriver protocol.
+
+To enable the tests to be run on the device:
+1. Connect the device to your local computer via USB
+2. Enable Android Debugging (Settings => Developer options => "Android Debugging")
+
+Install Appium and WebDriver Protocol:
+
+```bash
+npm install -g appium
+npm install -g wd
+```
+
+Update tests/conf_android.js to match the Android device values:
+
+```js
+  capabilities: {
+        platformName: 'android',
+        platformVersion: '5.1.1',
+        deviceName: 'oneplusone',
+        browserName: "",
+        autoWebview: true,        
+        app: '/Users/chris/unicef/EquiTrackMobile/platforms/android/build/outputs/apk/android-debug.apk'        
+    },
+```
+
+Generate APK:
+
+```bash
+$ ionic build android
+```
+
+Start Appium:
+
+```bash
+$ appium
+```
+
+Run tests using Gulp:
+
+```bash
+gulp protractor_android
+```
+
+
 Setting Environment Variables
 -----------------------------
 

@@ -15,6 +15,7 @@ var _ = require('lodash');
 var protractor = require("gulp-protractor").protractor;
 var pg = require('pg');
 var async = require('async');
+var confBase = require('./tests/conf_base.js')
 
 var integrationTestDb = 'test_db';
 
@@ -215,6 +216,30 @@ gulp.task('protractor_docker', ['docker_selenium_debug_ip_ports'], function() {
         args: ['--seleniumAddress', 'http://' + dockerSeleniumDebugIpPorts.ip + ':' + dockerSeleniumDebugIpPorts.selenium_port + '/wd/hub']
     }))
     .on('error', function(e) { throw e; });    
+});
+
+var allTestsFilename = 'all_tests.js';
+
+gulp.task('protractor_concat_tests', function() {
+  var specs = confBase.config.specs;
+  var testPath = './tests/';
+  var files = [testPath + 'includes.js'];
+
+  _.each(specs, function(spec){
+    files.push(testPath + spec);    
+  })
+
+  return gulp.src(files)
+    .pipe(concat(allTestsFilename))
+    .pipe(gulp.dest('./tests/'));
+});
+
+gulp.task('protractor_android', ['protractor_concat_tests'], function() {
+   gulp.src(["./tests/all_tests.js"])
+    .pipe(protractor({
+        configFile: "./tests/conf_android.js"        
+    }))
+    .on('error', function(e) { throw e; });
 });
 
 gulp.task('protractor_watch', function () {   
