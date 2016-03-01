@@ -76,12 +76,4 @@ describe('My Trips', function() {
         element(by.cssContainingText('.item', 'Logout')).click();        
         element(by.css('input[type="email"]')).clear();
     });
-
-    afterEach(function() {
-        browser.takeScreenshot().then(function(png) {
-            var stream = fs.createWriteStream('./' + path.basename(__filename, '.js') + '_screenshot.png');
-            stream.write(new Buffer(png, 'base64'));
-            stream.end();
-        });        
-    });
 });
