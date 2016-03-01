@@ -276,7 +276,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
                    console.log(req);
                    return $http(req);
                } else {
-                   return $http.post(API_urls.BASE() + '/api-token-auth/', data);
+                   return $http.post(API_urls.BASE() + '/login/token-auth/', data);
                }
 
 
@@ -313,7 +313,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
         };
 
         var get_trips_remote = function get_from_server(success, error){
-                   return myHttp.get(API_urls.BASE() + '/trips/api/list/').then(
+                   return myHttp.get(API_urls.BASE() + '/api/trips/').then(
                        function(succ){
                            $localStorage.setObject('trips',succ.data);
                            success(succ.data);
@@ -338,7 +338,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
         };
 
         var patchTrip = function patchTrip(tripId, data, success, fail){
-            return myHttp.patch(API_urls.BASE() + '/trips/api/' + tripId +"/", data).then(
+            return myHttp.patch(API_urls.BASE() + '/api/trips/' + tripId +"/", data).then(
                 function(succ){
                     success(succ);
                 },
@@ -428,7 +428,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
 
     }
     function tripAction(id, action, data){
-        var url = API_urls.BASE() + '/trips/api/' + id + '/';
+        var url = API_urls.BASE() + '/api/trips/' + id + '/';
         var result = myHttp.post(url + action + '/', data);
         return result;
 
