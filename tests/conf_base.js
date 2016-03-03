@@ -15,6 +15,8 @@ exports.config = {
     exclude: [
         'conf_dev.js',
         'conf_base.js',
+        'conf_android.js',
+        'all_tests.js',
         'auth.js',
         '*.txt'
     ],
