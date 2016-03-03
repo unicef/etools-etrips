@@ -42,9 +42,9 @@ angular.module('equitrack.controllers', [])
 })
 
 .controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
-            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls',
+            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'NetworkService', 
              function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
-                      Auth, $ionicPopup, $state, API_urls) {
+                      Auth, $ionicPopup, $state, API_urls, NetworkService) {
 
     $scope.data = $localStorage.getObject('user_cred');
     $scope.other = {};
@@ -118,13 +118,9 @@ angular.module('equitrack.controllers', [])
           $localStorage.delete("user_cred");
         }
 
-        if (window.Connection && navigator.connection.type === Connection.NONE) {
-            $ionicPopup.alert({
-              title: 'Login Failed',
-              content: 'Sorry, unable to login to eTrips. Please check your network connection or try again later.'
-            }).then(function(res) {
-              $scope.data = {};
-            });
+        if (NetworkService.isOffline()) {
+          NetworkService.showMessage('Login Failed', 'Sorry, unable to login to eTrips. Please check your network connection or try again later.');
+          $scope.data = {};
 
         } else {
           $ionicLoading.show({ template: 'Loading...' });            

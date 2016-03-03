@@ -25,7 +25,7 @@ angular.module('equitrack.tripControllers', [])
         //    )
         //}
 })
-.controller('ReportingTextCtrl', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup, ErrorHandler){
+.controller('ReportingTextCtrl', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup, ErrorHandler, NetworkService){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         var main_obs_template = 'Access to inputs/services:  \n \n \n \n' +
@@ -40,21 +40,26 @@ angular.module('equitrack.tripControllers', [])
             opportunities: ($scope.trip.opportunities) ? $scope.trip.opportunities : "",
         };
         $scope.textReport = function(){
-            $ionicLoading.show({
-                    template: 'Loading... <br> Sending Report...'
-                });
-            TripsFactory.reportText($scope.data, $scope.trip.id,
-                function(succ){
-                    $ionicLoading.hide();
-                    $ionicHistory.goBack(-1);
-                    TripsFactory.localTripUpdate($scope.trip.id, succ.data);
-                    $ionicPopup.alert({
-                        title: 'Report Submitted',
-                        template: 'Text has been succcessfully submitted'
+            if (NetworkService.isOffline() === true) {
+              NetworkService.showMessage();
+
+            } else {
+              $ionicLoading.show({
+                        template: 'Loading... <br> Sending Report...'
                     });
-                    console.log(succ);
-                }, function(err){ErrorHandler.popError(err);}
-            );
+                TripsFactory.reportText($scope.data, $scope.trip.id,
+                    function(succ){
+                        $ionicLoading.hide();
+                        $ionicHistory.goBack(-1);
+                        TripsFactory.localTripUpdate($scope.trip.id, succ.data);
+                        $ionicPopup.alert({
+                            title: 'Report Submitted',
+                            template: 'Text has been succcessfully submitted'
+                        });
+                        console.log(succ);
+                    }, function(err){ErrorHandler.popError(err);}
+                );
+            }
         };
 
 })
@@ -157,6 +162,9 @@ angular.module('equitrack.tripControllers', [])
                     });
         };
         $scope.textReport = function(){
+          if (NetworkService.isOffline() === true) {
+            NetworkService.showMessage();
+          } else {
             $ionicLoading.show({
                     template: 'Loading... <br> Sending Report...'
                 });
@@ -175,6 +183,7 @@ angular.module('equitrack.tripControllers', [])
                     });
                     console.log(succ);
                 }, function (err){ErrorHandler.popError(err);});
+          }
         };
 
 })
@@ -186,7 +195,7 @@ angular.module('equitrack.tripControllers', [])
         };
 
 })
-.controller('ReportingPictureCtrl',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http, API_urls, ErrorHandler){
+.controller('ReportingPictureCtrl',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http, API_urls, ErrorHandler, NetworkService){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         $scope.data = {};
@@ -214,22 +223,9 @@ angular.module('equitrack.tripControllers', [])
                         });
                       },
                       function(err){
-                        var errorMessage = '';
-
-                        if (err.code === FileTransferError.CONNECTION_ERR) {
-                            errorMessage = '<p>Error: network connection error.</p><p>Please check the network connection and try uploading the picture again.</p> Code: ' + FileTransferError.CONNECTION_ERR;
-
-                        } else if (err.code === FileTransferError.FILE_NOT_FOUND_ERR) {
-                            errorMessage = '<p>Error: file not found.</p><p>Please try uploading the picture again.</p> Code: ' + FileTransferError.FILE_NOT_FOUND_ERR;
-
-                        } else {
-                            errorMessage = '<p>Please try uploading the picture again.</p>';
+                        if (NetworkService.isOffline() === true) {
+                          NetworkService.showMessage('Picture Upload Failed', '<p>Error: network connection error.</p><p>Please check the network connection and try uploading the picture again.</p> Code: ' + FileTransferError.CONNECTION_ERR);
                         }
-
-                        var alertPopup = $ionicPopup.alert({
-                            title: 'Picture Upload Failed',
-                            template: errorMessage
-                        });
                       },
                       options, true);
         };
@@ -291,6 +287,10 @@ angular.module('equitrack.tripControllers', [])
             report_filled: Boolean($scope.trip.main_observations)
         };
         $scope.approve = function (tripId){
+          if (NetworkService.isOffline() === true) {
+            NetworkService.showMessage();
+          } else {
+
             $ionicLoading.show({
                                   template: 'Loading... <br> Approving Trip'
                                 });
@@ -309,6 +309,7 @@ angular.module('equitrack.tripControllers', [])
                     ErrorHandler.popError(err);
                 }
             );
+          }
         };
         $scope.showConfirm = function(template, succ, fail) {
            var confirmPopup = $ionicPopup.confirm({
@@ -329,6 +330,9 @@ angular.module('equitrack.tripControllers', [])
            });
          };
         $scope.submit = function (tripId){
+          if (NetworkService.isOffline() === true) {
+            NetworkService.showMessage();
+          } else {
             $ionicLoading.show({
                       template: 'Loading... <br> Submitting Trip'
             });
@@ -347,9 +351,13 @@ angular.module('equitrack.tripControllers', [])
                     ErrorHandler.popError(err);
                 }
             );
+          }
         };
         $scope.complete_trip = function(tripId){
             var execute_req = function() {
+              if (NetworkService.isOffline() === true) {
+                NetworkService.showMessage();
+              } else {
                 $ionicLoading.show({
                     template: 'Loading... <br> Submitting Trip'
                 });
@@ -367,6 +375,7 @@ angular.module('equitrack.tripControllers', [])
                     function (err) {
                         ErrorHandler.popError(err);
                     });
+              }
             };
             var now = new Date();
             var trip_end = new Date($scope.trip.to_date);
@@ -410,6 +419,9 @@ angular.module('equitrack.tripControllers', [])
             $state.go('app.reporting.text', {"tripId":tripId});
         };
         $scope.submit = function (tripId){
+          if (NetworkService.isOffline() === true) {
+            NetworkService.showMessage();
+          } else {
             $ionicListDelegate.closeOptionButtons();
             $ionicLoading.show({
                                   template: 'Loading... <br> Submitting Trip'
@@ -428,6 +440,7 @@ angular.module('equitrack.tripControllers', [])
                     ErrorHandler.popError(err);
                 }
             );
+          }
         };
 
         var data_success = function(res){
@@ -473,6 +486,9 @@ angular.module('equitrack.tripControllers', [])
             }
         );
         $scope.approve = function (tripId){
+          if (NetworkService.isOffline() === true) {
+            NetworkService.showMessage();
+          } else {
             $ionicListDelegate.closeOptionButtons();
             $ionicLoading.show({
                                   template: 'Loading... <br> Approving Trip'
@@ -488,6 +504,7 @@ angular.module('equitrack.tripControllers', [])
                     ErrorHandler.popError(err);
                 }
             );
+          }
         };
 
 })
@@ -552,6 +569,9 @@ angular.module('equitrack.tripControllers', [])
                 $scope.error = true;
                 return;
             } else {
+              if (NetworkService.isOffline() === true) {
+                NetworkService.showMessage();
+              } else {
                 $ionicLoading.show({
                     template: 'Loading... <br> Creating Action Point...'
                 });
@@ -569,6 +589,7 @@ angular.module('equitrack.tripControllers', [])
                     ErrorHandler.popError(err);
                 });
                 console.log("submitting");
+              }
             }
         };
 

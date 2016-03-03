@@ -71,7 +71,6 @@ angular.module('equitrack.utils', [])
   };
 }])
 
-
 .factory('ErrorHandler', function($ionicLoading, $ionicHistory, $ionicPopup, $state){
 
     var default_message = "Something went wrong, try again later";
@@ -114,4 +113,30 @@ angular.module('equitrack.utils', [])
         parse:parse,
         popError:popError
     };
+})
+
+.service('NetworkService', function($ionicPopup){
+  function isOffline(){
+    return window.Connection && navigator.connection.type === Connection.NONE;
+  }
+
+  function showMessage(title, content){
+    if (title === undefined) {
+      title = 'Connection error';
+    }
+
+    if (content === undefined) {
+      content = 'The Internet connection appears to be offline. Please try again in a moment.';
+    }
+
+    $ionicPopup.alert({
+      title  : title,
+      content: content
+    });
+  }
+ 
+  return {
+    isOffline       : isOffline,
+    showMessage     : showMessage
+  };
 });
