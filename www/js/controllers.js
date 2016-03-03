@@ -41,7 +41,6 @@ angular.module('equitrack.controllers', [])
     };
 })
 
-
 .controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
             'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls',
              function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
@@ -96,35 +95,43 @@ angular.module('equitrack.controllers', [])
     }
 
     function login_fail(data){
-        console.log("LoginCtrl: login_fail");
-        console.log(JSON.stringify(data));
-        console.log(data.data);
-        console.log(data.error);
-        console.log(data.body);
+      console.log("LoginCtrl: login_fail");
+      console.log(JSON.stringify(data));
+      console.log(data.data);
+      console.log(data.error);
+      console.log(data.body);
 
-        $ionicLoading.hide();
-        var alertPopup = $ionicPopup.alert({
-            title: 'Login failed!',
-            template: 'Please check your credentials!'
-        });
+      $ionicLoading.hide();
+      var alertPopup = $ionicPopup.alert({
+        title: 'Login failed!',
+        template: 'Please check your credentials!'
+      });
     }
 
     $scope.login = function(){
         var loginData = $scope.data;
 
         if ($scope.other.rememberMe){
-            // won't save the password
-            $localStorage.setObject("user_cred",{username:loginData.username, password:""});
+          // won't save the password
+          $localStorage.setObject("user_cred",{username:loginData.username, password:""});
         } else {
-            $localStorage.delete("user_cred");
+          $localStorage.delete("user_cred");
         }
-        $ionicLoading.show({
-                      template: 'Loading...'
-        });
-        //store the username in the background for re-login
-        $localStorage.setObject("relogin_cred",{username:loginData.username, password:""});
-        LoginService.loginUser(loginData, login_success, login_fail);
-        $scope.data = {};
+
+        if (window.Connection && navigator.connection.type === Connection.NONE) {
+            $ionicPopup.alert({
+              title: 'Login Failed',
+              content: 'Sorry, unable to login to eTrips. Please check your network connection or try again later.'
+            }).then(function(res) {
+              $scope.data = {};
+            });
+
+        } else {
+          $ionicLoading.show({ template: 'Loading...' });            
+          $localStorage.setObject("relogin_cred", { username:loginData.username, password:""} ); //store the username in the background for re-login
+          LoginService.loginUser(loginData, login_success, login_fail);
+          $scope.data = {};
+        }
     };
 
 }]);
