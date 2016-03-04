@@ -64,8 +64,8 @@ angular.module('equitrack.controllers', [])
                     $ionicLoading.hide();
                     console.log("failed to get trips");
                     var alertPopup = $ionicPopup.alert({
-                        title: 'Login failed!',
-                        template: 'Failed to get trips, please try logging in again.'
+                        title: 'Sign In Failed',
+                        template: 'Unable to get your trips. Please try logging in again later.'
                     });
                 }, true
             );
@@ -78,13 +78,13 @@ angular.module('equitrack.controllers', [])
                 var alertPopup = '';
                 if (profile_fail.data.detail == 'No country found for user'){
                     alertPopup = $ionicPopup.alert({
-                        title: 'Login failed!',
-                        template: 'Please setup your profile on eTools <br> Please set your Country'
+                        title: 'Sign In Failed',
+                        template: 'Please setup your country profile in eTools.'
                     });
                 } else {
                     alertPopup = $ionicPopup.alert({
-                        title: 'Login failed!',
-                        template: 'Something went wrong retrieving your user, please try again later'
+                        title: 'Sign In Failed',
+                        template: 'Unable to retrieve your user account. Please try logging in again later.'
                     });
                 }
                 return;
@@ -103,8 +103,8 @@ angular.module('equitrack.controllers', [])
 
       $ionicLoading.hide();
       var alertPopup = $ionicPopup.alert({
-        title: 'Login failed!',
-        template: 'Please check your credentials!'
+        title: 'Sign In Failed',
+        template: 'Invalid username or password.'
       });
     }
 
@@ -119,11 +119,11 @@ angular.module('equitrack.controllers', [])
         }
 
         if (NetworkService.isOffline()) {
-          NetworkService.showMessage('Login Failed', 'Sorry, unable to login to eTrips. Please check your network connection or try again later.');
+          NetworkService.showMessage('Sign In Failed', 'Unable to login to eTrips. Please check your network connection and try again later.');
           $scope.data = {};
 
         } else {
-          $ionicLoading.show({ template: 'Loading...' });            
+          $ionicLoading.show( { template: '<loading></loading>' } );
           $localStorage.setObject("relogin_cred", { username:loginData.username, password:""} ); //store the username in the background for re-login
           LoginService.loginUser(loginData, login_success, login_fail);
           $scope.data = {};

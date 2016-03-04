@@ -128,7 +128,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
             }
             if ((!ignore_expiration) && (TokenService.isTokenExpired())){
                 $ionicLoading.hide();
-                showConfirm('Your session has ended, please enter your password to proceed:', confirmed_reLogin, failed_reLogin);
+                showConfirm('Your session has ended. Please enter your username and password to proceed.', confirmed_reLogin, failed_reLogin);
             } else {
                 $http(req).then(
                     function(res){def.resolve(res);},

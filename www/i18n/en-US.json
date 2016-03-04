@@ -1,0 +1,14 @@
+{
+    "template.login.login" : "Login",
+    "template.login.title" : "eTrips",
+    "template.login.username" : "Username",
+    "template.login.password" : "Password",
+    "template.login.remember_me" : "Stay signed in",
+    "template.login.sign_in" : "Sign in",
+
+    "directive.loading.title_default" : "Loading...",
+    "directive.loading.sending_report" : "Sending Report...",
+    "directive.loading.approving_trip" : "Approving Trip...",
+    "directive.loading.submitting_trip" : "Submitting Trip...",
+    "directive.loading.creating_action_point" : "Creating Action Point..."
+}

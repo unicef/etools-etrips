@@ -1,0 +1,8 @@
+{
+    "template.login.login" : "Login",
+    "template.login.title" : "eTrips",
+    "template.login.username" : "Nom d'utilisateur",
+    "template.login.password" : "Mot de passe",
+    "template.login.remember_me" : "Rester connecté",
+    "template.login.sign_in" : "Connexion"
+}

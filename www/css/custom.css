@@ -33,3 +33,7 @@
 .default-lh{
     line-height: inherit;
 }
+
+.popup-title {
+    text-align: left;
+}

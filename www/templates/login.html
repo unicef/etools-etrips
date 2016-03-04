@@ -1,16 +1,16 @@
-<ion-view view-title="Login" name="login-view">
+<ion-view view-title="{{ 'template.login.login' | translate }}" name="login-view">
   <ion-content class="padding">
-      <h2 class="title li-center unicef-blue">eTrips</h2>
+      <h2 class="title li-center unicef-blue">{{ 'template.login.title' | translate }}</h2>
       <div class="list list-inset">
           <label class="item item-input">
-              <input type="email" placeholder="Username" ng-model="data.username">
+              <input type="email" placeholder="{{ 'template.login.username' | translate }}" ng-model="data.username">
           </label>
           <label class="item item-input">
-              <input type="password" placeholder="Password" ng-model="data.password">
+              <input type="password" placeholder="{{ 'template.login.password' | translate }}" ng-model="data.password">
           </label>
           <br>
           <div class="item item-toggle">
-              Remember me
+              {{ 'template.login.remember_me' | translate }}
               <label class="toggle toggle-balanced">
                 <input type="checkbox" ng-model="other.rememberMe">
                 <div class="track">
@@ -20,9 +20,9 @@
           </div>
       </div>
 
+      <div ng-translate-language-select></div>
 
-      <button class="button button-block button-calm" ng-click="login()">Login</button>
-      <img class="img-logo" src="img/logo.png">
-      <!-- <p class="txt-grey"><a href="#/app/settings/connection">Connection Settings?</a></p> -->
+      <button class="button button-block button-calm" ng-click="login()">{{ 'template.login.sign_in' | translate }}</button>
+      <img class="img-logo" src="img/logo.png" />
   </ion-content>
 </ion-view>
