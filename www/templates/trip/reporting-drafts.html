@@ -1,54 +1,54 @@
-<ion-view view-title="Text Drafts">
+<ion-view view-title="{{ 'template.trip.report.drafts.title' | translate }}">
 
   <ion-content class="padding">
     <!-- <p>{{ trip }}</p> -->
-      <h4 class="energized">Draft: Progress Reporting<h4>
+      <h4 class="energized">{{ 'template.trip.report.drafts.progress' | translate }}<h4>
       <label class="item padding-top item-input item-stacked-label">
-        <textarea ng-model="data.main_observations" placeholder="Insert findings here" rows="10" cols="10">
+        <textarea ng-model="data.main_observations" placeholder="{{ 'template.trip.report.drafts.insert_findings' | translate }}" rows="10" cols="10">
         </textarea>
       </label>
 
 
       <br>
-      <h4 class="energized">Draft: Constraints, Challenges, Opportunities</h4>
+      <h4 class="energized">{{ 'template.trip.report.drafts.cco' | translate }}</h4>
       <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Constraints/Challenges:</span>
-        <textarea ng-model="data.constraints" placeholder="Implementation constraints that affect achievement of Project" rows="4" cols="10">
+        <span class="input-label">{{ 'template.trip.report.drafts.cc' | translate }}</span>
+        <textarea ng-model="data.constraints" placeholder="{{ 'template.trip.report.drafts.implementation' | translate }}" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Lessons Learned:</span>
-        <textarea ng-model="data.lessons_learned" placeholder="Lessons learned from addressing the constraints in the course of the reporting period" rows="4" cols="10">
+        <span class="input-label">{{ 'template.trip.report.drafts.lessons_learned' | translate }}</span>
+        <textarea ng-model="data.lessons_learned" placeholder="{{ 'template.trip.report.drafts.lessons' | translate }}" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Opportunities:</span>
-        <textarea ng-model="data.opportunities" placeholder="Key partnerships/collaboration and other highlights" rows="4" cols="10">
+        <span class="input-label">{{ 'template.trip.report.drafts.opportunities' | translate }}</span>
+        <textarea ng-model="data.opportunities" placeholder="{{ 'template.trip.report.drafts.partnerships' | translate }}" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <button ng-click="saveDrafts()" class="button button-block button-balanced">
-          Save Drafts
+          {{ 'template.trip.report.drafts.save_drafts' | translate }}
       </button>
        <div class="row no-padding">
           <button ng-click="discardCurrentChanges()" class="col button button-block button-energized margin-lr-2 default-lh">
-              Undo Current Changes
+              {{ 'template.trip.report.drafts.undo' | translate }}
           </button>
           <button ng-click="replaceWithCurrentReport()" class="col button button-block button-energized margin-lr-2 default-lh">
-              Replace Drafts With Current Report
+              {{ 'template.trip.report.drafts.replace' | translate }}
           </button>
        </div>
 
-      <ion-toggle ng-model="dangerZone" toggle-class="toggle-assertive">Danger Zone</ion-toggle>
+      <ion-toggle ng-model="dangerZone" toggle-class="toggle-assertive">{{ 'template.trip.report.drafts.danger' | translate }}</ion-toggle>
       <div class="row no-padding">
           <button ng-disabled="!dangerZone" ng-click="textReport()" class="col button button-block button-assertive margin-lr-2 default-lh">
-              Send As Official Report
+              {{ 'template.trip.report.drafts.send' | translate }}
           </button>
 
           <button ng-disabled="!dangerZone" ng-click="discardDrafts()" class="col button button-block button-assertive margin-lr-2 default-lh">
-              Discard Drafts
+              {{ 'template.trip.report.drafts.discard' | translate }}
           </button>
       </div>
 

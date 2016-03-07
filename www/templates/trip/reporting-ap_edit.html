@@ -1,33 +1,33 @@
-<ion-view view-title="Edit Action Point">
+<ion-view view-title="{{ 'template.trip.report.action_point.edit.title' | translate }}">
 <ion-content class="padding">
     <label class="item item-input item-select">
         <div class="input-label">
-            Status
+            {{ 'template.trip.report.action_point.edit.status' | translate }}
         </div>
         <select ng-model="ap.status" required>
-            <option value="open" >Open</option>
-            <option value="closed">Closed</option>
-            <option value="ongoing">On-going</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="open">{{ 'template.trip.report.action_point.edit.open' | translate }}</option>
+            <option value="closed">{{ 'template.trip.report.action_point.edit.closed' | translate }}</option>
+            <option value="ongoing">{{ 'template.trip.report.action_point.edit.on_going' | translate }}</option>
+            <option value="cancelled">{{ 'template.trip.report.action_point.edit.cancelled' | translate }}</option>
         </select>
     </label>
     <div class="item item-divider">
-        Description:
+        {{ 'template.trip.report.action_point.edit.description' | translate }}
     </div>
     <label class="item padding-top item-input">
-        <textarea ng-model="ap.description" placeholder="Insert findings here" rows="6" cols="10" ng-maxlength="254" maxlength="254">
+        <textarea ng-model="ap.description" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10" ng-maxlength="254" maxlength="254">
         </textarea>
     </label>
     <div class="item item-divider">
-        Comments:
+        {{ 'template.trip.report.action_point.edit.comments' | translate }}
     </div>
     <label class="item padding-top item-input">
-        <textarea ng-model="ap.comments" placeholder="Insert findings here" rows="6" cols="10">
+        <textarea ng-model="ap.comments" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10">
         </textarea>
     </label>
 
     <div class="item item-divider">
-        Due Date:
+        {{ 'template.trip.report.action_point.edit.due_date' | translate }}
     </div>
     <div class="item row">
 
@@ -49,12 +49,12 @@
     <br>
     </div>
     <div class="item item-divider">
-        Person Responsible:
+        {{ 'template.trip.report.action_point.edit.person_responsible' | translate }}
     </div>
 
     <label class="item item-input item-select">
         <div class="input-label">
-            Assign to ->
+            {{ 'template.trip.report.action_point.edit.assign_to' | translate }}
         </div>
         <select required ng-options="u.user_id as u.full_name for u in users"
                 ng-model="ap.person_responsible">
@@ -63,8 +63,8 @@
     </label>
     <div class="item item-icon-left assertive" ng-if="error">
         <i class="icon ion-alert-circled icon-assertive"></i>
-        <p ng-if="errors.description">Please enter a description before continuing</p>
-        <p ng-if="errors.person_responsible">Please assign the action point to a person</p>
+        <p ng-if="errors.description">{{ 'template.trip.report.action_point.edit.description' | translate }}</p>
+        <p ng-if="errors.person_responsible">{{ 'template.trip.report.action_point.edit.assign_to' | translate }}</p>
 
     </div>
 
@@ -72,7 +72,7 @@
     <br>
     <br>
     <button ng-click="submit()" class="button button-block button-positive padding-botom">
-        Submit
+        {{ 'template.trip.report.action_point.edit.submit' | translate }}
     </button>
     <br>
 </ion-content>

@@ -1,15 +1,8 @@
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
-
-  <!-- My Trips Tab -->
-  <ion-tab title="My Trips" icon-off="ion-plane" icon-on="ion-android-plane" href="#app/dash/my_trips">
+  <ion-tab title="{{ 'template.dashboard.my_trips' | translate }}" icon-off="ion-plane" icon-on="ion-android-plane" href="#app/dash/my_trips">
     <ion-nav-view name="tab-trips"></ion-nav-view>
   </ion-tab>
-
-  <!-- Supervised Tab -->
-  <ion-tab title="Supervised" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#app/dash/supervised">
+  <ion-tab title="{{ 'template.dashboard.supervised' | translate }}" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#app/dash/supervised">
     <ion-nav-view name="tab-supervised"></ion-nav-view>
   </ion-tab>
-
-
-
 </ion-tabs>

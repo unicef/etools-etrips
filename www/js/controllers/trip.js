@@ -511,7 +511,7 @@ angular.module('equitrack.tripControllers', [])
 
 })
 .controller('TripApsEditCtrl',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, ErrorHandler) {
+    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, ErrorHandler, $locale, NetworkService) {
         $scope.today = new Date();
         $scope.padded_num = function(limit){
             var result = [];
@@ -522,10 +522,7 @@ angular.module('equitrack.tripControllers', [])
         };
         var currentTrip = TripsFactory.getTrip($stateParams.tripId);
 
-        // TODO: use locale for months names
-        $scope.allMonths = ["Jan","Feb","Mar","Apr",
-                            "May","Jun","Jul","Aug",
-                            "Sept","Oct","Nov","Dec"];
+        $scope.allMonths = $locale.DATETIME_FORMATS.SHORTMONTH;
         $scope.yearOptions = [$scope.today.getFullYear()+"",
                               $scope.today.getFullYear()+1+""];
 

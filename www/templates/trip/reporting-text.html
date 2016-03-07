@@ -1,36 +1,36 @@
-<ion-view view-title="Text Reporting">
+<ion-view view-title="{{ 'template.trip.report.text.title' | translate }}">
 
   <ion-content class="padding">
     <!-- <p>{{ trip }}</p> -->
-      <h3>Progress Reporting</h3>
+      <h3>{{ 'template.trip.report.text.progress' | translate }}</h3>
       <label class="item padding-top item-input item-stacked-label">
-        <textarea ng-model="data.main_observations" placeholder="Insert findings here" rows="10" cols="10">
+        <textarea ng-model="data.main_observations" placeholder="{{ 'template.trip.report.text.insert_findings' | translate }}" rows="10" cols="10">
         </textarea>
       </label>
 
 
       <br>
-      <h3>Constraints, Challenges, Opportunities</h3>
+      <h3>{{ 'template.trip.report.text.cco' | translate }}</h3>
       <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Constraints/Challenges:</span>
-        <textarea ng-model="data.constraints" placeholder="Implementation constraints that affect achievement of Project" rows="4" cols="10">
+        <span class="input-label">{{ 'template.trip.report.text.cc' | translate }}</span>
+        <textarea ng-model="data.constraints" placeholder="{{ 'template.trip.report.text.implementation' | translate }}" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Lessons Learned:</span>
-        <textarea ng-model="data.lessons_learned" placeholder="Lessons learned from addressing the constraints in the course of the reporting period" rows="4" cols="10">
+        <span class="input-label">{{ 'template.trip.report.text.lessons' | translate }}</span>
+        <textarea ng-model="data.lessons_learned" placeholder="{{ 'template.trip.report.text.lessons' | translate }}" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <label class="item padding-top item-input item-stacked-label">
-        <span class="input-label">Opportunities:</span>
-        <textarea ng-model="data.opportunities" placeholder="Key partnerships/collaboration and other highlights" rows="4" cols="10">
+        <span class="input-label">opportunities</span>
+        <textarea ng-model="data.opportunities" placeholder="{{ 'template.trip.report.text.key' | translate }}" rows="4" cols="10">
         </textarea>
       </label>
       <br>
       <button ng-click="textReport()" class="button button-block button-positive padding-botom">
-          Submit Report
+          {{ 'template.trip.report.text.submit' | translate }}
       </button>
           <br>
   </ion-content>
