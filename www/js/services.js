@@ -76,13 +76,13 @@ angular.module('equitrack.services', ['equitrack.constants'])
             isTokenExpired:isTokenExpired
         };
 })
-.service('myHttp', function($q, $http, $localStorage, $ionicPopup, LoginService, $ionicLoading, TokenService){
+.service('myHttp', function($q, $http, $localStorage, $ionicPopup, LoginService, $ionicLoading, TokenService, $translate){
         var showConfirm = function(template, succ, fail) {
             var confirmPopup = $ionicPopup.prompt({
-               title: 'Session Expired',
+               title: $translate.instant('service.my_http.session_expired.title'),
                template: template,
                inputType: 'password',
-               inputPlaceholder: 'Your password'
+               inputPlaceholder: $translate.instant('service.my_http.session_expired.password')
              });
             confirmPopup.then(function (res) {
                 if (res) {
@@ -102,7 +102,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
                 req.data = data;
             }
             function confirmed_reLogin(res){
-                $ionicLoading.show({template: "Loading..."});
+                $ionicLoading.show( { template: "<loading></loading>" });
                 console.log(res, 'we are logging in again');
                 var relogin_cred = $localStorage.getObject('relogin_cred');
                 relogin_cred.password = res;
@@ -128,7 +128,11 @@ angular.module('equitrack.services', ['equitrack.constants'])
             }
             if ((!ignore_expiration) && (TokenService.isTokenExpired())){
                 $ionicLoading.hide();
-                showConfirm('Your session has ended. Please enter your username and password to proceed.', confirmed_reLogin, failed_reLogin);
+                showConfirm(                  
+                  $translate.instant('service.my_http.failed_relogin'),
+                  confirmed_reLogin, 
+                  failed_reLogin
+                );
             } else {
                 $http(req).then(
                     function(res){def.resolve(res);},

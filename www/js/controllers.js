@@ -64,8 +64,8 @@ angular.module('equitrack.controllers', [])
                     $ionicLoading.hide();
                     console.log("failed to get trips");
                     var alertPopup = $ionicPopup.alert({
-                        title: 'Sign In Failed',
-                        template: 'Unable to get your trips. Please try logging in again later.'
+                      title: $translate.instant('controller.login.success.title'),
+                      template: $translate.instant('controller.login.success.template')
                     });
                 }, true
             );
@@ -78,13 +78,13 @@ angular.module('equitrack.controllers', [])
                 var alertPopup = '';
                 if (profile_fail.data.detail == 'No country found for user'){
                     alertPopup = $ionicPopup.alert({
-                        title: 'Sign In Failed',
-                        template: 'Please setup your country profile in eTools.'
+                      title: $translate.instant('controller.login.no_country.title'),
+                      template: $translate.instant('controller.login.no_country.template')
                     });
                 } else {
                     alertPopup = $ionicPopup.alert({
-                        title: 'Sign In Failed',
-                        template: 'Unable to retrieve your user account. Please try logging in again later.'
+                      title: $translate.instant('controller.login.country.title'),
+                      template: $translate.instant('controller.login.country.template')
                     });
                 }
                 return;
@@ -103,8 +103,8 @@ angular.module('equitrack.controllers', [])
 
       $ionicLoading.hide();
       var alertPopup = $ionicPopup.alert({
-        title: 'Sign In Failed',
-        template: 'Invalid username or password.'
+        title: $translate.instant('controller.login.fail.title'),
+        template: $translate.instant('controller.login.fail.template')
       });
     }
 
@@ -119,7 +119,10 @@ angular.module('equitrack.controllers', [])
         }
 
         if (NetworkService.isOffline()) {
-          NetworkService.showMessage('Sign In Failed', 'Unable to login to eTrips. Please check your network connection and try again later.');
+          NetworkService.showMessage(
+            $translate.instant('controller.login.network_offline.title'),
+            $translate.instant('controller.login.network_offline.template')
+          );
           $scope.data = {};
 
         } else {

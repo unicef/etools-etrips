@@ -71,9 +71,9 @@ angular.module('equitrack.utils', [])
   };
 }])
 
-.factory('ErrorHandler', function($ionicLoading, $ionicHistory, $ionicPopup, $state){
+.factory('ErrorHandler', function($ionicLoading, $ionicHistory, $ionicPopup, $state, $translate){
 
-    var default_message = "Something went wrong, try again later";
+    var default_message = $translate.instant('factory.error_handler.default_message');
 
     function parse(error){
         console.log('error response:', error);
@@ -89,7 +89,7 @@ angular.module('equitrack.utils', [])
                 return error.data.non_field_errors.join('<br>');
             } else if (typeof (error.data == "string") && (error.data.indexOf('security token could not be') != -1)){
                 // this means ADFS returned an XML saying invalid credentials
-                return "The password introduced was incorrect.";
+                return $translate.instant('factory.error_handler.password');
             }
         }
         return default_message;
@@ -105,7 +105,7 @@ angular.module('equitrack.utils', [])
             }
 
             $ionicPopup.alert({
-                title: 'Something went wrong',
+                title: $translate.instant('factory.error_handler.unknow'),
                 template: parse(err)
             });
     };
@@ -115,18 +115,18 @@ angular.module('equitrack.utils', [])
     };
 })
 
-.service('NetworkService', function($ionicPopup){
+.service('NetworkService', function($ionicPopup, $translate){
   function isOffline(){
     return window.Connection && navigator.connection.type === Connection.NONE;
   }
 
   function showMessage(title, content){
     if (title === undefined) {
-      title = 'Connection error';
+      title = $translate.instant('service.network.title');
     }
 
     if (content === undefined) {
-      content = 'The Internet connection appears to be offline. Please try again in a moment.';
+      content = $translate.instant('service.network.content');
     }
 
     $ionicPopup.alert({
