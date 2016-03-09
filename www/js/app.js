@@ -29,7 +29,7 @@ angular.module('equitrack', ['ionic', 'ngIOS9UIWebViewPatch', 'equitrack.control
         if (window.StatusBar) {
           // org.apache.cordova.statusbar required
           StatusBar.styleDefault();
-        };
+        }
     });
 })
 
@@ -246,5 +246,5 @@ angular.module('equitrack', ['ionic', 'ngIOS9UIWebViewPatch', 'equitrack.control
 .filter('TitleCase', function(){
     return function(input){
         return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-    }
-})
+    };
+});

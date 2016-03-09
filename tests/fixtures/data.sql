@@ -405,7 +405,8 @@ ALTER SEQUENCE funds_donor_id_seq OWNED BY funds_donor.id;
 CREATE TABLE funds_grant (
     id integer NOT NULL,
     name character varying(128) NOT NULL,
-    donor_id integer NOT NULL
+    donor_id integer NOT NULL,
+    expiry date
 );
 
 
@@ -737,7 +738,13 @@ CREATE TABLE partners_agreement (
     signed_by_partner_date date,
     partner_id integer NOT NULL,
     partner_manager_id integer,
-    signed_by_id integer
+    signed_by_id integer,
+    account_number character varying(50),
+    account_title character varying(255),
+    bank_address character varying(256) NOT NULL,
+    bank_contact_person character varying(255),
+    bank_name character varying(255),
+    routing_details character varying(255)
 );
 
 
@@ -883,6 +890,46 @@ ALTER SEQUENCE partners_authorizedofficer_id_seq OWNED BY partners_authorizedoff
 
 
 --
+-- Name: partners_directcashtransfer; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_directcashtransfer (
+    id integer NOT NULL,
+    fc_ref character varying(50) NOT NULL,
+    amount_usd numeric(10,2) NOT NULL,
+    liquidation_usd numeric(10,2) NOT NULL,
+    outstanding_balance_usd numeric(10,2) NOT NULL,
+    "amount_less_than_3_Months_usd" numeric(10,2) NOT NULL,
+    amount_3_to_6_months_usd numeric(10,2) NOT NULL,
+    amount_6_to_9_months_usd numeric(10,2) NOT NULL,
+    "amount_more_than_9_Months_usd" numeric(10,2) NOT NULL
+);
+
+
+ALTER TABLE partners_directcashtransfer OWNER TO postgres;
+
+--
+-- Name: partners_directcashtransfer_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_directcashtransfer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_directcashtransfer_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_directcashtransfer_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_directcashtransfer_id_seq OWNED BY partners_directcashtransfer.id;
+
+
+--
 -- Name: partners_distributionplan; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -953,6 +1000,48 @@ ALTER TABLE partners_filetype_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE partners_filetype_id_seq OWNED BY partners_filetype.id;
+
+
+--
+-- Name: partners_fundingcommitment; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_fundingcommitment (
+    id integer NOT NULL,
+    fr_number character varying(50) NOT NULL,
+    wbs character varying(50) NOT NULL,
+    fc_type character varying(50) NOT NULL,
+    fc_ref character varying(50),
+    fr_item_amount_usd numeric(10,2),
+    agreement_amount numeric(10,2),
+    commitment_amount numeric(10,2),
+    expenditure_amount numeric(10,2),
+    grant_id integer NOT NULL,
+    intervention_id integer
+);
+
+
+ALTER TABLE partners_fundingcommitment OWNER TO postgres;
+
+--
+-- Name: partners_fundingcommitment_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_fundingcommitment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_fundingcommitment_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_fundingcommitment_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_fundingcommitment_id_seq OWNED BY partners_fundingcommitment.id;
 
 
 --
@@ -1037,7 +1126,6 @@ ALTER SEQUENCE partners_indicatorprogress_id_seq OWNED BY partners_indicatorprog
 
 CREATE TABLE partners_partnerorganization (
     id integer NOT NULL,
-    type character varying(50),
     partner_type character varying(50) NOT NULL,
     name character varying(255) NOT NULL,
     short_name character varying(50) NOT NULL,
@@ -1050,7 +1138,9 @@ CREATE TABLE partners_partnerorganization (
     alternate_name character varying(255),
     rating character varying(50) NOT NULL,
     core_values_assessment_date date,
-    core_values_assessment character varying(100)
+    core_values_assessment character varying(100),
+    cso_type character varying(50),
+    vision_synced boolean NOT NULL
 );
 
 
@@ -1129,7 +1219,8 @@ CREATE TABLE partners_partnerstaffmember (
     last_name character varying(64) NOT NULL,
     email character varying(128) NOT NULL,
     phone character varying(64) NOT NULL,
-    partner_id integer NOT NULL
+    partner_id integer NOT NULL,
+    active boolean NOT NULL
 );
 
 
@@ -1198,7 +1289,8 @@ CREATE TABLE partners_pca (
     partner_focal_point_id integer,
     partner_manager_id integer,
     result_structure_id integer,
-    unicef_manager_id integer
+    unicef_manager_id integer,
+    fr_number character varying(50)
 );
 
 
@@ -2536,6 +2628,19 @@ ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permiss
 
 
 --
+-- Name: authtoken_token; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE authtoken_token (
+    key character varying(40) NOT NULL,
+    created timestamp with time zone NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE authtoken_token OWNER TO postgres;
+
+--
 -- Name: celery_taskmeta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -3804,7 +3909,10 @@ CREATE TABLE users_country (
     domain_url character varying(128) NOT NULL,
     schema_name character varying(63) NOT NULL,
     name character varying(100) NOT NULL,
-    business_area_code character varying(10)
+    business_area_code character varying(10),
+    initial_zoom integer NOT NULL,
+    latitude numeric(8,6),
+    longitude numeric(8,6)
 );
 
 
@@ -4119,6 +4227,13 @@ ALTER TABLE ONLY partners_authorizedofficer ALTER COLUMN id SET DEFAULT nextval(
 -- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
 --
 
+ALTER TABLE ONLY partners_directcashtransfer ALTER COLUMN id SET DEFAULT nextval('partners_directcashtransfer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
 ALTER TABLE ONLY partners_distributionplan ALTER COLUMN id SET DEFAULT nextval('partners_distributionplan_id_seq'::regclass);
 
 
@@ -4127,6 +4242,13 @@ ALTER TABLE ONLY partners_distributionplan ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY partners_filetype ALTER COLUMN id SET DEFAULT nextval('partners_filetype_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_fundingcommitment ALTER COLUMN id SET DEFAULT nextval('partners_fundingcommitment_id_seq'::regclass);
 
 
 --
@@ -4850,6 +4972,23 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 81	users	0007_auto_20160205_2230	2016-02-15 09:31:02.442501-05
 82	users	0008_userprofile_countries_available	2016-02-15 09:31:02.74727-05
 83	users	0009_countries_available	2016-02-15 09:31:02.821371-05
+84	admin	0002_logentry_remove_auto_add	2016-02-23 10:43:50.166945-05
+85	auth	0007_alter_validators_add_error_messages	2016-02-23 10:43:50.284455-05
+86	locations	0004_auto_20160222_1652	2016-02-23 10:43:51.670749-05
+87	partners	0021_partnerstaffmember_active	2016-02-23 10:44:01.856137-05
+88	reports	0012_auto_20160222_1652	2016-02-23 10:44:09.974328-05
+89	sites	0002_alter_domain_unique	2016-02-23 10:44:10.508358-05
+90	users	0010_auto_20160216_1814	2016-02-23 10:44:15.982261-05
+91	authtoken	0001_initial	2016-03-01 13:16:12.883352-05
+92	funds	0002_grant_expiry	2016-03-01 13:16:12.903458-05
+93	locations	0005_auto_20160226_1543	2016-03-01 13:16:12.992218-05
+94	locations	0006_auto_20160229_1545	2016-03-01 13:16:13.075635-05
+95	partners	0022_auto_20160223_2222	2016-03-01 13:16:14.391503-05
+96	partners	0023_auto_20160228_0002	2016-03-01 13:16:16.087876-05
+97	partners	0024_pca_fr_number	2016-03-01 13:16:16.319454-05
+98	partners	0025_auto_20160229_1333	2016-03-01 13:16:16.750456-05
+99	partners	0026_auto_20160229_1545	2016-03-01 13:16:17.598008-05
+100	reports	0013_auto_20160226_1543	2016-03-01 13:16:17.843124-05
 \.
 
 
@@ -4857,7 +4996,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 83, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 100, true);
 
 
 --
@@ -4879,7 +5018,7 @@ SELECT pg_catalog.setval('funds_donor_id_seq', 1, false);
 -- Data for Name: funds_grant; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY funds_grant (id, name, donor_id) FROM stdin;
+COPY funds_grant (id, name, donor_id, expiry) FROM stdin;
 \.
 
 
@@ -4999,7 +5138,7 @@ SELECT pg_catalog.setval('locations_region_id_seq', 1, false);
 -- Data for Name: partners_agreement; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_agreement (id, created, modified, start, "end", agreement_type, agreement_number, attached_agreement, signed_by_unicef_date, signed_by_partner_date, partner_id, partner_manager_id, signed_by_id) FROM stdin;
+COPY partners_agreement (id, created, modified, start, "end", agreement_type, agreement_number, attached_agreement, signed_by_unicef_date, signed_by_partner_date, partner_id, partner_manager_id, signed_by_id, account_number, account_title, bank_address, bank_contact_person, bank_name, routing_details) FROM stdin;
 \.
 
 
@@ -5056,6 +5195,21 @@ SELECT pg_catalog.setval('partners_authorizedofficer_id_seq', 1, false);
 
 
 --
+-- Data for Name: partners_directcashtransfer; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_directcashtransfer (id, fc_ref, amount_usd, liquidation_usd, outstanding_balance_usd, "amount_less_than_3_Months_usd", amount_3_to_6_months_usd, amount_6_to_9_months_usd, "amount_more_than_9_Months_usd") FROM stdin;
+\.
+
+
+--
+-- Name: partners_directcashtransfer_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_directcashtransfer_id_seq', 1, false);
+
+
+--
 -- Data for Name: partners_distributionplan; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
@@ -5083,6 +5237,21 @@ COPY partners_filetype (id, name) FROM stdin;
 --
 
 SELECT pg_catalog.setval('partners_filetype_id_seq', 1, false);
+
+
+--
+-- Data for Name: partners_fundingcommitment; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_fundingcommitment (id, fr_number, wbs, fc_type, fc_ref, fr_item_amount_usd, agreement_amount, commitment_amount, expenditure_amount, grant_id, intervention_id) FROM stdin;
+\.
+
+
+--
+-- Name: partners_fundingcommitment_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_fundingcommitment_id_seq', 1, false);
 
 
 --
@@ -5119,7 +5288,7 @@ SELECT pg_catalog.setval('partners_indicatorprogress_id_seq', 1, false);
 -- Data for Name: partners_partnerorganization; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_partnerorganization (id, type, partner_type, name, short_name, description, address, email, phone_number, vendor_number, alternate_id, alternate_name, rating, core_values_assessment_date, core_values_assessment) FROM stdin;
+COPY partners_partnerorganization (id, partner_type, name, short_name, description, address, email, phone_number, vendor_number, alternate_id, alternate_name, rating, core_values_assessment_date, core_values_assessment, cso_type, vision_synced) FROM stdin;
 \.
 
 
@@ -5149,7 +5318,7 @@ SELECT pg_catalog.setval('partners_partnershipbudget_id_seq', 1, false);
 -- Data for Name: partners_partnerstaffmember; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_partnerstaffmember (id, title, first_name, last_name, email, phone, partner_id) FROM stdin;
+COPY partners_partnerstaffmember (id, title, first_name, last_name, email, phone, partner_id, active) FROM stdin;
 \.
 
 
@@ -5164,7 +5333,7 @@ SELECT pg_catalog.setval('partners_partnerstaffmember_id_seq', 1, false);
 -- Data for Name: partners_pca; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, unicef_mng_first_name, unicef_mng_last_name, unicef_mng_email, partner_mng_first_name, partner_mng_last_name, partner_mng_email, partner_mng_phone, partner_contribution_budget, unicef_cash_budget, in_kind_amount_budget, cash_for_supply_budget, total_cash, sectors, current, created_at, updated_at, amendment, amended_at, amendment_number, agreement_id, original_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id) FROM stdin;
+COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, unicef_mng_first_name, unicef_mng_last_name, unicef_mng_email, partner_mng_first_name, partner_mng_last_name, partner_mng_email, partner_mng_phone, partner_contribution_budget, unicef_cash_budget, in_kind_amount_budget, cash_for_supply_budget, total_cash, sectors, current, created_at, updated_at, amendment, amended_at, amendment_number, agreement_id, original_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number) FROM stdin;
 \.
 
 
@@ -5497,9 +5666,9 @@ SELECT pg_catalog.setval('trips_travelroutes_id_seq', 1, false);
 COPY trips_trip (id, status, cancelled_reason, purpose_of_travel, travel_type, security_clearance_required, international_travel, from_date, to_date, main_observations, constraints, lessons_learned, opportunities, ta_required, ta_drafted, ta_drafted_date, ta_reference, transport_booked, security_granted, approved_by_supervisor, date_supervisor_approved, approved_by_budget_owner, date_budget_owner_approved, approved_by_human_resources, date_human_resources_approved, representative_approval, date_representative_approved, approved_date, created_date, approved_email_sent, ta_trip_took_place_as_planned, ta_trip_repay_travel_allowance, ta_trip_final_claim, budget_owner_id, human_resources_id, office_id, owner_id, programme_assistant_id, representative_id, section_id, supervisor_id, travel_assistant_id, vision_approver_id, driver_id, driver_supervisor_id, driver_trip_id, pending_ta_amendment, submitted_email_sent) FROM stdin;
 7	submitted		leave jakku	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:29:42.327017-05	f	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
 3	planned		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	f
-6	submitted		find han and chewie	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:27:14.61473-05	f	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
-2	planned		find luke	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:06:44.415137-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	3	\N	\N	\N	\N	\N	f	f
 8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-01-01	f	\N	\N	\N	\N	\N	2016-02-15	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
+2	submitted		find luke	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:06:44.415137-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	3	\N	\N	\N	\N	\N	f	t
+6	approved		find han and chewie	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-03-01	f	\N	\N	\N	\N	\N	2016-03-01	2016-02-15 10:27:14.61473-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
 \.
 
 
@@ -5912,6 +6081,15 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 269	Can add supply item	90	add_supplyitem
 270	Can change supply item	90	change_supplyitem
 271	Can delete supply item	90	delete_supplyitem
+272	Can add token	91	add_token
+273	Can change token	91	change_token
+274	Can delete token	91	delete_token
+275	Can add funding commitment	92	add_fundingcommitment
+276	Can change funding commitment	92	change_fundingcommitment
+277	Can delete funding commitment	92	delete_fundingcommitment
+278	Can add direct cash transfer	93	add_directcashtransfer
+279	Can change direct cash transfer	93	change_directcashtransfer
+280	Can delete direct cash transfer	93	delete_directcashtransfer
 \.
 
 
@@ -5919,7 +6097,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 271, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 280, true);
 
 
 --
@@ -5931,8 +6109,8 @@ COPY auth_user (id, password, last_login, is_superuser, username, first_name, la
 1	pbkdf2_sha256$20000$oLSDagdBJZQe$GjusoFurVNg8wfUZ6TCR7w5SKz1W6QuSGNvfGfxn/oU=	2016-02-15 09:49:48-05	t	luke@force.com	luke		luke@force.com	t	t	2016-02-15 09:27:08-05
 3	pbkdf2_sha256$20000$BwvYLpZCW0cD$v8brgatQrEEYnma9CP8m+6fohtQMw0zFcb0K3Wk/qbQ=	2016-02-15 10:03:00.183242-05	t	leia@force.com	leia		leia@force.com	t	t	2016-02-15 09:27:12-05
 6	pbkdf2_sha256$20000$Ort98H5Fvhah$LZA7OhRpLW9LX0TzGJp9ge+HyJi6K7Y9DIuPhSqgmyU=	\N	t	bb8@force.com	bb8		bb8@force.com	t	t	2016-02-15 10:37:06-05
-4	pbkdf2_sha256$20000$AQGNBePK6q2s$3BjxnoDFosxgCGTrUNF6N+0Xidal3vbzC3WPEbzS9bM=	2016-02-15 11:23:02.964325-05	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-02-15 11:24:22.866018-05	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
+4	pbkdf2_sha256$24000$VwisqqQ4GOZ8$QnBb8RGbYBC8NvQ9++2kYSheZ3X5zmR+/GjrwvWJ+OM=	2016-02-15 11:23:02.964325-05	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 \.
 
 
@@ -5971,6 +6149,14 @@ COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
 --
 
 SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: authtoken_token; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY authtoken_token (key, created, user_id) FROM stdin;
+\.
 
 
 --
@@ -6172,6 +6358,9 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 88	trips	fileattachment
 89	tpm	tpmvisit
 90	supplies	supplyitem
+91	authtoken	token
+92	partners	fundingcommitment
+93	partners	directcashtransfer
 \.
 
 
@@ -6179,7 +6368,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 90, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 93, true);
 
 
 --
@@ -6270,6 +6459,23 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 81	users	0007_auto_20160205_2230	2016-02-15 09:27:05.028088-05
 82	users	0008_userprofile_countries_available	2016-02-15 09:27:05.32112-05
 83	users	0009_countries_available	2016-02-15 09:27:05.347971-05
+84	admin	0002_logentry_remove_auto_add	2016-02-23 10:43:23.980643-05
+85	auth	0007_alter_validators_add_error_messages	2016-02-23 10:43:24.099567-05
+86	locations	0004_auto_20160222_1652	2016-02-23 10:43:25.422673-05
+87	partners	0021_partnerstaffmember_active	2016-02-23 10:43:35.555118-05
+88	reports	0012_auto_20160222_1652	2016-02-23 10:43:43.779917-05
+89	sites	0002_alter_domain_unique	2016-02-23 10:43:44.196252-05
+90	users	0010_auto_20160216_1814	2016-02-23 10:43:49.750313-05
+91	authtoken	0001_initial	2016-03-01 13:15:28.261321-05
+92	funds	0002_grant_expiry	2016-03-01 13:15:28.279897-05
+93	locations	0005_auto_20160226_1543	2016-03-01 13:15:28.369164-05
+94	locations	0006_auto_20160229_1545	2016-03-01 13:15:28.450532-05
+95	partners	0022_auto_20160223_2222	2016-03-01 13:15:29.836448-05
+96	partners	0023_auto_20160228_0002	2016-03-01 13:15:31.475126-05
+97	partners	0024_pca_fr_number	2016-03-01 13:15:31.699887-05
+98	partners	0025_auto_20160229_1333	2016-03-01 13:15:31.910017-05
+99	partners	0026_auto_20160229_1545	2016-03-01 13:15:32.75021-05
+100	reports	0013_auto_20160226_1543	2016-03-01 13:15:33.03515-05
 \.
 
 
@@ -6277,7 +6483,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 83, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 100, true);
 
 
 --
@@ -6580,6 +6786,8 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 9	finn@force.com	finn@force.com, rey@force.com			eTools  - Trip 2016/7-1 has been Submitted for finn	\n    Dear Colleague,\n\n    Trip 2016/7-1 has been Submitted for finn here:\n    http://example.com/admin/trips/trip/7/\n    Purpose of travel: bring bb-8 to leia\n\n    Thank you.\n    		0	3	2016-02-15 10:30:03.141839-05	2016-02-15 10:30:23.973847-05	\N	\N	\N	\N	
 10	rey@force.com	rey@force.com, han@force.com			eTools  - Trip 2016/8-1 has been Submitted for rey	\n    Dear Colleague,\n\n    Trip 2016/8-1 has been Submitted for rey here:\n    http://example.com/admin/trips/trip/8/\n    Purpose of travel: bring bb-8 to d&#39;qar\n\n    Thank you.\n    		0	3	2016-02-15 10:59:16.324178-05	2016-02-15 10:59:21.693784-05	\N	\N	\N	\N	
 11	rey@force.com	rey@force.com, han@force.com			eTools  - Trip Approved: 2016/8-2	\n    The following trip has been approved: 2016/8-2\n\n    http://example.com/admin/trips/trip/8/\n\n    Thank you.\n    		0	3	2016-02-15 11:24:44.15781-05	2016-02-15 11:24:49.73508-05	\N	\N	\N	\N	
+12	rey@force.com	rey@force.com, leia@force.com			eTools  - Trip 2016/2-1 has been Submitted for rey	\n    Dear Colleague,\n\n    Trip 2016/2-1 has been Submitted for rey here:\n    http://example.com/admin/trips/trip/2/change/\n    Purpose of travel: find luke\n\n    Thank you.\n    		0	3	2016-03-01 15:00:21.909249-05	2016-03-01 15:00:23.184729-05	\N	\N	\N	\N	
+13	finn@force.com	finn@force.com, rey@force.com			eTools  - Trip Approved: 2016/6-2	\n    The following trip has been approved: 2016/6-2\n\n    http://example.com/admin/trips/trip/6/change/\n\n    Thank you.\n    		0	3	2016-03-01 15:00:38.586462-05	2016-03-01 15:00:40.2055-05	\N	\N	\N	\N	
 \.
 
 
@@ -6587,7 +6795,7 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 -- Name: post_office_email_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_email_id_seq', 11, true);
+SELECT pg_catalog.setval('post_office_email_id_seq', 13, true);
 
 
 --
@@ -6624,6 +6832,8 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 9	2016-02-15 10:30:23.993322-05	0			9
 10	2016-02-15 10:59:21.703252-05	0			10
 11	2016-02-15 11:24:49.744227-05	0			11
+12	2016-03-01 15:00:23.195221-05	0			12
+13	2016-03-01 15:00:40.209049-05	0			13
 \.
 
 
@@ -6631,7 +6841,7 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 -- Name: post_office_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_log_id_seq', 11, true);
+SELECT pg_catalog.setval('post_office_log_id_seq', 13, true);
 
 
 --
@@ -7884,8 +8094,8 @@ COPY spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
 -- Data for Name: users_country; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY users_country (id, domain_url, schema_name, name, business_area_code) FROM stdin;
-1	hoth	hoth	hoth	
+COPY users_country (id, domain_url, schema_name, name, business_area_code, initial_zoom, latitude, longitude) FROM stdin;
+1	hoth	hoth	hoth		8	\N	\N
 \.
 
 
@@ -8231,6 +8441,14 @@ ALTER TABLE ONLY partners_authorizedofficer
 
 
 --
+-- Name: partners_directcashtransfer_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_directcashtransfer
+    ADD CONSTRAINT partners_directcashtransfer_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: partners_distributionplan_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -8252,6 +8470,14 @@ ALTER TABLE ONLY partners_filetype
 
 ALTER TABLE ONLY partners_filetype
     ADD CONSTRAINT partners_filetype_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_fundingcommitment_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_fundingcommitment
+    ADD CONSTRAINT partners_fundingcommitment_pkey PRIMARY KEY (id);
 
 
 --
@@ -8729,6 +8955,22 @@ ALTER TABLE ONLY auth_user
 
 
 --
+-- Name: authtoken_token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY authtoken_token
+    ADD CONSTRAINT authtoken_token_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: authtoken_token_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY authtoken_token
+    ADD CONSTRAINT authtoken_token_user_id_key UNIQUE (user_id);
+
+
+--
 -- Name: celery_taskmeta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -8806,6 +9048,14 @@ ALTER TABLE ONLY django_migrations
 
 ALTER TABLE ONLY django_session
     ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site_domain_a2e37b91_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_site
+    ADD CONSTRAINT django_site_domain_a2e37b91_uniq UNIQUE (domain);
 
 
 --
@@ -9568,6 +9818,20 @@ CREATE INDEX partners_filetype_name_15345b22407d8a1b_like ON partners_filetype U
 
 
 --
+-- Name: partners_fundingcommitment_123a1ce7; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_fundingcommitment_123a1ce7 ON partners_fundingcommitment USING btree (intervention_id);
+
+
+--
+-- Name: partners_fundingcommitment_c2418e07; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_fundingcommitment_c2418e07 ON partners_fundingcommitment USING btree (grant_id);
+
+
+--
 -- Name: partners_gwpcalocation_0f442f96; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -10326,6 +10590,13 @@ CREATE INDEX auth_user_username_51b3b110094b8aae_like ON auth_user USING btree (
 
 
 --
+-- Name: authtoken_token_key_7222ec672cd32dcd_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX authtoken_token_key_7222ec672cd32dcd_like ON authtoken_token USING btree (key varchar_pattern_ops);
+
+
+--
 -- Name: celery_taskmeta_662f707d; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -10379,6 +10650,13 @@ CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date)
 --
 
 CREATE INDEX django_session_session_key_461cfeaa630ca218_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: django_site_domain_a2e37b91_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_site_domain_a2e37b91_like ON django_site USING btree (domain varchar_pattern_ops);
 
 
 --
@@ -11327,6 +11605,22 @@ ALTER TABLE ONLY partners_distributionplan
 
 
 --
+-- Name: partners_fu_intervention_id_63d7226fdb1f1b51_fk_partners_pca_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_fundingcommitment
+    ADD CONSTRAINT partners_fu_intervention_id_63d7226fdb1f1b51_fk_partners_pca_id FOREIGN KEY (intervention_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_fundingcom_grant_id_776ec148259f5c7f_fk_funds_grant_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_fundingcommitment
+    ADD CONSTRAINT partners_fundingcom_grant_id_776ec148259f5c7f_fk_funds_grant_id FOREIGN KEY (grant_id) REFERENCES funds_grant(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: partners_gwpc_region_id_6d2b3812d6406385_fk_locations_region_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11918,6 +12212,14 @@ ALTER TABLE ONLY auth_user_groups
 
 ALTER TABLE ONLY auth_user_user_permissions
     ADD CONSTRAINT auth_user_user_permiss_user_id_7f0938558328534a_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: authtoken_token_user_id_1d10c57f535fb363_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY authtoken_token
+    ADD CONSTRAINT authtoken_token_user_id_1d10c57f535fb363_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --

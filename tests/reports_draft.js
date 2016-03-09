@@ -52,6 +52,7 @@ describe('Reports - Drafts', function() {
     it('should be able Replace Drafts with Current Report', function() {
         var textareas = element.all(by.css('textarea'));
         element(by.buttonText('Replace Drafts With Current Report')).click();
+        browser.sleep(1000);
         textareas.get(1).getAttribute('value').should.eventually.be.equal('');
         textareas.get(2).getAttribute('value').should.eventually.be.equal('');
         textareas.get(3).getAttribute('value').should.eventually.be.equal('');
@@ -99,11 +100,7 @@ describe('Reports - Drafts', function() {
         element.all(by.css(allTripsCssSelector)).count().should.eventually.equal(3);
     });
 
-    afterEach(function() {
-        browser.takeScreenshot().then(function(png) {
-            var stream = fs.createWriteStream('./' + path.basename(__filename, '.js') + '_screenshot.png');
-            stream.write(new Buffer(png, 'base64'));
-            stream.end();
-        });        
+    it('should be able to logout', function() {
+        auth.logout();
     });
 });

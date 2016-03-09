@@ -1,15 +1,8 @@
 exports.config = {
+    seleniumAddress: 'http://localhost:4723/wd/hub',
+
     specs: [ 
-        'login.js',
-        'navigation.js',
-        'sidebar_menu.js',
-        'my_trips.js',
-        'supervised.js',
-        'notes.js',
-        'reports.js',
-        'reports_draft.js',
-        'reports_action_point.js',
-        'reports_text.js'        
+        'all_tests.js'
     ],
 
     exclude: [
@@ -22,14 +15,26 @@ exports.config = {
     ],
 
     framework: 'mocha',
-    seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
-    chromeDriver: '../node_modules/protractor/selenium/chromedriver',
-
+    
     mochaOpts: {        
         reporter: 'spec',
         timeout: 10000
     },
 
+
+    capabilities: {
+        platformName: 'android',
+        platformVersion: '5.1.1',
+        deviceName: 'oneplusone',
+        browserName: "",
+        autoWebview: true,        
+        app: '/Users/chris/unicef/EquiTrackMobile/platforms/android/build/outputs/apk/android-debug.apk'        
+    },
+    baseUrl: 'http://10.0.2.2:8000',
+
+    // configuring wd in onPrepare
+    // wdBridge helps to bridge wd driver with other selenium clients
+    // See https://github.com/sebv/wd-bridge/blob/master/README.md
     onPrepare: function () {
         global._ = require('lodash');
         global.fs = require('fs');
@@ -52,12 +57,9 @@ exports.config = {
             }, timeout);
         };
 
-        Object.defineProperty(
-            protractor.promise.Promise.prototype,
-            'should',
-            Object.getOwnPropertyDescriptor(Object.prototype, 'should')
-        );
-
-        browser.manage().window().setSize(640, 1136);
+        var wd = require('wd'),
+            protractor = require('protractor'),
+            wdBridge = require('wd-bridge')(protractor, wd);
+        wdBridge.initFromProtractor(exports.config);
     }
 };

@@ -9,9 +9,9 @@ angular.module('equitrack.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
   $scope.logout = function(){
-      console.log('logout goes here')
-      $state.go("login")
-      LoginService.logout()
+      console.log('logout goes here');
+      $state.go("login");
+      LoginService.logout();
 
   };
   $scope.currentUser = $localStorage.getObject('currentUser');
@@ -36,16 +36,15 @@ angular.module('equitrack.controllers', [])
         API_urls.set_base(conn_str);
         console.log('logging out now');
         LoginService.logout();
-        $ionicHistory.clearCache().then(function(){ $state.go('login')})
+        $ionicHistory.clearCache().then(function(){ $state.go('login');});
 
-    }
+    };
 })
 
-
 .controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
-            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls',
+            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'NetworkService', 
              function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
-                      Auth, $ionicPopup, $state, API_urls) {
+                      Auth, $ionicPopup, $state, API_urls, NetworkService) {
 
     $scope.data = $localStorage.getObject('user_cred');
     $scope.other = {};
@@ -63,67 +62,72 @@ angular.module('equitrack.controllers', [])
                 },
                 function(res){
                     $ionicLoading.hide();
-                    console.log("failed to get trips")
+                    console.log("failed to get trips");
                     var alertPopup = $ionicPopup.alert({
                         title: 'Login failed!',
                         template: 'Failed to get trips, please try logging in again.'
                     });
                 }, true
-            )
+            );
         },
             function(profile_fail){
                 //this means that our user does not have a country yet or something went wrong on
                 // THE DJANGO side.
                 $ionicLoading.hide();
-                console.log(profile_fail)
+                console.log(profile_fail);
+                var alertPopup = '';
                 if (profile_fail.data.detail == 'No country found for user'){
-                    var alertPopup = $ionicPopup.alert({
+                    alertPopup = $ionicPopup.alert({
                         title: 'Login failed!',
                         template: 'Please setup your profile on eTools <br> Please set your Country'
                     });
                 } else {
-                    var alertPopup = $ionicPopup.alert({
+                    alertPopup = $ionicPopup.alert({
                         title: 'Login failed!',
                         template: 'Something went wrong retrieving your user, please try again later'
                     });
                 }
-                return
+                return;
 
-        })
+        });
 
 
-    };
+    }
 
     function login_fail(data){
-        console.log("LoginCtrl: login_fail")
-        console.log(JSON.stringify(data))
-        console.log(data.data)
-        console.log(data.error)
-        console.log(data.body)
+      console.log("LoginCtrl: login_fail");
+      console.log(JSON.stringify(data));
+      console.log(data.data);
+      console.log(data.error);
+      console.log(data.body);
 
-        $ionicLoading.hide();
-        var alertPopup = $ionicPopup.alert({
-            title: 'Login failed!',
-            template: 'Please check your credentials!'
-        });
-    };
+      $ionicLoading.hide();
+      var alertPopup = $ionicPopup.alert({
+        title: 'Login failed!',
+        template: 'Please check your credentials!'
+      });
+    }
 
     $scope.login = function(){
         var loginData = $scope.data;
 
         if ($scope.other.rememberMe){
-            // won't save the password
-            $localStorage.setObject("user_cred",{username:loginData.username, password:""})
+          // won't save the password
+          $localStorage.setObject("user_cred",{username:loginData.username, password:""});
         } else {
-            $localStorage.delete("user_cred")
-        };
-        $ionicLoading.show({
-                      template: 'Loading...'
-        });
-        //store the username in the background for re-login
-        $localStorage.setObject("relogin_cred",{username:loginData.username, password:""})
-        LoginService.loginUser(loginData, login_success, login_fail)
-        $scope.data = {}
+          $localStorage.delete("user_cred");
+        }
+
+        if (NetworkService.isOffline()) {
+          NetworkService.showMessage('Login Failed', 'Sorry, unable to login to eTrips. Please check your network connection or try again later.');
+          $scope.data = {};
+
+        } else {
+          $ionicLoading.show({ template: 'Loading...' });            
+          $localStorage.setObject("relogin_cred", { username:loginData.username, password:""} ); //store the username in the background for re-login
+          LoginService.loginUser(loginData, login_success, login_fail);
+          $scope.data = {};
+        }
     };
 
 }]);
