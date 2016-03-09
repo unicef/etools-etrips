@@ -1,6 +1,7 @@
 exports.config = {
     specs: [ 
         'login.js',
+        'language_selector.js',
         'navigation.js',
         'sidebar_menu.js',
         'my_trips.js',
