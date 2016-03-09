@@ -1,4 +1,4 @@
 {
-    "apiHostDevelopment" : "https://etoolsdev.localtunnel.me",
+    "apiHostDevelopment" : "http://192.168.1.254:8080",
     "defaultConnection" : 0
 }

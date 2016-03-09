@@ -1,18 +1,12 @@
 describe('Login View', function() {
-    var pageLoaded = false;
     var email = faker.internet.email();
     var password = faker.internet.password();
-    
-    beforeEach(function() {
-        if (pageLoaded === false) {
-            browser.get(browser.params.url + '/');
-            pageLoaded = true;
-        }
+
+    it('should see the login page', function() {
+        browser.get(urlBase + '/');
     });
 
     it('should have a title, two fields, remember me and a login button', function() {
-        this.timeout(4000);
-
         element.all(by.css('h2')).count().should.eventually.equal(1);
         element.all(by.css('h2')).get(0).getText().should.eventually.equal('eTrips');
 
@@ -47,6 +41,14 @@ describe('Login View', function() {
         element(by.css('div.popup-body > span')).getText().should.eventually.equal('Please check your credentials!');
         element(by.css('button.button-positive')).click();
         element(by.css('div.popup')).isPresent().should.eventually.false;
+    });
+
+    it('should be able to login', function() {
+        auth.login();
+    });    
+
+    it('should be able to logout', function() {
+        auth.logout();
     });
 
     afterEach(function() {

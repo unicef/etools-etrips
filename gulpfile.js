@@ -5,13 +5,18 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
-var shell = require('gulp-shell')
+var shell = require('gulp-shell');
 var preprocess = require('gulp-preprocess');
 var sh = require('shelljs');
 var args = require('yargs').argv;  
 var fs = require('fs');
 var replace = require('gulp-replace-task');  
 var _ = require('lodash');
+var protractor = require("gulp-protractor").protractor;
+var pg = require('pg');
+var async = require('async');
+
+var integrationTestDb = 'test_db';
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -65,16 +70,64 @@ gulp.task('replace', function () {
   gulp.src('src/js/constants.js')  
     .pipe(replace({
       patterns: _.map(_.keys(settings), function(key){ 
-          return { match: key, replacement: settings[key] }
+          return { match: key, replacement: settings[key] };
         })
       }))
     .pipe(gulp.dest('www/js'));
 
   gulp.src('src/*.html')
     .pipe(preprocess({context: { NODE_ENV: env }}))
-    .pipe(gulp.dest('www/'))
+    .pipe(gulp.dest('www/'));
 });
 
-gulp.task('restore_db', shell.task([
-  'dropdb test_db && createdb test_db && psql test_db < ./tests/fixtures/data.sql'
-]))
+// disconnect any exisiting db connections  
+gulp.task('postgres_disconnect', function(){  
+  var con = 'postgres://postgres:password@localhost:5432/' + integrationTestDb;
+  var client = new pg.Client(con);
+
+  async.series([
+    function(callback){
+      client.connect(function(err) {
+        if(err) {
+          return console.error('could not connect to postgres', err);
+        }
+
+        callback(null, true);
+      });
+    },
+    function(callback){
+        client.query('REVOKE CONNECT ON DATABASE ' + integrationTestDb + ' FROM public;', function(err, result) {
+          if(err) {
+            return console.error('error running query', err);
+          }
+
+          callback(null, true);
+        });
+    },
+    function(callback){
+        client.query('SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = \'' + integrationTestDb + '\';', function(err, result) {
+          callback(null, true);
+        });
+    }
+  ],  
+  function(err, results){
+
+    client.end();      
+  });
+});
+
+gulp.task('restore_db', ['postgres_disconnect'], shell.task(
+  ['dropdb ' + integrationTestDb + ' && createdb ' + integrationTestDb + ' && psql ' + integrationTestDb + ' < ./tests/fixtures/data.sql'])
+);
+
+gulp.task('protractor', function() {
+  gulp.src(["./tests/*.js"])
+    .pipe(protractor({
+        configFile: "./tests/conf_dev.js"
+    }))
+    .on('error', function(e) { throw e; });
+});
+
+gulp.task('protractor_watch', function () {   
+  gulp.watch(['./tests/**/*.js'], ['protractor']);
+});
