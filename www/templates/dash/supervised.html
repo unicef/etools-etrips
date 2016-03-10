@@ -1,8 +1,8 @@
-<ion-view view-title="Supervised">
+<ion-view view-title="{{ 'template.dashboard.supervised' | translate }}">
 
   <ion-content>
       <ion-refresher
-        pulling-text="Pull to refresh..."
+        pulling-text="{{ 'template.dashboard.pull_to_refresh' | translate }}"
         on-refresh="doRefresh()">
       </ion-refresher>
       <!-- <p>{{ trips }}</p> -->
@@ -19,11 +19,11 @@
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button ng-hide="trip.approved_by_supervisor" class="button-positive" ng-click="approve(trip.id)">
-          I Approve
+          {{ 'template.dashboard.i_approve' | translate }}
         </ion-option-button>
       </ion-item>
       <ion-item ng-hide="filteredTrips.length">
-          <h2>You're not currently supervising any trips!</h2>
+          <h2>{{ 'template.dashboard.not_supervising_trips' | translate }}</h2>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -1,19 +1,19 @@
-<ion-view view-title="Action Points">
+<ion-view view-title="{{ 'template.trip.report.action_point.title' | translate }}">
 
   <ion-content class="padding">
-      <h3>Current Action-Points</h3>
+      <h3>{{ 'template.trip.report.action_point.current' | translate }}</h3>
       <ion-list>
           <ion-item ng-repeat="ap in trip.actionpoint_set" href="#/app/reporting/{{trip.id}}/aps/{{ap.id}}" class="item-remove-animate item-avatar item-icon-left item-icon-right">
               <h2>{{ ap.person_responsible_name }}</h2>
-              <p>Status: {{ ap.status }}</p>
+              <p>{{ 'template.trip.report.action_point.status' | translate }} {{ ap.status }}</p>
               <p>{{ ap.description }}</p>
-              <p>Due by: {{ ap.due_date | date:short }}</p>
+              <p>{{ 'template.trip.report.action_point.due_date' | translate }} {{ ap.due_date | date:short }}</p>
 
           </ion-item>
       </ion-list>
       <br>
       <a href="#/app/reporting/{{trip.id}}/aps/new" class="button button-block button-positive padding-botom">
-          New Action Point
+          {{ 'template.trip.report.action_point.new' | translate }}
       </a>
   </ion-content>
 </ion-view>

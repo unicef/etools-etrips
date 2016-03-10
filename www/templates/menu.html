@@ -14,23 +14,25 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">eTrip Menu</h1>
+      <h1 class="title">{{ 'template.menu.title' | translate }}</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close class="item-divider">Country: {{ currentUser.profile.country_name }}</ion-item>
+        <ion-item menu-close class="item-divider">{{ 'template.menu.country' | translate }} {{ currentUser.profile.country_name }}</ion-item>
         <ion-item menu-close href="#/app/dash/my_trips">
-            Trips
+            {{ 'template.menu.trips' | translate }}
         </ion-item>
         <ion-item menu-close href="#/app/settings">
-            Settings
+            {{ 'template.menu.settings' | translate }}
         </ion-item>
         <!-- <ion-item menu-close href="#/app/resources">
             Resources
         </ion-item> -->
         <ion-item menu-close ng-click="logout()">
-            Logout
+            {{ 'template.menu.logout' | translate }}
         </ion-item>
+
+        <div ng-translate-language-select></div>
 
       </ion-list>
     </ion-content>

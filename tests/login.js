@@ -15,7 +15,7 @@ describe('Login View', function() {
         element(by.css('input[type="checkbox"]')).isPresent().should.eventually.true;
 
         element.all(by.css('button')).count().should.eventually.equal(1);        
-        element.all(by.css('button')).get(0).getText().should.eventually.equal('Login');
+        element.all(by.css('button')).get(0).getText().should.eventually.equal('Sign in');
     });
 
     it('should have the ability to enter text into the username, password field', function() {        
@@ -37,8 +37,9 @@ describe('Login View', function() {
     it('should be able to click on login button, get a login failed message and hide the popup message', function() {
         element(by.css('button')).click();
         element(by.css('div.popup')).isPresent().should.eventually.true;
-        element(by.css('h3.popup-title')).getText().should.eventually.equal('Login failed!');
-        element(by.css('div.popup-body > span')).getText().should.eventually.equal('Please check your credentials!');
+        element(by.css('h3.popup-title')).getText().should.eventually.equal('Sign In Failed');
+        element(by.css('div.popup-body > span')).getText().should.eventually.equal('Invalid username or password.');
+        browser.sleep(1000);
         element(by.css('button.button-positive')).click();
         element(by.css('div.popup')).isPresent().should.eventually.false;
     });

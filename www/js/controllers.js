@@ -42,9 +42,9 @@ angular.module('equitrack.controllers', [])
 })
 
 .controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
-            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'NetworkService', 
+            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'NetworkService', '$translate',
              function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
-                      Auth, $ionicPopup, $state, API_urls, NetworkService) {
+                      Auth, $ionicPopup, $state, API_urls, NetworkService, $translate) {
 
     $scope.data = $localStorage.getObject('user_cred');
     $scope.other = {};
@@ -64,8 +64,8 @@ angular.module('equitrack.controllers', [])
                     $ionicLoading.hide();
                     console.log("failed to get trips");
                     var alertPopup = $ionicPopup.alert({
-                        title: 'Login failed!',
-                        template: 'Failed to get trips, please try logging in again.'
+                      title: $translate.instant('controller.login.success.title'),
+                      template: $translate.instant('controller.login.success.template')
                     });
                 }, true
             );
@@ -78,13 +78,13 @@ angular.module('equitrack.controllers', [])
                 var alertPopup = '';
                 if (profile_fail.data.detail == 'No country found for user'){
                     alertPopup = $ionicPopup.alert({
-                        title: 'Login failed!',
-                        template: 'Please setup your profile on eTools <br> Please set your Country'
+                      title: $translate.instant('controller.login.no_country.title'),
+                      template: $translate.instant('controller.login.no_country.template')
                     });
                 } else {
                     alertPopup = $ionicPopup.alert({
-                        title: 'Login failed!',
-                        template: 'Something went wrong retrieving your user, please try again later'
+                      title: $translate.instant('controller.login.country.title'),
+                      template: $translate.instant('controller.login.country.template')
                     });
                 }
                 return;
@@ -103,8 +103,8 @@ angular.module('equitrack.controllers', [])
 
       $ionicLoading.hide();
       var alertPopup = $ionicPopup.alert({
-        title: 'Login failed!',
-        template: 'Please check your credentials!'
+        title: $translate.instant('controller.login.fail.title'),
+        template: $translate.instant('controller.login.fail.template')
       });
     }
 
@@ -119,11 +119,14 @@ angular.module('equitrack.controllers', [])
         }
 
         if (NetworkService.isOffline()) {
-          NetworkService.showMessage('Login Failed', 'Sorry, unable to login to eTrips. Please check your network connection or try again later.');
+          NetworkService.showMessage(
+            $translate.instant('controller.login.network_offline.title'),
+            $translate.instant('controller.login.network_offline.template')
+          );
           $scope.data = {};
 
         } else {
-          $ionicLoading.show({ template: 'Loading...' });            
+          $ionicLoading.show( { template: '<loading></loading>' } );
           $localStorage.setObject("relogin_cred", { username:loginData.username, password:""} ); //store the username in the background for re-login
           LoginService.loginUser(loginData, login_success, login_fail);
           $scope.data = {};

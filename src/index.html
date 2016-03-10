@@ -19,6 +19,13 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="js/lib/angular-cookies.min.js"></script>
+    <script src="js/lib/angular-translate.min.js"></script>
+    <script src="js/lib/angular-translate-storage-cookie.min.js"></script>
+    <script src="js/lib/angular-translate-loader-static-files.min.js"></script>
+    <script src="js/lib/angular-translate-storage-local.min.js"></script>
+    <script src="js/lib/angular-translate-handler-log.min.js"></script>
+    <script src="js/lib/tmhDynamicLocale.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -29,9 +36,13 @@
     <script src="js/patch/ionRadio.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/controllers/trip.js"></script>
-    <script src="js/services.js"></script>
+    <script src="js/services.js"></script>    
     <script src="js/utils.js"></script>
     <script src="js/constants.js"></script>
+    
+    <script src="js/LocaleService.js"></script>
+    <script src="js/directives/LanguageSelectDirective.js"></script>
+    <script src="js/directives/LoadingDirective.js"></script>
   </head>
 
   <body ng-app="equitrack">

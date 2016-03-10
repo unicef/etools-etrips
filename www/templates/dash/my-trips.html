@@ -1,8 +1,8 @@
-<ion-view view-title="My Trips">
+<ion-view view-title="{{ 'template.dashboard.my_trips' | translate }}">
 
   <ion-content>
   <ion-refresher
-    pulling-text="Pull to refresh..."
+    pulling-text="{{ 'template.dashboard.pull_to_refresh' | translate }}"
     on-refresh="doRefresh()">
   </ion-refresher>
  <!-- <p>{{ trips }}</p> -->
@@ -20,14 +20,14 @@
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button ng-show="trip.status=='approved'" class="button-calm" ng-click="go_report(trip.id)">
-          Report
+          {{ 'template.dashboard.report' | translate }}
         </ion-option-button>
         <ion-option-button ng-show="trip.status=='planned'" class="button-balanced" ng-click="submit(trip.id)">
-          Submit
+          {{ 'template.dashboard.submit' | translate }}
         </ion-option-button>
       </ion-item>
       <ion-item ng-hide="filteredTrips.length">
-          <h2>No current approved trips found</h2>
+          <h2>{{ 'template.dashboard.report' | translate }}</h2>
       </ion-item>
     </ion-list>
   </ion-content>
