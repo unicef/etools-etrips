@@ -101,7 +101,7 @@ angular.module('equitrack.tripControllers', [])
 
 
 })
-.controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler){
+.controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, NetworkService){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text');
@@ -271,7 +271,7 @@ angular.module('equitrack.tripControllers', [])
 
 })
 .controller('TripDetailCtrl',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler){
+    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, NetworkService){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         uid = $localStorage.getObject('currentUser').user_id;
@@ -509,7 +509,7 @@ angular.module('equitrack.tripControllers', [])
 
 })
 .controller('TripApsEditCtrl',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, ErrorHandler) {
+    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, ErrorHandler, NetworkService) {
         $scope.today = new Date();
         $scope.padded_num = function(limit){
             var result = [];

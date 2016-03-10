@@ -93,7 +93,8 @@ describe('Reports - Drafts', function() {
         textareas.get(3).getAttribute('value').should.eventually.be.equal('');
     });
 
-    it('should be able to click on Send As Official Report button', function() {         
+    it('should be able to click on Send As Official Report button', function() {     
+        this.timeout(30000);    
         element(by.buttonText('Send As Official Report')).click();
         waitForElement('div.popup-container.popup-showing.active');
         element(by.buttonText('OK')).click();

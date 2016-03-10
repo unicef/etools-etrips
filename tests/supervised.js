@@ -37,7 +37,7 @@ describe('Supervised', function() {
         this.timeout(20000);
 
         var trips = element.all(by.css(allTripsCssSelector));
-        var trip = trips.get(1);
+        var trip = trips.get(0);
 
         // verify trip status (submitted)        
         trip.element(by.css('i.ion-android-done')).isPresent().should.eventually.true;

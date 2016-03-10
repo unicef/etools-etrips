@@ -1084,26 +1084,34 @@ ALTER SEQUENCE partners_gwpcalocation_id_seq OWNED BY partners_gwpcalocation.id;
 
 
 --
--- Name: partners_indicatorprogress; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+-- Name: partners_indicatorreport; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE partners_indicatorprogress (
+CREATE TABLE partners_indicatorreport (
     id integer NOT NULL,
-    programmed integer NOT NULL,
-    current integer,
+    created timestamp with time zone NOT NULL,
+    modified timestamp with time zone NOT NULL,
+    total integer NOT NULL,
+    disaggregated boolean NOT NULL,
+    disaggregation text NOT NULL,
+    remarks text,
     indicator_id integer NOT NULL,
-    pca_sector_id integer NOT NULL,
-    CONSTRAINT partners_indicatorprogress_programmed_check CHECK ((programmed >= 0))
+    location_id integer,
+    partner_staff_member_id integer NOT NULL,
+    result_chain_id integer NOT NULL,
+    "end" timestamp with time zone,
+    start timestamp with time zone,
+    CONSTRAINT partners_indicatorreport_total_check CHECK ((total >= 0))
 );
 
 
-ALTER TABLE partners_indicatorprogress OWNER TO postgres;
+ALTER TABLE partners_indicatorreport OWNER TO postgres;
 
 --
--- Name: partners_indicatorprogress_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+-- Name: partners_indicatorreport_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
 --
 
-CREATE SEQUENCE partners_indicatorprogress_id_seq
+CREATE SEQUENCE partners_indicatorreport_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1111,13 +1119,13 @@ CREATE SEQUENCE partners_indicatorprogress_id_seq
     CACHE 1;
 
 
-ALTER TABLE partners_indicatorprogress_id_seq OWNER TO postgres;
+ALTER TABLE partners_indicatorreport_id_seq OWNER TO postgres;
 
 --
--- Name: partners_indicatorprogress_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+-- Name: partners_indicatorreport_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
 --
 
-ALTER SEQUENCE partners_indicatorprogress_id_seq OWNED BY partners_indicatorprogress.id;
+ALTER SEQUENCE partners_indicatorreport_id_seq OWNED BY partners_indicatorreport.id;
 
 
 --
@@ -1550,6 +1558,8 @@ CREATE TABLE partners_resultchain (
     partner_contribution integer NOT NULL,
     unicef_cash integer NOT NULL,
     disaggregation public.hstore,
+    current_progress integer NOT NULL,
+    CONSTRAINT partners_resultchain_current_progress_check CHECK ((current_progress >= 0)),
     CONSTRAINT partners_resultchain_target_check CHECK ((target >= 0))
 );
 
@@ -4262,7 +4272,7 @@ ALTER TABLE ONLY partners_gwpcalocation ALTER COLUMN id SET DEFAULT nextval('par
 -- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
 --
 
-ALTER TABLE ONLY partners_indicatorprogress ALTER COLUMN id SET DEFAULT nextval('partners_indicatorprogress_id_seq'::regclass);
+ALTER TABLE ONLY partners_indicatorreport ALTER COLUMN id SET DEFAULT nextval('partners_indicatorreport_id_seq'::regclass);
 
 
 --
@@ -4989,6 +4999,10 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 98	partners	0025_auto_20160229_1333	2016-03-01 13:16:16.750456-05
 99	partners	0026_auto_20160229_1545	2016-03-01 13:16:17.598008-05
 100	reports	0013_auto_20160226_1543	2016-03-01 13:16:17.843124-05
+101	partners	0024_indicatorreport	2016-03-09 14:24:58.382632-05
+102	partners	0027_resultchain_current_progress	2016-03-09 14:24:58.662368-05
+103	partners	0028_auto_20160304_1840	2016-03-09 14:25:00.452836-05
+104	partners	0029_auto_20160308_0142	2016-03-09 14:25:00.737037-05
 \.
 
 
@@ -4996,7 +5010,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 100, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 104, true);
 
 
 --
@@ -5270,18 +5284,18 @@ SELECT pg_catalog.setval('partners_gwpcalocation_id_seq', 1, false);
 
 
 --
--- Data for Name: partners_indicatorprogress; Type: TABLE DATA; Schema: hoth; Owner: postgres
+-- Data for Name: partners_indicatorreport; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_indicatorprogress (id, programmed, current, indicator_id, pca_sector_id) FROM stdin;
+COPY partners_indicatorreport (id, created, modified, total, disaggregated, disaggregation, remarks, indicator_id, location_id, partner_staff_member_id, result_chain_id, "end", start) FROM stdin;
 \.
 
 
 --
--- Name: partners_indicatorprogress_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+-- Name: partners_indicatorreport_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('partners_indicatorprogress_id_seq', 1, false);
+SELECT pg_catalog.setval('partners_indicatorreport_id_seq', 1, false);
 
 
 --
@@ -5438,7 +5452,7 @@ SELECT pg_catalog.setval('partners_recommendation_id_seq', 1, false);
 -- Data for Name: partners_resultchain; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_resultchain (id, target, indicator_id, partnership_id, result_id, result_type_id, code, in_kind_amount, partner_contribution, unicef_cash, disaggregation) FROM stdin;
+COPY partners_resultchain (id, target, indicator_id, partnership_id, result_id, result_type_id, code, in_kind_amount, partner_contribution, unicef_cash, disaggregation, current_progress) FROM stdin;
 \.
 
 
@@ -6090,6 +6104,9 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 278	Can add direct cash transfer	93	add_directcashtransfer
 279	Can change direct cash transfer	93	change_directcashtransfer
 280	Can delete direct cash transfer	93	delete_directcashtransfer
+281	Can add indicator report	94	add_indicatorreport
+282	Can change indicator report	94	change_indicatorreport
+283	Can delete indicator report	94	delete_indicatorreport
 \.
 
 
@@ -6097,7 +6114,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 280, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 283, true);
 
 
 --
@@ -6361,6 +6378,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 91	authtoken	token
 92	partners	fundingcommitment
 93	partners	directcashtransfer
+94	partners	indicatorreport
 \.
 
 
@@ -6368,7 +6386,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 93, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 94, true);
 
 
 --
@@ -6476,6 +6494,10 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 98	partners	0025_auto_20160229_1333	2016-03-01 13:15:31.910017-05
 99	partners	0026_auto_20160229_1545	2016-03-01 13:15:32.75021-05
 100	reports	0013_auto_20160226_1543	2016-03-01 13:15:33.03515-05
+101	partners	0024_indicatorreport	2016-03-09 14:24:51.033068-05
+102	partners	0027_resultchain_current_progress	2016-03-09 14:24:51.307647-05
+103	partners	0028_auto_20160304_1840	2016-03-09 14:24:53.072575-05
+104	partners	0029_auto_20160308_0142	2016-03-09 14:24:53.343751-05
 \.
 
 
@@ -6483,7 +6505,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 100, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 104, true);
 
 
 --
@@ -8401,14 +8423,6 @@ ALTER TABLE ONLY locations_region
 
 
 --
--- Name: partners_agreement_agreement_number_key; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY partners_agreement
-    ADD CONSTRAINT partners_agreement_agreement_number_key UNIQUE (agreement_number);
-
-
---
 -- Name: partners_agreement_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -8489,11 +8503,11 @@ ALTER TABLE ONLY partners_gwpcalocation
 
 
 --
--- Name: partners_indicatorprogress_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+-- Name: partners_indicatorreport_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY partners_indicatorprogress
-    ADD CONSTRAINT partners_indicatorprogress_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY partners_indicatorreport
+    ADD CONSTRAINT partners_indicatorreport_pkey PRIMARY KEY (id);
 
 
 --
@@ -9741,13 +9755,6 @@ CREATE INDEX partners_agreement_9f081af4 ON partners_agreement USING btree (sign
 
 
 --
--- Name: partners_agreement_agreement_number_32594f520cd9bd33_like; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX partners_agreement_agreement_number_32594f520cd9bd33_like ON partners_agreement USING btree (agreement_number varchar_pattern_ops);
-
-
---
 -- Name: partners_amendmentlog_cd976882; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -9874,17 +9881,31 @@ CREATE INDEX partners_gwpcalocation_f8d00aa6 ON partners_gwpcalocation USING btr
 
 
 --
--- Name: partners_indicatorprogress_6315bdf2; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+-- Name: partners_indicatorreport_11f5c585; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX partners_indicatorprogress_6315bdf2 ON partners_indicatorprogress USING btree (pca_sector_id);
+CREATE INDEX partners_indicatorreport_11f5c585 ON partners_indicatorreport USING btree (partner_staff_member_id);
 
 
 --
--- Name: partners_indicatorprogress_a82bd466; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+-- Name: partners_indicatorreport_a82bd466; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX partners_indicatorprogress_a82bd466 ON partners_indicatorprogress USING btree (indicator_id);
+CREATE INDEX partners_indicatorreport_a82bd466 ON partners_indicatorreport USING btree (indicator_id);
+
+
+--
+-- Name: partners_indicatorreport_c7acdb49; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_indicatorreport_c7acdb49 ON partners_indicatorreport USING btree (result_chain_id);
+
+
+--
+-- Name: partners_indicatorreport_e274a5da; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_indicatorreport_e274a5da ON partners_indicatorreport USING btree (location_id);
 
 
 --
@@ -11181,6 +11202,14 @@ ALTER TABLE ONLY reports_result
 
 
 --
+-- Name: D1c5e6141468cd38344b8889b3f45146; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_indicatorreport
+    ADD CONSTRAINT "D1c5e6141468cd38344b8889b3f45146" FOREIGN KEY (partner_staff_member_id) REFERENCES partners_partnerstaffmember(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: D4fdc5b3ad3f8e1bc4292c0645e060ad; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11437,6 +11466,14 @@ ALTER TABLE ONLY partners_gwpcalocation
 
 
 --
+-- Name: par_result_chain_id_22422544f8a243b6_fk_partners_resultchain_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_indicatorreport
+    ADD CONSTRAINT par_result_chain_id_22422544f8a243b6_fk_partners_resultchain_id FOREIGN KEY (result_chain_id) REFERENCES partners_resultchain(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: partn_amendment_id_1bdcf5c911051482_fk_partners_amendmentlog_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11493,14 +11530,6 @@ ALTER TABLE ONLY partners_pca
 
 
 --
--- Name: partner_pca_sector_id_222043d86a318f65_fk_partners_pcasector_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
---
-
-ALTER TABLE ONLY partners_indicatorprogress
-    ADD CONSTRAINT partner_pca_sector_id_222043d86a318f65_fk_partners_pcasector_id FOREIGN KEY (pca_sector_id) REFERENCES partners_pcasector(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
 -- Name: partner_pca_sector_id_41650f659620abfc_fk_partners_pcasector_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11517,11 +11546,11 @@ ALTER TABLE ONLY partners_assessment
 
 
 --
--- Name: partners__indicator_id_4179948a74efca08_fk_reports_indicator_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+-- Name: partners__indicator_id_16882383daabe2a3_fk_reports_indicator_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
-ALTER TABLE ONLY partners_indicatorprogress
-    ADD CONSTRAINT partners__indicator_id_4179948a74efca08_fk_reports_indicator_id FOREIGN KEY (indicator_id) REFERENCES reports_indicator(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY partners_indicatorreport
+    ADD CONSTRAINT partners__indicator_id_16882383daabe2a3_fk_reports_indicator_id FOREIGN KEY (indicator_id) REFERENCES reports_indicator(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -11546,6 +11575,14 @@ ALTER TABLE ONLY partners_gwpcalocation
 
 ALTER TABLE ONLY partners_gwpcalocation
     ADD CONSTRAINT partners__location_id_3ea5f83178ea4cc6_fk_locations_location_id FOREIGN KEY (location_id) REFERENCES locations_location(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners__location_id_4538c6117ac721da_fk_locations_location_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_indicatorreport
+    ADD CONSTRAINT partners__location_id_4538c6117ac721da_fk_locations_location_id FOREIGN KEY (location_id) REFERENCES locations_location(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
