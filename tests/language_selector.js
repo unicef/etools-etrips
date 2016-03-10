@@ -38,6 +38,7 @@ describe('Language Selector', function() {
         element(sideMenuButton).click();
         element(by.cssContainingText('ion-side-menu div.language-select select option', 'Français (France)')).click();
         element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('1 janv. 2016 -> 31 déc. 2016');
+        element(by.cssContainingText('ion-side-menu div.language-select select option', 'English (US)')).click();
     });
 
     it('should be able to logout', function() {

@@ -50,7 +50,7 @@ describe('Reports - Action Points', function() {
         var data = element.all(by.css('ion-view[nav-view="active"] a.item-content p'));
         data.get(0).getText().should.eventually.equal('Status: open');
         data.get(1).getText().should.eventually.equal(description.substring(0, 254));
-        data.get(2).getText().should.eventually.equal('Due by: Jan 3, 2017');
+        data.get(2).getText().should.eventually.equal('Due date: Jan 3, 2017');
     });
 
     it('should be able to logout', function() {

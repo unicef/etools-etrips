@@ -30,8 +30,8 @@ describe('Sidebar Menu', function() {
     it('should display the Settings view', function() {
         element(sideMenuButton).click();
         element(by.linkText('Settings')).click();
-        element(by.css('ion-view[view-title="Settings"] h2')).getText().should.eventually.equal('Connection');
-        element(by.css('ion-view[view-title="Settings"] h2')).click();
+        element(by.css('ion-side-menu-content > ion-nav-view > ion-view ion-content h2')).getText().should.eventually.equal('Connection');
+        element(by.css('ion-side-menu-content > ion-nav-view > ion-view ion-content h2')).click();
 
         element.all(by.css('label.item-radio')).count().should.eventually.equal(3);
         element.all(by.css('button[disabled="disabled"]')).count().should.eventually.equal(1);

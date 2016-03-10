@@ -42,9 +42,9 @@ angular.module('equitrack.controllers', [])
 })
 
 .controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
-            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'NetworkService', 
+            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'NetworkService', '$translate',
              function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
-                      Auth, $ionicPopup, $state, API_urls, NetworkService) {
+                      Auth, $ionicPopup, $state, API_urls, NetworkService, $translate) {
 
     $scope.data = $localStorage.getObject('user_cred');
     $scope.other = {};
