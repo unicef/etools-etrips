@@ -342,7 +342,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
         };
 
         var patchTrip = function patchTrip(tripId, data, success, fail){
-            return myHttp.patch(API_urls.BASE() + '/api/trips/' + tripId +"/", data).then(
+            return myHttp.patch(API_urls.BASE() + '/trips/api/' + tripId +"/", data).then(
                 function(succ){
                     success(succ);
                 },
@@ -432,7 +432,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
 
     }
     function tripAction(id, action, data){
-        var url = API_urls.BASE() + '/api/trips/' + id + '/';
+        var url = API_urls.BASE() + '/trips/api/' + id + '/';
         var result = myHttp.post(url + action + '/', data);
         return result;
 

@@ -96,8 +96,7 @@ angular.module('equitrack.tripControllers', [])
 
 
 })
-.controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, $translate){
-
+.controller('ReportingDraftsCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, $translate, NetworkService){
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         $scope.draft = TripsFactory.getDraft($stateParams.tripId, 'text');
         $scope.dangeZone = false;

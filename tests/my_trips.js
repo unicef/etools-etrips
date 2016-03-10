@@ -37,7 +37,7 @@ describe('My Trips', function() {
         this.timeout(20000);
 
         var trips = element.all(by.css(allTripsCssSelector));
-        var trip = trips.get(2);
+        var trip = trips.get(1);
 
         // verify trip status (planned)        
         trip.element(by.css('i.ion-android-checkbox-outline-blank')).isPresent().should.eventually.true;
