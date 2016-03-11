@@ -18,7 +18,7 @@ describe('Reports', function() {
     });
 
     it('should be able see four tabs and click on each tab', function() {        
-        var tabs = ['Drafts', 'Text', 'Picture', 'Actions'];
+        var tabs = ['Text', 'Picture', 'Actions'];
         var tabItems = element.all(by.css(reportTabsCssSelector));
         tabItems.count().should.eventually.equal(tabs.length);
 

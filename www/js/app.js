@@ -133,15 +133,6 @@ angular.module('equitrack', [
           }
       }
   })
-  .state('app.reporting.drafts',{
-      url: '/drafts',
-      views: {
-          'tab-drafts': {
-              templateUrl: 'templates/trip/reporting-drafts.html',
-              controller: 'ReportingDraftsCtrl'
-          }
-      }
-  })
   .state('app.reporting.text',{
       url: '/text',
       cache: false,

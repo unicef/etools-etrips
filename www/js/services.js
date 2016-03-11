@@ -438,15 +438,15 @@ angular.module('equitrack.services', ['equitrack.constants'])
 
     }
     function localTripUpdate(id, trip){
-        var currentTrips = $localStorage.getObject('trips');
-        for(var i=0;i<currentTrips.length;i++){
-				if(currentTrips[i].id == id){
-                    currentTrips[i] = trip;
-                    $localStorage.setObject("trips", currentTrips);
+      var currentTrips = $localStorage.getObject('trips');
+      for (var i=0; i<currentTrips.length; i++){
+				if (currentTrips[i].id == id){
+          currentTrips[i] = trip;
+          $localStorage.setObject("trips", currentTrips);
 					return true;
 				}
 			}
-            return false;
+      return false;
     }
     function localAction(id, action){
         var currentTrips = $localStorage.getObject('trips');

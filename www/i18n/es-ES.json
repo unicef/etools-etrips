@@ -75,28 +75,9 @@
     "template.trip.notes.description" : "Notes",
     "template.trip.notes.insert" : "Insert notes here",
 
-    "template.trip.report.drafts" : "Drafts",
     "template.trip.report.text" : "Text",
     "template.trip.report.picture" : "Picture",
     "template.trip.report.actions" : "Actions",
-
-    "template.trip.report.drafts.title" : "Text Drafts",
-    "template.trip.report.drafts.progress" : "Draft: Progress Reporting",
-    "template.trip.report.drafts.cco" : "Draft: Constraints, Challenges, Opportunities",
-    "template.trip.report.drafts.cc" : "Constraints/Challenges:",
-    "template.trip.report.drafts.lessons_learned" : "Lessons Learned:",
-    "template.trip.report.drafts.opportunities" : "Opportunities:",
-    "template.trip.report.drafts.save_drafts" : "Save Drafts",
-    "template.trip.report.drafts.undo" : "Undo Current Changes",
-    "template.trip.report.drafts.replace" : "Replace Drafts With Current Report",
-    "template.trip.report.drafts.danger" : "Danger Zone",
-    "template.trip.report.drafts.send" : "Send As Official Report",
-    "template.trip.report.drafts.discard" : "Discard Drafts",
-    "template.trip.report.drafts.insert_findings" : "Insert findings here",
-    "template.trip.report.drafts.implementation" : "Implementation constraints that affect achievement of Project",
-    "template.trip.report.drafts.lessons" : "Lessons learned from addressing the constraints in the course of the reporting period",
-    "template.trip.report.drafts.partnerships" : "Key partnerships/collaboration and other highlights",
-    "template.trip.report.drafts.implementation" : "Implementation constraints that affect achievement of Project",
 
     "template.trip.report.text.title" : "Text Reporting",
     "template.trip.report.text.progress" : "Progress Reporting",
@@ -186,6 +167,9 @@
     "controller.report.picture.upload.fail.title" : "Picture Upload Failed",
     "controller.report.picture.upload.fail.template" : "Please check the network connection and try uploading the picture again.",
 
+    "controller.trip.submit.title" : "Trip Submission",
+    "controller.trip.submit.template" : "You succesfully submitted the trip.",    
+    
     "controller.trip.detail.approved.title" : "Trip Approval",
     "controller.trip.detail.approved.template" : "You succesfully approved the trip.",
     "controller.trip.detail.confirm.title" : "Are you sure?",
