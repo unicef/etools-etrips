@@ -20,44 +20,82 @@ angular.module('equitrack.tripControllers', [])
         //    )
         //}
 })
+
 .controller('ReportingTextCtrl', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup, ErrorHandler, NetworkService, $translate){
+  var fields = ['main_observations', 'constraints', 'lessons_learned', 'opportunities'];
+  var main_obs_template = $translate.instant('controller.report.text.observations.access') + '\n \n \n \n' +
+  $translate.instant('controller.report.text.observations.quality') + '\n \n \n \n' +
+  $translate.instant('controller.report.text.observations.utilisation') + '\n \n \n \n' +
+  $translate.instant('controller.report.text.observations.enabling') + '\n \n \n \n';
 
-        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-        var main_obs_template = $translate.instant('controller.report.text.observations.access') + '\n \n \n \n' +
-            $translate.instant('controller.report.text.observations.quality') + '\n \n \n \n' +
-            $translate.instant('controller.report.text.observations.utilisation') + '\n \n \n \n' +
-            $translate.instant('controller.report.text.observations.enabling') + '\n \n \n \n';
+  $scope.trip = TripsFactory.getTrip($stateParams.tripId);
 
-        $scope.data = {
-            main_observations : ($scope.trip.main_observations) ? $scope.trip.main_observations : main_obs_template,
-            constraints : ($scope.trip.constraints) ? $scope.trip.constraints : "",
-            lessons_learned : ($scope.trip.lessons_learned) ? $scope.trip.lessons_learned : "",
-            opportunities: ($scope.trip.opportunities) ? $scope.trip.opportunities : "",
-        };
-        $scope.textReport = function(){
-            if (NetworkService.isOffline() === true) {
-              NetworkService.showMessage();
+  // report submitted
+  if ($scope.trip.main_observations.length > 0) {
+    $scope.data = {
+        main_observations : $scope.trip.main_observations,
+        constraints : $scope.trip.constraints,
+        lessons_learned : $scope.trip.lessons_learned,
+        opportunities: $scope.trip.opportunities
+    };
+  } else {          
+    var reportText = {};
 
-            } else {
-              $ionicLoading.show({
-                        template: '<loading message="sending_report"></loading>'
-                    });
-                TripsFactory.reportText($scope.data, $scope.trip.id,
-                    function(succ){
-                        $ionicLoading.hide();
-                        $ionicHistory.goBack(-1);
-                        TripsFactory.localTripUpdate($scope.trip.id, succ.data);
-                        $ionicPopup.alert({
-                            title: $translate.instant('controller.report.text.submitted.title'),
-                            template: $translate.instant('controller.report.text.submitted.template')
-                        });
-                        console.log(succ);
-                    }, function(err){ErrorHandler.popError(err);}
-                );
-            }
-        };
+    fields.forEach(function(field) {
+      var data = TripsFactory.getDraft($stateParams.tripId, field);
 
+      if (data.length > 0) {
+        reportText[field] = data;
+      } else {
+        if (field === 'main_observations') {
+          reportText[field] = main_obs_template;
+        } else {
+          reportText[field] = '';
+        }
+      }
+    });
+
+    $scope.data = reportText;
+  }
+
+  $scope.autosave = function() {
+    if ($scope.trip.main_observations.length === 0) {            
+      fields.forEach(function(field) {
+        TripsFactory.setDraft($stateParams.tripId, field, $scope.data[field]);    
+      });
+    }
+  };
+
+  $scope.submit = function(){
+    if (NetworkService.isOffline() === true) {
+      NetworkService.showMessage();
+
+    } else {
+      $ionicLoading.show( { template: '<loading message="sending_report"></loading>' } );
+
+      TripsFactory.reportText($scope.data, $scope.trip.id, 
+        function(succ){
+          $ionicLoading.hide();
+          $ionicHistory.goBack(-1);
+          
+          TripsFactory.localTripUpdate($scope.trip.id, succ.data);
+          
+          fields.forEach(function(field) {
+            TripsFactory.deleteDraft($stateParams.tripId, field);    
+          });
+
+          $ionicPopup.alert({
+              title: $translate.instant('controller.report.text.submitted.title'),
+              template: $translate.instant('controller.report.text.submitted.template')
+          });
+        }, function(err){
+          ErrorHandler.popError(err);
+        }
+      );
+    }
+  };
 })
+
 .controller('NotesCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, $translate){
         console.log("clearing history");
         $ionicHistory.clearHistory();

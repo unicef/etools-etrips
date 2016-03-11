@@ -470,21 +470,22 @@ angular.module('equitrack.services', ['equitrack.constants'])
         var country = $localStorage.getObject('currentUser').profile.country;
         var my_obj = $localStorage.getObject('draft-' + country);
 
-
         if (Object.keys(my_obj).length) {
-            // check for trip
-            if (my_obj[tripId]) {
-                if (( dtype == 'text') && (my_obj[tripId][dtype])) {
-                    return my_obj[tripId][dtype];
-                }
-                if (( dtype == 'notes') && (my_obj[tripId][dtype])) {
-                    return my_obj[tripId][dtype];
-                }
-            }
-        }
-        return {};
+          // check for trip
+          if (my_obj[tripId]) {
+            var validDataTypes = ['text', 'notes', 'main_observations', 'constraints', 'lessons_learned', 'opportunities'];
 
+            for(validDataType of validDataTypes) {
+              if (( validDataType === dtype) && (my_obj[tripId][dtype])) {
+                return my_obj[tripId][dtype];
+              }
+            }
+          }
+        }
+
+        return {};
     }
+
     function setDraft(tripId, dtype, draft){
         console.log("tripid, type, draft", tripId, dtype, draft);
         // if there isn't a currentUser in here we're in big trouble anyway
@@ -506,6 +507,13 @@ angular.module('equitrack.services', ['equitrack.constants'])
             my_obj[tripId][dtype] = draft;
         }
         $localStorage.setObject('draft-'+country, my_obj);
+    }
+
+    function deleteDraft(tripId, dataType){
+      var country = $localStorage.getObject('currentUser').profile.country;
+      var obj = $localStorage.getObject('draft-' + country);
+      delete obj[tripId][dataType];
+      $localStorage.setObject('draft-' + country, obj);
     }
 
 	return {
@@ -530,6 +538,7 @@ angular.module('equitrack.services', ['equitrack.constants'])
         getAP:getAP,
         sendAP:sendAP,
         getDraft:getDraft,
-        setDraft:setDraft
+        setDraft:setDraft,
+        deleteDraft:deleteDraft
 	};
 }]);
