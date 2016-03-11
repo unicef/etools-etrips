@@ -6,6 +6,11 @@ describe('Reports - Text', function() {
     var lessonLearnedLoremText = faker.lorem.paragraph(1);
     var opportunitiesLoremText = faker.lorem.paragraph(1);
 
+    var progressReportAutosaveLoremText = faker.lorem.paragraph(1);
+    var constraintsAutosaveLoremText = faker.lorem.paragraph(1);
+    var lessonLearnedAutosaveLoremText = faker.lorem.paragraph(1);
+    var opportunitiesAutosaveLoremText = faker.lorem.paragraph(1);
+
     it('should be able to login and select the My Trips tab and the Report button', function() {
         auth.login();
         element.all(by.css('a.tab-item')).get(0).click();
@@ -18,6 +23,28 @@ describe('Reports - Text', function() {
         waitForElement('button.button-calm');
         element(by.buttonText('Report')).click();
         element.all(by.css('textarea')).count().should.eventually.equal(4);
+    });
+
+    it('should be able to enter text in each textarea and the values be autosaved', function() {
+        var textareas = element.all(by.css('textarea'));
+        textareas.get(0).clear().sendKeys(progressReportAutosaveLoremText);
+        textareas.get(1).clear().sendKeys(constraintsAutosaveLoremText);
+        textareas.get(2).clear().sendKeys(lessonLearnedAutosaveLoremText);
+        textareas.get(3).clear().sendKeys(opportunitiesAutosaveLoremText);        
+        
+        auth.logout();
+        auth.login();
+
+        var trips = element.all(by.css(allTripsCssSelector));
+        trips.first().click(); 
+
+        element(by.buttonText('Report')).click();
+
+        var textareas = element.all(by.css('textarea'));
+        textareas.get(0).getAttribute('value').should.eventually.be.equal(progressReportAutosaveLoremText);
+        textareas.get(1).getAttribute('value').should.eventually.be.equal(constraintsAutosaveLoremText);
+        textareas.get(2).getAttribute('value').should.eventually.be.equal(lessonLearnedAutosaveLoremText);
+        textareas.get(3).getAttribute('value').should.eventually.be.equal(opportunitiesAutosaveLoremText);
     });
 
     it('should be able to enter text in each textarea and submit', function() {
