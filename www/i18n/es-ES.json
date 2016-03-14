@@ -186,6 +186,11 @@
     "controller.report.picture.upload.fail.title" : "Picture Upload Failed",
     "controller.report.picture.upload.fail.template" : "Please check the network connection and try uploading the picture again.",
 
+    "controller.trip.submit.title" : "Trip Submission",
+    "controller.trip.submit.template" : "You succesfully submitted the trip.",    
+    "controller.trip.complete.title" : "Trip Submission",
+    "controller.trip.complete.template" : "You completed the trip.",
+
     "controller.trip.detail.approved.title" : "Trip Approval",
     "controller.trip.detail.approved.template" : "You succesfully approved the trip.",
     "controller.trip.detail.confirm.title" : "Are you sure?",
