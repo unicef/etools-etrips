@@ -142,7 +142,8 @@ gulp.task('dump_db', shell.task(
 
 
 gulp.task('restore_db', ['postgres_disconnect'], shell.task(
-  ['dropdb ' + integrationTestDb + ' && createdb ' + integrationTestDb + ' && psql --output=restore_db.log --quiet ' + integrationTestDb + ' < ./tests/fixtures/data.sql'])
+    ['sleep 0.5 && dropdb ' + integrationTestDb + ' && createdb ' + integrationTestDb + ' && psql --output=restore_db.log --quiet ' + integrationTestDb + ' < ./tests/fixtures/data.sql']
+  )
 );
 
 var exec = require('child_process').exec;
