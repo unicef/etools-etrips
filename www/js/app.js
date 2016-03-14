@@ -112,16 +112,6 @@ angular.module('equitrack', [
         requireLogin: false
       }
   })
-  .state('app.notes',{
-      url: '/notes/:tripId',
-      cache: false,
-      views: {
-          'menuContent': {
-              templateUrl: 'templates/trip/notes.html',
-              controller: 'NotesCtrl'
-          }
-      }
-  })
 
   .state('app.reporting', {
       url: '/reporting/:tripId',
@@ -203,6 +193,16 @@ angular.module('equitrack', [
         }
       }
   })
+  .state('app.dash.notes',{
+      url: '/my_trips/:tripId/notes',
+      cache: false,
+      views: {
+          'tab-trips': {
+              templateUrl: 'templates/trip/notes.html',
+              controller: 'NotesCtrl'
+          }
+      }
+  })  
   .state('app.dash.supervised', {
       url: '/supervised',
       views: {

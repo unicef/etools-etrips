@@ -96,44 +96,38 @@ angular.module('equitrack.tripControllers', [])
   };
 })
 
-.controller('NotesCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, $translate){
-        console.log("clearing history");
-        $ionicHistory.clearHistory();
+.controller('NotesCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, $translate, $ionicPlatform){
+  $scope.trip = TripsFactory.getTrip($stateParams.tripId);
+  $scope.notes = TripsFactory.getDraft($stateParams.tripId, 'notes');
 
-        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-        $scope.notes = TripsFactory.getDraft($stateParams.tripId, 'notes');
-
-
-        console.log('here are the notes');
-        console.log($scope.notes);
-
-
-        function reset_data(){
-            $scope.data = {
-                text : ($scope.notes.text) ? $scope.notes.text : "",
-            };
-        }
-        reset_data();
-
-        $scope.saveNotes = function(){
-            TripsFactory.setDraft($stateParams.tripId, 'notes', $scope.data);
-            $ionicPopup.alert({
-                        title: $translate.instant('controller.notes.save.title'),
-                        template: $translate.instant('controller.notes.save.template')
-                    });
-        };
-        $scope.discardNotes = function(){
-            TripsFactory.setDraft($stateParams.tripId, 'notes', {});
-            $scope.notes = TripsFactory.getDraft($stateParams.tripId, 'notes');
-            reset_data();
-            $ionicPopup.alert({
-                        title: $translate.instant('controller.notes.discard.title'),
-                        template: $translate.instant('controller.notes.discard.template')
-                    });
-        };
-
-
+  $ionicPlatform.ready(function() {    
+    reset_data();
+  });
+  
+  function reset_data(){
+    $scope.data = {
+        text : ($scope.notes.text) ? $scope.notes.text : "",
+    };
+  }
+  
+  $scope.saveNotes = function(){
+    TripsFactory.setDraft($stateParams.tripId, 'notes', $scope.data);
+    $ionicPopup.alert({
+                title: $translate.instant('controller.notes.save.title'),
+                template: $translate.instant('controller.notes.save.template')
+            });
+  };
+  $scope.discardNotes = function(){
+    TripsFactory.setDraft($stateParams.tripId, 'notes', {});
+    $scope.notes = TripsFactory.getDraft($stateParams.tripId, 'notes');
+    reset_data();
+    $ionicPopup.alert({
+                title: $translate.instant('controller.notes.discard.title'),
+                template: $translate.instant('controller.notes.discard.template')
+            });
+  };
 })
+
 .controller('ReportingAPSCtrl',function($scope, $stateParams, TripsFactory){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
@@ -342,7 +336,7 @@ angular.module('equitrack.tripControllers', [])
             $state.go('app.reporting.text', {"tripId":tripId});
         };
         $scope.take_notes = function(tripId){
-            $state.go('app.notes', {"tripId":tripId});
+            $state.go('app.dash.notes', {"tripId":tripId});
         };
 
 
