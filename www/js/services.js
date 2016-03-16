@@ -1,4 +1,4 @@
-angular.module('equitrack.services', ['equitrack.constants'])
+angular.module('equitrack.services', ['app.core'])
 
 .service('API_urls', function($localStorage, apiHostDevelopment, defaultConnection) {
         var defaultConn = defaultConnection;
@@ -541,4 +541,24 @@ angular.module('equitrack.services', ['equitrack.constants'])
         setDraft:setDraft,
         deleteDraft:deleteDraft
 	};
+}])
+.factory('appInterceptor', ['$q', '$location', '$localStorage', function($q, $location, $localStorage) {
+    return {
+        'request': function (config) {
+            config.headers = config.headers || {};
+            
+            if ($localStorage.get('jwtoken')) {
+                config.headers.Authorization = 'JWT  ' + $localStorage.get('jwtoken');
+            }
+
+            return config;
+        },
+        'responseError': function (response) {
+            if (response.status === 401 || response.status === 403) {
+                $location.path('/login');
+            }
+
+            return $q.reject(response);
+        }
+    }
 }]);

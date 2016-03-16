@@ -3,8 +3,8 @@
 
     angular
         .module('app.core')
-        .constant('apiHostDevelopment', '@@apiHostDevelopment')
-        .constant('defaultConnection', @@defaultConnection)
+        .constant('apiHostDevelopment', 'http://192.168.1.254:8080')
+        .constant('defaultConnection', 0)
         .constant('LOCALES', {
             'locales': {
                 'en-US': 'English (US)',

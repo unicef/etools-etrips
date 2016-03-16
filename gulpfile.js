@@ -74,6 +74,7 @@ gulp.task('replace', function () {
           return { match: key, replacement: settings[key] };
         })
       }))
+    .pipe(rename('app.constants.js'))
     .pipe(gulp.dest('www/js'));
 
   gulp.src('src/*.html')
