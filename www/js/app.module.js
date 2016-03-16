@@ -1,10 +1,10 @@
 angular.module('equitrack', [  
     'app.core',
+    'app.widgets',
     'equitrack.controllers',
     'equitrack.services',
     'equitrack.utils',
-    'equitrack.tripControllers',
-    'equitrack.directives'
+    'equitrack.tripControllers'    
 ])
 
 angular.module('app.core', [
@@ -18,4 +18,8 @@ angular.module('app.core', [
     'ngIOS9UIWebViewPatch',
     'pascalprecht.translate',
     'tmh.dynamicLocale'
+]);
+
+angular.module('app.widgets', [
+    'equitrack.services'
 ]);

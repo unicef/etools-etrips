@@ -512,8 +512,11 @@ angular.module('equitrack.services', ['app.core'])
     function deleteDraft(tripId, dataType){
       var country = $localStorage.getObject('currentUser').profile.country;
       var obj = $localStorage.getObject('draft-' + country);
-      delete obj[tripId][dataType];
-      $localStorage.setObject('draft-' + country, obj);
+      
+      if (dataType in obj[tripId]) {
+        delete obj[tripId][dataType];
+        $localStorage.setObject('draft-' + country, obj);
+      }
     }
 
 	return {

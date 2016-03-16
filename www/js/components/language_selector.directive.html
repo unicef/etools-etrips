@@ -1,0 +1,9 @@
+<div class="list language-select" ng-if="vm.visible">
+    <label class="item item-input item-select">
+        <div class="input-label">
+            <li class="ion-ios-world" data-pack="ios" data-tags="globe, earth" style="display: inline-block;"></li>            
+        </div>
+        <select ng-model="vm.currentLocaleDisplayName" ng-options="localesDisplayName for localesDisplayName in vm.localesDisplayNames" ng-change="vm.changeLanguage(vm.currentLocaleDisplayName)">
+        </select>
+    </label>
+</div>
