@@ -7,18 +7,19 @@ describe('Reports - Action Points', function() {
         element.all(by.css('a.tab-item')).get(0).click();
     });
 
-    it('should be able select the first Trip, click on Report, click on Action tab item, and create new Action Point ', function() {        
+    it('should be able select the first Trip, click on Report button, click on Action Point button, and create new Action Point ', function() {        
         var trips = element.all(by.css(allTripsCssSelector));
         trips.first().click();
+        
         waitForElement('button.button-calm');
-
         element(by.buttonText('Report')).click();
-        waitForElement('a.tab-item-active > i.icon.ion-document-text');
-
-        element(by.linkText('Actions')).click();
-        waitForElement('a.button.button-positive');
-
+        
+        waitForElement('button#report_text');
+        element(by.buttonText('Action Point')).click();
+        
+        waitForElement('button.back-button:not(.hide)');
         element(by.linkText('New Action Point')).click();
+        
         waitForElement('div.title.title-center.header-item');
     });
 
@@ -54,6 +55,14 @@ describe('Reports - Action Points', function() {
     });
 
     it('should be able to logout', function() {
+        element.all(by.css('button.back-button:not(.hide)')).get(0).click();
+        waitForElement('button.back-button:not(.hide)');
+
+        element.all(by.css('button.back-button:not(.hide)')).get(1).click();
+        waitForElement('button.back-button:not(.hide)');
+        
+        element.all(by.css('button.back-button:not(.hide)')).get(0).click();
+        waitForElement('button[menu-toggle="left"]:not(.hide)');
         auth.logout();
     });
 });

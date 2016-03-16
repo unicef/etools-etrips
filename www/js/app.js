@@ -113,55 +113,64 @@ angular.module('equitrack', [
       }
   })
 
-  .state('app.reporting', {
-      url: '/reporting/:tripId',
-      abstract: true,
+  .state('app.dash.reporting', {      
+      url: '/my_trips/:tripId/reporting',
       views: {
-          'menuContent': {
+          'tab-trips': {
               templateUrl: 'templates/trip/reporting.html',
-              controller: 'ReportingCtrl'
+              controller: 'Report as vm',              
           }
       }
   })
-  .state('app.reporting.text',{
-      url: '/text',
+  .state('app.dash.reporting_text',{
+      url: '/my_trips/:tripId/reporting/text',
       cache: false,
       views: {
-          'tab-text': {
+          'tab-trips': {
               templateUrl: 'templates/trip/reporting-text.html',
-              controller: 'ReportingTextCtrl'
+              controller: 'ReportingText as vm'
           }
       }
   })
-  .state('app.reporting.picture',{
-      url: '/picture',
+  .state('app.dash.reporting_picture',{
+      url: '/my_trips/:tripId/reporting/picture',
+      cache: false,
       views: {
-          'tab-pic': {
+          'tab-trips': {
               templateUrl: 'templates/trip/reporting-picture.html',
-              controller: 'ReportingPictureCtrl'
+              controller: 'ReportingPicture as vm'
           }
       }
   })
-  .state('app.reporting.aps',{
+  .state('app.dash.reporting_action_point',{      
+      url: '/my_trips/:tripId/reporting/action_point',
       cache: false,
-      url: '/aps',
       views: {
-          'tab-aps': {
-              templateUrl: 'templates/trip/reporting-aps.html',
-              controller: 'ReportingAPSCtrl'
+          'tab-trips': {
+              templateUrl: 'templates/trip/reporting-action-point.html',
+              controller: 'ReportingActionPoint as vm'
           }
       }
   })
-  .state('app.reporting.ap_detail', {
+  .state('app.dash.reporting_action_point_new', {      
+      url: '/my_trips/:tripId/reporting/action_point/new',
       cache: false,
-      url: '/aps/:apId',
       views: {
-        'tab-aps': {
-          templateUrl: 'templates/trip/reporting-ap_edit.html',
-          controller: 'TripApsEditCtrl'
+        'tab-trips': {
+          templateUrl: 'templates/trip/reporting-action-point-edit.html',
+          controller: 'ReportingActionPointEdit as vm'
         }
       }
-
+  })  
+  .state('app.dash.reporting_action_point_edit', {    
+      url: '/my_trips/:tripId/reporting/action_point/:actionPointId',
+      cache: false,
+      views: {
+        'tab-trips': {
+          templateUrl: 'templates/trip/reporting-action-point-edit.html',
+          controller: 'ReportingActionPointEdit as vm'
+        }
+      }
   })
   .state('app.dash', {
       url: '/dash',
@@ -242,13 +251,7 @@ angular.module('equitrack', [
 
 
 }])
-//.constant('API_urls', {'BASE':'https://etools-staging.uniceflebanon.org'})
-//.constant('API_urls', {'BASE':'https://etools-staging.unicef.org',
-//                        'ADFS':true})
-//.constant('API_urls', {'BASE':'https://22191e85.ngrok.com',
-//                        'ADFS':false})
-//.constant('API_urls', {'BASE':'http://192.168.99.100:8080'})
-//.constant('API_urls', {'BASE':'http://192.168.86.10:8080'})
+
 .constant('TripVars', {'checkboxes':['ta_drafted', 'security_granted'],
                        'cards': ['travel_routes', 'files', 'action_points',
                                  'trip_funds']

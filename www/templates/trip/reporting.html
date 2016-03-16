@@ -1,13 +1,7 @@
-<ion-tabs class="tabs-icon-top tabs-color-active-positive">
-
-  <ion-tab title="{{ 'template.trip.report.text' | translate }}" icon-off="ion-document" icon-on="ion-document-text" href="#app/reporting/{{ trip.id }}/text">
-    <ion-nav-view name="tab-text"></ion-nav-view>
-  </ion-tab>
-
-  <ion-tab title="{{ 'template.trip.report.picture' | translate }}" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" href="#app/reporting/{{ trip.id }}/picture">
-    <ion-nav-view name="tab-pic"></ion-nav-view>
-  </ion-tab>
-
-  <ion-tab title="{{ 'template.trip.report.actions' | translate }}" icon-off="ion-ios-personadd-outline" icon-on="ion-ios-personadd" href="#app/reporting/{{ trip.id }}/aps">
-    <ion-nav-view name="tab-aps"></ion-nav-view>
-  </ion-tab>
+<ion-view view-title="{{ 'template.trip.report' | translate }}">
+    <ion-content class="padding">
+      <button id="report_text" class="button button-block button-calm" ui-sref="app.dash.reporting_text({ tripId : vm.trip_id })">{{ 'template.trip.report.text' | translate }}</button>
+      <button id="report_picture" class="button button-block button-calm" ui-sref="app.dash.reporting_picture({ tripId : vm.trip_id })">{{ 'template.trip.report.picture' | translate }}</button>
+      <button id="report_action_point" class="button button-block button-calm" ui-sref="app.dash.reporting_action_point({ tripId : vm.trip_id })">{{ 'template.trip.report.action_point' | translate }}</button>
+    </ion-content>      
+</ion-view>

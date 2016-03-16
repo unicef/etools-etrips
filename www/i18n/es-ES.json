@@ -75,9 +75,9 @@
     "template.trip.notes.description" : "Notes",
     "template.trip.notes.insert" : "Insert notes here",
 
-    "template.trip.report.text" : "Text",
-    "template.trip.report.picture" : "Picture",
-    "template.trip.report.actions" : "Actions",
+    "template.trip.report.text" : "Text Reporting",
+    "template.trip.report.picture" : "Add Picture",
+    "template.trip.report.action_point" : "Action Point",
 
     "template.trip.report.text.title" : "Text Reporting",
     "template.trip.report.text.progress" : "Progress Reporting",
@@ -96,8 +96,13 @@
     "template.trip.report.picture.upload" : "Upload Existing Photo",
     "template.trip.report.picture.take" : "Take Picture",
 
-    "template.trip.report.action_point.title" : "Action Points",
-    "template.trip.report.action_point.current" : "Current Action-Points",
+    "controller.trip.action_point.new.title" : "Action Point Created",
+    "controller.trip.action_point.new.template" : "",
+    "controller.trip.action_point.edit.title" : "Action Point Updated",
+    "controller.trip.action_point.edit.template" : "",
+
+    "template.trip.report.action_point.title" : "Action Point",
+    "template.trip.report.action_point.current" : "Action Points",
     "template.trip.report.action_point.status" : "Status:",
     "template.trip.report.action_point.due_date" : "Due date:",
     "template.trip.report.action_point.new" : "New Action Point",
@@ -135,6 +140,7 @@
     "directive.loading.approving_trip" : "Approving Trip...",
     "directive.loading.submitting_trip" : "Submitting Trip...",
     "directive.loading.creating_action_point" : "Creating Action Point...",
+    "directive.loading.updating_action_point" : "Updating Action Point...",
 
     "controller.report.text.observations.access" : "Access to inputs/services:",
     "controller.report.text.observations.quality" : "Quality of inputs/services:",
@@ -186,9 +192,6 @@
     "controller.my_trips.title" : "Trip Submission",
     "controller.my_trips.template" : "You succesfully submitted the trip.",
 
-    "controller.trip.action_point.edit.title" : "Action Point Updated",
-    "controller.trip.action_point.edit.template" : "Edited action point has been saved.",
-
     "controller.login.success.title" : "Sign In Failed",
     "controller.login.success.template" : "Unable to get your trips. Please try logging in again later.",
     "controller.login.no_country.title" : "Sign In Failed",
@@ -209,5 +212,5 @@
 
     "factory.error_handler.default_message" : "Something went wrong, try again later.",
     "factory.error_handler.password" : "The password introduced was incorrect.",
-    "factory.error_handler.unknown" : "Something went wrong."    
+    "factory.error_handler.unknown" : "Something went wrong."
 }

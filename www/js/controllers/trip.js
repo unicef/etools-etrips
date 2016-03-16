@@ -1,27 +1,14 @@
 angular.module('equitrack.tripControllers', [])
 
-.controller('TripCtrl', function($scope, $ionicModal, $timeout, $ionicHistory) {
-    $scope.data = {};
+.controller('TripCtrl', function() {
 })
 
-.controller('ReportingCtrl',function($scope, $stateParams, TripsFactory){
-
-        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-
-        // deprecated:
-        //$scope.submit = function (){
-        //    TripsFactory.tripAction($stateParams.tripId, 'report', {}).then(
-        //        function(actionSuccess){
-        //            console.log("Action succeded")
-        //        },
-        //        function(actionFailed){
-        //            console.error("Action failed")
-        //        }
-        //    )
-        //}
+.controller('Report', function($stateParams){
+    var vm = this;
+    vm.trip_id = $stateParams.tripId;
 })
 
-.controller('ReportingTextCtrl', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup, ErrorHandler, NetworkService, $translate){
+.controller('ReportingText', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup, ErrorHandler, NetworkService, $translate){    
   var fields = ['main_observations', 'constraints', 'lessons_learned', 'opportunities'];
   var main_obs_template = $translate.instant('controller.report.text.observations.access') + '\n \n \n \n' +
   $translate.instant('controller.report.text.observations.quality') + '\n \n \n \n' +
@@ -128,15 +115,117 @@ angular.module('equitrack.tripControllers', [])
   };
 })
 
-.controller('ReportingAPSCtrl',function($scope, $stateParams, TripsFactory){
+.controller('ReportingActionPoint',function($stateParams, TripsFactory){
+    var vm = this;
+    vm.trips = TripsFactory.getTrip($stateParams.tripId);
 
-        $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-        $scope.newAP = function(){
-            $state.go('');
-        };
+    console.log(vm.trips.actionpoint_set.length);
 
+    vm.trip_id = $stateParams.tripId;
 })
-.controller('ReportingPictureCtrl',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http, API_urls, ErrorHandler, NetworkService, $translate){
+
+.controller('ReportingActionPointEdit',
+    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, ErrorHandler, $locale, NetworkService, $translate) {        
+        var vm = this;
+        vm.title = 'template.trip.report.action_point.edit.title';
+        vm.isActionPointNew = false;
+
+        if ($state.current.name.indexOf('new') > 0) {
+            vm.title = 'template.trip.report.action_point.new';
+            vm.isActionPointNew = true;
+        }
+
+        $scope.today = new Date();
+
+        $scope.padded_num = function(limit){
+            var result = [];
+            for (var i=1; i<limit+1; i++){
+                result.push(i>9 ? i+'' : "0"+i);
+            }
+            return result;
+        };
+        var currentTrip = TripsFactory.getTrip($stateParams.tripId);
+
+        $scope.allMonths = $locale.DATETIME_FORMATS.SHORTMONTH;
+        $scope.yearOptions = [$scope.today.getFullYear()+"",
+                              $scope.today.getFullYear()+1+""];
+
+        Data.get_user_base(
+            function(successData){
+                $scope.users = successData;
+            },
+            function(err){
+                ErrorHandler.popError(err);
+            }
+        );
+
+        if (vm.isActionPointNew === true) {
+            var tomorrow = new Date($scope.today.getTime() + 24 * 60 * 60 * 1000);
+
+            $scope.ap = {'status':'open',
+                         'due_year': tomorrow.getFullYear()+"",
+                         'due_month': ("0" + (tomorrow.getMonth()+1)).slice(-2),
+                         'due_day': ("0" + tomorrow.getDate()).slice(-2)
+                        };
+        } else {
+            $scope.ap = TripsFactory.getAP(currentTrip, $stateParams.actionPointId);            
+        }
+
+        $scope.submit = function (){            
+            $scope.errors = {};
+            $scope.error = false;
+
+            if (!$scope.ap.person_responsible){
+                $scope.errors.person_responsible = true;
+            }
+
+            if (!$scope.ap.description){
+                $scope.errors.description = true;
+            }
+
+            if (Object.keys($scope.errors).length){
+                $scope.error = true;
+                return;
+            } else {
+                if (NetworkService.isOffline() === true) {
+                    NetworkService.showMessage();
+                } else {
+                    var loadingMessage = 'updating_action_point';
+                    var alertTitle = 'controller.trip.action_point.edit.title';
+                    var alertTemplate = 'controller.trip.action_point.edit.template';
+
+                    if (vm.isActionPointNew === true) {
+                        loadingMessage = 'updating_action_point';
+                        alertTitle = 'controller.trip.action_point.new.title';
+                        alertTemplate = 'controller.trip.action_point.new.template';
+                    }
+
+                    $ionicLoading.show({
+                        template: '<loading message="' + loadingMessage + '"></loading>'
+                    });
+
+                    TripsFactory.sendAP(currentTrip.id, $scope.ap,
+                        function (success) {
+                            $ionicLoading.hide();                            
+                            TripsFactory.localTripUpdate(currentTrip.id, success.data);
+                            
+                            $ionicPopup.alert({
+                                title: $translate.instant(alertTitle),
+                                template: $translate.instant(alertTemplate)
+                            }).then(function(res){
+                                $ionicHistory.goBack();
+                            });
+
+                        }, function (err) {
+                            ErrorHandler.popError(err);
+                    });
+                }
+            }
+        };
+    }
+)
+
+.controller('ReportingPicture',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http, API_urls, ErrorHandler, NetworkService, $translate){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         $scope.data = {};
@@ -333,7 +422,7 @@ angular.module('equitrack.tripControllers', [])
             execute_req();
         };
         $scope.go_report = function(tripId){
-            $state.go('app.reporting.text', {"tripId":tripId});
+            $state.go('app.dash.reporting', { 'tripId' : tripId });
         };
         $scope.take_notes = function(tripId){
             $state.go('app.dash.notes', {"tripId":tripId});
@@ -454,88 +543,4 @@ angular.module('equitrack.tripControllers', [])
         };
 
 })
-.controller('TripApsEditCtrl',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, ErrorHandler, $locale, NetworkService, $translate) {
-        $scope.today = new Date();
-        $scope.padded_num = function(limit){
-            var result = [];
-            for (var i=1; i<limit+1; i++){
-                result.push(i>9 ? i+'' : "0"+i);
-            }
-            return result;
-        };
-        var currentTrip = TripsFactory.getTrip($stateParams.tripId);
-
-        $scope.allMonths = $locale.DATETIME_FORMATS.SHORTMONTH;
-        $scope.yearOptions = [$scope.today.getFullYear()+"",
-                              $scope.today.getFullYear()+1+""];
-
-        Data.get_user_base(
-            function(successData){
-                $scope.users = successData;
-            },
-            function(err){
-                ErrorHandler.popError(err);
-            }
-        );
-
-        console.log("id = "+$stateParams.apId);
-        if ($stateParams.apId == 'new') {
-            $scope.new_ap = true;
-            console.log('yeah');
-
-            var tomorrow = new Date($scope.today.getTime() + 24 * 60 * 60 * 1000);
-
-            $scope.ap = {'status':'open',
-                         'due_year': tomorrow.getFullYear()+"",
-                         'due_month': ("0" + (tomorrow.getMonth()+1)).slice(-2),
-                         'due_day': ("0" + tomorrow.getDate()).slice(-2)
-                        };
-            console.log("scope ap", $scope.ap);
-        } else {
-
-            $scope.new_ap = false;
-            $scope.ap = TripsFactory.getAP(currentTrip, $stateParams.apId);
-        }
-
-        $scope.submit = function (){
-            // do some validation here.
-            $scope.errors = {};
-            $scope.error = false;
-            // TODO: make sure you can't submit an action point due in the past
-            if (!$scope.ap.person_responsible){
-                $scope.errors.person_responsible = true;
-            }
-            if (!$scope.ap.description){
-                $scope.errors.description = true;
-            }
-            if (Object.keys($scope.errors).length){
-                $scope.error = true;
-                return;
-            } else {
-              if (NetworkService.isOffline() === true) {
-                NetworkService.showMessage();
-              } else {
-                $ionicLoading.show({
-                    template: '<loading message="creating_action_point"></loading>'
-                });
-                TripsFactory.sendAP(currentTrip.id, $scope.ap,
-                 function (success) {
-                    $ionicLoading.hide();
-                    $ionicHistory.goBack();
-                    TripsFactory.localTripUpdate(currentTrip.id, success.data);
-                    $ionicPopup.alert({
-                      title: $translate.instant('controller.trip.action_point.edit.title'),
-                      template: $translate.instant('controller.trip.action_point.edit.template')
-                    });
-                    console.log(success);
-                }, function (err) {
-                    ErrorHandler.popError(err);
-                });
-                console.log("submitting");
-              }
-            }
-        };
-
-
-});
+;

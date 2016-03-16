@@ -51,6 +51,7 @@ describe('Notes', function() {
     });
     
     it('should be able discard a saved note', function() { 
+        this.timeout(30000);
         var trips = element.all(by.css(allTripsCssSelector));
         
         // discard note
