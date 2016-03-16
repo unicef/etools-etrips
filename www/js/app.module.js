@@ -3,7 +3,6 @@ angular.module('equitrack', [
     'app.widgets',
     'equitrack.controllers',
     'equitrack.services',
-    'equitrack.utils',
     'equitrack.tripControllers'    
 ])
 

@@ -13,7 +13,7 @@
                 message: '@',
                 text: '='
             },
-            templateUrl: 'js/layout/loading_modal.directive.html',
+            templateUrl: 'js/components/loading_modal.directive.html',
             controller: loadingController,
             controllerAs: 'vm' 
         };

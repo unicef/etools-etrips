@@ -8,7 +8,7 @@ angular.module('equitrack.tripControllers', [])
     vm.trip_id = $stateParams.tripId;
 })
 
-.controller('ReportingText', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup, ErrorHandler, NetworkService, $translate){    
+.controller('ReportingText', function($scope, $stateParams, TripsFactory,$ionicLoading, $ionicHistory, $ionicPopup, errorHandler, networkService, $translate){    
   var fields = ['main_observations', 'constraints', 'lessons_learned', 'opportunities'];
   var main_obs_template = $translate.instant('controller.report.text.observations.access') + '\n \n \n \n' +
   $translate.instant('controller.report.text.observations.quality') + '\n \n \n \n' +
@@ -54,8 +54,8 @@ angular.module('equitrack.tripControllers', [])
   };
 
   $scope.submit = function(){
-    if (NetworkService.isOffline() === true) {
-      NetworkService.showMessage();
+    if (networkService.isOffline() === true) {
+      networkService.showMessage();
 
     } else {
       $ionicLoading.show( { template: '<loading message="sending_report"></loading>' } );
@@ -76,14 +76,14 @@ angular.module('equitrack.tripControllers', [])
               template: $translate.instant('controller.report.text.submitted.template')
           });
         }, function(err){
-          ErrorHandler.popError(err);
+          errorHandler.popError(err);
         }
       );
     }
   };
 })
 
-.controller('NotesCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, $translate, $ionicPlatform){
+.controller('NotesCtrl', function($scope, $stateParams, TripsFactory, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, $translate, $ionicPlatform){
   $scope.trip = TripsFactory.getTrip($stateParams.tripId);
   $scope.notes = TripsFactory.getDraft($stateParams.tripId, 'notes');
 
@@ -125,7 +125,7 @@ angular.module('equitrack.tripControllers', [])
 })
 
 .controller('ReportingActionPointEdit',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, ErrorHandler, $locale, NetworkService, $translate) {        
+    function($scope, $stateParams, TripsFactory, localStorageService, $ionicLoading, $ionicHistory, $ionicPopup, $state, Data, errorHandler, $locale, networkService, $translate) {        
         var vm = this;
         vm.title = 'template.trip.report.action_point.edit.title';
         vm.isActionPointNew = false;
@@ -155,7 +155,7 @@ angular.module('equitrack.tripControllers', [])
                 $scope.users = successData;
             },
             function(err){
-                ErrorHandler.popError(err);
+                errorHandler.popError(err);
             }
         );
 
@@ -187,8 +187,8 @@ angular.module('equitrack.tripControllers', [])
                 $scope.error = true;
                 return;
             } else {
-                if (NetworkService.isOffline() === true) {
-                    NetworkService.showMessage();
+                if (networkService.isOffline() === true) {
+                    networkService.showMessage();
                 } else {
                     var loadingMessage = 'updating_action_point';
                     var alertTitle = 'controller.trip.action_point.edit.title';
@@ -217,7 +217,7 @@ angular.module('equitrack.tripControllers', [])
                             });
 
                         }, function (err) {
-                            ErrorHandler.popError(err);
+                            errorHandler.popError(err);
                     });
                 }
             }
@@ -225,7 +225,7 @@ angular.module('equitrack.tripControllers', [])
     }
 )
 
-.controller('ReportingPicture',function($scope,$ionicPopup, $localStorage, $stateParams, TripsFactory, $http, API_urls, ErrorHandler, NetworkService, $translate){
+.controller('ReportingPicture',function($scope,$ionicPopup, localStorageService, $stateParams, TripsFactory, $http, API_urls, errorHandler, networkService, $translate){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
         $scope.data = {};
@@ -239,7 +239,7 @@ angular.module('equitrack.tripControllers', [])
             options.params = {caption:($scope.data.caption)? $scope.data.caption : ""};
             options.chunkedMode = false;
             options.headers = {
-                Authorization: 'JWT  ' + $localStorage.get('jwtoken'),
+                Authorization: 'JWT  ' + localStorageService.get('jwtoken'),
                 Connection: "close"
             };
 
@@ -253,8 +253,8 @@ angular.module('equitrack.tripControllers', [])
                         });
                       },
                       function(err){
-                        if (NetworkService.isOffline() === true) {
-                          NetworkService.showMessage(
+                        if (networkService.isOffline() === true) {
+                          networkService.showMessage(
                             $translate.instant('controller.report.picture.upload.fail.title'),
                             $translate.instant('controller.report.picture.upload.fail.template')
                           );
@@ -306,10 +306,10 @@ angular.module('equitrack.tripControllers', [])
 
 })
 .controller('TripDetailCtrl',
-    function($scope, $stateParams, TripsFactory, $localStorage, $ionicLoading, $ionicHistory, $state, $ionicPopup, ErrorHandler, NetworkService, $translate){
+    function($scope, $stateParams, TripsFactory, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate){
 
         $scope.trip = TripsFactory.getTrip($stateParams.tripId);
-        uid = $localStorage.getObject('currentUser').user_id;
+        uid = localStorageService.getObject('currentUser').user_id;
 
         $scope.checks = {
             supervisor : $scope.trip.supervisor == uid,
@@ -322,8 +322,8 @@ angular.module('equitrack.tripControllers', [])
             report_filled: Boolean($scope.trip.main_observations)
         };
         $scope.approve = function (tripId){
-          if (NetworkService.isOffline() === true) {
-            NetworkService.showMessage();
+          if (networkService.isOffline() === true) {
+            networkService.showMessage();
           } else {
 
             $ionicLoading.show({
@@ -341,7 +341,7 @@ angular.module('equitrack.tripControllers', [])
                     console.log("Action succeded");
                 },
                 function(err){
-                    ErrorHandler.popError(err);
+                    errorHandler.popError(err);
                 }
             );
           }
@@ -365,8 +365,8 @@ angular.module('equitrack.tripControllers', [])
            });
          };
         $scope.submit = function (tripId){
-          if (NetworkService.isOffline() === true) {
-            NetworkService.showMessage();
+          if (networkService.isOffline() === true) {
+            networkService.showMessage();
           } else {
             $ionicLoading.show({                      
                       template: '<loading message="submitting_trip"></loading>'
@@ -383,15 +383,15 @@ angular.module('equitrack.tripControllers', [])
                     console.log("Action succeded");
                 },
                 function(err){
-                    ErrorHandler.popError(err);
+                    errorHandler.popError(err);
                 }
             );
           }
         };
         $scope.complete_trip = function(tripId){
             var execute_req = function() {
-              if (NetworkService.isOffline() === true) {
-                NetworkService.showMessage();
+              if (networkService.isOffline() === true) {
+                networkService.showMessage();
               } else {
                 $ionicLoading.show({
                     template: '<loading message="submitting_trip"></loading>'
@@ -408,7 +408,7 @@ angular.module('equitrack.tripControllers', [])
                         console.log("Action succeeded");
                     },
                     function (err) {
-                        ErrorHandler.popError(err);
+                        errorHandler.popError(err);
                     });
               }
             };
@@ -430,8 +430,8 @@ angular.module('equitrack.tripControllers', [])
 
 
 })
-.controller('MyTripsCtrl', function($scope, $localStorage, Data, $state, TripsFactory, $stateParams,
-                                    $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, ErrorHandler, $ionicHistory) {
+.controller('MyTripsCtrl', function($scope, localStorageService, Data, $state, TripsFactory, $stateParams,
+                                    $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, errorHandler, $ionicHistory) {
 
         $scope.doRefresh = function() {
             Data.get_trips(function(res){
@@ -440,22 +440,22 @@ angular.module('equitrack.tripControllers', [])
                 console.log("got trips", res);
             }, function(err){
                 $scope.$broadcast('scroll.refreshComplete');
-                ErrorHandler.popError(err, false, true);
+                errorHandler.popError(err, false, true);
             }, true);
 
         };
         console.log("in mytrips");
-        console.log($localStorage.getObject('trips'));
+        console.log(localStorageService.getObject('trips'));
 
         $scope.onlyMe = function(trip) {
-            return trip.traveller_id == $localStorage.getObject('currentUser').user_id;
+            return trip.traveller_id == localStorageService.getObject('currentUser').user_id;
         };
         $scope.go_report = function(tripId){
             $state.go('app.reporting.text', {"tripId":tripId});
         };
         $scope.submit = function (tripId){
-          if (NetworkService.isOffline() === true) {
-            NetworkService.showMessage();
+          if (networkService.isOffline() === true) {
+            networkService.showMessage();
           } else {
             $ionicListDelegate.closeOptionButtons();
             $ionicLoading.show({
@@ -472,7 +472,7 @@ angular.module('equitrack.tripControllers', [])
                     console.log("Action succeded");
                 },
                 function(err){
-                    ErrorHandler.popError(err);
+                    errorHandler.popError(err);
                 }
             );
           }
@@ -483,14 +483,14 @@ angular.module('equitrack.tripControllers', [])
                 console.log("got trips", res);
         };
         var data_failed = function(err){
-                ErrorHandler.popError(err);
+                errorHandler.popError(err);
         };
         Data.get_trips(data_success,data_failed, $stateParams.refreshed);
 
 })
-.controller('SupervisedCtrl', function($scope, $localStorage,
+.controller('SupervisedCtrl', function($scope, localStorageService,
                                        Data, TripsFactory, $ionicLoading,
-                                       $state, $ionicListDelegate, $filter, ErrorHandler) {
+                                       $state, $ionicListDelegate, $filter, errorHandler) {
 
 
         $scope.doRefresh = function() {
@@ -500,15 +500,15 @@ angular.module('equitrack.tripControllers', [])
                 console.log("got trips", res);
             }, function(err){
                 $scope.$broadcast('scroll.refreshComplete');
-                ErrorHandler.popError(err);
+                errorHandler.popError(err);
             }, true);
 
         };
 
         console.log("in supervised");
-        console.log($localStorage.getObject('trips'));
+        console.log(localStorageService.getObject('trips'));
         $scope.onlySupervised = function(trip) {
-            return trip.supervisor == $localStorage.getObject('currentUser').user_id;
+            return trip.supervisor == localStorageService.getObject('currentUser').user_id;
         };
         Data.get_trips(
             function(res){
@@ -517,12 +517,12 @@ angular.module('equitrack.tripControllers', [])
                 console.log("got trips", res);
             },
             function(err){
-                ErrorHandler.popError(err);
+                errorHandler.popError(err);
             }
         );
         $scope.approve = function (tripId){
-          if (NetworkService.isOffline() === true) {
-            NetworkService.showMessage();
+          if (networkService.isOffline() === true) {
+            networkService.showMessage();
           } else {
             $ionicListDelegate.closeOptionButtons();
             $ionicLoading.show({
@@ -536,7 +536,7 @@ angular.module('equitrack.tripControllers', [])
                     console.log("Action succeded");
                 },
                 function(err){
-                    ErrorHandler.popError(err);
+                    errorHandler.popError(err);
                 }
             );
           }

@@ -5,13 +5,13 @@
         .module('app.core')
         .run(runBlock);
 
-    runBlock.$inject = ['$ionicPlatform', '$rootScope', '$state', '$http', 'API_urls', '$localStorage'];
+    runBlock.$inject = ['$ionicPlatform', '$rootScope', '$state', '$http', 'API_urls', 'localStorageService'];
 
-    function runBlock($ionicPlatform, $rootScope, $state, $http, API_urls, $localStorage) {
+    function runBlock($ionicPlatform, $rootScope, $state, $http, API_urls, localStorageService) {
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
             var requireLogin = toState.data.requireLogin;
 
-            if (requireLogin && !Object.keys($localStorage.getObject('currentUser')).length) {
+            if (requireLogin && !Object.keys(localStorageService.getObject('currentUser')).length) {
                 event.preventDefault();
                 $state.go('login');
             }

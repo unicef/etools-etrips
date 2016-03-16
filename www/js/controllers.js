@@ -1,6 +1,6 @@
 angular.module('equitrack.controllers', [])
 
-.controller('AppCtrl', function($scope, $state, LoginService, $localStorage) {
+.controller('AppCtrl', function($scope, $state, LoginService, localStorageService) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -14,7 +14,7 @@ angular.module('equitrack.controllers', [])
       LoginService.logout();
 
   };
-  $scope.currentUser = $localStorage.getObject('currentUser');
+  $scope.currentUser = localStorageService.getObject('currentUser');
 
   // Form data for the login modal
 
@@ -41,12 +41,12 @@ angular.module('equitrack.controllers', [])
     };
 })
 
-.controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  '$localStorage',
-            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'NetworkService', '$translate',
-             function($scope, $ionicLoading, $ionicHistory, $localStorage, Data, LoginService,
-                      Auth, $ionicPopup, $state, API_urls, NetworkService, $translate) {
+.controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  'localStorageService',
+            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'networkService', '$translate',
+             function($scope, $ionicLoading, $ionicHistory, localStorageService, Data, LoginService,
+                      Auth, $ionicPopup, $state, API_urls, networkService, $translate) {
 
-    $scope.data = $localStorage.getObject('user_cred');
+    $scope.data = localStorageService.getObject('user_cred');
     $scope.other = {};
     function login_success(token){
         console.log("LoginCtrl: login_success");
@@ -113,13 +113,13 @@ angular.module('equitrack.controllers', [])
 
         if ($scope.other.rememberMe){
           // won't save the password
-          $localStorage.setObject("user_cred",{username:loginData.username, password:""});
+          localStorageService.setObject("user_cred",{username:loginData.username, password:""});
         } else {
-          $localStorage.delete("user_cred");
+          localStorageService.delete("user_cred");
         }
 
-        if (NetworkService.isOffline()) {
-          NetworkService.showMessage(
+        if (networkService.isOffline()) {
+          networkService.showMessage(
             $translate.instant('controller.login.network_offline.title'),
             $translate.instant('controller.login.network_offline.template')
           );
@@ -127,7 +127,7 @@ angular.module('equitrack.controllers', [])
 
         } else {
           $ionicLoading.show( { template: '<loading></loading>' } );
-          $localStorage.setObject("relogin_cred", { username:loginData.username, password:""} ); //store the username in the background for re-login
+          localStorageService.setObject("relogin_cred", { username:loginData.username, password:""} ); //store the username in the background for re-login
           LoginService.loginUser(loginData, login_success, login_fail);
           $scope.data = {};
         }
