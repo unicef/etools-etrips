@@ -2,12 +2,12 @@ angular.module('equitrack', [
     /* shared modules */
     'app.core',
     'app.widgets',
-    'equitrack.controllers',
     'equitrack.tripControllers',
 
     /* featured areas */
     'app.layout',
-    'app.login'    
+    'app.login',
+    'app.settings'
 ])
 
 angular.module('app.core', [
@@ -29,6 +29,9 @@ angular.module('app.layout', [
 angular.module('app.login', [
     'app.core',
     'app.widgets'
+]);
+
+angular.module('app.settings', [
 ]);
 
 angular.module('app.widgets', [

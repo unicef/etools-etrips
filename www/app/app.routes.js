@@ -8,29 +8,6 @@
     // TODO: move states to individual modules
     function config($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('app.settings',{
-                url: '/settings',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/settings/settings.html',
-                        controller: 'SettingsCtrl'
-                    }
-                }
-            })
-
-            .state('app.connection',{
-                url: '/settings/connection',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/settings/connection.html',
-                        controller: 'SettingsConnectionCtrl'
-                    }
-                },
-                data: {
-                    requireLogin: false
-                }
-            })
-
             .state('app.dash.reporting', {      
                 url: '/my_trips/:tripId/reporting',
                 views: {
