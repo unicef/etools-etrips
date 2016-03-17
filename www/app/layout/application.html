@@ -18,7 +18,7 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close class="item-divider">{{ 'template.menu.country' | translate }} {{ currentUser.profile.country_name }}</ion-item>
+        <ion-item menu-close class="item-divider">{{ 'template.menu.country' | translate }} {{ vm.currentUser.profile.country_name }}</ion-item>
         <ion-item menu-close href="#/app/dash/my_trips">
             {{ 'template.menu.trips' | translate }}
         </ion-item>
@@ -28,7 +28,7 @@
         <!-- <ion-item menu-close href="#/app/resources">
             Resources
         </ion-item> -->
-        <ion-item menu-close ng-click="logout()">
+        <ion-item menu-close ng-click="vm.logout()">
             {{ 'template.menu.logout' | translate }}
         </ion-item>
 

@@ -28,6 +28,10 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
+    <!-- 3rd party scripts -->
+    <script src="js/patch/angular-ios9-uiwebview.patch.js"></script>
+    <script src="js/patch/ionRadio.js"></script>
+
     <!-- your app's js -->
     <script src="app/app.module.js"></script>
     <script src="app/app.run.js"></script>
@@ -36,9 +40,14 @@
     <script src="app/app.constants.js"></script>
     <script src="app/app.filters.js"></script>
 
+    <script src="app/layout/application.js"></script>
+    <script src="app/layout/application.route.js"></script>
+    <script src="app/layout/dashboard.js"></script>
+    <script src="app/layout/dashboard.route.js"></script>
+    
     <script src="app/login/login.js"></script>
     <script src="app/login/login.route.js"></script>
-    <script src="app/login/login.service.js"></script>
+    <script src="app/login/login.service.js"></script>  
 
     <script src="app/services/api_url.service.js"></script>
     <script src="app/services/authentication.service.js"></script>

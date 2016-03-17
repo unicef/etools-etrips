@@ -15,18 +15,18 @@
             },
             templateUrl: 'app/components/loading_modal.directive.html',
             controller: loadingController,
-            controllerAs: 'vm' 
+            controllerAs: 'loading' 
         };
     }
 
     function loadingController($scope, $translate) {
         /*jshint validthis: true */
-        var vm = this;
+        var loading = this;
         
         if (!angular.isDefined($scope.message)) {
-            vm.text = $translate.instant('directive.loading.title_default');
+            loading.text = $translate.instant('directive.loading.title_default');
         } else {
-            vm.text = $translate.instant('directive.loading.' + $scope.message);
+            loading.text = $translate.instant('directive.loading.' + $scope.message);
         }
     }
     

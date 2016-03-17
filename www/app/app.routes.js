@@ -8,16 +8,6 @@
     // TODO: move states to individual modules
     function config($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('app', {
-                url: '/app',
-                abstract: true,
-                templateUrl: 'templates/menu.html',
-                controller: 'AppCtrl',
-                data: {
-                    requireLogin: true // this property, if set on app will apply to all of its children
-                }
-            })
-            
             .state('app.settings',{
                 url: '/settings',
                 views: {
@@ -106,17 +96,6 @@
                 }
             })
 
-            .state('app.dash', {
-                url: '/dash',
-                abstract: true,
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/dash.html',
-                        controller: 'DashCtrl'
-                    }
-                }
-            })
-
             .state('app.dash.my_trip-detail', {
                 url: '/my_trips/:tripId',
                 cache: false,
@@ -175,5 +154,7 @@
                     redirect: "app.dash.my_trips",
                 }
             });
+
+        $urlRouterProvider.otherwise('login');
     }
 })();

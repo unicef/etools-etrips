@@ -11,7 +11,8 @@
                 url: '/login',
                 cache: false,
                 templateUrl: 'app/login/login.html',
-                controller: 'Login as vm',
+                controller: 'Login',
+                controllerAs: 'vm',
                 data: {
                     requireLogin: false
                 }

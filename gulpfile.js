@@ -75,7 +75,7 @@ gulp.task('replace', function () {
         })
       }))
     .pipe(rename('app.constants.js'))
-    .pipe(gulp.dest('www/js'));
+    .pipe(gulp.dest('www/app'));
 
   gulp.src('src/*.html')
     .pipe(preprocess({context: { NODE_ENV: env }}))

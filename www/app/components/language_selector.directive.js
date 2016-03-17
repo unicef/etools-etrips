@@ -11,18 +11,18 @@
             replace: true,
             templateUrl: 'app/components/language_selector.directive.html',
             controller: languageSelector,
-            controllerAs: 'vm'
+            controllerAs: 'lang_selector'
         };
     }
 
     function languageSelector(localeService) {
         /*jshint validthis: true */
-        var vm = this;
+        var lang_selector = this;
 
-        vm.changeLanguage = changeLanguage;
-        vm.currentLocaleDisplayName = localeService.getLocaleDisplayName();
-        vm.localesDisplayNames = localeService.getLocalesDisplayNames();
-        vm.visible = vm.localesDisplayNames && vm.localesDisplayNames.length > 1;
+        lang_selector.changeLanguage = changeLanguage;
+        lang_selector.currentLocaleDisplayName = localeService.getLocaleDisplayName();
+        lang_selector.localesDisplayNames = localeService.getLocalesDisplayNames();
+        lang_selector.visible = lang_selector.localesDisplayNames && lang_selector.localesDisplayNames.length > 1;
         
         function changeLanguage(locale) {
             localeService.setLocaleByDisplayName(locale);

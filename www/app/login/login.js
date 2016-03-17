@@ -5,17 +5,18 @@
         .module('app.login')
         .controller('Login', Login);
 
-    Login.$inject = ['$scope', '$ionicLoading', '$ionicHistory', 'localStorageService', 'dataService', 'loginService', 'authentication', '$ionicPopup', '$state', 'apiUrlService', 'networkService', '$translate'];
+    Login.$inject = ['$ionicLoading', '$ionicHistory', 'localStorageService', 'dataService', 'loginService', 'authentication', '$ionicPopup', '$state', 'apiUrlService', 'networkService', '$translate'];
 
-    function Login($scope, $ionicLoading, $ionicHistory, localStorageService, dataService, loginService, authentication, $ionicPopup, $state, apiUrlService, networkService, $translate) {
-        $scope.data = localStorageService.getObject('user_cred');
-        $scope.login = login;
-        $scope.other = {};
+    function Login($ionicLoading, $ionicHistory, localStorageService, dataService, loginService, authentication, $ionicPopup, $state, apiUrlService, networkService, $translate) {
+        var vm = this;
+        vm.data = localStorageService.getObject('user_cred');
+        vm.login = login;
+        vm.other = {};
         
         function login() {
-            var loginData = $scope.data;
+            var loginData = vm.data;
 
-            if ($scope.other.rememberMe) {              
+            if (vm.other.rememberMe) {              
                 localStorageService.setObject('user_cred', { username: loginData.username, password: '' });
             } else {
                 localStorageService.delete('user_cred');
@@ -33,7 +34,7 @@
                 loginService.loginUser(loginData, loginSuccess, loginFail);
             }
 
-            $scope.data = {};
+            vm.data = {};
         }
 
         function loginSuccess(token){
