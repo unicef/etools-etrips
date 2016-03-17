@@ -10,7 +10,7 @@
         translation();
 
         function httpProviderPush() {
-            $httpProvider.interceptors.push('appInterceptor')
+            $httpProvider.interceptors.push('httpInterceptorService')
         }
 
         function translation() {

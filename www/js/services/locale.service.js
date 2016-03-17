@@ -45,8 +45,20 @@
         });
 
         return {
+            getPreferredLocale: function() {
+                return LOCALES.preferredLocale;
+            },
+            getPreferredLocaleName: function() {
+                return LOCALES.locales[LOCALES.preferredLocale];
+            },
             getLocaleDisplayName: function () {
-                return localesObj[currentLocale];
+                var val = localesObj[currentLocale];
+
+                if (val === undefined) {
+                    val = this.getPreferredLocaleName();
+                }
+
+                return val;
             },      
             setLocaleByDisplayName: function (localeDisplayName) {
                 setLocale(

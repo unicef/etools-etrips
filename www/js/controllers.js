@@ -1,6 +1,6 @@
 angular.module('equitrack.controllers', [])
 
-.controller('AppCtrl', function($scope, $state, LoginService, localStorageService) {
+.controller('AppCtrl', function($scope, $state, loginService, localStorageService) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -11,7 +11,7 @@ angular.module('equitrack.controllers', [])
   $scope.logout = function(){
       console.log('logout goes here');
       $state.go("login");
-      LoginService.logout();
+      loginService.logout();
 
   };
   $scope.currentUser = localStorageService.getObject('currentUser');
@@ -27,31 +27,31 @@ angular.module('equitrack.controllers', [])
 .controller('SettingsCtrl', function($scope) {
 
 })
-.controller('SettingsConnectionCtrl', function($scope, API_urls, LoginService, $state, $ionicHistory) {
+.controller('SettingsConnectionCtrl', function($scope, apiUrlService, loginService, $state, $ionicHistory) {
     $scope.dt = {};
-    $scope.dt.conn_str = API_urls.get_option_name();
+    $scope.dt.conn_str = apiUrlService.get_option_name();
 
     $scope.changeConnection = function(conn_str){
 
-        API_urls.set_base(conn_str);
+        apiUrlService.set_base(conn_str);
         console.log('logging out now');
-        LoginService.logout();
+        loginService.logout();
         $ionicHistory.clearCache().then(function(){ $state.go('login');});
 
     };
 })
 
 .controller('LoginCtrl', ['$scope', '$ionicLoading','$ionicHistory',  'localStorageService',
-            'Data', 'LoginService', 'Auth', '$ionicPopup', '$state', 'API_urls', 'networkService', '$translate',
-             function($scope, $ionicLoading, $ionicHistory, localStorageService, Data, LoginService,
-                      Auth, $ionicPopup, $state, API_urls, networkService, $translate) {
+            'dataService', 'loginService', 'authentication', '$ionicPopup', '$state', 'apiUrlService', 'networkService', '$translate',
+             function($scope, $ionicLoading, $ionicHistory, localStorageService, dataService, loginService,
+                      authentication, $ionicPopup, $state, apiUrlService, networkService, $translate) {
 
     $scope.data = localStorageService.getObject('user_cred');
     $scope.other = {};
     function login_success(token){
         console.log("LoginCtrl: login_success");
-        Data.get_profile(function(success){
-            Data.get_trips(
+        dataService.get_profile(function(success){
+            dataService.get_trips(
                 function(res){
                     $ionicLoading.hide();
                     $ionicHistory.nextViewOptions({
@@ -128,7 +128,7 @@ angular.module('equitrack.controllers', [])
         } else {
           $ionicLoading.show( { template: '<loading></loading>' } );
           localStorageService.setObject("relogin_cred", { username:loginData.username, password:""} ); //store the username in the background for re-login
-          LoginService.loginUser(loginData, login_success, login_fail);
+          loginService.loginUser(loginData, login_success, login_fail);
           $scope.data = {};
         }
     };

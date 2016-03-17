@@ -22,7 +22,8 @@
     function loadingController($scope, $translate) {
         /*jshint validthis: true */
         var vm = this;
- if (!angular.isDefined($scope.message)) {
+        
+        if (!angular.isDefined($scope.message)) {
             vm.text = $translate.instant('directive.loading.title_default');
         } else {
             vm.text = $translate.instant('directive.loading.' + $scope.message);

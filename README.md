@@ -50,7 +50,7 @@ $ ionic platform add android
 Update Selenium webdriver for integration tests:
 
 ```bash
-$ webdriver-manager update
+$ ./node_modules/protractor/bin/webdriver-manager update
 ```
 
 Optional: Integration tests can also be run using Docker

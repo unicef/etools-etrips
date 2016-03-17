@@ -2,7 +2,6 @@ angular.module('equitrack', [
     'app.core',
     'app.widgets',
     'equitrack.controllers',
-    'equitrack.services',
     'equitrack.tripControllers'    
 ])
 
@@ -19,6 +18,4 @@ angular.module('app.core', [
     'tmh.dynamicLocale'
 ]);
 
-angular.module('app.widgets', [
-    'equitrack.services'
-]);
+angular.module('app.widgets', []);
