@@ -1,8 +1,12 @@
 angular.module('equitrack', [  
+    /* shared modules */
     'app.core',
     'app.widgets',
     'equitrack.controllers',
-    'equitrack.tripControllers'    
+    'equitrack.tripControllers',
+
+    /* featured areas */
+    'app.login'
 ])
 
 angular.module('app.core', [
@@ -18,4 +22,10 @@ angular.module('app.core', [
     'tmh.dynamicLocale'
 ]);
 
-angular.module('app.widgets', []);
+angular.module('app.widgets', [
+]);
+
+angular.module('app.login', [
+    'app.core',
+    'app.widgets'
+]);

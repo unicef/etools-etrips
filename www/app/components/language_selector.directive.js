@@ -9,7 +9,7 @@
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'js/components/language_selector.directive.html',
+            templateUrl: 'app/components/language_selector.directive.html',
             controller: languageSelector,
             controllerAs: 'vm'
         };

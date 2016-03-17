@@ -30,34 +30,40 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.module.js"></script>
-    <script src="js/app.run.js"></script>
-    <script src="js/app.config.js"></script>
-    <script src="js/app.routes.js"></script>    
-    <script src="js/app.constants.js"></script>
-    <script src="js/app.filters.js"></script>
+    <!-- 3rd party scripts -->
     <script src="js/patch/angular-ios9-uiwebview.patch.js"></script>
     <script src="js/patch/ionRadio.js"></script>
+
+    <!-- your app's js -->
+    <script src="app/app.module.js"></script>
+    <script src="app/app.run.js"></script>
+    <script src="app/app.config.js"></script>
+    <script src="app/app.routes.js"></script>    
+    <script src="app/app.constants.js"></script>
+    <script src="app/app.filters.js"></script>
+
+    <script src="app/login/login.js"></script>
+    <script src="app/login/login.route.js"></script>
+    <script src="app/login/login.service.js"></script>    
+
+    <script src="app/services/api_url.service.js"></script>
+    <script src="app/services/authentication.service.js"></script>
+    <script src="app/services/data.service.js"></script>
+    <script src="app/services/error_handler.service.js"></script>
+    <script src="app/services/http_interceptor.service.js"></script>    
+    <script src="app/services/locale.service.js"></script>
+    <script src="app/services/local_storage.service.js"></script>
+    <script src="app/services/my_http.service.js"></script>
+    <script src="app/services/network.service.js"></script>
+    <script src="app/services/soap_environment.service.js"></script>
+    <script src="app/services/token.service.js"></script>
+    <script src="app/services/trip.service.js"></script>
+    
+    <script src="app/components/language_selector.directive.js"></script>
+    <script src="app/components/loading_modal.directive.js"></script>
+
     <script src="js/controllers.js"></script>
-    <script src="js/controllers/trip.js"></script>    
-    
-    <script src="js/services/api_url.service.js"></script>
-    <script src="js/services/authentication.service.js"></script>
-    <script src="js/services/data.service.js"></script>
-    <script src="js/services/error_handler.service.js"></script>
-    <script src="js/services/http_interceptor.service.js"></script>    
-    <script src="js/services/locale.service.js"></script>
-    <script src="js/services/local_storage.service.js"></script>
-    <script src="js/services/login.service.js"></script>
-    <script src="js/services/my_http.service.js"></script>
-    <script src="js/services/network.service.js"></script>
-    <script src="js/services/soap_environment.service.js"></script>
-    <script src="js/services/token.service.js"></script>
-    <script src="js/services/trip.service.js"></script>
-    
-    <script src="js/components/language_selector.directive.js"></script>
-    <script src="js/components/loading_modal.directive.js"></script>
+    <script src="js/controllers/trip.js"></script>
   </head>
 
   <body ng-app="equitrack">

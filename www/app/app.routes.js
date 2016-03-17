@@ -7,8 +7,6 @@
 
     // TODO: move states to individual modules
     function config($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('login');
-
         $stateProvider
             .state('app', {
                 url: '/app',
@@ -170,23 +168,12 @@
                     }
                 }
             })
-
-            .state('login', {
-                url: '/login',
-                cache: false,
-                templateUrl: 'templates/login.html',
-                controller: 'LoginCtrl',
-                data: {
-                    requireLogin: false
-                }
-            })
-
             .state('home', {
                 url: '',
                 data: {
                     requireLogin: false,
                     redirect: "app.dash.my_trips",
                 }
-            });        
+            });
     }
 })();

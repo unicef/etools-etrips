@@ -8,8 +8,8 @@
     function loginService($q, $rootScope, localStorageService, authentication, apiUrlService) {
         var service = {
             loginUser: loginUser,
-            refreshLogin: refreshLogin,
-            logout: logout
+            logout: logout,
+            refreshLogin: refreshLogin            
         };
 
         return service;
@@ -17,14 +17,21 @@
         function loginUser(data, retSuccess, retFail) {
             authentication.login(data).then(
                 function(res){
-
-                    successfulauthenticationentication(res, retSuccess);
-                } ,
+                    successfulAuthentication(res, retSuccess);
+                },
                 function(err){
                     retFail(err);
                 }
             );
         }
+
+        function logout() {
+            localStorageService.delete('jwtoken');
+            localStorageService.delete('currentUser');
+            localStorageService.delete('trips');
+            localStorageService.delete('users');
+            localStorageService.delete('tokenClaims');
+        }        
 
         function refreshLogin(retSuccess, retFail, data) {
             if (!data){
@@ -39,22 +46,15 @@
 
             authentication.login(data).then(
                 function(res){
-                    successfulauthenticationentication(res, retSuccess);
-                } ,
+                    successfulAuthentication(res, retSuccess);
+                },
                 function(err){
                     retFail(err);
-                });
+                }
+            );
         }
 
-        function logout() {
-            localStorageService.delete('jwtoken');
-            localStorageService.delete('currentUser');
-            localStorageService.delete('trips');
-            localStorageService.delete('users');
-            localStorageService.delete('tokenClaims');
-        }        
-
-        function successfulauthenticationentication(res, retSuccess) {
+        function successfulAuthentication(res, retSuccess) {
             var JWToken;
             
             if (apiUrlService.ADFS){
