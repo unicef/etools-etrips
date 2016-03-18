@@ -73,27 +73,6 @@
                 }
             })
 
-            .state('app.dash.my_trip-detail', {
-                url: '/my_trips/:tripId',
-                cache: false,
-                views: {
-                    'tab-trips': {
-                        templateUrl: 'templates/dash/trip.html',
-                        controller: 'TripDetailCtrl'
-                    }
-                }
-            })
-
-            .state('app.dash.my_trips', {
-                url: '/my_trips',
-                views: {
-                    'tab-trips': {
-                        templateUrl: 'templates/dash/my-trips.html',
-                        controller: 'MyTripsCtrl'
-                    }
-                }
-            })
-
             .state('app.dash.notes',{
                 url: '/my_trips/:tripId/notes',
                 cache: false,
@@ -105,25 +84,6 @@
                 }
             })  
 
-            .state('app.dash.supervised', {
-                url: '/supervised',
-                views: {
-                    'tab-supervised': {
-                        templateUrl: 'templates/dash/supervised.html',
-                        controller: 'SupervisedCtrl'
-                    }
-                }
-            })
-
-            .state('app.dash.supervised-detail', {
-                url: '/supervised/:tripId',
-                views: {
-                    'tab-supervised': {
-                        templateUrl: 'templates/dash/trip.html',
-                        controller: 'TripDetailCtrl'
-                    }
-                }
-            })
             .state('home', {
                 url: '',
                 data: {

@@ -8,13 +8,25 @@
   
     function underscoreLess() {
         return function (input) {
-            return input.replace(/_/g, ' ');
+            var val = '';
+
+            if (input !== undefined) {
+                val = input.replace(/_/g, ' ');
+            }
+
+            return val;
         };
     }
 
     function titleCase() {
         return function(input){
-            return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+            var val = '';
+
+            if (input !== undefined) {
+                val = input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+            }
+
+            return val
         };
     }
 

@@ -7,7 +7,8 @@ angular.module('equitrack', [
     /* featured areas */
     'app.layout',
     'app.login',
-    'app.settings'
+    'app.settings',
+    'app.trips'
 ])
 
 angular.module('app.core', [
@@ -32,6 +33,9 @@ angular.module('app.login', [
 ]);
 
 angular.module('app.settings', [
+]);
+
+angular.module('app.trips', [
 ]);
 
 angular.module('app.widgets', [
