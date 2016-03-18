@@ -1,0 +1,20 @@
+<ion-view view-title="{{ 'template.trip.report.picture.title' | translate }}">
+    <ion-content class="padding">
+        <br>
+        <h3>{{ 'template.trip.report.picture.caption' | translate }}</h3>
+        <label class="item padding-top item-input item-stacked-label">
+            <textarea ng-model="vm.data.caption" placeholder="Description goes here: Please enter description before choosing photo" rows="4" cols="10">
+            </textarea>
+        </label>
+        <br>
+        <div class="row no-padding">
+            <button ng-click="vm.uploadExisting()" class="col button button-block button-positive margin-lr-2 default-lh">
+                {{ 'template.trip.report.picture.upload' | translate }}
+            </button>
+
+            <button ng-click="vm.takePicture()" class="col button button-block button-positive margin-lr-2 default-lh">
+                {{ 'template.trip.report.picture.take' | translate }}
+            </button>
+        </div>      
+    </ion-content>
+</ion-view>

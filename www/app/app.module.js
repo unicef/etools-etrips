@@ -32,10 +32,14 @@ angular.module('app.login', [
     'app.widgets'
 ]);
 
+angular.module('app.report', [
+]);
+
 angular.module('app.settings', [
 ]);
 
 angular.module('app.trips', [
+    'app.report'
 ]);
 
 angular.module('app.widgets', [

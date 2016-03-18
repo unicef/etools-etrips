@@ -11,8 +11,8 @@
         var vm = this;
 
         vm.doRefresh = doRefresh;
-        vm.onlyMe = onlyMe;
         vm.go_report = goReport;
+        vm.onlyMe = onlyMe;
         vm.submit = submit;
 
         dataService.get_trips(dataSuccess, dataFailed, $stateParams.refreshed);
@@ -27,13 +27,13 @@
                 errorHandler.popError(err, false, true);
             }, true);
         }
-        
-        function onlyMe(trip) {
-            return trip.traveller_id == localStorageService.getObject('currentUser').user_id;
-        }
 
         function goReport(tripId) {
             $state.go('app.reporting.text', {"tripId":tripId});
+        }
+
+        function onlyMe(trip) {
+            return trip.traveller_id == localStorageService.getObject('currentUser').user_id;
         }
 
         function submit(tripId) {
