@@ -5,7 +5,6 @@ plugins/
 dist/
 
 *_screenshot.png
-www/js/constants.js
 www/index.html
 
 restore_db.log

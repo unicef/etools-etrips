@@ -3,7 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src &apos;self&apos; &apos;unsafe-inline&apos;; script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src *;
+               script-src 'self' 'unsafe-inline' 'unsafe-eval'
+                           127.0.0.1:*                           
+                           ;
+               style-src  'self' 'unsafe-inline'
+                           127.0.0.1">
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -17,20 +23,18 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <script src="js/lib/angular-cookies.min.js"></script>
-    <script src="js/lib/angular-translate.min.js"></script>
-    <script src="js/lib/angular-translate-storage-cookie.min.js"></script>
-    <script src="js/lib/angular-translate-loader-static-files.min.js"></script>
-    <script src="js/lib/angular-translate-storage-local.min.js"></script>
-    <script src="js/lib/angular-translate-handler-log.min.js"></script>
-    <script src="js/lib/tmhDynamicLocale.min.js"></script>
+    <script src="lib/angular/angular-cookies.min.js"></script>
+    <script src="lib/angular/angular-translate.min.js"></script>
+    <script src="lib/angular/angular-translate-storage-cookie.min.js"></script>
+    <script src="lib/angular/angular-translate-loader-static-files.min.js"></script>
+    <script src="lib/angular/angular-translate-storage-local.min.js"></script>
+    <script src="lib/angular/angular-translate-handler-log.min.js"></script>
+    <script src="lib/angular/tmhDynamicLocale.min.js"></script>
+    <script src="lib/angular/angular-ios9-uiwebview.patch.js"></script>
+    <script src="lib/angular/ionRadio.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-
-    <!-- 3rd party scripts -->
-    <script src="js/patch/angular-ios9-uiwebview.patch.js"></script>
-    <script src="js/patch/ionRadio.js"></script>
 
     <!-- your app's js -->
     <script src="app/app.module.js"></script>
@@ -44,10 +48,10 @@
     <script src="app/layout/application.route.js"></script>
     <script src="app/layout/dashboard.js"></script>
     <script src="app/layout/dashboard.route.js"></script>
-    
+
     <script src="app/login/login.js"></script>
     <script src="app/login/login.route.js"></script>
-    <script src="app/login/login.service.js"></script> 
+    <script src="app/login/login.service.js"></script>  
 
     <script src="app/notes/notes.js"></script>
     <script src="app/notes/notes.route.js"></script>
@@ -66,7 +70,7 @@
     <script src="app/settings/connection.js"></script>
     <script src="app/settings/connection.route.js"></script>
     <script src="app/settings/settings.js"></script>
-    <script src="app/settings/settings.route.js"></script>
+    <script src="app/settings/settings.route.js"></script>    
 
     <script src="app/services/api_url.service.js"></script>
     <script src="app/services/authentication.service.js"></script>
@@ -86,7 +90,7 @@
     <script src="app/trips/supervised_trips.js"></script>
     <script src="app/trips/supervised_trips.route.js"></script>
     <script src="app/trips/trip_details.js"></script>
-    <script src="app/trips/trip_details.route.js"></script>
+    <script src="app/trips/trip_details.route.js"></script>    
 
     <script src="app/components/language_selector.directive.js"></script>
     <script src="app/components/loading_modal.directive.js"></script>
