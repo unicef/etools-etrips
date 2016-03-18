@@ -1,8 +1,7 @@
-angular.module('equitrack', [  
+angular.module('app', [  
     /* shared modules */
     'app.core',
     'app.widgets',
-    'equitrack.tripControllers',
 
     /* featured areas */
     'app.layout',
@@ -32,6 +31,9 @@ angular.module('app.login', [
     'app.widgets'
 ]);
 
+angular.module('app.notes', [
+]);
+
 angular.module('app.report', [
 ]);
 
@@ -39,6 +41,7 @@ angular.module('app.settings', [
 ]);
 
 angular.module('app.trips', [
+    'app.notes',
     'app.report'
 ]);
 
