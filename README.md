@@ -53,6 +53,12 @@ Update Selenium webdriver for integration tests:
 $ ./node_modules/protractor/bin/webdriver-manager update
 ```
 
+Build application and start Express server
+
+```bash
+$ gulp default
+```
+
 Optional: Integration tests can also be run using Docker
 - install Docker Toolbox: https://www.docker.com/products/docker-toolbox
 
@@ -63,14 +69,21 @@ Run Application
 In a browser:
 
 ```bash
-$ ionic serve --all
+$ gulp serve
 ```
 
-Or in iOS or Android:
+In a simulated device:
 
 ```bash
-$ ionic build [ios/android]
-$ ionic emulate [ios/android]
+$ gulp --build [ios/android]
+$ gulp --emulate [ios/android]
+```
+
+On an attached device
+
+```bash
+$ gulp --build [ios/android]
+$ gulp --run [ios/android]
 ```
 
 Run Integration Tests (local browser)
@@ -79,13 +92,13 @@ Run Integration Tests (local browser)
 Start Selenium webdriver:
 
 ```bash
-$ webdriver-manager start
+$ ./node_modules/protractor/bin/webdriver-manager start
 ```
 
 In a separate terminal, start Ionic service:
 
 ```bash
-$ ionic serve
+$ gulp serve
 ```
 
 Run protractor tests:
