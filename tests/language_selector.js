@@ -2,7 +2,7 @@ describe('Language Selector', function() {
     var sideMenuButton = by.css('div[nav-bar="active"] > ion-header-bar button[menu-toggle="left"].ion-navicon');
 
     function switchLanguage(locale, title) {
-        var data = require('../www/i18n/' + locale + '.json');
+        var data = require('../i18n/i18n/' + locale + '.json');
         element(by.cssContainingText('option', title)).click();
         browser.sleep(500);
         element(by.css('input[type="email"]')).getAttribute('placeholder').should.eventually.be.equal(data['template.login.username']);

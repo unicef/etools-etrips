@@ -1,62 +1,328 @@
+(function() {
+    'use strict';
+
+var appName = 'app';
 var gulp = require('gulp-help')(require('gulp'));
-var gutil = require('gulp-util');
-var bower = require('bower');
-var concat = require('gulp-concat');
-var sass = require('gulp-sass');
-var minifyCss = require('gulp-minify-css');
-var rename = require('gulp-rename');
-var shell = require('gulp-shell');
-var preprocess = require('gulp-preprocess');
+var plugins = require('gulp-load-plugins')();
+
 var sh = require('shelljs');
-var args = require('yargs').argv;  
 var fs = require('fs');
-var replace = require('gulp-replace-task');  
 var _ = require('lodash');
 var protractor = require("gulp-protractor").protractor;
 var pg = require('pg');
 var async = require('async');
-var confBase = require('./tests/conf_base.js')
-
+var confBase = require('./tests/conf_base.js');
 var integrationTestDb = 'test_db';
 
 var paths = {
   sass: ['./scss/**/*.scss']
 };
 
-gulp.task('default', ['sass']);
+var del = require('del');
+var beep = require('beepbeep');
+var express = require('express');
+var path = require('path');
+var open = require('open');
+var stylish = require('jshint-stylish');
+var connectLr = require('connect-livereload');
+var streamqueue = require('streamqueue');
+var runSequence = require('run-sequence');
 
-gulp.task('sass', function(done) {
-  gulp.src('./scss/ionic.app.scss')
-    .pipe(sass({
-      errLogToConsole: true
-    }))
-    .pipe(gulp.dest('./www/css/'))
-    .pipe(minifyCss({
-      keepSpecialComments: 0
-    }))
-    .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('./www/css/'))
-    .on('end', done);
+// this is the express server which 
+// will be initiated when gulp serve
+var server = null;
+
+/**
+ * Parse arguments
+ */
+var args = require('yargs')
+    .alias('e', 'emulate')
+    .alias('b', 'build')
+    .alias('r', 'run')
+    // remove all debug messages (console.logs, alerts etc) from release build
+    .alias('release', 'strip-debug')
+    .default('build', false)
+    .default('port', 8100)
+    .default('strip-debug', false)
+    .argv;
+
+var build = !!(args.build || args.emulate || args.run);
+var emulate = args.emulate;
+var run = args.run;
+var port = args.port;
+var stripDebug = !!args.stripDebug;
+var targetDir = path.resolve(build ? 'www' : '.tmp');
+
+// if we just use emualate or run without specifying platform, we assume iOS
+// in this case the value returned from yargs would just be true
+if (emulate === true) {
+    emulate = 'ios';
+}
+if (run === true) {
+    run = 'ios';
+}
+
+// clean target dir
+gulp.task('clean', function(done) {  
+  return del([targetDir], done);
 });
 
-gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass']);
+// precompile .scss and concat with ionic.css
+gulp.task('styles', function() {
+
+  var options = build ? { style: 'compressed' } : { style: 'expanded' };
+
+  var cssStream = gulp.src('app/styles/**/*.css')
+    .pipe(plugins.concatCss('all.min.css'))
+    .on('error', function(err) {
+      console.log('err: ', err);
+      beep();
+    });
+
+  var ionicStream = gulp.src('bower_components/ionic/scss/ionic.scss')
+    .pipe(plugins.cached('styles'))
+    .pipe(plugins.sass(options))
+    .pipe(plugins.remember('styles'))
+    .on('error', function(err) {
+        console.log('err: ', err);
+        beep();
+      });
+
+  return streamqueue({ objectMode: true }, ionicStream, cssStream)
+    .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
+    .pipe(plugins.concat('main.css'))
+    .pipe(plugins.cleanCss())
+    .pipe(plugins.if(build, plugins.stripCssComments()))
+    .pipe(plugins.if(build && !emulate, plugins.rev()))
+    .pipe(gulp.dest(path.join(targetDir, 'styles')))
+    .on('error', errorHandler);
+});
+
+// build templatecache, copy scripts.
+// if build: concat, minsafe, uglify and versionize
+gulp.task('scripts', function() {
+  var dest = path.join(targetDir, 'scripts');
+
+  var minifyConfig = {
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    removeAttributeQuotes: true,
+    removeComments: true
+  };
+
+  // prepare angular template cache from html templates
+  // (remember to change appName var to desired module name)
+  var templateStream = gulp
+    .src('**/*.html', { cwd: 'app'})
+    .pipe(plugins.angularTemplatecache('templates.js', {
+      root: 'app/',
+      module: 'app.core',
+      htmlmin: build && minifyConfig
+    }));
+
+  var scriptStream = gulp
+    .src(
+    [
+      'templates.js', 
+      'app.module.js', 
+      'app.run.js', 
+      'app.config.js', 
+      'app.routes.js', 
+      'app.constants.js', 
+      'app.filters.js',
+      '**/*.js'
+    ], 
+      { cwd: 'app' })
+
+    .pipe(plugins.if(!build, plugins.changed(dest)));
+
+  return streamqueue({ objectMode: true }, scriptStream, templateStream)
+    .pipe(plugins.if(build, plugins.ngAnnotate()))
+    .pipe(plugins.if(stripDebug, plugins.stripDebug()))
+    .pipe(plugins.if(build, plugins.concat('app.js')))
+    .pipe(plugins.if(build, plugins.uglify()))
+    .pipe(plugins.if(build && !emulate, plugins.rev()))
+
+    .pipe(gulp.dest(dest))
+
+    .on('error', errorHandler);
+});
+
+// copy fonts
+gulp.task('fonts', function() {
+  return gulp
+    .src(['app/fonts/*.*', 'bower_components/ionic/fonts/*.*'])
+
+    .pipe(gulp.dest(path.join(targetDir, 'fonts')))
+
+    .on('error', errorHandler);
+});
+
+// copy templates
+gulp.task('templates', function() {
+  return gulp.src('app/**/*.html')
+    .pipe(gulp.dest(path.join(targetDir, 'templates')))
+
+    .on('error', errorHandler);
+});
+
+// copy images
+gulp.task('images', function() {
+  return gulp.src('app/images/**/*.*')
+    .pipe(gulp.dest(path.join(targetDir, 'img')))
+
+    .on('error', errorHandler);
+});
+
+
+// lint js sources based on .jshintrc ruleset
+gulp.task('jsHint', function(done) {
+  return gulp
+    .src('app/**/*.js')
+    .pipe(plugins.jshint())
+    .pipe(plugins.jshint.reporter(stylish))
+
+    .on('error', errorHandler);
+});
+
+// concatenate and minify vendor sources
+gulp.task('vendor', function() {
+  var vendorFiles = require('./vendor.json');
+
+  return gulp.src(vendorFiles)
+    .pipe(plugins.concat('vendor.js'))
+    .pipe(plugins.if(build, plugins.uglify()))
+    .pipe(plugins.if(build, plugins.rev()))
+
+    .pipe(gulp.dest(targetDir))
+
+    .on('error', errorHandler);
+});
+
+// copy i18n files
+gulp.task('i18n', function() {
+  return gulp.src(['i18n/**/*'])
+    .pipe(gulp.dest(targetDir));
+});
+
+
+// inject the files in index.html
+gulp.task('index', ['jsHint', 'scripts'], function() {
+
+  // build has a '-versionnumber' suffix
+  var cssNaming = 'styles/main*';
+
+  // injects 'src' into index.html at position 'tag'
+  var _inject = function(src, tag) {
+    return plugins.inject(src, {
+      starttag: '<!-- inject:' + tag + ':{{ext}} -->',      
+      addRootSlash: false
+    });
+  };
+
+  // get all our javascript sources
+  // in development mode, it's better to add each file seperately.
+  // it makes debugging easier.
+  var _getAllScriptSources = function() {
+    var scriptStream = gulp.src([
+      'scripts/app.module.js', 
+      'scripts/app.run.js', 
+      'scripts/app.config.js', 
+      'scripts/app.routes.js', 
+      'scripts/app.constants.js', 
+      'scripts/app.filters.js',
+      'scripts/**/*.js'
+    ], { cwd: targetDir });
+    return streamqueue({ objectMode: true }, scriptStream);
+  };
+
+  return gulp.src('app/index.html')
+    // inject css
+    .pipe(_inject(gulp.src(cssNaming, { cwd: targetDir }), 'app-styles'))
+    // inject vendor.js
+    .pipe(_inject(gulp.src('vendor*.js', { cwd: targetDir }), 'vendor'))
+    // inject app.js (build) or all js files indivually (dev)
+    .pipe(plugins.if(build,
+      _inject(gulp.src('scripts/app*.js', { cwd: targetDir }), 'app'),
+      _inject(_getAllScriptSources(), 'app')
+    ))
+
+    .pipe(gulp.dest(targetDir))
+    .on('error', errorHandler);
+});
+
+// start local express server
+gulp.task('serve', function() {
+  server = express()
+    .use(!build ? connectLr() : function(){})
+    .use(express.static(targetDir))
+    .listen(port);
+  open('http://localhost:' + port + '/');
+});
+
+// ionic emulate wrapper
+gulp.task('ionic:emulate', plugins.shell.task([
+  'ionic emulate ' + emulate + ' --livereload --consolelogs'
+]));
+
+// ionic run wrapper
+gulp.task('ionic:run', plugins.shell.task([
+  'ionic run ' + run
+]));
+
+
+// start watchers
+gulp.task('watchers', function() {
+  plugins.livereload.listen();
+  gulp.watch(['app/styles/**/*.scss', 'app/styles/**/*.css'], ['styles']);
+  gulp.watch('app/fonts/**', ['fonts']);
+  //gulp.watch('app/icons/**', ['iconfont']);
+  gulp.watch('app/images/**', ['images']);
+  gulp.watch('app/**/*.js', ['index']);
+  gulp.watch('./vendor.json', ['vendor']);
+  gulp.watch('app/**/*.html', ['index']);
+  gulp.watch('app/index.html', ['index']);
+  gulp.watch(targetDir + '/**')
+    .on('change', plugins.livereload.changed)
+    .on('error', errorHandler);
+});
+
+// no-op = empty function
+gulp.task('noop', function() {});
+
+gulp.task('default', function(done) {
+  runSequence(
+    'clean',
+    [
+      'fonts',
+      'templates',
+      'styles',
+      'images',
+      'vendor',
+      'i18n'
+    ],
+    'index',
+    build ? 'noop' : 'watchers',
+    build ? 'noop' : 'serve',
+    emulate ? ['ionic:emulate', 'watchers'] : 'noop',
+    run ? 'ionic:run' : 'noop',
+    done);
 });
 
 gulp.task('install', ['git-check'], function() {
   return bower.commands.install()
     .on('log', function(data) {
-      gutil.log('bower', gutil.colors.cyan(data.id), data.message);
+      plugins.gutil.log('bower', plugins.gutil.colors.cyan(data.id), data.message);
     });
 });
 
 gulp.task('git-check', function(done) {
   if (!sh.which('git')) {
     console.log(
-      '  ' + gutil.colors.red('Git is not installed.'),
+      '  ' + plugins.gutil.colors.red('Git is not installed.'),
       '\n  Git, the version control system, is required to download Ionic.',
-      '\n  Download git here:', gutil.colors.cyan('http://git-scm.com/downloads') + '.',
-      '\n  Once git is installed, run \'' + gutil.colors.cyan('gulp install') + '\' again.'
+      '\n  Download git here:', plugins.gutil.colors.cyan('http://git-scm.com/downloads') + '.',
+      '\n  Once git is installed, run \'' + plugins.gutil.colors.cyan('gulp install') + '\' again.'
     );
     process.exit(1);
   }
@@ -69,16 +335,16 @@ gulp.task('replace', function () {
   var settings = JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
 
   gulp.src('src/js/constants.js')  
-    .pipe(replace({
+    .pipe(plugins.replace({
       patterns: _.map(_.keys(settings), function(key){ 
           return { match: key, replacement: settings[key] };
         })
       }))
-    .pipe(rename('app.constants.js'))
+    .pipe(plugins.rename('app.constants.js'))
     .pipe(gulp.dest('www/app'));
 
   gulp.src('src/*.html')
-    .pipe(preprocess({context: { NODE_ENV: env }}))
+    .pipe(plugins.preprocess({context: { NODE_ENV: env }}))
     .pipe(gulp.dest('www/'));
 });
 
@@ -89,7 +355,7 @@ gulp.task('replace-circleci', function () {
   };
 
   gulp.src('src/js/constants.js')  
-    .pipe(replace({
+    .pipe(plugins.replace({
       patterns: _.map(_.keys(settings), function(key){ 
           return { match: key, replacement: settings[key] };
         })
@@ -137,12 +403,12 @@ gulp.task('postgres_disconnect', function(){
   });
 });
 
-gulp.task('dump_db', shell.task(
+gulp.task('dump_db', plugins.shell.task(
   ['pg_dump ' + integrationTestDb + ' > ./tests/fixtures/data.sql'])
 );
 
 
-gulp.task('restore_db', ['postgres_disconnect'], shell.task(
+gulp.task('restore_db', ['postgres_disconnect'], plugins.shell.task(
     ['sleep 0.5 && dropdb ' + integrationTestDb + ' && createdb ' + integrationTestDb + ' && psql --output=restore_db.log --quiet ' + integrationTestDb + ' < ./tests/fixtures/data.sql']
   )
 );
@@ -229,10 +495,10 @@ gulp.task('protractor_concat_tests', function() {
 
   _.each(specs, function(spec){
     files.push(testPath + spec);    
-  })
+  });
 
   return gulp.src(files)
-    .pipe(concat(allTestsFilename))
+    .pipe(plugins.concat(allTestsFilename))
     .pipe(gulp.dest('./tests/'));
 });
 
@@ -247,3 +513,16 @@ gulp.task('protractor_android', ['protractor_concat_tests'], function() {
 gulp.task('protractor_watch', function () {   
   gulp.watch(['./tests/**/*.js'], ['protractor']);
 });
+
+
+// global error handler
+function errorHandler(error) {
+  console.log('beep: ', beep);
+  beep();
+  if (build) {
+    throw error;
+  } else {
+    plugins.util.log(error);
+  }
+}
+})();
