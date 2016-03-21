@@ -10,9 +10,4 @@ www/
 *.log
 tmp.run.file
 
-#*_screenshot.png
-#www/index.html
-
-#restore_db.log
-
-#tests/all_tests.js
+app/app.constants.js

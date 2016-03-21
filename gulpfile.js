@@ -130,6 +130,7 @@
         'app.routes.js', 
         'app.constants.js', 
         'app.filters.js',
+        '!app.constants.template.js',
         '**/*.js'
       ], 
         { cwd: 'app' })
@@ -178,7 +179,7 @@
   // lint js sources based on .jshintrc ruleset
   gulp.task('jsHint', function(done) {
     return gulp
-      .src('app/**/*.js')
+      .src(['app/**/*.js', '!app/app.constants.template.js'])
       .pipe(plugins.jshint())
       .pipe(plugins.jshint.reporter(stylish))
 
@@ -326,7 +327,7 @@
   });
 
   function updateConstants(settings) {
-    return gulp.src('src/js/constants.js')  
+    return gulp.src('app/app.constants.template.js')  
       .pipe(replace({
         patterns: _.map(_.keys(settings), function(key){ 
             return { match: key, replacement: settings[key] };
@@ -480,7 +481,7 @@
     gulp.watch(['./tests/**/*.js'], ['protractor']);
   });
 
-  gulp.task('default', function(done) {
+  gulp.task('build', function(done) {
     runSequence(
       'update_constants_app',      
       'clean',
@@ -493,6 +494,13 @@
         'i18n'
       ],
       'index',
+      done);
+  });
+
+
+  gulp.task('default', function(done) {
+    runSequence(
+      'build',
       build ? 'noop' : 'watchers',
       build ? 'noop' : 'serve',
       emulate ? ['ionic:emulate', 'watchers'] : 'noop',
