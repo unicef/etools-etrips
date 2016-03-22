@@ -14,7 +14,7 @@
                 <p> {{trip.from_date | date:short}} -> {{ trip.to_date | date:short }}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
 
-                <ion-option-button ng-show="trip.status=='approved'" class="button-calm" ng-click="vm.go_report(trip.id)">
+                <ion-option-button ng-show="trip.status=='approved'" class="button-calm" ng-click="vm.goReport(trip.id)">
                     {{ 'template.dashboard.report' | translate }}
                 </ion-option-button>
                 <ion-option-button ng-show="trip.status=='planned'" class="button-balanced" ng-click="vm.submit(trip.id)">

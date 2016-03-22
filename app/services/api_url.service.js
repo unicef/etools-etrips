@@ -16,8 +16,8 @@
         var service = {
             BASE: getBase,
             ADFS: (getOptionName() == '0') ? false: true,
-            get_option_name: getOptionName,
-            set_base: setBase
+            getOptionName: getOptionName,
+            setBase: setBase
         };
 
         return service;

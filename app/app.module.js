@@ -1,7 +1,7 @@
 angular.module('app', [  
     /* shared modules */
     'app.core',
-    'app.widgets',
+    'app.components',
 
     /* featured areas */
     'app.layout',
@@ -28,7 +28,7 @@ angular.module('app.layout', [
 
 angular.module('app.login', [
     'app.core',
-    'app.widgets'
+    'app.components'
 ]);
 
 angular.module('app.notes', [
@@ -45,5 +45,5 @@ angular.module('app.trips', [
     'app.report'
 ]);
 
-angular.module('app.widgets', [
+angular.module('app.components', [
 ]);

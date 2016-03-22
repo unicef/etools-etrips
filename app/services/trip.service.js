@@ -109,13 +109,13 @@
 
         function reportText(data, tripId, success, fail) {
             // if we need any extra data proccessing here would be the place
-            dataService.patch_trip(tripId, data, success, fail);
+            dataService.patchTrip(tripId, data, success, fail);
         }
 
         function sendActionPoint(tripId, ap, success, fail) {
             var actionPoint = formatActionPoint(ap, true);
             var data = { 'actionpoint_set' : [ actionPoint ] };
-            dataService.patch_trip(tripId, data, success, fail);
+            dataService.patchTrip(tripId, data, success, fail);
         }
 
         function setDraft(tripId, dtype, draft) {

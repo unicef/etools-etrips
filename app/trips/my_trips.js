@@ -11,14 +11,14 @@
         var vm = this;
 
         vm.doRefresh = doRefresh;
-        vm.go_report = goReport;
+        vm.goReport = goReport;
         vm.onlyMe = onlyMe;
         vm.submit = submit;
 
-        dataService.get_trips(dataSuccess, dataFailed, $stateParams.refreshed);
+        dataService.getTrips(dataSuccess, dataFailed, $stateParams.refreshed);
 
         function doRefresh() {
-            dataService.get_trips(function(res){
+            dataService.getTrips(function(res){
                 vm.filteredTrips = $filter('filter')(res, vm.onlyMe);
                 $scope.$broadcast('scroll.refreshComplete');
                 

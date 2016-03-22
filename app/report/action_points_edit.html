@@ -30,10 +30,10 @@
             {{ 'template.trip.report.action_point.edit.due_date' | translate }}
         </div>
         <div class="item row">
-              <select class="item item-select col" ng-model="vm.ap.due_day" ng-options="option as option for option in vm.padded_num(31)">
+              <select class="item item-select col" ng-model="vm.ap.due_day" ng-options="option as option for option in vm.paddedNumber(31)">
               </select>
 
-              <select class="item item-select col" ng-model="vm.ap.due_month" ng-options="option as vm.allMonths[option-1] for option in vm.padded_num(12)">
+              <select class="item item-select col" ng-model="vm.ap.due_month" ng-options="option as vm.allMonths[option-1] for option in vm.paddedNumber(12)">
               </select>
 
               <select class="item item-select col" ng-model="vm.ap.due_year" ng-options="option as option for option in vm.yearOptions">

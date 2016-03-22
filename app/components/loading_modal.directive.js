@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.widgets')
+        .module('app.components')
         .directive('loading', loading);
     
     function loading() {

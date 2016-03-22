@@ -11,7 +11,7 @@
         var vm = this;        
         vm.allMonths = $locale.DATETIME_FORMATS.SHORTMONTH;
         vm.isActionPointNew = false;
-        vm.padded_num = paddedNumber;
+        vm.paddedNumber = paddedNumber;
         vm.submit = submit;
         vm.title = 'template.trip.report.action_point.edit.title';
         vm.today = new Date();
@@ -24,7 +24,7 @@
             vm.isActionPointNew = true;
         }
 
-        dataService.get_user_base(
+        dataService.getUserBase(
             function(successData){
                 vm.users = successData;
             },

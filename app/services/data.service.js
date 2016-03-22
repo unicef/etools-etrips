@@ -7,11 +7,11 @@
 
     function dataService($timeout, apiUrlService, localStorageService, myHttpService) {
         var service = {
-           get_profile: getProfile,
-           get_trips: getTrips,
-           get_user_base: getUserBase,
-           refresh_trips: refreshTrips,
-           patch_trip: patchTrip,
+           getProfile: getProfile,
+           getTrips: getTrips,
+           getUserBase: getUserBase,
+           refreshTrips: refreshTrips,
+           patchTrip: patchTrip,
         };
 
         return service;

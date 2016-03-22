@@ -12,11 +12,11 @@
         var uid = localStorageService.getObject('currentUser').user_id;
 
         vm.approve = approve;
-        vm.complete_trip = completeTrip;
-        vm.go_report = goReport; 
+        vm.completeTrip = completeTrip;
+        vm.goReport = goReport; 
         vm.showConfirm = showConfirm;
         vm.submit = submit;
-        vm.take_notes = takeNotes;
+        vm.takeNotes = takeNotes;
         vm.trip = tripService.getTrip($stateParams.tripId);
 
         vm.checks = {

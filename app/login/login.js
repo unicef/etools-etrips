@@ -38,14 +38,14 @@
         }
 
         function loginSuccess(token){
-            dataService.get_profile(function(success){
+            dataService.getProfile(function(success){
                     getTrips();
                 },
                     profileFail
                 );
 
             function getTrips() {
-                dataService.get_trips(
+                dataService.getTrips(
                     function(res){
                         $ionicLoading.hide();
                         $ionicHistory.nextViewOptions({

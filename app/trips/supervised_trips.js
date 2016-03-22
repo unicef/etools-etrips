@@ -14,7 +14,7 @@
         vm.doRefresh = doRefresh;
         vm.onlySupervised = onlySupervised;
 
-        dataService.get_trips(
+        dataService.getTrips(
             function(res){
                 vm.filteredTrips = $filter('filter')(res, vm.onlySupervised);
 
@@ -45,7 +45,7 @@
         }
 
         function doRefresh() {
-            dataService.get_trips(function(res){
+            dataService.getTrips(function(res){
                 vm.filteredTrips = $filter('filter')(res, vm.onlySupervised);
                 $scope.$broadcast('scroll.refreshComplete');                
             }, function(err){

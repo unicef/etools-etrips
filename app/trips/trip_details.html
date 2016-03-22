@@ -1,10 +1,10 @@
 <ion-view view-title="{{ vm.trip.travel_type | underscoreless | TitleCase}}">
 
   <ion-content class="padding">
-      <button ng-if="vm.checks.owner && vm.checks.is_approved"  class="button button-block button-calm" ng-click="vm.go_report(vm.trip.id)">{{ 'template.trip.report' | translate }}</button>
-      <button ng-if="vm.checks.owner && vm.checks.is_approved"  class="button button-block button-energized" ng-click="vm.take_notes(vm.trip.id)">{{ 'template.trip.notes' | translate }}</button>
+      <button ng-if="vm.checks.owner && vm.checks.is_approved"  class="button button-block button-calm" ng-click="vm.goReport(vm.trip.id)">{{ 'template.trip.report' | translate }}</button>
+      <button ng-if="vm.checks.owner && vm.checks.is_approved"  class="button button-block button-energized" ng-click="vm.takeNotes(vm.trip.id)">{{ 'template.trip.notes' | translate }}</button>
 
-      <button ng-if="vm.checks.owner && vm.checks.is_approved && vm.checks.report_filled"  class="button button-block button-energized" ng-click="vm.complete_trip(vm.trip.id)">{{ 'template.trip.complete_trip' | translate }}</button>
+      <button ng-if="vm.checks.owner && vm.checks.is_approved && vm.checks.report_filled"  class="button button-block button-energized" ng-click="vm.completeTrip(vm.trip.id)">{{ 'template.trip.complete_trip' | translate }}</button>
       <button ng-if="vm.checks.owner && vm.checks.is_planned"  class="button button-block button-calm" ng-click="vm.submit(vm.trip.id)">{{ 'template.trip.submit' | translate }}</button>
       <button ng-if="vm.checks.supervisor && vm.checks.not_supervisor_approved" class="button button-block button-balanced" ng-click="vm.approve(vm.trip.id)">{{ 'template.trip.approve' | translate }}</button>
       <div class="list padding" ng-if="vm.checks.supervisor && vm.checks.is_approved">
