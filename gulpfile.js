@@ -455,22 +455,8 @@
       .on('error', function(e) { throw e; });    
   });
 
-  gulp.task('protractor_concat_tests', function() {
-    var specs = confBase.config.specs;
-    var testPath = './tests/';
-    var files = [testPath + 'includes.js'];
-
-    _.each(specs, function(spec){
-      files.push(testPath + spec);    
-    });
-
-    return gulp.src(files)
-      .pipe(plugins.concat(allTestsFilename))
-      .pipe(gulp.dest('./tests/'));
-  });
-
-  gulp.task('protractor_android', ['protractor_concat_tests'], function() {
-     gulp.src(["./tests/all_tests.js"])
+  gulp.task('protractor_android',  function() {
+    gulp.src(['./tests/*.js'])
       .pipe(plugins.protractor.protractor({
           configFile: "./tests/conf_android.js"        
       }))

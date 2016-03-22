@@ -69,21 +69,21 @@ Run Application
 In a browser:
 
 ```bash
-$ gulp serve
+$ gulp serve --env [local/prod/test]
 ```
 
 In a simulated device:
 
 ```bash
-$ gulp --build [ios/android]
-$ gulp --emulate [ios/android]
+$ gulp --build [ios/android] --env [local/prod/test]
+$ gulp --emulate [ios/android] --env [local/prod/test]
 ```
 
 On an attached device
 
 ```bash
-$ gulp --build [ios/android]
-$ gulp --run [ios/android]
+$ gulp --build [ios/android] --env [local/prod/test]
+$ gulp --run [ios/android] --env [local/prod/test]
 ```
 
 Run Integration Tests (local browser)
@@ -98,7 +98,7 @@ $ ./node_modules/protractor/bin/webdriver-manager start
 In a separate terminal, start Ionic service:
 
 ```bash
-$ gulp serve
+$ gulp serve --env [local/prod/test]
 ```
 
 Run protractor tests:
@@ -182,12 +182,3 @@ Run tests using Gulp:
 gulp protractor_android
 ```
 
-
-Setting Environment Variables
------------------------------
-
-Certain files must be modified based on the target environment (e.x. API hosts). To update those files:
-
-```bash
-$ gulp replace --env [prod | local | test]
-```
