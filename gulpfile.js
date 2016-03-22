@@ -232,7 +232,7 @@
         starttag: '<!-- inject:' + tag + ':{{ext}} -->',      
         addRootSlash: false
       });
-    };
+    }
 
     // get all our javascript sources
     // in development mode, it's better to add each file seperately.
@@ -248,7 +248,7 @@
         'scripts/**/*.js'
       ], { cwd: targetDir });
       return streamqueue({ objectMode: true }, scriptStream);
-    };
+    }
   });
 
   // start local express server

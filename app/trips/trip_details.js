@@ -5,9 +5,9 @@
         .module('app.trips')
         .controller('TripDetails', TripDetails);
 
-    TripDetails.$inject = ['$scope', '$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate'];
+    TripDetails.$inject = ['$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate'];
 
-    function TripDetails($scope, $stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate) {
+    function TripDetails($stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate) {
         var vm = this;
         var uid = localStorageService.getObject('currentUser').user_id;
 
@@ -58,10 +58,10 @@
             var now = new Date();
             now.setHours(0,0,0,0);
 
-            var tripEnd = new Date($scope.trip.to_date);
+            var tripEnd = new Date(vm.trip.to_date);
             
             if (now < tripEnd){
-                $scope.showConfirm($translate.instant('controller.trip.detail.complete.title'), execute_req);
+                vm.showConfirm($translate.instant('controller.trip.detail.complete.title'), executeRequest);
                 return;
             }
 

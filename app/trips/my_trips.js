@@ -29,7 +29,7 @@
         }
 
         function goReport(tripId) {
-            $state.go('app.reporting.text', {"tripId":tripId});
+            $state.go('app.dash.reporting_text', {"tripId":tripId});
         }
 
         function onlyMe(trip) {

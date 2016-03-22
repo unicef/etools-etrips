@@ -23,15 +23,15 @@ describe('Login View', function() {
 
         element(by.css('input[type="email"]')).sendKeys(email);
         element(by.css('input[type="email"]')).getAttribute('value').should.eventually.be.equal(email);
-        element(by.model('data.username')).getAttribute('value').should.eventually.be.equal(email);
+        element(by.model('vm.data.username')).getAttribute('value').should.eventually.be.equal(email);
 
         element(by.css('input[type="password"]')).sendKeys(password);
         element(by.css('input[type="password"]')).getAttribute('value').should.eventually.be.equal(password);
-        element(by.model('data.password')).getAttribute('value').should.eventually.be.equal(password);
+        element(by.model('vm.data.password')).getAttribute('value').should.eventually.be.equal(password);
 
         element(by.css('label.toggle')).click();
         element(by.css('input[type="checkbox"]')).isSelected().should.eventually.be.true;
-        element(by.model('other.rememberMe')).isSelected().should.eventually.be.true;
+        element(by.model('vm.other.rememberMe')).isSelected().should.eventually.be.true;
     });
 
     it('should be able to click on login button, get a login failed message and hide the popup message', function() {
