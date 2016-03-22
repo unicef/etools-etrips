@@ -4,9 +4,12 @@ angular.module('app', [
     'app.components',
 
     /* featured areas */
+    'app.components',
     'app.layout',
     'app.login',
-    'app.settings',
+    'app.notes',
+    'app.report',
+    'app.settings',    
     'app.trips'
 ]);
 
@@ -21,29 +24,4 @@ angular.module('app.core', [
     'ngIOS9UIWebViewPatch',
     'pascalprecht.translate',
     'tmh.dynamicLocale'
-]);
-
-angular.module('app.layout', [
-]);
-
-angular.module('app.login', [
-    'app.core',
-    'app.components'
-]);
-
-angular.module('app.notes', [
-]);
-
-angular.module('app.report', [
-]);
-
-angular.module('app.settings', [
-]);
-
-angular.module('app.trips', [
-    'app.notes',
-    'app.report'
-]);
-
-angular.module('app.components', [
 ]);

@@ -131,6 +131,7 @@
         'app.constants.js', 
         'app.filters.js',
         '!app.constants.template.js',
+        '**/*.module.js',
         '**/*.js'
       ], 
         { cwd: 'app' })
@@ -245,6 +246,7 @@
         'scripts/app.routes.js', 
         'scripts/app.constants.js', 
         'scripts/app.filters.js',
+        'scripts/**/*.module.js',
         'scripts/**/*.js'
       ], { cwd: targetDir });
       return streamqueue({ objectMode: true }, scriptStream);
