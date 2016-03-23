@@ -51,10 +51,11 @@
   var emulate = args.emulate;
   var run = args.run;
   var port = args.port;
+  var buildApp = args.build;
   var stripDebug = !!args.stripDebug;
   var targetDir = path.resolve(build ? 'www' : '.tmp');
 
-  // if we just use emualate or run without specifying platform, we assume iOS in this case the value returned from yargs would just be true
+  // if we just use emulate or run without specifying platform, we assume iOS in this case the value returned from yargs would just be true
   if (emulate === true) {
       emulate = 'ios';
   }
@@ -270,6 +271,11 @@
   // ionic run wrapper
   gulp.task('ionic:run', plugins.shell.task([
     'ionic run ' + run
+  ]));
+
+  // ionic build wrapper
+  gulp.task('ionic:build', plugins.shell.task([
+    'ionic build ' + buildApp
   ]));
 
   // start watchers
@@ -493,6 +499,7 @@
       build ? 'noop' : 'serve',
       emulate ? ['ionic:emulate', 'watchers'] : 'noop',
       run ? 'ionic:run' : 'noop',
+      buildApp ? 'ionic:build' : 'noop',
       done);
   });
 
