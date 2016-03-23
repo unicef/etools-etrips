@@ -14,7 +14,7 @@
                     'tab-trips': {
                         templateUrl: 'app/report/picture.html',
                         controller: 'Picture',
-                        controllerA: 'vm'
+                        controllerAs: 'vm'
                     }
                 }
             }
