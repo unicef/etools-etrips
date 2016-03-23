@@ -34,10 +34,10 @@ describe('Language Selector', function() {
     });
 
     it('should able to view the to/from date of the first trip in English and then in French', function() {
-        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('Jan 1, 2016 -> Dec 31, 2016');
+        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('01/01/2016 -> 31/12/2016');
         element(sideMenuButton).click();
         element(by.cssContainingText('ion-side-menu div.language-select select option', 'Français (France)')).click();
-        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('1 janv. 2016 -> 31 déc. 2016');
+        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('01/01/2016 -> 31/12/2016');
         element(by.cssContainingText('ion-side-menu div.language-select select option', 'English (US)')).click();
     });
 

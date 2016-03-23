@@ -5,12 +5,13 @@
         .module('app.trips')
         .controller('SupervisedTrips', SupervisedTrips);
 
-    SupervisedTrips.$inject = ['$scope', 'localStorageService', 'dataService', 'tripService', '$ionicLoading', '$state', '$ionicListDelegate', '$filter', 'errorHandler', 'networkService'];
+    SupervisedTrips.$inject = ['$scope', 'localStorageService', 'dataService', 'tripService', '$ionicLoading', '$state', '$ionicListDelegate', '$filter', 'errorHandler', 'networkService', 'DATE_FORMAT'];
 
-    function SupervisedTrips($scope, localStorageService, dataService, tripService, $ionicLoading, $state, $ionicListDelegate, $filter, errorHandler, networkService) {
+    function SupervisedTrips($scope, localStorageService, dataService, tripService, $ionicLoading, $state, $ionicListDelegate, $filter, errorHandler, networkService, DATE_FORMAT) {
         var vm = this;
 
         vm.approve = approve;
+        vm.dateFormat = DATE_FORMAT;
         vm.doRefresh = doRefresh;
         vm.onlySupervised = onlySupervised;
 
