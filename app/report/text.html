@@ -2,10 +2,16 @@
     <ion-content class="padding">
         <h3>{{ 'template.trip.report.text.progress' | translate }}</h3>
         <label class="item padding-top item-input item-stacked-label">
-            <textarea ng-model="vm.data.main_observations" ng-change="vm.autosave()" ng-paste="vm.autosave()" placeholder="{{ 'template.trip.report.text.insert_findings' | translate }}" rows="10" cols="10">
-            </textarea>
+            <textarea id="text_report" ng-model="vm.data.main_observations" ng-change="vm.autosave()" ng-paste="vm.autosave()" placeholder="{{ 'template.trip.report.text.insert_findings' | translate }}" rows="10" cols="10">
+            </textarea>            
         </label>
-        <br>
+        <br />
+        <div>
+            <button ng-click="vm.insertGeolocationData();document.getElementById('text_report').scrollHeight;" class="button button-small button-positive icon-left ion-compass">
+                {{ 'controller.report.text.insert_geolocation' | translate }}
+            </button>
+        </div>
+        <br />
 
         <h3>{{ 'template.trip.report.text.cco' | translate }}</h3>
         <label class="item padding-top item-input item-stacked-label">

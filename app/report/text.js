@@ -8,11 +8,15 @@
     Text.$inject = ['$scope', '$stateParams', 'tripService', '$ionicLoading', '$ionicHistory', '$ionicPopup', 'errorHandler', 'networkService', '$translate'];
 
     function Text($scope, $stateParams, tripService, $ionicLoading, $ionicHistory, $ionicPopup, errorHandler, networkService, $translate) {
+        navigator.geolocation.getCurrentPosition(geolocationSuccess);
+
         var vm = this;
         vm.trip = tripService.getTrip($stateParams.tripId);
         vm.autosave = autosave;
+        vm.insertGeolocationData = insertGeolocationData;
+        vm.position = null;
         vm.submit = submit;
-
+       
         var fields = ['main_observations', 'constraints', 'lessons_learned', 'opportunities'];
         var main_obs_template = $translate.instant('controller.report.text.observations.access') + '\n \n \n \n' +
         $translate.instant('controller.report.text.observations.quality') + '\n \n \n \n' +
@@ -53,6 +57,16 @@
                     tripService.setDraft($stateParams.tripId, field, vm.data[field]);    
                 });
             }
+        }
+
+        function insertGeolocationData() {
+            var positionText = $translate.instant('controller.report.text.latitude') + ': ' + vm.position.coords.latitude + '\n' + $translate.instant('controller.report.text.latitude') + ': ' + vm.position.coords.longitude;         
+            vm.data.main_observations = vm.data.main_observations + '\n' + positionText;
+            vm.autosave();
+        }
+
+        function geolocationSuccess(position) {
+            vm.position = position;
         }
 
         function submit(){

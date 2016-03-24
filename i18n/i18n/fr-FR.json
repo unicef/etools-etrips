@@ -152,6 +152,10 @@
     "controller.report.text.submitted.title" : "Report Submitted",
     "controller.report.text.submitted.template" : "Text has been succcessfully submitted.",
 
+    "controller.report.text.latitude" : "Latitude",
+    "controller.report.text.latitude" : "Latitude",
+    "controller.report.text.insert_geolocation" : "Insert location data",
+
     "controller.notes.save.title" : "Notes Saved",
     "controller.notes.save.template" : "Notes have been successfully saved.",
     "controller.notes.discard.title" : "Notes Discarded",

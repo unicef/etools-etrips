@@ -75,7 +75,8 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-camera",
     "cordova-plugin-file-transfer",
-    "cordova-plugin-file"
+    "cordova-plugin-file",
+    "cordova-plugin-geolocation"
   ],
   "cordovaPlatforms": [
     "android",
