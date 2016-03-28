@@ -1,0 +1,26 @@
+<ion-view view-title="{{ 'template.settings.connection.title' | translate }}">
+    <ion-content class="padding">
+        <div class="card padding">
+            <h4 class="assertive">                
+                {{ 'template.settings.connection.attention' | translate }}
+            </h4>
+            <p>
+                {{ 'template.settings.connection.developer' | translate }}
+            </p>
+        </div>
+        <ion-radio-fix ng-model="vm.data.connection_string" ng-value="0">{{ 'template.settings.connection.development' | translate }}</ion-radio-fix>
+        <ion-radio-fix ng-model="vm.data.connection_string" ng-value="1">{{ 'template.settings.connection.staging' | translate }}</ion-radio-fix>
+        <ion-radio-fix ng-model="vm.data.connection_string" ng-value="2">{{ 'template.settings.connection.production' | translate }}</ion-radio-fix>
+        <br>
+        <button ng-disabled="!(dev_pin == 'c345')" class="button button-block button-calm" ng-click="vm.changeConnection(vm.data.connection_string)">
+          {{ 'template.settings.connection.change_connection' | translate }}
+        </button>
+        <label class="item item-input">
+            <input type="text" ng-model="dev_pin" placeholder="{{ 'template.settings.connection.tester_pin' | translate }}">
+        </label>
+        <br>
+        <p class="txt-grey">{{ 'template.settings.connection.clear_phone_cache' | translate }}
+
+    </ion-content>
+
+</ion-view>

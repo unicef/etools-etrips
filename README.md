@@ -40,6 +40,12 @@ Install Mocha for reporting and testing:
 $ sudo npm install -g mocha
 ```
 
+Install Bower for building:
+
+```bash
+$ npm install -g bower
+```
+
 Install required Ionic platforms:
 
 ```bash
@@ -47,15 +53,36 @@ $ ionic platform add ios
 $ ionic platform add android
 ```
 
+Install Bower components (and select latest version of Angular):
+
+```bash
+$ bower install
+```
+
 Update Selenium webdriver for integration tests:
 
 ```bash
-$ webdriver-manager update
+$ ./node_modules/protractor/bin/webdriver-manager update
+```
+
+Build application and start Express server
+
+```bash
+$ gulp default --env [local/prod/test]
 ```
 
 Optional: Integration tests can also be run using Docker
 - install Docker Toolbox: https://www.docker.com/products/docker-toolbox
 
+
+Build Application
+-----------------
+
+To build and copy the application from a temporary to www folder (to run Ionic commands):
+
+```bash
+$ gulp build_www --env [local/prod/test]
+```
 
 Run Application
 ---------------
@@ -63,14 +90,21 @@ Run Application
 In a browser:
 
 ```bash
-$ ionic serve --all
+$ gulp serve --env [local/prod/test]
 ```
 
-Or in iOS or Android:
+In a simulated device:
 
 ```bash
-$ ionic build [ios/android]
-$ ionic emulate [ios/android]
+$ gulp --build [ios/android] --env [local/prod/test]
+$ gulp --emulate [ios/android] --env [local/prod/test]
+```
+
+On an attached device
+
+```bash
+$ gulp --build [ios/android] --env [local/prod/test]
+$ gulp --run [ios/android] --env [local/prod/test]
 ```
 
 Run Integration Tests (local browser)
@@ -79,13 +113,13 @@ Run Integration Tests (local browser)
 Start Selenium webdriver:
 
 ```bash
-$ webdriver-manager start
+$ ./node_modules/protractor/bin/webdriver-manager start
 ```
 
 In a separate terminal, start Ionic service:
 
 ```bash
-$ ionic serve
+$ gulp serve --env [local/prod/test]
 ```
 
 Run protractor tests:
@@ -169,12 +203,3 @@ Run tests using Gulp:
 gulp protractor_android
 ```
 
-
-Setting Environment Variables
------------------------------
-
-Certain files must be modified based on the target environment (e.x. API hosts). To update those files:
-
-```bash
-$ gulp replace --env [prod | local | test]
-```

@@ -1,0 +1,67 @@
+<ion-view view-title="{{ vm.title | translate }}">
+    <ion-content class="padding">
+        <label class="item item-input item-select">
+            <div class="input-label">
+                {{ 'template.trip.report.action_point.edit.status' | translate }}
+            </div>
+            <select ng-model="vm.ap.status" required>
+                <option value="open">{{ 'template.trip.report.action_point.edit.open' | translate }}</option>
+                <option value="closed">{{ 'template.trip.report.action_point.edit.closed' | translate }}</option>
+                <option value="ongoing">{{ 'template.trip.report.action_point.edit.on_going' | translate }}</option>
+                <option value="cancelled">{{ 'template.trip.report.action_point.edit.cancelled' | translate }}</option>
+            </select>
+        </label>
+        <div class="item item-divider">
+            {{ 'template.trip.report.action_point.edit.description' | translate }}
+        </div>
+        <label class="item padding-top item-input">
+            <textarea ng-model="vm.ap.description" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10" ng-maxlength="254" maxlength="254">
+            </textarea>
+        </label>
+        <div class="item item-divider">
+            {{ 'template.trip.report.action_point.edit.comments' | translate }}
+        </div>
+        <label class="item padding-top item-input">
+            <textarea ng-model="vm.ap.comments" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10">
+            </textarea>
+        </label>
+
+        <div class="item item-divider">
+            {{ 'template.trip.report.action_point.edit.due_date' | translate }}
+        </div>
+        <div class="item row">
+              <select class="item item-select col" ng-model="vm.ap.due_day" ng-options="option as option for option in vm.paddedNumber(31)">
+              </select>
+
+              <select class="item item-select col" ng-model="vm.ap.due_month" ng-options="option as vm.allMonths[option-1] for option in vm.paddedNumber(12)">
+              </select>
+
+              <select class="item item-select col" ng-model="vm.ap.due_year" ng-options="option as option for option in vm.yearOptions">
+              </select>
+        <br>
+        </div>
+        <div class="item item-divider">
+            {{ 'template.trip.report.action_point.edit.person_responsible' | translate }}
+        </div>
+
+        <label class="item item-input item-select">
+            <div class="input-label">
+                {{ 'template.trip.report.action_point.edit.assign_to' | translate }}
+            </div>
+            <select required ng-options="u.user_id as u.full_name for u in vm.users" ng-model="vm.ap.person_responsible">
+            </select>
+
+        </label>
+        <div class="item item-icon-left assertive" ng-if="error">
+            <i class="icon ion-alert-circled icon-assertive"></i>
+            <p ng-if="errors.description">{{ 'template.trip.report.action_point.edit.description' | translate }}</p>
+            <p ng-if="errors.person_responsible">{{ 'template.trip.report.action_point.edit.assign_to' | translate }}</p>
+        </div>
+        <br>
+        <br>
+        <button ng-click="vm.submit()" class="button button-block button-positive padding-botom">
+            {{ 'template.trip.report.action_point.edit.submit' | translate }}
+        </button>
+        <br>
+    </ion-content>
+</ion-view>

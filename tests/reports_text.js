@@ -75,6 +75,7 @@ describe('Reports - Text', function() {
     });
 
     it('should be see the entered report text', function() {
+        this.timeout(15000);
         element(by.linkText('My Trips')).click();        
         auth.logout();
         auth.login();
