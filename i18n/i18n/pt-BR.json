@@ -3,7 +3,7 @@
     "template.login.title" : "eTrips",
     "template.login.username" : "Nome de utilizador",
     "template.login.password" : "Senha",
-    "template.login.remember_me" : "Continuar conectado",
+    "template.login.remember_me" : "REMEMBER ME",
     "template.login.sign_in" : "Fazer login",
     
     "template.menu.title" : "eTrip Menu",
