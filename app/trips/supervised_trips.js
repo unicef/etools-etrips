@@ -18,10 +18,10 @@
         dataService.getTrips(
             function(res){
                 vm.filteredTrips = $filter('filter')(res, vm.onlySupervised);
-
-                console.log("got trips", res);
+                $scope.$broadcast('scroll.refreshComplete');
             },
             function(err){
+                $scope.$broadcast('scroll.refreshComplete');
                 errorHandler.popError(err);
             }
         );

@@ -20,6 +20,7 @@
     "template.dashboard.no_trips" : "No current approved trips found",
     "template.dashboard.i_approve" : "I approve",
     "template.dashboard.not_supervising_trips" : "You're not currently supervising any trips",
+    "template.dashboard.no_my_trips" : "No trips currently available",
     "template.dashboard.supervised" : "Supervised",
     "template.dashboard.my_trips" : "My Trips",
 
