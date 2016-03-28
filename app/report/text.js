@@ -19,7 +19,7 @@
         $translate.instant('controller.report.text.observations.utilisation') + '\n \n \n \n' +
         $translate.instant('controller.report.text.observations.enabling') + '\n \n \n \n';
         
-        if (vm.trip.main_observations.length > 0) {
+        if (vm.trip.main_observations !== undefined && vm.trip.main_observations !== null && vm.trip.main_observations.length > 0) {
             vm.data = {
                 main_observations : vm.trip.main_observations,
                 constraints : vm.trip.constraints,
@@ -48,7 +48,7 @@
         }
 
         function autosave() {
-            if (vm.trip.main_observations.length === 0) {
+            if (vm.trip.main_observations === undefined || vm.trip.main_observations === null || vm.trip.main_observations.length === 0) {
                 fields.forEach(function(field) {
                     tripService.setDraft($stateParams.tripId, field, vm.data[field]);    
                 });

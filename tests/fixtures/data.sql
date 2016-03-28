@@ -5708,7 +5708,6 @@ SELECT pg_catalog.setval('tpm_tpmvisit_id_seq', 1, false);
 --
 
 COPY trips_actionpoint (id, description, due_date, actions_taken, completed_date, comments, status, created_date, person_responsible_id, trip_id) FROM stdin;
-1	Omnis vitae optio qui quaerat repellendus iste expedita. Aut qui nihil et quis corrupti qui perspiciatis dignissimos iusto. Illo eum reiciendis quasi non optio itaque quis. Minus possimus et qui magni quia praesentium deserunt. Odit omnis doloribus et. N	2017-01-03	\N	\N	Hic architecto error corporis labore eos ratione nesciunt. Est debitis vitae. Blanditiis officia optio. Sit cupiditate libero.	open	2016-03-24 11:32:10.093649-04	5	8
 \.
 
 
@@ -5756,9 +5755,9 @@ SELECT pg_catalog.setval('trips_travelroutes_id_seq', 1, false);
 COPY trips_trip (id, status, cancelled_reason, purpose_of_travel, travel_type, security_clearance_required, international_travel, from_date, to_date, main_observations, constraints, lessons_learned, opportunities, ta_required, ta_drafted, ta_drafted_date, ta_reference, transport_booked, security_granted, approved_by_supervisor, date_supervisor_approved, approved_by_budget_owner, date_budget_owner_approved, approved_by_human_resources, date_human_resources_approved, representative_approval, date_representative_approved, approved_date, created_date, approved_email_sent, ta_trip_took_place_as_planned, ta_trip_repay_travel_allowance, ta_trip_final_claim, budget_owner_id, human_resources_id, office_id, owner_id, programme_assistant_id, representative_id, section_id, supervisor_id, travel_assistant_id, vision_approver_id, driver_id, driver_supervisor_id, driver_trip_id, pending_ta_amendment, submitted_email_sent) FROM stdin;
 2	submitted		find luke	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:06:44.415137-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	3	\N	\N	\N	\N	\N	f	t
 6	approved		find han and chewie	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-03-01	f	\N	\N	\N	\N	\N	2016-03-01	2016-02-15 10:27:14.61473-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
-3	submitted		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
-8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31	Est voluptates vel vitae nam. Aut ut accusantium molestiae voluptate beatae enim. Impedit molestias eveniet possimus eos debitis iure quos.	Quis itaque quas aperiam excepturi assumenda sit aut repellendus illum. In quia illum sapiente ducimus aut. Et occaecati ut voluptatibus velit corrupti explicabo.	Vel voluptas cupiditate magni.	Aut eum consequatur autem omnis ex debitis facere cumque velit. Dolor ut nihil rerum aperiam dolores occaecati pariatur error.	f	f	\N		f	f	t	2016-01-01	f	\N	\N	\N	\N	\N	2016-02-15	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
-7	approved		leave jakku	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-03-24	f	\N	\N	\N	\N	\N	2016-03-24	2016-02-15 10:29:42.327017-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
+3	planned		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
+8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31	\N	\N	\N	\N	f	f	\N		f	f	t	2016-01-01	f	\N	\N	\N	\N	\N	2016-02-15	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
+7	submitted		leave jakku	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	2016-03-28	f	\N	\N	\N	\N	\N	2016-03-28	2016-02-15 10:29:42.327017-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
 \.
 
 
@@ -6206,7 +6205,7 @@ COPY auth_user (id, password, last_login, is_superuser, username, first_name, la
 3	pbkdf2_sha256$20000$BwvYLpZCW0cD$v8brgatQrEEYnma9CP8m+6fohtQMw0zFcb0K3Wk/qbQ=	2016-02-15 10:03:00.183242-05	t	leia@force.com	leia		leia@force.com	t	t	2016-02-15 09:27:12-05
 6	pbkdf2_sha256$20000$Ort98H5Fvhah$LZA7OhRpLW9LX0TzGJp9ge+HyJi6K7Y9DIuPhSqgmyU=	\N	t	bb8@force.com	bb8		bb8@force.com	t	t	2016-02-15 10:37:06-05
 2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-02-15 11:24:22.866018-05	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
-4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-02-15 11:23:02.964325-05	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
+4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-03-28 14:46:48.219589-04	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 \.
 
 
@@ -6606,6 +6605,7 @@ COPY django_session (session_key, session_data, expire_date) FROM stdin;
 u8lxo4e2m20kvl5bbvxf9zvruv6pehgp	NWRiYzhhZmFjZTMxYTBlM2ViZGVkZGQ1NDU5ZjJmNzgxYTFmMzg0MDp7Il9hdXRoX3VzZXJfaGFzaCI6IjlmMzA0YWI3ZTA3YTExZWMwMzljMTNiMDNiOTUxODgyZjI0ZTBhNWIiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-02-29 10:22:11.825055-05
 fi6yauvz57edo5e6lpr8sylmxm8uh665	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQzNmJhNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjA1NGFkMzAxZDllZDI4MGFlMTBkMDQ5NzVkYzQ0NzgxM2M4YTJmZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=	2016-02-29 10:59:02.20368-05
 dp17ua786fw4yzqzjdzfc9bqbxltt1av	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQzNmJhNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjA1NGFkMzAxZDllZDI4MGFlMTBkMDQ5NzVkYzQ0NzgxM2M4YTJmZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=	2016-02-29 11:24:22.873822-05
+h17r2hiydd8v1qw5vw6pr0fzbmdvoeqk	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-04-11 14:46:48.221871-04
 \.
 
 
