@@ -40,11 +40,23 @@ Install Mocha for reporting and testing:
 $ sudo npm install -g mocha
 ```
 
+Install Bower for building:
+
+```bash
+$ npm install -g bower
+```
+
 Install required Ionic platforms:
 
 ```bash
 $ ionic platform add ios
 $ ionic platform add android
+```
+
+Install Bower components (and select latest version of Angular):
+
+```bash
+$ bower install
 ```
 
 Update Selenium webdriver for integration tests:
@@ -56,12 +68,21 @@ $ ./node_modules/protractor/bin/webdriver-manager update
 Build application and start Express server
 
 ```bash
-$ gulp default
+$ gulp default --env [local/prod/test]
 ```
 
 Optional: Integration tests can also be run using Docker
 - install Docker Toolbox: https://www.docker.com/products/docker-toolbox
 
+
+Build Application
+-----------------
+
+To build and copy the application from a temporary to www folder (to run Ionic commands):
+
+```bash
+$ gulp build_www --env [local/prod/test]
+```
 
 Run Application
 ---------------
