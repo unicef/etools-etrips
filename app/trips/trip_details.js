@@ -5,13 +5,14 @@
         .module('app.trips')
         .controller('TripDetails', TripDetails);
 
-    TripDetails.$inject = ['$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate'];
+    TripDetails.$inject = ['$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate', 'DATE_FORMAT'];
 
-    function TripDetails($stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate) {
+    function TripDetails($stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate, DATE_FORMAT) {
         var vm = this;
         var uid = localStorageService.getObject('currentUser').user_id;
 
         vm.approve = approve;
+        vm.dateFormat = DATE_FORMAT;
         vm.completeTrip = completeTrip;
         vm.goReport = goReport; 
         vm.showConfirm = showConfirm;

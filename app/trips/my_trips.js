@@ -5,11 +5,12 @@
         .module('app.trips')
         .controller('MyTrips', MyTrips);
 
-    MyTrips.$inject = ['$scope', 'localStorageService', 'dataService', '$state', 'tripService', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicListDelegate', '$filter', 'errorHandler', '$ionicHistory', 'networkService', '$translate'];
+    MyTrips.$inject = ['$scope', 'localStorageService', 'dataService', '$state', 'tripService', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicListDelegate', '$filter', 'errorHandler', '$ionicHistory', 'networkService', '$translate', 'DATE_FORMAT'];
 
-    function MyTrips($scope, localStorageService, dataService, $state, tripService, $stateParams, $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, errorHandler, $ionicHistory, networkService, $translate) {
+    function MyTrips($scope, localStorageService, dataService, $state, tripService, $stateParams, $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, errorHandler, $ionicHistory, networkService, $translate, DATE_FORMAT) {
         var vm = this;
 
+        vm.dateFormat = DATE_FORMAT;
         vm.doRefresh = doRefresh;
         vm.goReport = goReport;
         vm.onlyMe = onlyMe;
