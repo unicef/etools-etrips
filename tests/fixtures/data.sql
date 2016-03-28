@@ -1144,7 +1144,7 @@ CREATE TABLE partners_partnerorganization (
     vendor_number bigint,
     alternate_id integer,
     alternate_name character varying(255),
-    rating character varying(50) NOT NULL,
+    rating character varying(50),
     core_values_assessment_date date,
     core_values_assessment character varying(100),
     cso_type character varying(50),
@@ -1298,7 +1298,8 @@ CREATE TABLE partners_pca (
     partner_manager_id integer,
     result_structure_id integer,
     unicef_manager_id integer,
-    fr_number character varying(50)
+    fr_number character varying(50),
+    project_type character varying(20)
 );
 
 
@@ -1505,6 +1506,43 @@ ALTER SEQUENCE partners_pcasectorgoal_id_seq OWNED BY partners_pcasectorgoal.id;
 
 
 --
+-- Name: partners_ramindicator; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_ramindicator (
+    id integer NOT NULL,
+    indicator_id integer NOT NULL,
+    intervention_id integer NOT NULL,
+    result_id integer NOT NULL,
+    baseline character varying(255),
+    target character varying(255)
+);
+
+
+ALTER TABLE partners_ramindicator OWNER TO postgres;
+
+--
+-- Name: partners_ramindicator_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_ramindicator_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_ramindicator_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_ramindicator_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_ramindicator_id_seq OWNED BY partners_ramindicator.id;
+
+
+--
 -- Name: partners_recommendation; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -1665,7 +1703,7 @@ ALTER SEQUENCE reports_goal_id_seq OWNED BY reports_goal.id;
 
 CREATE TABLE reports_indicator (
     id integer NOT NULL,
-    name character varying(128) NOT NULL,
+    name character varying(255) NOT NULL,
     code character varying(50),
     total integer,
     sector_total integer,
@@ -1675,8 +1713,11 @@ CREATE TABLE reports_indicator (
     in_activity_info boolean NOT NULL,
     result_id integer,
     result_structure_id integer,
-    sector_id integer NOT NULL,
-    unit_id integer
+    sector_id integer,
+    unit_id integer,
+    baseline character varying(255),
+    ram_indicator boolean NOT NULL,
+    target character varying(255)
 );
 
 
@@ -1765,6 +1806,7 @@ CREATE TABLE reports_result (
     hidden boolean NOT NULL,
     from_date date,
     to_date date,
+    ram boolean NOT NULL,
     CONSTRAINT reports_result_level_check CHECK ((level >= 0)),
     CONSTRAINT reports_result_lft_check CHECK ((lft >= 0)),
     CONSTRAINT reports_result_rght_check CHECK ((rght >= 0)),
@@ -3922,7 +3964,9 @@ CREATE TABLE users_country (
     business_area_code character varying(10),
     initial_zoom integer NOT NULL,
     latitude numeric(8,6),
-    longitude numeric(8,6)
+    longitude numeric(8,6),
+    country_short_code character varying(10),
+    vision_sync_enabled boolean NOT NULL
 );
 
 
@@ -4336,6 +4380,13 @@ ALTER TABLE ONLY partners_pcasector ALTER COLUMN id SET DEFAULT nextval('partner
 --
 
 ALTER TABLE ONLY partners_pcasectorgoal ALTER COLUMN id SET DEFAULT nextval('partners_pcasectorgoal_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_ramindicator ALTER COLUMN id SET DEFAULT nextval('partners_ramindicator_id_seq'::regclass);
 
 
 --
@@ -5003,6 +5054,15 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 102	partners	0027_resultchain_current_progress	2016-03-09 14:24:58.662368-05
 103	partners	0028_auto_20160304_1840	2016-03-09 14:25:00.452836-05
 104	partners	0029_auto_20160308_0142	2016-03-09 14:25:00.737037-05
+105	reports	0014_auto_20160314_0319	2016-03-24 11:26:07.78111-04
+106	partners	0030_auto_20160313_0006	2016-03-24 11:26:08.038183-04
+107	partners	0031_auto_20160313_1241	2016-03-24 11:26:08.290166-04
+108	partners	0032_pca_project_type	2016-03-24 11:26:08.55009-04
+109	partners	0033_auto_20160313_2153	2016-03-24 11:26:08.87837-04
+110	partners	0034_ramindicator	2016-03-24 11:26:09.206573-04
+111	partners	0035_auto_20160314_1524	2016-03-24 11:26:10.054888-04
+112	reports	0015_result_ram	2016-03-24 11:26:10.378742-04
+113	users	0011_auto_20160313_1241	2016-03-24 11:26:11.083207-04
 \.
 
 
@@ -5010,7 +5070,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 104, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 113, true);
 
 
 --
@@ -5347,7 +5407,7 @@ SELECT pg_catalog.setval('partners_partnerstaffmember_id_seq', 1, false);
 -- Data for Name: partners_pca; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, unicef_mng_first_name, unicef_mng_last_name, unicef_mng_email, partner_mng_first_name, partner_mng_last_name, partner_mng_email, partner_mng_phone, partner_contribution_budget, unicef_cash_budget, in_kind_amount_budget, cash_for_supply_budget, total_cash, sectors, current, created_at, updated_at, amendment, amended_at, amendment_number, agreement_id, original_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number) FROM stdin;
+COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, unicef_mng_first_name, unicef_mng_last_name, unicef_mng_email, partner_mng_first_name, partner_mng_last_name, partner_mng_email, partner_mng_phone, partner_contribution_budget, unicef_cash_budget, in_kind_amount_budget, cash_for_supply_budget, total_cash, sectors, current, created_at, updated_at, amendment, amended_at, amendment_number, agreement_id, original_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number, project_type) FROM stdin;
 \.
 
 
@@ -5434,6 +5494,21 @@ SELECT pg_catalog.setval('partners_pcasectorgoal_id_seq', 1, false);
 
 
 --
+-- Data for Name: partners_ramindicator; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_ramindicator (id, indicator_id, intervention_id, result_id, baseline, target) FROM stdin;
+\.
+
+
+--
+-- Name: partners_ramindicator_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_ramindicator_id_seq', 1, false);
+
+
+--
 -- Data for Name: partners_recommendation; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
@@ -5497,7 +5572,7 @@ SELECT pg_catalog.setval('reports_goal_id_seq', 1, false);
 -- Data for Name: reports_indicator; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY reports_indicator (id, name, code, total, sector_total, current, sector_current, view_on_dashboard, in_activity_info, result_id, result_structure_id, sector_id, unit_id) FROM stdin;
+COPY reports_indicator (id, name, code, total, sector_total, current, sector_current, view_on_dashboard, in_activity_info, result_id, result_structure_id, sector_id, unit_id, baseline, ram_indicator, target) FROM stdin;
 \.
 
 
@@ -5527,7 +5602,7 @@ SELECT pg_catalog.setval('reports_indicator_id_seq', 1, false);
 -- Data for Name: reports_result; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY reports_result (id, name, code, result_structure_id, result_type_id, sector_id, gic_code, gic_name, humanitarian_tag, level, lft, parent_id, rght, sic_code, sic_name, tree_id, vision_id, wbs, activity_focus_code, activity_focus_name, hidden, from_date, to_date) FROM stdin;
+COPY reports_result (id, name, code, result_structure_id, result_type_id, sector_id, gic_code, gic_name, humanitarian_tag, level, lft, parent_id, rght, sic_code, sic_name, tree_id, vision_id, wbs, activity_focus_code, activity_focus_name, hidden, from_date, to_date, ram) FROM stdin;
 \.
 
 
@@ -5633,6 +5708,7 @@ SELECT pg_catalog.setval('tpm_tpmvisit_id_seq', 1, false);
 --
 
 COPY trips_actionpoint (id, description, due_date, actions_taken, completed_date, comments, status, created_date, person_responsible_id, trip_id) FROM stdin;
+1	Omnis vitae optio qui quaerat repellendus iste expedita. Aut qui nihil et quis corrupti qui perspiciatis dignissimos iusto. Illo eum reiciendis quasi non optio itaque quis. Minus possimus et qui magni quia praesentium deserunt. Odit omnis doloribus et. N	2017-01-03	\N	\N	Hic architecto error corporis labore eos ratione nesciunt. Est debitis vitae. Blanditiis officia optio. Sit cupiditate libero.	open	2016-03-24 11:32:10.093649-04	5	8
 \.
 
 
@@ -5640,7 +5716,7 @@ COPY trips_actionpoint (id, description, due_date, actions_taken, completed_date
 -- Name: trips_actionpoint_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('trips_actionpoint_id_seq', 1, false);
+SELECT pg_catalog.setval('trips_actionpoint_id_seq', 1, true);
 
 
 --
@@ -5678,11 +5754,11 @@ SELECT pg_catalog.setval('trips_travelroutes_id_seq', 1, false);
 --
 
 COPY trips_trip (id, status, cancelled_reason, purpose_of_travel, travel_type, security_clearance_required, international_travel, from_date, to_date, main_observations, constraints, lessons_learned, opportunities, ta_required, ta_drafted, ta_drafted_date, ta_reference, transport_booked, security_granted, approved_by_supervisor, date_supervisor_approved, approved_by_budget_owner, date_budget_owner_approved, approved_by_human_resources, date_human_resources_approved, representative_approval, date_representative_approved, approved_date, created_date, approved_email_sent, ta_trip_took_place_as_planned, ta_trip_repay_travel_allowance, ta_trip_final_claim, budget_owner_id, human_resources_id, office_id, owner_id, programme_assistant_id, representative_id, section_id, supervisor_id, travel_assistant_id, vision_approver_id, driver_id, driver_supervisor_id, driver_trip_id, pending_ta_amendment, submitted_email_sent) FROM stdin;
-7	submitted		leave jakku	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:29:42.327017-05	f	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
-3	planned		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	f
-8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-01-01	f	\N	\N	\N	\N	\N	2016-02-15	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
 2	submitted		find luke	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:06:44.415137-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	3	\N	\N	\N	\N	\N	f	t
 6	approved		find han and chewie	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-03-01	f	\N	\N	\N	\N	\N	2016-03-01	2016-02-15 10:27:14.61473-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
+3	submitted		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
+8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31	Est voluptates vel vitae nam. Aut ut accusantium molestiae voluptate beatae enim. Impedit molestias eveniet possimus eos debitis iure quos.	Quis itaque quas aperiam excepturi assumenda sit aut repellendus illum. In quia illum sapiente ducimus aut. Et occaecati ut voluptatibus velit corrupti explicabo.	Vel voluptas cupiditate magni.	Aut eum consequatur autem omnis ex debitis facere cumque velit. Dolor ut nihil rerum aperiam dolores occaecati pariatur error.	f	f	\N		f	f	t	2016-01-01	f	\N	\N	\N	\N	\N	2016-02-15	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
+7	approved		leave jakku	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-03-24	f	\N	\N	\N	\N	\N	2016-03-24	2016-02-15 10:29:42.327017-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
 \.
 
 
@@ -6107,6 +6183,9 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 281	Can add indicator report	94	add_indicatorreport
 282	Can change indicator report	94	change_indicatorreport
 283	Can delete indicator report	94	delete_indicatorreport
+284	Can add ram indicator	95	add_ramindicator
+285	Can change ram indicator	95	change_ramindicator
+286	Can delete ram indicator	95	delete_ramindicator
 \.
 
 
@@ -6114,7 +6193,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 283, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 286, true);
 
 
 --
@@ -6127,7 +6206,7 @@ COPY auth_user (id, password, last_login, is_superuser, username, first_name, la
 3	pbkdf2_sha256$20000$BwvYLpZCW0cD$v8brgatQrEEYnma9CP8m+6fohtQMw0zFcb0K3Wk/qbQ=	2016-02-15 10:03:00.183242-05	t	leia@force.com	leia		leia@force.com	t	t	2016-02-15 09:27:12-05
 6	pbkdf2_sha256$20000$Ort98H5Fvhah$LZA7OhRpLW9LX0TzGJp9ge+HyJi6K7Y9DIuPhSqgmyU=	\N	t	bb8@force.com	bb8		bb8@force.com	t	t	2016-02-15 10:37:06-05
 2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-02-15 11:24:22.866018-05	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
-4	pbkdf2_sha256$24000$VwisqqQ4GOZ8$QnBb8RGbYBC8NvQ9++2kYSheZ3X5zmR+/GjrwvWJ+OM=	2016-02-15 11:23:02.964325-05	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
+4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-02-15 11:23:02.964325-05	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 \.
 
 
@@ -6379,6 +6458,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 92	partners	fundingcommitment
 93	partners	directcashtransfer
 94	partners	indicatorreport
+95	partners	ramindicator
 \.
 
 
@@ -6386,7 +6466,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 94, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 95, true);
 
 
 --
@@ -6498,6 +6578,15 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 102	partners	0027_resultchain_current_progress	2016-03-09 14:24:51.307647-05
 103	partners	0028_auto_20160304_1840	2016-03-09 14:24:53.072575-05
 104	partners	0029_auto_20160308_0142	2016-03-09 14:24:53.343751-05
+105	reports	0014_auto_20160314_0319	2016-03-24 11:25:29.477171-04
+106	partners	0030_auto_20160313_0006	2016-03-24 11:25:29.730313-04
+107	partners	0031_auto_20160313_1241	2016-03-24 11:25:29.981638-04
+108	partners	0032_pca_project_type	2016-03-24 11:25:30.237403-04
+109	partners	0033_auto_20160313_2153	2016-03-24 11:25:30.722149-04
+110	partners	0034_ramindicator	2016-03-24 11:25:30.972268-04
+111	partners	0035_auto_20160314_1524	2016-03-24 11:25:31.459293-04
+112	reports	0015_result_ram	2016-03-24 11:25:31.722345-04
+113	users	0011_auto_20160313_1241	2016-03-24 11:25:32.35077-04
 \.
 
 
@@ -6505,7 +6594,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 104, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 113, true);
 
 
 --
@@ -6810,6 +6899,9 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 11	rey@force.com	rey@force.com, han@force.com			eTools  - Trip Approved: 2016/8-2	\n    The following trip has been approved: 2016/8-2\n\n    http://example.com/admin/trips/trip/8/\n\n    Thank you.\n    		0	3	2016-02-15 11:24:44.15781-05	2016-02-15 11:24:49.73508-05	\N	\N	\N	\N	
 12	rey@force.com	rey@force.com, leia@force.com			eTools  - Trip 2016/2-1 has been Submitted for rey	\n    Dear Colleague,\n\n    Trip 2016/2-1 has been Submitted for rey here:\n    http://example.com/admin/trips/trip/2/change/\n    Purpose of travel: find luke\n\n    Thank you.\n    		0	3	2016-03-01 15:00:21.909249-05	2016-03-01 15:00:23.184729-05	\N	\N	\N	\N	
 13	finn@force.com	finn@force.com, rey@force.com			eTools  - Trip Approved: 2016/6-2	\n    The following trip has been approved: 2016/6-2\n\n    http://example.com/admin/trips/trip/6/change/\n\n    Thank you.\n    		0	3	2016-03-01 15:00:38.586462-05	2016-03-01 15:00:40.2055-05	\N	\N	\N	\N	
+14	rey@force.com	rey@force.com, han@force.com			eTools  - Trip 2016/3-4 has been Submitted for rey	\n    Dear Colleague,\n\n    Trip 2016/3-4 has been Submitted for rey here:\n    http://example.com/admin/trips/trip/3/\n    Purpose of travel: learn how to use a lightsaber\n\n    Thank you.\n    		0	3	2016-03-24 11:30:53.678782-04	2016-03-24 11:30:59.4886-04	\N	\N	\N	\N	
+15	rey@force.com	rey@force.com, finn@force.com, han@force.com			eTools  - Trip action point Created for trip: 2016/8-3	\n    Trip action point by rey for finn was Created:"\n\n    http://example.com/admin/trips/trip/8/#reporting\n\n    Thank you.\n    		0	3	2016-03-24 11:32:10.107471-04	2016-03-24 11:32:15.934213-04	\N	\N	\N	\N	
+16	finn@force.com	finn@force.com, rey@force.com			eTools  - Trip Approved: 2016/7-3	\n    The following trip has been approved: 2016/7-3\n\n    http://example.com/admin/trips/trip/7/\n\n    Thank you.\n    		0	3	2016-03-24 11:33:35.640929-04	2016-03-24 11:33:39.250994-04	\N	\N	\N	\N	
 \.
 
 
@@ -6817,7 +6909,7 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 -- Name: post_office_email_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_email_id_seq', 13, true);
+SELECT pg_catalog.setval('post_office_email_id_seq', 16, true);
 
 
 --
@@ -6828,6 +6920,7 @@ COPY post_office_emailtemplate (id, name, description, subject, content, html_co
 1	trips/trip/created/updated	The email that is sent to the supervisor, budget owner, traveller for any update	eTools {{environment}} - Trip {{number}} has been {{state}} for {{owner_name}}	\n    Dear Colleague,\n\n    Trip {{number}} has been {{state}} for {{owner_name}} here:\n    {{url}}\n    Purpose of travel: {{ purpose_of_travel }}\n\n    Thank you.\n    		2016-02-15 09:59:46.152638-05	2016-02-15 09:59:46.152667-05	\N	
 2	travel/trip/travel_or_admin_assistant	This e-mail will be sent when the trip is approved by the supervisor. It will go to the travel assistant to prompt them to organise the travel (vehicles, flights etc.) and request security clearance.	eTools {{environment}} - Travel for {{owner_name}}	\n    Dear {{travel_assistant}},\n\n    Please organise the travel and security clearance (if needed) for the following trip:\n\n    {{url}}\n\n    Thanks,\n    {{owner_name}}\n    		2016-02-15 10:23:24.4546-05	2016-02-15 10:23:24.454629-05	\N	
 3	trips/trip/approved	The email that is sent to the traveller if a trip has been approved	eTools {{environment}} - Trip Approved: {{trip_reference}}	\n    The following trip has been approved: {{trip_reference}}\n\n    {{url}}\n\n    Thank you.\n    		2016-02-15 10:23:26.339907-05	2016-02-15 10:23:26.339936-05	\N	
+4	trips/action/created	Sent when trip action points are created	eTools {{environment}} - Trip action point {{state}} for trip: {{trip_reference}}	\n    Trip action point by {{owner_name}} for {{responsible}} was {{state}}:"\n\n    {{url}}\n\n    Thank you.\n    		2016-03-24 11:32:10.098681-04	2016-03-24 11:32:10.098712-04	\N	
 \.
 
 
@@ -6835,7 +6928,7 @@ COPY post_office_emailtemplate (id, name, description, subject, content, html_co
 -- Name: post_office_emailtemplate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_emailtemplate_id_seq', 3, true);
+SELECT pg_catalog.setval('post_office_emailtemplate_id_seq', 4, true);
 
 
 --
@@ -6856,6 +6949,9 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 11	2016-02-15 11:24:49.744227-05	0			11
 12	2016-03-01 15:00:23.195221-05	0			12
 13	2016-03-01 15:00:40.209049-05	0			13
+14	2016-03-24 11:30:59.498061-04	0			14
+15	2016-03-24 11:32:15.938329-04	0			15
+16	2016-03-24 11:33:39.254403-04	0			16
 \.
 
 
@@ -6863,7 +6959,7 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 -- Name: post_office_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_log_id_seq', 13, true);
+SELECT pg_catalog.setval('post_office_log_id_seq', 16, true);
 
 
 --
@@ -8116,8 +8212,8 @@ COPY spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
 -- Data for Name: users_country; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY users_country (id, domain_url, schema_name, name, business_area_code, initial_zoom, latitude, longitude) FROM stdin;
-1	hoth	hoth	hoth		8	\N	\N
+COPY users_country (id, domain_url, schema_name, name, business_area_code, initial_zoom, latitude, longitude, country_short_code, vision_sync_enabled) FROM stdin;
+1	hoth	hoth	hoth		8	\N	\N	\N	t
 \.
 
 
@@ -8604,6 +8700,14 @@ ALTER TABLE ONLY partners_pcasector
 
 ALTER TABLE ONLY partners_pcasectorgoal
     ADD CONSTRAINT partners_pcasectorgoal_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_ramindicator_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_ramindicator
+    ADD CONSTRAINT partners_ramindicator_pkey PRIMARY KEY (id);
 
 
 --
@@ -10074,6 +10178,27 @@ CREATE INDEX partners_pcasectorgoal_6315bdf2 ON partners_pcasectorgoal USING btr
 --
 
 CREATE INDEX partners_pcasectorgoal_b730706b ON partners_pcasectorgoal USING btree (goal_id);
+
+
+--
+-- Name: partners_ramindicator_123a1ce7; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_ramindicator_123a1ce7 ON partners_ramindicator USING btree (intervention_id);
+
+
+--
+-- Name: partners_ramindicator_57f06544; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_ramindicator_57f06544 ON partners_ramindicator USING btree (result_id);
+
+
+--
+-- Name: partners_ramindicator_a82bd466; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_ramindicator_a82bd466 ON partners_ramindicator USING btree (indicator_id);
 
 
 --
@@ -11554,6 +11679,14 @@ ALTER TABLE ONLY partners_indicatorreport
 
 
 --
+-- Name: partners__indicator_id_1a1e9e4931c883ca_fk_reports_indicator_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_ramindicator
+    ADD CONSTRAINT partners__indicator_id_1a1e9e4931c883ca_fk_reports_indicator_id FOREIGN KEY (indicator_id) REFERENCES reports_indicator(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: partners__indicator_id_4618aa9257641ca6_fk_reports_indicator_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11783,6 +11916,22 @@ ALTER TABLE ONLY partners_pcasector
 
 ALTER TABLE ONLY partners_pcasectorgoal
     ADD CONSTRAINT partners_pcasectorg_goal_id_487a8ba4816a9cbe_fk_reports_goal_id FOREIGN KEY (goal_id) REFERENCES reports_goal(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_ra_intervention_id_48cb4a4acf640507_fk_partners_pca_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_ramindicator
+    ADD CONSTRAINT partners_ra_intervention_id_48cb4a4acf640507_fk_partners_pca_id FOREIGN KEY (intervention_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_ramind_result_id_551d55f95d1ac9b3_fk_reports_result_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_ramindicator
+    ADD CONSTRAINT partners_ramind_result_id_551d55f95d1ac9b3_fk_reports_result_id FOREIGN KEY (result_id) REFERENCES reports_result(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --

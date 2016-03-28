@@ -12,15 +12,25 @@ describe('Reports - Pictures', function() {
         trips.first().click();
         waitForElement('button.button-calm');
 
+        waitForElement('button.button-calm');
         element(by.buttonText('Report')).click();
-        waitForElement('a.tab-item-active > i.icon.ion-document-text');
+        
+        waitForElement('button#report_text');
+        element(by.buttonText('Add Picture')).click();
 
-        element(by.linkText('Picture')).click();
         element(by.buttonText('Upload Existing Photo')).isPresent().should.eventually.true;
         element(by.buttonText('Take Picture')).isPresent().should.eventually.true;        
     });
 
     it('should be able to logout', function() {
+        element.all(by.css('button.back-button:not(.hide)')).get(0).click();
+        waitForElement('button.back-button:not(.hide)');
+
+        element.all(by.css('button.back-button:not(.hide)')).get(1).click();
+        waitForElement('button.back-button:not(.hide)');
+        
+        element.all(by.css('button.back-button:not(.hide)')).get(0).click();
+        waitForElement('button[menu-toggle="left"]:not(.hide)');
         auth.logout();
     });
 });

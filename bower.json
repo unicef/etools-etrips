@@ -1,7 +1,20 @@
 {
-  "name": "HelloIonic",
+  "name": "app",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.1.0"
+    "ionic": "driftyco/ionic-bower#1.2.4"
+  },
+  "dependencies": {
+    "angular-translate": "^2.11.0",
+    "angular-translate-handler-log": "^2.11.0",
+    "angular-translate-loader-static-files": "^2.11.0",
+    "angular-translate-storage-cookie": "^2.11.0",
+    "angular-translate-storage-local": "^2.11.0",
+    "angular-cookies": "^1.5.2",
+    "angular-ios9-uiwebview-patch": "^1.1.1",
+    "angular-dynamic-locale": "^0.1.30",
+    "ngCordova": "^0.1.24-alpha",
+    "angular": "^1.5.2",
+    "lodash": "^4.6.1"
   }
 }

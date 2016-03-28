@@ -8,7 +8,6 @@ exports.config = {
         'supervised.js',
         'notes.js',
         'reports.js',
-        'reports_draft.js',
         'reports_action_point.js',
         'reports_text.js'        
     ],
@@ -23,8 +22,8 @@ exports.config = {
     ],
 
     framework: 'mocha',
-    seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
-    chromeDriver: '../node_modules/protractor/selenium/chromedriver',
+    seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar',
+    chromeDriver: '../node_modules/protractor/selenium/chromedriver_2.21',
 
     mochaOpts: {        
         reporter: 'spec',

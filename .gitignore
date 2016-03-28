@@ -1,13 +1,13 @@
 node_modules/
 platforms/
 plugins/
-.idea/
-dist/
+bower_components/
 
-*_screenshot.png
-www/js/constants.js
-www/index.html
+.tmp/
+www/
+.sass-cache
+*.DS_Store
+*.log
+tmp.run.file
 
-restore_db.log
-
-tests/all_tests.js
+app/app.constants.js

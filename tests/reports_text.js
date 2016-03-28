@@ -6,6 +6,11 @@ describe('Reports - Text', function() {
     var lessonLearnedLoremText = faker.lorem.paragraph(1);
     var opportunitiesLoremText = faker.lorem.paragraph(1);
 
+    var progressReportAutosaveLoremText = faker.lorem.paragraph(1);
+    var constraintsAutosaveLoremText = faker.lorem.paragraph(1);
+    var lessonLearnedAutosaveLoremText = faker.lorem.paragraph(1);
+    var opportunitiesAutosaveLoremText = faker.lorem.paragraph(1);
+
     it('should be able to login and select the My Trips tab and the Report button', function() {
         auth.login();
         element.all(by.css('a.tab-item')).get(0).click();
@@ -15,9 +20,40 @@ describe('Reports - Text', function() {
     });
 
     it('should have 4 textareas', function() {
-        waitForElement('button.button-calm');
+        waitForElement('button.button-calm');                
         element(by.buttonText('Report')).click();
+        
+        waitForElement('button#report_text');
+        element(by.buttonText('Text Reporting')).click();
+
         element.all(by.css('textarea')).count().should.eventually.equal(4);
+    });
+
+    it('should be able to enter text in each textarea and the values be autosaved', function() {
+        this.timeout(15000);
+        var textareas = element.all(by.css('textarea'));
+        textareas.get(0).clear().sendKeys(progressReportAutosaveLoremText);
+        textareas.get(1).clear().sendKeys(constraintsAutosaveLoremText);
+        textareas.get(2).clear().sendKeys(lessonLearnedAutosaveLoremText);
+        textareas.get(3).clear().sendKeys(opportunitiesAutosaveLoremText);        
+
+        element(by.linkText('My Trips')).click();
+        auth.logout();
+        auth.login();
+
+        var trips = element.all(by.css(allTripsCssSelector));
+        trips.first().click(); 
+
+        element(by.buttonText('Report')).click();
+        waitForElement('button#report_text');
+        element(by.buttonText('Text Reporting')).click();
+        waitForElement('textarea');
+
+        var textareas = element.all(by.css('textarea'));
+        textareas.get(0).getAttribute('value').should.eventually.be.equal(progressReportAutosaveLoremText);
+        textareas.get(1).getAttribute('value').should.eventually.be.equal(constraintsAutosaveLoremText);
+        textareas.get(2).getAttribute('value').should.eventually.be.equal(lessonLearnedAutosaveLoremText);
+        textareas.get(3).getAttribute('value').should.eventually.be.equal(opportunitiesAutosaveLoremText);
     });
 
     it('should be able to enter text in each textarea and submit', function() {
@@ -27,37 +63,30 @@ describe('Reports - Text', function() {
         textareas.get(2).clear().sendKeys(lessonLearnedLoremText);
         textareas.get(3).clear().sendKeys(opportunitiesLoremText);
         element(by.buttonText('Submit Report')).click();
-
-        browser.wait(function() {
-            return element(by.buttonText('Complete Trip')).isPresent();
-        }, 2000);
     });
 
     it('should be see a popup dialogue and a Complete Trip button', function() {
-        waitForElement('div.popup-container.popup-showing.active');
+        waitForElement('button.button-positive');
+        element(by.buttonText('OK')).click();
 
-        browser.wait(function() {
-            return element(by.buttonText('Complete Trip')).isPresent();
-        }, 2000);
+        element.all(by.css('button.back-button:not(.hide)')).get(1).click();
+        waitForElement('button.back-button:not(.hide)');
+        element(by.buttonText('Complete Trip')).isPresent();
     });
 
     it('should be see the entered report text', function() {
-        this.timeout(20000);
-
-        // logout
-        element(by.buttonText('OK')).click();        
-        element(by.cssContainingText('.button.back-button', 'My Trips')).click();
-        waitForElement('ion-view[view-title="My Trips"] ion-item.item-avatar');        
-        element(by.css('div[nav-bar="active"] > ion-header-bar button[menu-toggle="left"].ion-navicon')).click();
-        element(by.cssContainingText('.item', 'Logout')).click();
-
-        // login and go to report text tab
+        this.timeout(15000);
+        element(by.linkText('My Trips')).click();        
+        auth.logout();
         auth.login();
-        element.all(by.css('a.tab-item')).get(0).click();
+
         var trips = element.all(by.css(allTripsCssSelector));
-        trips.first().click();
-        waitForElement('button.button-calm');
+        trips.first().click(); 
+
         element(by.buttonText('Report')).click();
+        waitForElement('button#report_text');
+        element(by.buttonText('Text Reporting')).click();
+        waitForElement('textarea');
 
         // validate entered text
         var textareas = element.all(by.css('textarea'));
@@ -68,6 +97,14 @@ describe('Reports - Text', function() {
     });
 
     it('should be able to logout', function() {
+        element.all(by.css('button.back-button:not(.hide)')).get(0).click();
+        waitForElement('button.back-button:not(.hide)');
+
+        element.all(by.css('button.back-button:not(.hide)')).get(1).click();
+        waitForElement('button.back-button:not(.hide)');
+        
+        element.all(by.css('button.back-button:not(.hide)')).get(0).click();
+        waitForElement('button[menu-toggle="left"]:not(.hide)');
         auth.logout();
     });
 });

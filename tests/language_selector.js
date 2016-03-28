@@ -2,7 +2,7 @@ describe('Language Selector', function() {
     var sideMenuButton = by.css('div[nav-bar="active"] > ion-header-bar button[menu-toggle="left"].ion-navicon');
 
     function switchLanguage(locale, title) {
-        var data = require('../www/i18n/' + locale + '.json');
+        var data = require('../i18n/i18n/' + locale + '.json');
         element(by.cssContainingText('option', title)).click();
         browser.sleep(500);
         element(by.css('input[type="email"]')).getAttribute('placeholder').should.eventually.be.equal(data['template.login.username']);
@@ -34,10 +34,10 @@ describe('Language Selector', function() {
     });
 
     it('should able to view the to/from date of the first trip in English and then in French', function() {
-        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('Jan 1, 2016 -> Dec 31, 2016');
+        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('01/01/2016 -> 31/12/2016');
         element(sideMenuButton).click();
         element(by.cssContainingText('ion-side-menu div.language-select select option', 'Français (France)')).click();
-        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('1 janv. 2016 -> 31 déc. 2016');
+        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('01/01/2016 -> 31/12/2016');
         element(by.cssContainingText('ion-side-menu div.language-select select option', 'English (US)')).click();
     });
 
