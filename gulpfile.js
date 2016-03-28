@@ -53,12 +53,15 @@
   var port = args.port;
   var buildApp = args.build;
   var stripDebug = !!args.stripDebug;
-  var targetDir = path.resolve(build ? 'www' : '.tmp');
+  var tmpDirectory = '.tmp';
+  var wwwDirectory = 'www';
+  var targetDir = path.resolve(build ? wwwDirectory : tmpDirectory);
 
   // if we just use emulate or run without specifying platform, we assume iOS in this case the value returned from yargs would just be true
   if (emulate === true) {
       emulate = 'ios';
   }
+  
   if (run === true) {
       run = 'ios';
   }
@@ -491,6 +494,17 @@
       done);
   });
 
+  gulp.task('copy_tmp_to_www', function(done) {
+    return gulp.src([tmpDirectory + '/**/*'])          
+          .pipe(gulp.dest(wwwDirectory));
+  });
+
+  gulp.task('build_www', function(done) {
+    runSequence(
+      'build',
+      'copy_tmp_to_www',
+      done);      
+  });
 
   gulp.task('default', function(done) {
     runSequence(
