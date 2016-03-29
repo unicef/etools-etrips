@@ -19,6 +19,8 @@ angular.module('app.core', [
 
     /* angular modules */
     'ngCookies',
+    'ngCordova',
+
 
     /* 3rd-party modules */
     'ngIOS9UIWebViewPatch',

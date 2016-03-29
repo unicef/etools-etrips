@@ -45,8 +45,6 @@
             vm.ap = tripService.getAP(currentTrip, $stateParams.actionPointId);            
         }
 
-        console.log(vm.ap);
-
         function paddedNumber(limit){
             var result = [];
             for (var i=1; i<limit+1; i++){

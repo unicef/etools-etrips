@@ -5,7 +5,7 @@
         .module('app.core')
         .service('networkService', networkService);
 
-    function networkService($ionicPopup, $translate) {
+    function networkService($ionicPopup, $translate, $cordovaNetwork) {
         var service = {
             isOffline : isOffline,
             showMessage : showMessage
@@ -13,8 +13,8 @@
 
         return service;
 
-        function isOffline(){
-            return window.Connection && navigator.connection.type === Connection.NONE;
+        function isOffline(){            
+            return $cordovaNetwork.isOffline();
         }
 
         function showMessage(title, content){

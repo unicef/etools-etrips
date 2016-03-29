@@ -68,6 +68,10 @@
 
   // clean target dir
   gulp.task('clean', function(done) {  
+    if (args.dir !== undefined && args.dir.length > 0) {      
+      targetDir = path.resolve(args.dir);      
+    }
+
     return del([targetDir], done);
   });
 
@@ -180,7 +184,6 @@
       .on('error', errorHandler);
   });
 
-
   // lint js sources based on .jshintrc ruleset
   gulp.task('jsHint', function(done) {
     return gulp
@@ -210,7 +213,6 @@
     return gulp.src(['i18n/**/*'])
       .pipe(gulp.dest(targetDir));
   });
-
 
   // inject the files in index.html
   gulp.task('index', ['jsHint', 'scripts'], function() {
@@ -258,12 +260,28 @@
   });
 
   // start local express server
-  gulp.task('serve', function() {
-    server = express()
-      .use(!build ? connectLr() : function(){})
-      .use(express.static(targetDir))
-      .listen(port);
-    open('http://localhost:' + port + '/');
+  gulp.task('serve', function(done) {
+    fs.exists(targetDir,  function(err, stat) {
+        if (err == null) {
+            runSequence(
+              'serve_app',
+              done);
+        } else {
+            runSequence(  
+              'build',
+              'serve_app',
+              done);
+        }
+    });
+  });
+
+  gulp.task('serve_app', function() {
+    express()
+        .use(!build ? connectLr() : function(){})
+        .use(express.static(targetDir))
+        .listen(port);
+      
+      open('http://localhost:' + port + '/');
   });
 
   // ionic emulate wrapper
