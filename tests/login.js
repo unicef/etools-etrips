@@ -8,7 +8,7 @@ describe('Login View', function() {
 
     it('should have a title, two fields, remember me and a login button', function() {
         element.all(by.css('h2')).count().should.eventually.equal(1);
-        element.all(by.css('h2')).get(0).getText().should.eventually.equal('eTrips');
+        element.all(by.css('h2')).get(0).getText().should.eventually.equal('Hello World');
 
         element(by.css('input[type="email"]')).isPresent().should.eventually.true;
         element(by.css('input[type="password"]')).isPresent().should.eventually.true;

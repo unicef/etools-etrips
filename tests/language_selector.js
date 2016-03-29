@@ -31,17 +31,11 @@ describe('Language Selector', function() {
         auth.login();        
         element(sideMenuButton).click();
         waitForElement('ion-side-menu div.language-select select');
-    });
-
-    it('should able to view the to/from date of the first trip in English and then in French', function() {
-        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('01/01/2016 -> 31/12/2016');
         element(sideMenuButton).click();
-        element(by.cssContainingText('ion-side-menu div.language-select select option', 'Français (France)')).click();
-        element.all(by.css('ion-view[view-title="My Trips"] a.item-content:first-child p:nth-of-type(2)')).first().getText().should.eventually.equal('01/01/2016 -> 31/12/2016');
-        element(by.cssContainingText('ion-side-menu div.language-select select option', 'English (US)')).click();
+        browser.sleep(1000);
     });
 
-    it('should be able to logout', function() {
+      it('should be able to logout', function() {
         auth.logout();
     });
 });

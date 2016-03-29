@@ -8,8 +8,7 @@
     function config($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('app.dash', {
-                url: '/dash',
-                abstract: true,
+                url: '/dash',                
                 views: {
                     'menuContent': {
                         templateUrl: 'app/layout/dashboard.html',

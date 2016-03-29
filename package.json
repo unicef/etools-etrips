@@ -1,7 +1,7 @@
 {
-  "name": "eTrips",
-  "version": "0.0.7",
-  "description": "eTrips: Unicef trips app",
+  "name": "application",
+  "version": "0.0.1",
+  "description": "UNICEF mobile application",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-concat": "^2.6.0",

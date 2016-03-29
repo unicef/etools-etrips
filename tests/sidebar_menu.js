@@ -14,17 +14,13 @@ describe('Sidebar Menu', function() {
             _.includes(val.split(' '), 'menu-open').should.equal.true;
         });
 
-        element(by.css('h1')).getText().should.eventually.equal('eTrip Menu');
-        element(by.css('ion-item.item-divider')).getText().should.eventually.equal('Country: hoth');
-        element.all(by.css('ion-side-menu ion-item.item-complex')).count().should.eventually.equal(2);       
+        element(by.css('h1')).getText().should.eventually.equal('Menu');        
+        element.all(by.css('ion-side-menu ion-item.item-complex')).count().should.eventually.equal(2);
     });
 
-    it('should display the Trips tab when the Trips link is clicked', function() {
-        element(sideMenuButton).click();
-        element.all(by.css('a.tab-item')).get(1).click();
-        element(sideMenuButton).click();
-        element(by.linkText('Trips')).click();
-        element(by.css('div[nav-bar="active"] > ion-header-bar > div.title')).getText().should.eventually.equal('My Trips');
+    it('should display the Dashboard tab when the Dashboard link is clicked', function() {                
+        element(by.linkText('Dashboard')).click();    
+        element(by.css('h5')).getText().should.eventually.equal('Dashboard Content');
     });
 
     it('should display the Settings view', function() {

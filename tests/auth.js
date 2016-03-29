@@ -11,7 +11,7 @@ var auth = function auth(){
     this.logout = function (){
         element(by.css('div[nav-bar="active"] > ion-header-bar button[menu-toggle="left"].ion-navicon')).click();
         element(by.cssContainingText('.item', 'Logout')).click();
-        waitForElement('h2.title.unicef-blue');
+        waitForElement('h1');
         element(by.css('input[type="email"]')).clear();
     };
 };

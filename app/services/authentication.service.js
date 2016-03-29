@@ -39,7 +39,6 @@
         function logout(success) {
             localStorageService.delete('currentUser');
             localStorageService.delete('jwttoken');
-            localStorageService.delete('trips');
             localStorageService.delete('users');
             localStorageService.delete('tokenClaims');
             success();

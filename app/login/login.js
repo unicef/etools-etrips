@@ -39,30 +39,18 @@
 
         function loginSuccess(token){
             dataService.getProfile(function(success){
-                    getTrips();
+                    gotoDashboard();
                 },
                     profileFail
                 );
 
-            function getTrips() {
-                dataService.getTrips(
-                    function(res){
-                        $ionicLoading.hide();
-                        $ionicHistory.nextViewOptions({
-                            disableBack: true
-                        });
-                        
-                        $state.go('app.dash.my_trips');
-                    },
-                    function(res){
-                        $ionicLoading.hide();
-                        
-                        $ionicPopup.alert({
-                            title: $translate.instant('controller.login.success.title'),
-                            template: $translate.instant('controller.login.success.template')
-                        });
-                    }, true
-                );
+            function gotoDashboard() {
+                $ionicLoading.hide();
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+                
+                $state.go('app.dash');
             }
 
             function profileFail(error) {

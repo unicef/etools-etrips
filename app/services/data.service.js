@@ -7,11 +7,8 @@
 
     function dataService($timeout, apiUrlService, localStorageService, myHttpService) {
         var service = {
-           getProfile: getProfile,
-           getTrips: getTrips,
-           getUserBase: getUserBase,
-           refreshTrips: refreshTrips,
-           patchTrip: patchTrip,
+           getProfile: getProfile,           
+           getUserBase: getUserBase
         };
 
         return service;
@@ -28,14 +25,6 @@
             );
         }
 
-        function getTrips(success, error, refresh) {
-            if ((refresh === true) || (!Object.keys(localStorageService.getObject('trips')).length)){
-                getTripsRemote(success, error);
-            } else {
-                return success(localStorageService.getObject('trips'));
-            }
-        }
-
         function getUserBase(success, error, refresh) {
            if ((refresh === true) ||
                (!Object.keys(localStorageService.getObject('users')).length) ||
@@ -48,21 +37,6 @@
             }
         }
 
-        function refreshTrips(){
-            getTripsRemote(function(){}, function(){});
-        }
-
-        function patchTrip(tripId, data, success, fail){
-            return myHttpService.patch(apiUrlService.BASE() + '/trips/api/' + tripId +"/", data).then(
-                function(succ){
-                    success(succ);
-                },
-                function(err){
-                    fail(err);
-                }
-            );
-        }        
-
         function checkTimestamp(resource){
             var myt = localStorageService.get(resource);
             if (!myt) {
@@ -72,18 +46,6 @@
             var now = new Date();
 
             return (now < myt);
-        }
-
-        function getTripsRemote(success, error){
-            return myHttpService.get(apiUrlService.BASE() + '/api/trips/').then(
-               function(succ){
-                   localStorageService.setObject('trips',succ.data);
-                   success(succ.data);
-               },
-               function(err){
-                   error(err);
-               }
-            );
         }
 
         function getUsersRemote(success, error){

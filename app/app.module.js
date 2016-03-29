@@ -6,11 +6,8 @@ angular.module('app', [
     /* featured areas */
     'app.components',
     'app.layout',
-    'app.login',
-    'app.notes',
-    'app.report',
-    'app.settings',    
-    'app.trips'
+    'app.login',    
+    'app.settings'
 ]);
 
 angular.module('app.core', [

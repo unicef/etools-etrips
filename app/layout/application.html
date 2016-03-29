@@ -9,7 +9,11 @@
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-nav-view name="menuContent"></ion-nav-view>
+    <ion-nav-view name="menuContent" class="has-header">
+      <ion-view>
+        <ion-nav-title>{{ 'template.login.title' | translate }}</ion-nav-title>
+      </ion-view>
+    </ion-nav-view>
   </ion-side-menu-content>
 
   <ion-side-menu side="left">
@@ -18,16 +22,12 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close class="item-divider">{{ 'template.menu.country' | translate }} {{ vm.currentUser.profile.country_name }}</ion-item>
-        <ion-item menu-close href="#/app/dash/my_trips">
-            {{ 'template.menu.trips' | translate }}
+        <ion-item menu-close href="#/app/dash">
+            Dashboard
         </ion-item>
         <ion-item menu-close href="#/app/settings">
             {{ 'template.menu.settings' | translate }}
         </ion-item>
-        <!-- <ion-item menu-close href="#/app/resources">
-            Resources
-        </ion-item> -->
         <ion-item menu-close ng-click="vm.logout()">
             {{ 'template.menu.logout' | translate }}
         </ion-item>
