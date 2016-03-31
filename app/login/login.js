@@ -38,11 +38,7 @@
         }
 
         function loginSuccess(token){
-            dataService.getProfile(function(success){
-                    gotoDashboard();
-                },
-                    profileFail
-                );
+            dataService.getProfile(gotoDashboard, profileFail);
 
             function gotoDashboard() {
                 $ionicLoading.hide();

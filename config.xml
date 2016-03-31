@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="org.unicef.etools.application" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.unicef.mobile.application" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>application</name>
   <description>
-        UNICEF eTools-application
-    </description>
-  <author email="ravram@unicef.org" href="http://etools.unicef.org/">
-      Unicef eTools Team
-    </author>
+    UNICEF Mobile Application
+  </description>
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>

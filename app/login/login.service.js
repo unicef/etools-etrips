@@ -56,8 +56,7 @@
         function successfulAuthentication(res, retSuccess) {
             var JWToken;
             
-            if (apiUrlService.ADFS){
-                console.log(res);
+            if (apiUrlService.ADFS){                
                 var mys;
                 var r;
                 var encoded_token;

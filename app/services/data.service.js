@@ -7,22 +7,15 @@
 
     function dataService($timeout, apiUrlService, localStorageService, myHttpService) {
         var service = {
-           getProfile: getProfile,           
-           getUserBase: getUserBase
+            getProfile: getProfile,           
+            getUserBase: getUserBase
         };
 
         return service;
 
-        function getProfile(success, error) {
-           myHttpService.get(apiUrlService.BASE() + '/users/api/profile/').then(
-               function(succ){
-                   var myUser = succ.data;
-                   myUser.user_id = myUser.id;                
-                   localStorageService.setObject('currentUser', myUser);
-                   success(succ);
-               },
-               error
-            );
+        function getProfile(success, error) {            
+            localStorageService.setObject('currentUser', localStorageService.get('jwtoken'));
+            success();
         }
 
         function getUserBase(success, error, refresh) {
