@@ -537,7 +537,7 @@
 
   // global error handler
   function errorHandler(error) {
-    console.log('beep: ', beep);
+    console.log('error: ', error);
     beep();
     if (build) {
       throw error;

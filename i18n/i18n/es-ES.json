@@ -169,10 +169,14 @@
     "controller.report.drafts.submitted.title" : "Report Submitted",
     "controller.report.drafts.submitted.template" : "Text has been successfully submitted.",
 
+    "controller.report.picture.upload.title" : "Picture",    
+    "controller.report.picture.upload.selected.title" : "The picture was successfully selected. It will be uploaded when the trip report is submitted.",
+    "controller.report.picture.upload.selected.failed.template" : "A picture was not selected.",
     "controller.report.picture.upload.success.title" : "Picture Upload Succeeded",
     "controller.report.picture.upload.success.template" : "Thank you.",
     "controller.report.picture.upload.fail.title" : "Picture Upload Failed",
     "controller.report.picture.upload.fail.template" : "Please check the network connection and try uploading the picture again.",
+    "controller.report.picture.upload.error.already_selected.template" : "The picture has already been selcted for upload.",
 
     "controller.trip.submit.title" : "Trip Submission",
     "controller.trip.submit.template" : "You succesfully submitted the trip.",    

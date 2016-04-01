@@ -20,7 +20,7 @@ angular.module('app.core', [
     /* angular modules */
     'ngCookies',
     'ngCordova',
-
+    'ngLodash',
 
     /* 3rd-party modules */
     'ngIOS9UIWebViewPatch',
