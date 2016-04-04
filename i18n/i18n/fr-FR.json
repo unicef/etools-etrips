@@ -142,6 +142,7 @@
     "directive.loading.submitting_trip" : "Submitting Trip...",
     "directive.loading.creating_action_point" : "Creating Action Point...",
     "directive.loading.updating_action_point" : "Updating Action Point...",
+    "directive.loading.submitting_report" : "Submitting Report. Please wait.",
 
     "controller.report.text.observations.access" : "Access to inputs/services:",
     "controller.report.text.observations.quality" : "Quality of inputs/services:",
