@@ -37,3 +37,18 @@
 .popup-title  {
     text-align: left !important;
 }
+
+@font-face {
+  font-family: 'Casper';
+  src: url('../fonts/Casper.ttf');
+}
+
+h2.title {
+    font-family: 'Casper';
+    color: #42515a;
+}
+
+h2.title img {
+    height: 60px;
+    width: 60px;
+}
