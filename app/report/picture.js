@@ -5,14 +5,13 @@
         .module('app.report')
         .controller('Picture', Picture);
 
-    Picture.$inject = ['$stateParams', 'pictureService', 'tripService'];
+    Picture.$inject = ['$stateParams', 'pictureService'];
 
-    function Picture($stateParams, pictureService, tripService) {
+    function Picture($stateParams, pictureService) {
         var vm = this;
         vm.data = {};
         vm.filesize = 0;
         vm.takePicture = getPictureCamera;
-        vm.trip = tripService.getTrip($stateParams.tripId);
         vm.uploadExisting = getPicturePhotoLibrary;
 
         function getPictureCamera() {

@@ -151,6 +151,8 @@
     "controller.report.text.submitted.title" : "Report Submitted",
     "controller.report.text.submitted.template" : "Text has been succcessfully submitted.",
 
+    "controller.report.text.title" : "Report",
+    "controller.report.text.picture.template" : "The total file size of the selected pictures ({{ selected_pictures_filesize }}) exceeds {{ filesize_limit }}. Do you want to submit the report?",
     "controller.report.text.submitted.title" : "Report Submitted",
     "controller.report.text.submitted.template" : "Text has been succcessfully submitted.",
 

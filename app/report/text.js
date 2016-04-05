@@ -5,9 +5,11 @@
         .module('app.report')
         .controller('Text', Text);
 
-    Text.$inject = ['$ionicHistory', '$ionicLoading', '$ionicPopup','$q', '$stateParams', '$translate', 'errorHandler', 'networkService', 'pictureService', 'tripService'];
+    Text.$inject = ['$filter', '$ionicHistory', '$ionicLoading', '$ionicPopup', '$q', '$stateParams', '$translate', 'errorHandler', 'networkService', 'pictureService', 'tripService'];
 
-    function Text($ionicHistory, $ionicLoading, $ionicPopup,$q, $stateParams, $translate, errorHandler, networkService, pictureService, tripService) {
+    function Text($filter, $ionicHistory, $ionicLoading, $ionicPopup, $q, $stateParams, $translate, errorHandler, networkService, pictureService, tripService) {
+        var selectedPicturesFilesizeLimit = 250000;
+
         var vm = this;
         vm.trip = tripService.getTrip($stateParams.tripId);
         vm.autosave = autosave;
@@ -62,10 +64,7 @@
 
             } else {
                 var picturesLocalStorage = tripService.getDraft($stateParams.tripId, 'pictures');
-                $ionicLoading.show({
-                    template: '<loading message="submitting_report"></loading>'
-                });
-
+   
                 if (picturesLocalStorage !== undefined) {
                     var totalFileSize = 0;
                     var promises = [];
@@ -73,19 +72,44 @@
                     _.each(picturesLocalStorage, function(picture){                    
                         var data = {
                             'caption' : picture.caption,
-                            'filepath' : picture.filepath,
+                            'filepath' : picture.filepath,                            
                             'trip_id' : $stateParams.tripId
                         };
 
-                        promises.push(pictureService.upload(data));                        
+                        totalFileSize = totalFileSize + picture.filesize;                        
+                        promises.push(pictureService.upload(data));
                     });
 
-                    $q.all(promises).then(function(res) {
-                        submitReportText();
-                    });
+                    if (totalFileSize >= selectedPicturesFilesizeLimit) {
+                        $ionicPopup.confirm({
+                            title: $translate.instant('controller.report.text.title'),
+                            template: $translate.instant('controller.report.text.picture.template', { 
+                                selected_pictures_filesize: $filter('bytes')(totalFileSize),
+                                filesize_limit : '250 kB' 
+                            })
+                        }).then(function(res) {
+                            if (res) {
+                                submitDeferredReportText(promises);
+                            } else {
+                                promises = [];
+                            }
+                        });
+                    } else {
+                        submitDeferredReportText(promises);
+                    }                    
                 } else {
                     submitReportText();
                 }
+            }
+
+            function submitDeferredReportText(promises) {
+                $ionicLoading.show({
+                    template: '<loading message="submitting_report"></loading>'
+                });
+
+                $q.all(promises).then(function(res) {
+                    submitReportText();
+                });
             }
 
             function submitReportText() {
