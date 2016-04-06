@@ -52,3 +52,10 @@ h2.title img {
     height: 60px;
     width: 60px;
 }
+
+ion-content .subtitle {
+    margin-bottom: 10px; 
+    font-size: 13px; 
+    font-weight: normal;
+}
+

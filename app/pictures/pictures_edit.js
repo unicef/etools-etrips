@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('app.report')
-        .controller('Picture', Picture);
+        .module('app.pictures')
+        .controller('PicturesEdit', PicturesEdit);
 
-    Picture.$inject = ['$stateParams', 'pictureService'];
+    PicturesEdit.$inject = ['$stateParams', 'pictureService'];
 
-    function Picture($stateParams, pictureService) {
+    function PicturesEdit($stateParams, pictureService) {
         var vm = this;
         vm.data = {};
         vm.filesize = 0;

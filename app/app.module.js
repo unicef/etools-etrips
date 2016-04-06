@@ -9,6 +9,7 @@ angular.module('app', [
     'app.login',
     'app.notes',
     'app.report',
+    'app.pictures',
     'app.settings',    
     'app.trips'
 ]);
