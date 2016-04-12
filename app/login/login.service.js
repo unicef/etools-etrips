@@ -26,11 +26,16 @@
         }
 
         function logout() {
-            localStorageService.delete('jwtoken');
-            localStorageService.delete('currentUser');
+            if (localStorageService.getObject('currentUser').hasOwnProperty('profile') === true) {
+                var country = localStorageService.getObject('currentUser').profile.country;
+                localStorageService.delete('draft-' + country);
+            }
+
+            localStorageService.delete('jwtoken');            
             localStorageService.delete('trips');
             localStorageService.delete('users');
             localStorageService.delete('tokenClaims');
+            localStorageService.delete('currentUser');
         }        
 
         function refreshLogin(retSuccess, retFail, data) {

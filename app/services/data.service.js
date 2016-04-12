@@ -9,7 +9,9 @@
         var service = {
            getProfile: getProfile,
            getTrips: getTrips,
+           getTripsRemote: getTripsRemote,
            getUserBase: getUserBase,
+           getUsersRemote: getUsersRemote,
            refreshTrips: refreshTrips,
            patchTrip: patchTrip,
         };
@@ -88,19 +90,19 @@
 
         function getUsersRemote(success, error){
             return myHttpService.get(apiUrlService.BASE() + '/users/api/').then(
-               function(succ){
+                function(succ){
                    localStorageService.setObject('users', succ.data);
 
                    var expires = new Date();
                    expires.setMinutes(expires.getMinutes()+5);
                    localStorageService.set('users_timestamp', expires.getTime()+'');
                    success(succ.data);
-               },
-               function(err){
+                },
+                function(err){
                    error(err);
-               }
+                }
             );
-        } 
+        }
     }
 
 })();

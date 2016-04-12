@@ -58,3 +58,19 @@ ion-content .subtitle {
     font-size: 13px; 
     font-weight: normal;
 }
+
+.action_point {
+    font-size: 12px;
+}
+
+.action_point .title {
+    font-weight: bold;
+}
+
+.action_point .item-content {
+    padding: 5px;
+}
+
+.action_points_no_data {
+    font-size: 14px;
+}
