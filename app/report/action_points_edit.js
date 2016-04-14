@@ -91,8 +91,7 @@
                     template: '<loading message="' + loadingMessage + '"></loading>'
                 });
 
-                // TEST: undefined
-                if (networkService.isOffline() === undefined || networkService.isOffline() === true) {
+                if (networkService.isOffline() === true) {
                     $ionicLoading.hide();                        
                     
                     // add additional fields

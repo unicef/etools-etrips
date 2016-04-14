@@ -104,6 +104,8 @@
     "template.trip.report.picture.take" : "Take Picture",
 
     "template.trip.report.action_point.offline" : "Offline Action Points",
+    "template.trip.report.action_point.offline.none" : "There are no offline action points.",
+    "template.trip.report.action_point.non_editable" : "non-editable",    
     "template.trip.report.action_point.saved" : "Saved Action Points",
     "template.trip.report.action_point.person_responsible" : "Owner:",
     "template.trip.report.action_point.title" : "Action Point",

@@ -1,7 +1,7 @@
 describe('Reports', function() {
     var allTripsCssSelector = 'ion-view[view-title="My Trips"] ion-item.item-avatar';
     var reportTabsCssSelector = 'ion-tabs[nav-view="active"] > div.tab-nav > a.tab-item';
-    var buttonTitles = ['Text Reporting', 'Add Picture', 'Action Point'];
+    var buttonTitles = ['Text Reporting', 'Pictures', 'Action Points'];
 
     it('should be able to login and select the My Trips tab', function() {
         auth.login();

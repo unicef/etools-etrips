@@ -1,0 +1,16 @@
+<p>{{ action_point.description }}</p>    
+
+<div class="row action_point">
+    <div class="col owner" style="text-align: left;">
+        <span class="title">{{ 'template.trip.report.action_point.person_responsible' | translate }}</span> 
+        {{ action_point.person_responsible_name }}
+    </div>
+    <div class="col" style="text-align: center;">
+        <span class="title">{{ 'template.trip.report.action_point.status' | translate }}</span>
+        {{ action_point.status }}
+    </div>
+    <div class="col" style="text-align: right;">
+        <span class="title">{{ 'template.trip.report.action_point.due_date' | translate }}</span>
+        {{ action_point.due_date | date:vm.dateFormat }}
+    </div>
+</div>
