@@ -63,7 +63,6 @@
 
         function submit(){            
             vm.errors = {};
-            vm.error = false;
 
             if (!vm.ap.person_responsible){
                 vm.errors.person_responsible = true;
@@ -74,8 +73,19 @@
             }
 
             if (Object.keys(vm.errors).length){
-                vm.error = true;
-                return;
+                var template = '';
+
+                if (vm.errors.description === true) {
+                    template = $translate.instant('template.trip.report.action_point.edit.error.description.template');
+                } else if (vm.errors.person_responsible === true) {
+                    template = $translate.instant('template.trip.report.action_point.edit.error.person_responsible.template');
+                }
+
+                $ionicPopup.alert({
+                    title: $translate.instant('template.trip.report.action_point.edit.error.title'),
+                    template: template
+                });
+
             } else {
                 var loadingMessage = 'updating_action_point';
                 var alertTitle = 'controller.trip.action_point.edit.title';
