@@ -80,3 +80,8 @@ ion-content .subtitle {
     font-size: 12px;
     padding-right: 12px;
 }
+
+.gallery {
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}

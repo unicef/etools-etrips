@@ -5,9 +5,9 @@
         .module('app.trips')
         .controller('TripDetails', TripDetails);
 
-    TripDetails.$inject = ['$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate', 'DATE_FORMAT'];
+    TripDetails.$inject = ['$scope', '$ionicModal', '$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate', 'DATE_FORMAT'];
 
-    function TripDetails($stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate, DATE_FORMAT) {
+    function TripDetails($scope, $ionicModal, $stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate, DATE_FORMAT) {
         var vm = this;
         var uid = localStorageService.getObject('currentUser').user_id;
 
@@ -19,6 +19,66 @@
         vm.submit = submit;
         vm.takeNotes = takeNotes;
         vm.trip = tripService.getTrip($stateParams.tripId);
+        vm.pictureDimension = 0;
+
+        vm.openModal = openModal;
+        vm.closeModal = closeModal;
+        vm.modalPicture = { 'filepath' : ''};
+
+        $ionicModal.fromTemplateUrl('./templates/pictures/pictures_modal.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
+
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+
+        ionic.Platform.ready(function(){
+            var pictureGridCount = 3;            
+            vm.pictureDimension = parseInt(window.innerWidth/pictureGridCount) - pictureGridCount*4;
+        });
+
+
+        function openModal(picture) {
+            vm.modalPicture = picture;
+            $scope.modal.show();
+        }
+
+        function closeModal() {
+            $scope.modal.hide();
+        }
+
+        var pictures = [
+            {
+                filepath: 'http://lorempixel.com/800/800/',
+                caption: 'Proin sapien ipsum porta'
+            },
+            {
+                filepath: 'http://lorempixel.com/600/600/',
+                caption: 'Phasellus volutpat metus eget egestas'
+            },
+            {
+                filepath: 'http://lorempixel.com/700/700/',
+                caption: 'Fusce pharetra convallis urna'
+            },
+            {
+                filepath: 'http://lorempixel.com/650/650/',
+                caption: 'Ut id nisl quis enim'
+            },
+            {
+                filepath: 'http://lorempixel.com/750/750/',
+                caption: 'Nullam nulla eros ultricies sit'
+            },
+            {
+                filepath: 'http://lorempixel.com/550/550/',
+                caption: 'Nunc egestas augue at'
+            }
+        ];
+
+        vm.pictures = pictures;
 
         vm.checks = {
             supervisor: vm.trip.supervisor == uid,
