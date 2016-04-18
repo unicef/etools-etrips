@@ -5,7 +5,7 @@
         .module('app.core')
         .service('pictureService', pictureService);
 
-    function pictureService($cordovaFileTransfer, $ionicPopup, $q, $stateParams, $translate, apiUrlService, localStorageService, lodash, md5, tripService){
+    function pictureService($cordovaFileTransfer, $ionicHistory, $ionicPopup, $q, $state, $stateParams, $translate, apiUrlService, localStorageService, lodash, md5, tripService){
         var _ = lodash;
         var pictureData = null;
         var service = {
@@ -79,6 +79,8 @@
                 $ionicPopup.alert({
                     title: $translate.instant('controller.report.picture.upload.title'),
                     template: $translate.instant('controller.report.picture.upload.selected.title')
+                }).then(function(){
+                    $ionicHistory.goBack(-1);
                 });
             });
 

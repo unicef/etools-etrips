@@ -16,13 +16,20 @@ describe('Reports - Pictures', function() {
         element(by.buttonText('Report')).click();
         
         waitForElement('button#report_text');
-        element(by.buttonText('Add Picture')).click();
+        element(by.buttonText('Pictures')).click();
 
+        waitForElement('a.button-positive');
+        element(by.linkText('Add Picture')).click();
+
+        waitForElement('textarea');
         element(by.buttonText('Upload Existing Photo')).isPresent().should.eventually.true;
         element(by.buttonText('Take Picture')).isPresent().should.eventually.true;        
     });
 
     it('should be able to logout', function() {
+        element.all(by.css('button.back-button:not(.hide)')).get(1).click();
+        waitForElement('button.back-button:not(.hide)');
+
         element.all(by.css('button.back-button:not(.hide)')).get(0).click();
         waitForElement('button.back-button:not(.hide)');
 

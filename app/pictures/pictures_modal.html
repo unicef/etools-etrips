@@ -1,0 +1,26 @@
+<ion-modal-view class="image-modal" ng-click="vm.closeModal()">
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider item-image">
+                <ion-scroll zooming="true"
+                direction="xy" 
+                delegate-handle="zoom-pane" 
+                class="zoom-pane" 
+                min-zoom="1" 
+                        scrollbar-x="false" 
+                    scrollbar-y="false" 
+                overflow-scroll="false">
+                    <img src="{{ vm.modalPicture.filepath }}" />
+                </ion-scroll>
+            </div>
+
+            <div class="item item-text-wrap" style="font-size: 14px;">
+                {{ vm.modalPicture.caption}}
+            </div>
+
+            <div class="item" style="font-size: 14px;">
+                {{ vm.modalPicture.filesize | bytes }}
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

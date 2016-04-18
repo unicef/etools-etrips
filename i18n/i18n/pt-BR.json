@@ -6,7 +6,7 @@
     "template.login.remember_me" : "REMEMBER ME",
     "template.login.sign_in" : "Fazer login",
     
-    "template.menu.title" : "eTrip Menu",
+"template.menu.title" : "eTrip Menu",
     "template.menu.country" : "Country:",
     "template.menu.trips" : "Trips",
     "template.menu.settings" : "Settings",
@@ -77,8 +77,14 @@
     "template.trip.notes.insert" : "Insert notes here",
 
     "template.trip.report.text" : "Text Reporting",
-    "template.trip.report.picture" : "Add Picture",
-    "template.trip.report.action_point" : "Action Point",
+
+    "template.trip.report.picture.list.title" : "Pictures Selected for Upload",
+    "template.trip.report.picture.list.subtitle" : "The following pictures will be uploaded when the trip report is submitted.",
+    "template.trip.report.picture.list.subtitle.no_picutres" : "No pictures have been selected for upload.",
+    "template.trip.report.picture.list.delete" : "Delete",
+    
+    "template.trip.report.picture" : "Pictures",
+    "template.trip.report.action_point" : "Action Points",
 
     "template.trip.report.text.title" : "Text Reporting",
     "template.trip.report.text.progress" : "Progress Reporting",
@@ -93,6 +99,7 @@
     "template.trip.report.text.key" : "Key partnerships/collaboration and other highlights",
 
     "template.trip.report.picture.title" : "Add Picture",
+    "template.trip.report.picture.add" : "Add Picture",    
     "template.trip.report.picture.caption" : "Caption",
     "template.trip.report.picture.upload" : "Upload Existing Photo",
     "template.trip.report.picture.take" : "Take Picture",
@@ -175,6 +182,8 @@
     "controller.report.picture.upload.title" : "Picture",    
     "controller.report.picture.upload.selected.title" : "The picture was successfully selected. It will be uploaded when the trip report is submitted.",
     "controller.report.picture.upload.selected.failed.template" : "A picture was not selected.",
+    "controller.report.picture.upload.delete.title" : "Delete Picture",
+    "controller.report.picture.upload.delete.template" : "Are you sure you want to delete this picture?",
     "controller.report.picture.upload.success.title" : "Picture Upload Succeeded",
     "controller.report.picture.upload.success.template" : "Thank you.",
     "controller.report.picture.upload.fail.title" : "Picture Upload Failed",
