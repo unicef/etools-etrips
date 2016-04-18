@@ -8,6 +8,7 @@
     "gulp-minify-css": "^1.2.3",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.2.0",
+    "lodash": "^4.7.0",
     "protractor": "^3.1.1"
   },
   "devDependencies": {

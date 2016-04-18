@@ -14,7 +14,7 @@
         return service;
 
         function isOffline(){            
-            return $cordovaNetwork.isOffline();
+            return window.Connection && navigator.connection.type === Connection.NONE;
         }
 
         function showMessage(title, content){

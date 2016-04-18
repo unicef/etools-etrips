@@ -5,15 +5,18 @@
         .module('app.report')
         .controller('Text', Text);
 
-    Text.$inject = ['$scope', '$stateParams', 'tripService', '$ionicLoading', '$ionicHistory', '$ionicPopup', 'errorHandler', 'networkService', '$translate'];
+    Text.$inject = ['$filter', '$ionicHistory', '$ionicLoading', '$ionicPopup', '$q', '$stateParams', '$translate', 'errorHandler', 'networkService', 'pictureService', 'tripService'];
 
-    function Text($scope, $stateParams, tripService, $ionicLoading, $ionicHistory, $ionicPopup, errorHandler, networkService, $translate) {
+    function Text($filter, $ionicHistory, $ionicLoading, $ionicPopup, $q, $stateParams, $translate, errorHandler, networkService, pictureService, tripService) {
+        var selectedPicturesFilesizeLimit = 250000;
+
         var vm = this;
         vm.trip = tripService.getTrip($stateParams.tripId);
         vm.autosave = autosave;
         vm.submit = submit;
+        vm.pictureFileSizeTotal = 0;
 
-        var fields = ['main_observations', 'constraints', 'lessons_learned', 'opportunities'];
+        var fields = ['main_observations', 'constraints', 'lessons_learned', 'opportunities', 'pictures'];
         var main_obs_template = $translate.instant('controller.report.text.observations.access') + '\n \n \n \n' +
         $translate.instant('controller.report.text.observations.quality') + '\n \n \n \n' +
         $translate.instant('controller.report.text.observations.utilisation') + '\n \n \n \n' +
@@ -60,8 +63,56 @@
                 networkService.showMessage();
 
             } else {
-                $ionicLoading.show( { template: '<loading message="sending_report"></loading>' } );
+                var picturesLocalStorage = tripService.getDraft($stateParams.tripId, 'pictures');
+   
+                if (picturesLocalStorage !== undefined) {
+                    var totalFileSize = 0;
+                    var promises = [];
 
+                    _.each(picturesLocalStorage, function(picture){                    
+                        var data = {
+                            'caption' : picture.caption,
+                            'filepath' : picture.filepath,                            
+                            'trip_id' : $stateParams.tripId
+                        };
+
+                        totalFileSize = totalFileSize + picture.filesize;                        
+                        promises.push(pictureService.upload(data));
+                    });
+
+                    if (totalFileSize >= selectedPicturesFilesizeLimit) {
+                        $ionicPopup.confirm({
+                            title: $translate.instant('controller.report.text.title'),
+                            template: $translate.instant('controller.report.text.picture.template', { 
+                                selected_pictures_filesize: $filter('bytes')(totalFileSize),
+                                filesize_limit : '250 kB' 
+                            })
+                        }).then(function(res) {
+                            if (res) {
+                                submitDeferredReportText(promises);
+                            } else {
+                                promises = [];
+                            }
+                        });
+                    } else {
+                        submitDeferredReportText(promises);
+                    }                    
+                } else {
+                    submitReportText();
+                }
+            }
+
+            function submitDeferredReportText(promises) {
+                $ionicLoading.show({
+                    template: '<loading message="submitting_report"></loading>'
+                });
+
+                $q.all(promises).then(function(res) {
+                    submitReportText();
+                });
+            }
+
+            function submitReportText() {
                 tripService.reportText(vm.data, vm.trip.id, 
                     function(succ){
                         $ionicLoading.hide();

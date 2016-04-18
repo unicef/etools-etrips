@@ -142,6 +142,7 @@
     "directive.loading.submitting_trip" : "Submitting Trip...",
     "directive.loading.creating_action_point" : "Creating Action Point...",
     "directive.loading.updating_action_point" : "Updating Action Point...",
+    "directive.loading.submitting_report" : "Submitting Report. Please wait.",
 
     "controller.report.text.observations.access" : "Access to inputs/services:",
     "controller.report.text.observations.quality" : "Quality of inputs/services:",
@@ -150,6 +151,8 @@
     "controller.report.text.submitted.title" : "Report Submitted",
     "controller.report.text.submitted.template" : "Text has been succcessfully submitted.",
 
+    "controller.report.text.title" : "Report",
+    "controller.report.text.picture.template" : "The total file size of the selected pictures ({{ selected_pictures_filesize }}) exceeds {{ filesize_limit }}. Do you want to submit the report?",
     "controller.report.text.submitted.title" : "Report Submitted",
     "controller.report.text.submitted.template" : "Text has been succcessfully submitted.",
 
@@ -169,10 +172,14 @@
     "controller.report.drafts.submitted.title" : "Report Submitted",
     "controller.report.drafts.submitted.template" : "Text has been successfully submitted.",
 
+    "controller.report.picture.upload.title" : "Picture",    
+    "controller.report.picture.upload.selected.title" : "The picture was successfully selected. It will be uploaded when the trip report is submitted.",
+    "controller.report.picture.upload.selected.failed.template" : "A picture was not selected.",
     "controller.report.picture.upload.success.title" : "Picture Upload Succeeded",
     "controller.report.picture.upload.success.template" : "Thank you.",
     "controller.report.picture.upload.fail.title" : "Picture Upload Failed",
     "controller.report.picture.upload.fail.template" : "Please check the network connection and try uploading the picture again.",
+    "controller.report.picture.upload.error.already_selected.template" : "The picture has already been selcted for upload.",
 
     "controller.trip.submit.title" : "Trip Submission",
     "controller.trip.submit.template" : "You succesfully submitted the trip.",    

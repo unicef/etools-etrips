@@ -60,7 +60,7 @@
             if (Object.keys(my_obj).length) {
                 // check for trip
                 if (my_obj[tripId]) {
-                    var validDataTypes = ['text', 'notes', 'main_observations', 'constraints', 'lessons_learned', 'opportunities'];
+                    var validDataTypes = ['text', 'notes', 'main_observations', 'constraints', 'lessons_learned', 'opportunities', 'pictures'];
 
                     for(var i=0; i<validDataTypes.length; i++){
                         if (( validDataTypes[i] === dtype) && (my_obj[tripId][dtype])) {
@@ -138,7 +138,7 @@
                 my_obj[tripId][dtype] = draft;
             }
 
-            localStorageService.setObject('draft-'+country, my_obj);
+            localStorageService.setObject('draft-' + country, my_obj);
         }
 
         function tripAction(id, action, data) {
