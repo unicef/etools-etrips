@@ -1,0 +1,56 @@
+<div class="item-text-wrap action_point wrapping-list">
+    <div class="row">
+        <div class="col col-50">
+            <div class="title">{{ 'template.trip.report.action_point.description' | translate }}</div>
+            <div class="value" style="padding-right: 20px;">{{ action_point.description | truncate:true:150 }}</div>
+        </div>
+        <div class="col col-50">
+            <div class="value">
+                <div class="title">{{ 'template.trip.report.action_point.actions_taken' | translate }}</div>
+                <div ng-show="(action_point.actions_taken).length">
+                    {{ action_point.actions_taken | truncate:true:150 }}
+                </div>
+                <div ng-show="!action_point.actions_taken">
+                    {{ 'template.trip.report.action_point.n_a' | translate }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col col-50">
+            <div class="title">{{ 'template.trip.report.action_point.person_responsible' | translate }}</div>
+            <div class="value">{{ action_point.person_responsible_name }}</div>
+        </div>
+        <div class="col col-50">
+            <div class="title">{{ 'template.trip.report.action_point.status' | translate }}</div>
+            <div class="value" style="text-transform: capitalize;">{{ action_point.status | lowercase }}</div>    
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col col-50">
+            <div class="title">{{ 'template.trip.report.action_point.due_date' | translate }}</div>
+            <div class="value">{{ action_point.due_date | date:vm.dateFormat }}</div>
+        </div>
+        <div class="col col-50">
+            <div class="title">{{ 'template.trip.report.action_point.completed_date' | translate }}</div>
+            <div class="value">
+                <div ng-show="(action_point.completed_date).length">
+                    {{ action_point.completed_date | date:vm.dateFormat }}
+                </div>
+                <div ng-show="!action_point.completed_date">
+                    {{ 'template.trip.report.action_point.n_a' | translate }}
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="title">{{ 'template.trip.report.action_point.comments' | translate }}</div>
+            <div class="value">{{ action_point.comments | truncate:true:150 }}</div>
+        </div>       
+    </div>
+
+</div>

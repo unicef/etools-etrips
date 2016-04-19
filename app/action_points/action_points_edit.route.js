@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.report')
+        .module('app.action_points')
         .config(config);
 
     function config($stateProvider, $urlRouterProvider) {
@@ -12,7 +12,7 @@
                 cache: false,
                 views: {
                     'tab-trips': {
-                        templateUrl: 'app/report/action_points_edit.html',
+                        templateUrl: 'app/action_points/action_points_edit.html',
                         controller: 'ActionPointsEdit',
                         controllerAs: 'vm'
                     }
@@ -24,7 +24,7 @@
                 cache: false,
                 views: {
                     'tab-trips': {
-                        templateUrl: 'app/report/action_points_edit.html',
+                        templateUrl: 'app/action_points/action_points_edit.html',
                         controller: 'ActionPointsEdit',
                         controllerAs: 'vm'
                     }

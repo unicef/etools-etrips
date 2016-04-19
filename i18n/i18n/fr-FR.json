@@ -6,7 +6,7 @@
     "template.login.remember_me" : "REMEMBER ME",
     "template.login.sign_in" : "Connexion",
 
-"template.menu.title" : "eTrip Menu",
+    "template.menu.title" : "eTrip Menu",
     "template.menu.country" : "Country:",
     "template.menu.trips" : "Trips",
     "template.menu.settings" : "Settings",
@@ -113,6 +113,11 @@
     "template.trip.report.action_point.status" : "Status:",
     "template.trip.report.action_point.due_date" : "Due date:",
     "template.trip.report.action_point.new" : "New Action Point",
+    "template.trip.report.action_point.description" : "Description:",
+    "template.trip.report.action_point.actions_taken" : "Actions taken:",
+    "template.trip.report.action_point.completed_date" : "Completed date:",
+    "template.trip.report.action_point.n_a" : "N/A",
+    "template.trip.report.action_point.comments" : "Comments:",
     "template.trip.report.action_point.edit.title" : "Edit Action Point",
     "template.trip.report.action_point.edit.status" : "Status",
     "template.trip.report.action_point.edit.open" : "Open",
@@ -122,6 +127,8 @@
     "template.trip.report.action_point.edit.description" : "Description:",
     "template.trip.report.action_point.edit.comments" : "Comments:",
     "template.trip.report.action_point.edit.due_date" : "Due Date:",
+    "template.trip.report.action_point.edit.actions_taken" : "Actions Taken:",
+    "template.trip.report.action_point.edit.completed_date" : "Completed Date:",
     "template.trip.report.action_point.edit.person_responsible" : "Person responsible:",
     "template.trip.report.action_point.edit.assign_to" : "Assign to =>",
     "template.trip.report.action_point.edit.description" : "Description:",
@@ -247,4 +254,4 @@
     "factory.error_handler.default_message" : "Something went wrong, try again later.",
     "factory.error_handler.password" : "The password introduced was incorrect.",
     "factory.error_handler.unknown" : "Something went wrong."
-}}
+}

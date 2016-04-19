@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.report')
+        .module('app.action_points')
         .controller('ActionPointsEdit', ActionPointsEdit);
 
     ActionPointsEdit.$inject = ['$ionicHistory', '$ionicLoading', '$ionicPopup', '$locale', '$scope', '$state', '$stateParams', '$translate', 'dataService', 'errorHandler', 'localStorageService', 'lodash', 'md5', 'networkService', 'tripService'];
@@ -17,6 +17,7 @@
         vm.title = 'template.trip.report.action_point.edit.title';
         vm.today = new Date();
         vm.yearOptions = [vm.today.getFullYear() + '', vm.today.getFullYear() + 1 + ''];
+        vm.personResponsibleIsCurrentUser = false;
 
         // new / edit state
         if ($state.current.name.indexOf('new') > 0) {
@@ -51,6 +52,10 @@
             } else {
                 vm.ap = tripService.getAP(currentTrip, $stateParams.actionPointId);
             }
+        }
+
+        if (parseInt(vm.ap.person_responsible) === parseInt(localStorageService.getObject('currentUser').id)) {
+            vm.personResponsibleIsCurrentUser = true;
         }
 
         function paddedNumber(limit){
@@ -114,6 +119,7 @@
                     }).full_name;                    
 
                     vm.ap.due_date = vm.ap.due_day + '/' + vm.ap.due_month + '/' + vm.ap.due_year;
+                    vm.ap.completed_date = vm.ap.completed_date_day + '/' + vm.ap.completed_date_month + '/' + vm.ap.completed_date_year;
                 
                     // add to exisiting action points if applicable
                     var offlineActionPoints = tripService.getDraft(currentTrip.id, 'action_points');

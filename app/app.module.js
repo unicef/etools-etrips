@@ -8,6 +8,7 @@ angular.module('app', [
     'app.layout',
     'app.login',
     'app.notes',
+    'app.action_points',
     'app.report',
     'app.pictures',
     'app.settings',    
