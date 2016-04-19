@@ -280,8 +280,6 @@
         .use(!build ? connectLr() : function(){})
         .use(express.static(targetDir))
         .listen(port);
-      
-      open('http://localhost:' + port + '/');
   });
 
   // ionic emulate wrapper

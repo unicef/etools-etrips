@@ -32,9 +32,9 @@ describe('Reports - Action Points', function() {
         textareas.get(0).sendKeys(description);
         textareas.get(1).sendKeys(comments);
         element(by.cssContainingText('option', 'finn')).click();        
-        element(by.css('option[label="03"]')).click();   
-        element(by.cssContainingText('option', 'Jan')).click();   
-        element(by.cssContainingText('option', '2017')).click();   
+        element.all(by.css('option[label="03"]')).get(0).click();   
+        element.all(by.cssContainingText('option', 'Jan')).get(0).click();   
+        element.all(by.cssContainingText('option', '2017')).get(0).click();   
         element(by.buttonText('Submit')).click();
 
         waitForElement('div.popup-container.popup-showing.active');
@@ -43,16 +43,13 @@ describe('Reports - Action Points', function() {
 
     it('should be able have a list of the newly created action point ', function(){   
         // validate number of action points        
-        element.all(by.css('ion-view[nav-view="active"] a.item-content')).count().should.eventually.equal(1);
+        element.all(by.css('.online.item')).count().should.eventually.equal(1);
 
         // validate new action point
-        element(by.css('ion-view[nav-view="active"] a.item-content p')).getText().should.eventually.equal(description.substring(0, 254));
-        
-        var data = element.all(by.css('ion-view[nav-view="active"] a.item-content div.action_point > div'));        
-
-        data.get(0).getText().should.eventually.equal('Owner: finn');
-        data.get(1).getText().should.eventually.equal('Status: open');
-        data.get(2).getText().should.eventually.equal('Due date: 03/01/2017');        
+        element(by.css('.online.item .description')).getText().should.eventually.equal(description.substring(0, 148) + ' …');
+        element(by.css('.online.item .owner')).getText().should.eventually.equal('finn');
+        element(by.css('.online.item .status')).getText().should.eventually.equal('Open');
+        element(by.css('.online.item .due_date')).getText().should.eventually.equal('03/01/2017');        
     });
 
     it('should be able to logout', function() {

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col col-50">
             <div class="title">{{ 'template.trip.report.action_point.description' | translate }}</div>
-            <div class="value" style="padding-right: 20px;">{{ action_point.description | truncate:true:150 }}</div>
+            <div class="value description" style="padding-right: 20px;">{{ action_point.description | truncate:true:150 }}</div>
         </div>
         <div class="col col-50">
             <div class="value">
@@ -20,18 +20,18 @@
     <div class="row">
         <div class="col col-50">
             <div class="title">{{ 'template.trip.report.action_point.person_responsible' | translate }}</div>
-            <div class="value">{{ action_point.person_responsible_name }}</div>
+            <div class="value owner">{{ action_point.person_responsible_name }}</div>
         </div>
         <div class="col col-50">
             <div class="title">{{ 'template.trip.report.action_point.status' | translate }}</div>
-            <div class="value" style="text-transform: capitalize;">{{ action_point.status | lowercase }}</div>    
+            <div class="value status" style="text-transform: capitalize;">{{ action_point.status | lowercase }}</div>    
         </div>
     </div>
 
     <div class="row">
         <div class="col col-50">
             <div class="title">{{ 'template.trip.report.action_point.due_date' | translate }}</div>
-            <div class="value">{{ action_point.due_date | date:vm.dateFormat }}</div>
+            <div class="value due_date">{{ action_point.due_date | date:vm.dateFormat }}</div>
         </div>
         <div class="col col-50">
             <div class="title">{{ 'template.trip.report.action_point.completed_date' | translate }}</div>

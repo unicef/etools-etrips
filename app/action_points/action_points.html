@@ -8,7 +8,7 @@
                 </div>
           
                 <ion-list ng-show="(vm.offlineActionPoints).length">
-                    <ion-item ng-repeat="action_point in vm.offlineActionPoints" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.trip_id, actionPointId : action_point.id })" class="item-remove-animate action_points">
+                    <ion-item ng-repeat="action_point in vm.offlineActionPoints" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.trip_id, actionPointId : action_point.id })" class="item-remove-animate action_points offline">
                         <ng-include src="'templates/action_points/action_points_item.html'"></ng-include>
 
                         <ion-option-button class="button-assertive" ng-click="vm.deleteActionPoint(action_point.id)">
@@ -29,7 +29,7 @@
             </div>
 
             <ion-list ng-show="!vm.offline">
-                <ion-item ng-repeat="action_point in vm.trips.actionpoint_set" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.trip_id, actionPointId : action_point.id })" class="item-remove-animate">
+                <ion-item ng-repeat="action_point in vm.trips.actionpoint_set" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.trip_id, actionPointId : action_point.id })" class="item-remove-animate online">
                     <ng-include src="'templates/action_points/action_points_item.html'"></ng-include>               
                 </ion-item>              
             </ion-list>
