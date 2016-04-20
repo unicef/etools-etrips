@@ -772,6 +772,44 @@ ALTER SEQUENCE partners_agreement_id_seq OWNED BY partners_agreement.id;
 
 
 --
+-- Name: partners_agreementamendmentlog; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_agreementamendmentlog (
+    id integer NOT NULL,
+    created timestamp with time zone NOT NULL,
+    modified timestamp with time zone NOT NULL,
+    type character varying(50) NOT NULL,
+    amended_at date,
+    status character varying(32) NOT NULL,
+    agreement_id integer NOT NULL
+);
+
+
+ALTER TABLE partners_agreementamendmentlog OWNER TO postgres;
+
+--
+-- Name: partners_agreementamendmentlog_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_agreementamendmentlog_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_agreementamendmentlog_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_agreementamendmentlog_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_agreementamendmentlog_id_seq OWNED BY partners_agreementamendmentlog.id;
+
+
+--
 -- Name: partners_amendmentlog; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -781,7 +819,6 @@ CREATE TABLE partners_amendmentlog (
     modified timestamp with time zone NOT NULL,
     type character varying(50) NOT NULL,
     amended_at date,
-    amendment_number integer NOT NULL,
     partnership_id integer NOT NULL,
     status character varying(32) NOT NULL
 );
@@ -940,8 +977,9 @@ CREATE TABLE partners_distributionplan (
     sent boolean NOT NULL,
     delivered integer NOT NULL,
     item_id integer NOT NULL,
-    location_id integer NOT NULL,
     partnership_id integer NOT NULL,
+    site_id integer,
+    document text,
     CONSTRAINT partners_distributionplan_quantity_check CHECK ((quantity >= 0))
 );
 
@@ -1017,7 +1055,9 @@ CREATE TABLE partners_fundingcommitment (
     commitment_amount numeric(10,2),
     expenditure_amount numeric(10,2),
     grant_id integer NOT NULL,
-    intervention_id integer
+    intervention_id integer,
+    "end" timestamp with time zone,
+    start timestamp with time zone
 );
 
 
@@ -1148,7 +1188,8 @@ CREATE TABLE partners_partnerorganization (
     core_values_assessment_date date,
     core_values_assessment character varying(100),
     cso_type character varying(50),
-    vision_synced boolean NOT NULL
+    vision_synced boolean NOT NULL,
+    type_of_assessment character varying(50)
 );
 
 
@@ -1262,7 +1303,7 @@ ALTER SEQUENCE partners_partnerstaffmember_id_seq OWNED BY partners_partnerstaff
 CREATE TABLE partners_pca (
     id integer NOT NULL,
     partnership_type character varying(255),
-    number character varying(45) NOT NULL,
+    number character varying(45),
     title character varying(256) NOT NULL,
     status character varying(32) NOT NULL,
     start_date date,
@@ -1299,7 +1340,8 @@ CREATE TABLE partners_pca (
     result_structure_id integer,
     unicef_manager_id integer,
     fr_number character varying(50),
-    project_type character varying(20)
+    project_type character varying(20),
+    planned_visits integer NOT NULL
 );
 
 
@@ -1595,7 +1637,7 @@ CREATE TABLE partners_resultchain (
     in_kind_amount integer NOT NULL,
     partner_contribution integer NOT NULL,
     unicef_cash integer NOT NULL,
-    disaggregation public.hstore,
+    disaggregation text,
     current_progress integer NOT NULL,
     CONSTRAINT partners_resultchain_current_progress_check CHECK ((current_progress >= 0)),
     CONSTRAINT partners_resultchain_target_check CHECK ((target >= 0))
@@ -2132,6 +2174,42 @@ ALTER TABLE trips_fileattachment_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE trips_fileattachment_id_seq OWNED BY trips_fileattachment.id;
+
+
+--
+-- Name: trips_linkedpartner; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE trips_linkedpartner (
+    id integer NOT NULL,
+    intervention_id integer,
+    partner_id integer NOT NULL,
+    result_id integer,
+    trip_id integer NOT NULL
+);
+
+
+ALTER TABLE trips_linkedpartner OWNER TO postgres;
+
+--
+-- Name: trips_linkedpartner_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE trips_linkedpartner_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE trips_linkedpartner_id_seq OWNER TO postgres;
+
+--
+-- Name: trips_linkedpartner_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE trips_linkedpartner_id_seq OWNED BY trips_linkedpartner.id;
 
 
 --
@@ -3966,7 +4044,8 @@ CREATE TABLE users_country (
     latitude numeric(8,6),
     longitude numeric(8,6),
     country_short_code character varying(10),
-    vision_sync_enabled boolean NOT NULL
+    vision_sync_enabled boolean NOT NULL,
+    vision_last_synced timestamp with time zone
 );
 
 
@@ -4135,6 +4214,45 @@ ALTER TABLE users_userprofile_id_seq OWNER TO postgres;
 ALTER SEQUENCE users_userprofile_id_seq OWNED BY users_userprofile.id;
 
 
+--
+-- Name: vision_visionsynclog; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE vision_visionsynclog (
+    id integer NOT NULL,
+    handler_name character varying(50) NOT NULL,
+    total_records integer NOT NULL,
+    total_processed integer NOT NULL,
+    successful boolean NOT NULL,
+    exception_message text,
+    date_processed timestamp with time zone NOT NULL,
+    country_id integer NOT NULL
+);
+
+
+ALTER TABLE vision_visionsynclog OWNER TO postgres;
+
+--
+-- Name: vision_visionsynclog_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE vision_visionsynclog_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE vision_visionsynclog_id_seq OWNER TO postgres;
+
+--
+-- Name: vision_visionsynclog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE vision_visionsynclog_id_seq OWNED BY vision_visionsynclog.id;
+
+
 SET search_path = hoth, pg_catalog;
 
 --
@@ -4254,6 +4372,13 @@ ALTER TABLE ONLY locations_region ALTER COLUMN id SET DEFAULT nextval('locations
 --
 
 ALTER TABLE ONLY partners_agreement ALTER COLUMN id SET DEFAULT nextval('partners_agreement_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_agreementamendmentlog ALTER COLUMN id SET DEFAULT nextval('partners_agreementamendmentlog_id_seq'::regclass);
 
 
 --
@@ -4492,6 +4617,13 @@ ALTER TABLE ONLY trips_actionpoint ALTER COLUMN id SET DEFAULT nextval('trips_ac
 --
 
 ALTER TABLE ONLY trips_fileattachment ALTER COLUMN id SET DEFAULT nextval('trips_fileattachment_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY trips_linkedpartner ALTER COLUMN id SET DEFAULT nextval('trips_linkedpartner_id_seq'::regclass);
 
 
 --
@@ -4853,6 +4985,13 @@ ALTER TABLE ONLY users_userprofile ALTER COLUMN id SET DEFAULT nextval('users_us
 ALTER TABLE ONLY users_userprofile_countries_available ALTER COLUMN id SET DEFAULT nextval('users_userprofile_countries_available_id_seq'::regclass);
 
 
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY vision_visionsynclog ALTER COLUMN id SET DEFAULT nextval('vision_visionsynclog_id_seq'::regclass);
+
+
 SET search_path = hoth, pg_catalog;
 
 --
@@ -5063,6 +5202,19 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 111	partners	0035_auto_20160314_1524	2016-03-24 11:26:10.054888-04
 112	reports	0015_result_ram	2016-03-24 11:26:10.378742-04
 113	users	0011_auto_20160313_1241	2016-03-24 11:26:11.083207-04
+114	partners	0036_auto_20160328_0122	2016-04-20 09:51:05.286847-04
+115	partners	0037_auto_20160329_0220	2016-04-20 09:51:06.096935-04
+116	partners	0038_auto_20160404_1519	2016-04-20 09:51:06.927207-04
+117	partners	0039_distributionplan_document	2016-04-20 09:51:07.215133-04
+118	partners	0040_auto_20160411_1404	2016-04-20 09:51:08.523467-04
+119	partners	0041_auto_20160413_0051	2016-04-20 09:51:09.073994-04
+120	partners	0042_auto_20160413_1321	2016-04-20 09:51:09.340391-04
+121	partners	0043_auto_20160413_1358	2016-04-20 09:51:09.626157-04
+122	partners	0044_pca_planned_visits	2016-04-20 09:51:10.192502-04
+123	reports	0016_auto_20160323_1933	2016-04-20 09:51:10.769784-04
+124	trips	0011_linkedpartner	2016-04-20 09:51:11.128772-04
+125	users	0012_country_vision_last_synced	2016-04-20 09:51:11.450803-04
+126	vision	0001_initial	2016-04-20 09:51:12.14766-04
 \.
 
 
@@ -5070,7 +5222,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 113, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 126, true);
 
 
 --
@@ -5224,10 +5376,25 @@ SELECT pg_catalog.setval('partners_agreement_id_seq', 1, false);
 
 
 --
+-- Data for Name: partners_agreementamendmentlog; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_agreementamendmentlog (id, created, modified, type, amended_at, status, agreement_id) FROM stdin;
+\.
+
+
+--
+-- Name: partners_agreementamendmentlog_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_agreementamendmentlog_id_seq', 1, false);
+
+
+--
 -- Data for Name: partners_amendmentlog; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_amendmentlog (id, created, modified, type, amended_at, amendment_number, partnership_id, status) FROM stdin;
+COPY partners_amendmentlog (id, created, modified, type, amended_at, partnership_id, status) FROM stdin;
 \.
 
 
@@ -5287,7 +5454,7 @@ SELECT pg_catalog.setval('partners_directcashtransfer_id_seq', 1, false);
 -- Data for Name: partners_distributionplan; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_distributionplan (id, quantity, send, sent, delivered, item_id, location_id, partnership_id) FROM stdin;
+COPY partners_distributionplan (id, quantity, send, sent, delivered, item_id, partnership_id, site_id, document) FROM stdin;
 \.
 
 
@@ -5317,7 +5484,7 @@ SELECT pg_catalog.setval('partners_filetype_id_seq', 1, false);
 -- Data for Name: partners_fundingcommitment; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_fundingcommitment (id, fr_number, wbs, fc_type, fc_ref, fr_item_amount_usd, agreement_amount, commitment_amount, expenditure_amount, grant_id, intervention_id) FROM stdin;
+COPY partners_fundingcommitment (id, fr_number, wbs, fc_type, fc_ref, fr_item_amount_usd, agreement_amount, commitment_amount, expenditure_amount, grant_id, intervention_id, "end", start) FROM stdin;
 \.
 
 
@@ -5362,7 +5529,7 @@ SELECT pg_catalog.setval('partners_indicatorreport_id_seq', 1, false);
 -- Data for Name: partners_partnerorganization; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_partnerorganization (id, partner_type, name, short_name, description, address, email, phone_number, vendor_number, alternate_id, alternate_name, rating, core_values_assessment_date, core_values_assessment, cso_type, vision_synced) FROM stdin;
+COPY partners_partnerorganization (id, partner_type, name, short_name, description, address, email, phone_number, vendor_number, alternate_id, alternate_name, rating, core_values_assessment_date, core_values_assessment, cso_type, vision_synced, type_of_assessment) FROM stdin;
 \.
 
 
@@ -5407,7 +5574,7 @@ SELECT pg_catalog.setval('partners_partnerstaffmember_id_seq', 1, false);
 -- Data for Name: partners_pca; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, unicef_mng_first_name, unicef_mng_last_name, unicef_mng_email, partner_mng_first_name, partner_mng_last_name, partner_mng_email, partner_mng_phone, partner_contribution_budget, unicef_cash_budget, in_kind_amount_budget, cash_for_supply_budget, total_cash, sectors, current, created_at, updated_at, amendment, amended_at, amendment_number, agreement_id, original_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number, project_type) FROM stdin;
+COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, unicef_mng_first_name, unicef_mng_last_name, unicef_mng_email, partner_mng_first_name, partner_mng_last_name, partner_mng_email, partner_mng_phone, partner_contribution_budget, unicef_cash_budget, in_kind_amount_budget, cash_for_supply_budget, total_cash, sectors, current, created_at, updated_at, amendment, amended_at, amendment_number, agreement_id, original_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number, project_type, planned_visits) FROM stdin;
 \.
 
 
@@ -5734,10 +5901,26 @@ SELECT pg_catalog.setval('trips_fileattachment_id_seq', 1, false);
 
 
 --
+-- Data for Name: trips_linkedpartner; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY trips_linkedpartner (id, intervention_id, partner_id, result_id, trip_id) FROM stdin;
+\.
+
+
+--
+-- Name: trips_linkedpartner_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('trips_linkedpartner_id_seq', 1, false);
+
+
+--
 -- Data for Name: trips_travelroutes; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
 COPY trips_travelroutes (id, origin, destination, depart, arrive, remarks, trip_id) FROM stdin;
+1	NYC	LDN	2016-04-19 14:45:00-04	2016-04-20 01:05:00-04		8
 \.
 
 
@@ -5745,7 +5928,7 @@ COPY trips_travelroutes (id, origin, destination, depart, arrive, remarks, trip_
 -- Name: trips_travelroutes_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('trips_travelroutes_id_seq', 1, false);
+SELECT pg_catalog.setval('trips_travelroutes_id_seq', 1, true);
 
 
 --
@@ -5756,8 +5939,8 @@ COPY trips_trip (id, status, cancelled_reason, purpose_of_travel, travel_type, s
 2	submitted		find luke	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:06:44.415137-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	3	\N	\N	\N	\N	\N	f	t
 6	approved		find han and chewie	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-03-01	f	\N	\N	\N	\N	\N	2016-03-01	2016-02-15 10:27:14.61473-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
 3	planned		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
-8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31	\N	\N	\N	\N	f	f	\N		f	f	t	2016-01-01	f	\N	\N	\N	\N	\N	2016-02-15	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
 7	submitted		leave jakku	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	2016-03-28	f	\N	\N	\N	\N	\N	2016-03-28	2016-02-15 10:29:42.327017-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
+8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-04-19	f	\N	\N	\N	\N	\N	2016-04-20	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
 \.
 
 
@@ -6185,6 +6368,15 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 284	Can add ram indicator	95	add_ramindicator
 285	Can change ram indicator	95	change_ramindicator
 286	Can delete ram indicator	95	delete_ramindicator
+287	Can add vision sync log	96	add_visionsynclog
+288	Can change vision sync log	96	change_visionsynclog
+289	Can delete vision sync log	96	delete_visionsynclog
+290	Can add agreement amendment log	97	add_agreementamendmentlog
+291	Can change agreement amendment log	97	change_agreementamendmentlog
+292	Can delete agreement amendment log	97	delete_agreementamendmentlog
+293	Can add linked partner	98	add_linkedpartner
+294	Can change linked partner	98	change_linkedpartner
+295	Can delete linked partner	98	delete_linkedpartner
 \.
 
 
@@ -6192,7 +6384,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 286, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 295, true);
 
 
 --
@@ -6204,8 +6396,8 @@ COPY auth_user (id, password, last_login, is_superuser, username, first_name, la
 1	pbkdf2_sha256$20000$oLSDagdBJZQe$GjusoFurVNg8wfUZ6TCR7w5SKz1W6QuSGNvfGfxn/oU=	2016-02-15 09:49:48-05	t	luke@force.com	luke		luke@force.com	t	t	2016-02-15 09:27:08-05
 3	pbkdf2_sha256$20000$BwvYLpZCW0cD$v8brgatQrEEYnma9CP8m+6fohtQMw0zFcb0K3Wk/qbQ=	2016-02-15 10:03:00.183242-05	t	leia@force.com	leia		leia@force.com	t	t	2016-02-15 09:27:12-05
 6	pbkdf2_sha256$20000$Ort98H5Fvhah$LZA7OhRpLW9LX0TzGJp9ge+HyJi6K7Y9DIuPhSqgmyU=	\N	t	bb8@force.com	bb8		bb8@force.com	t	t	2016-02-15 10:37:06-05
-2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-02-15 11:24:22.866018-05	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
-4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-03-28 14:46:48.219589-04	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
+4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-04-19 21:47:46.335432-04	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
+2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-04-19 21:48:50.793195-04	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
 \.
 
 
@@ -6348,6 +6540,8 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 42	2016-02-15 10:40:19.53627-05	8	2016/8-0   2016-01-01 - 2016-04-22: bring bb-8 to d'qar	1		83	4
 43	2016-02-15 10:59:21.748632-05	8	2016/8-1   2016-01-01 - 2016-04-22: bring bb-8 to d'qar	2	Changed status.	83	2
 44	2016-02-15 11:24:49.790115-05	8	2016/8-2   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	2	Changed approved_by_supervisor and date_supervisor_approved.	83	2
+45	2016-04-19 21:48:24.019512-04	8	2016/8-3   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	2	Added Travel Itinerary "TravelRoutes object".	83	4
+46	2016-04-19 21:49:22.125306-04	8	2016/8-4   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	2	Changed approved_by_supervisor and date_supervisor_approved.	83	2
 \.
 
 
@@ -6355,7 +6549,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 44, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 46, true);
 
 
 --
@@ -6458,6 +6652,9 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 93	partners	directcashtransfer
 94	partners	indicatorreport
 95	partners	ramindicator
+96	vision	visionsynclog
+97	partners	agreementamendmentlog
+98	trips	linkedpartner
 \.
 
 
@@ -6465,7 +6662,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 95, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 98, true);
 
 
 --
@@ -6586,6 +6783,19 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 111	partners	0035_auto_20160314_1524	2016-03-24 11:25:31.459293-04
 112	reports	0015_result_ram	2016-03-24 11:25:31.722345-04
 113	users	0011_auto_20160313_1241	2016-03-24 11:25:32.35077-04
+114	partners	0036_auto_20160328_0122	2016-04-20 09:49:38.042577-04
+115	partners	0037_auto_20160329_0220	2016-04-20 09:49:38.608164-04
+116	partners	0038_auto_20160404_1519	2016-04-20 09:49:39.769012-04
+117	partners	0039_distributionplan_document	2016-04-20 09:49:40.042101-04
+118	partners	0040_auto_20160411_1404	2016-04-20 09:49:41.157315-04
+119	partners	0041_auto_20160413_0051	2016-04-20 09:49:41.966559-04
+120	partners	0042_auto_20160413_1321	2016-04-20 09:49:42.223905-04
+121	partners	0043_auto_20160413_1358	2016-04-20 09:49:42.507943-04
+122	partners	0044_pca_planned_visits	2016-04-20 09:49:42.786022-04
+123	reports	0016_auto_20160323_1933	2016-04-20 09:49:43.366539-04
+124	trips	0011_linkedpartner	2016-04-20 09:49:43.695923-04
+125	users	0012_country_vision_last_synced	2016-04-20 09:49:44.30225-04
+126	vision	0001_initial	2016-04-20 09:49:45.005898-04
 \.
 
 
@@ -6593,7 +6803,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 113, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 126, true);
 
 
 --
@@ -6606,6 +6816,8 @@ u8lxo4e2m20kvl5bbvxf9zvruv6pehgp	NWRiYzhhZmFjZTMxYTBlM2ViZGVkZGQ1NDU5ZjJmNzgxYTF
 fi6yauvz57edo5e6lpr8sylmxm8uh665	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQzNmJhNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjA1NGFkMzAxZDllZDI4MGFlMTBkMDQ5NzVkYzQ0NzgxM2M4YTJmZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=	2016-02-29 10:59:02.20368-05
 dp17ua786fw4yzqzjdzfc9bqbxltt1av	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQzNmJhNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjA1NGFkMzAxZDllZDI4MGFlMTBkMDQ5NzVkYzQ0NzgxM2M4YTJmZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=	2016-02-29 11:24:22.873822-05
 h17r2hiydd8v1qw5vw6pr0fzbmdvoeqk	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-04-11 14:46:48.221871-04
+96aeauxcs63hflbxyw50mtneif49wyfk	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-05-03 21:47:46.337835-04
+yu7o3fyoe7bczd7a9ccp6n8di6s9qaa1	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQzNmJhNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjA1NGFkMzAxZDllZDI4MGFlMTBkMDQ5NzVkYzQ0NzgxM2M4YTJmZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=	2016-05-03 21:48:50.796034-04
 \.
 
 
@@ -6902,6 +7114,8 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 14	rey@force.com	rey@force.com, han@force.com			eTools  - Trip 2016/3-4 has been Submitted for rey	\n    Dear Colleague,\n\n    Trip 2016/3-4 has been Submitted for rey here:\n    http://example.com/admin/trips/trip/3/\n    Purpose of travel: learn how to use a lightsaber\n\n    Thank you.\n    		0	3	2016-03-24 11:30:53.678782-04	2016-03-24 11:30:59.4886-04	\N	\N	\N	\N	
 15	rey@force.com	rey@force.com, finn@force.com, han@force.com			eTools  - Trip action point Created for trip: 2016/8-3	\n    Trip action point by rey for finn was Created:"\n\n    http://example.com/admin/trips/trip/8/#reporting\n\n    Thank you.\n    		0	3	2016-03-24 11:32:10.107471-04	2016-03-24 11:32:15.934213-04	\N	\N	\N	\N	
 16	finn@force.com	finn@force.com, rey@force.com			eTools  - Trip Approved: 2016/7-3	\n    The following trip has been approved: 2016/7-3\n\n    http://example.com/admin/trips/trip/7/\n\n    Thank you.\n    		0	3	2016-03-24 11:33:35.640929-04	2016-03-24 11:33:39.250994-04	\N	\N	\N	\N	
+17	rey@force.com	rey@force.com, han@force.com			eTools  - Trip 2016/8-3 has been Submitted for rey	\n    Dear Colleague,\n\n    Trip 2016/8-3 has been Submitted for rey here:\n    http://example.com/admin/trips/trip/8/\n    Purpose of travel: bring bb-8 to d&#39;qar\n\n    Thank you.\n    		0	3	2016-04-19 21:48:22.351754-04	2016-04-19 21:48:24.005679-04	\N	\N	\N	\N	
+18	rey@force.com	rey@force.com, han@force.com			eTools  - Trip Approved: 2016/8-4	\n    The following trip has been approved: 2016/8-4\n\n    http://example.com/admin/trips/trip/8/\n\n    Thank you.\n    		0	3	2016-04-19 21:49:20.465584-04	2016-04-19 21:49:22.106529-04	\N	\N	\N	\N	
 \.
 
 
@@ -6909,7 +7123,7 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 -- Name: post_office_email_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_email_id_seq', 16, true);
+SELECT pg_catalog.setval('post_office_email_id_seq', 18, true);
 
 
 --
@@ -6952,6 +7166,8 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 14	2016-03-24 11:30:59.498061-04	0			14
 15	2016-03-24 11:32:15.938329-04	0			15
 16	2016-03-24 11:33:39.254403-04	0			16
+17	2016-04-19 21:48:24.007825-04	0			17
+18	2016-04-19 21:49:22.108774-04	0			18
 \.
 
 
@@ -6959,7 +7175,7 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 -- Name: post_office_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_log_id_seq', 16, true);
+SELECT pg_catalog.setval('post_office_log_id_seq', 18, true);
 
 
 --
@@ -6992,6 +7208,8 @@ COPY reversion_revision (id, manager_slug, date_created, comment, user_id) FROM 
 23	default	2016-02-15 10:40:19.621637-05	Initial version.	4
 24	default	2016-02-15 10:59:21.831276-05	Changed status.	2
 25	default	2016-02-15 11:24:49.885674-05	Changed approved_by_supervisor and date_supervisor_approved.	2
+26	default	2016-04-19 21:48:24.03886-04	Added Travel Itinerary "TravelRoutes object".	4
+27	default	2016-04-19 21:49:22.145337-04	Changed approved_by_supervisor and date_supervisor_approved.	2
 \.
 
 
@@ -6999,7 +7217,7 @@ COPY reversion_revision (id, manager_slug, date_created, comment, user_id) FROM 
 -- Name: reversion_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('reversion_revision_id_seq', 25, true);
+SELECT pg_catalog.setval('reversion_revision_id_seq', 27, true);
 
 
 --
@@ -7032,6 +7250,10 @@ COPY reversion_version (id, object_id, object_id_int, format, serialized_data, o
 23	8	8	json	[{"fields": {"ta_trip_repay_travel_allowance": false, "programme_assistant": null, "office": null, "date_human_resources_approved": null, "budget_owner": null, "date_budget_owner_approved": null, "human_resources": null, "ta_required": false, "pending_ta_amendment": false, "to_date": "2016-04-22", "approved_email_sent": false, "owner": 4, "supervisor": 2, "ta_reference": "", "approved_by_human_resources": null, "driver_supervisor": null, "partners": [], "main_observations": "", "representative": null, "submitted_email_sent": false, "section": null, "approved_by_supervisor": false, "opportunities": "", "approved_date": null, "from_date": "2016-01-01", "ta_drafted": false, "ta_drafted_date": null, "travel_type": "technical_support", "driver_trip": null, "status": "planned", "lessons_learned": "", "security_granted": false, "vision_approver": null, "purpose_of_travel": "bring bb-8 to d'qar", "international_travel": false, "driver": null, "representative_approval": null, "approved_by_budget_owner": false, "security_clearance_required": false, "pcas": [], "travel_assistant": null, "transport_booked": false, "date_supervisor_approved": null, "date_representative_approved": null, "ta_trip_took_place_as_planned": false, "created_date": "2016-02-15T15:40:19.491Z", "cancelled_reason": "", "ta_trip_final_claim": false, "constraints": ""}, "model": "trips.trip", "pk": 8}]	2016/8-0   2016-01-01 - 2016-04-22: bring bb-8 to d'qar	83	23
 24	8	8	json	[{"fields": {"ta_trip_repay_travel_allowance": false, "programme_assistant": null, "office": null, "date_human_resources_approved": null, "budget_owner": null, "date_budget_owner_approved": null, "human_resources": null, "ta_required": false, "pending_ta_amendment": false, "to_date": "2016-04-22", "approved_email_sent": false, "owner": 4, "supervisor": 2, "ta_reference": "", "approved_by_human_resources": null, "driver_supervisor": null, "partners": [], "main_observations": "", "representative": null, "submitted_email_sent": true, "section": null, "approved_by_supervisor": false, "opportunities": "", "approved_date": null, "from_date": "2016-01-01", "ta_drafted": false, "ta_drafted_date": null, "travel_type": "technical_support", "driver_trip": null, "status": "submitted", "lessons_learned": "", "security_granted": false, "vision_approver": null, "purpose_of_travel": "bring bb-8 to d'qar", "international_travel": false, "driver": null, "representative_approval": null, "approved_by_budget_owner": false, "security_clearance_required": false, "pcas": [], "travel_assistant": null, "transport_booked": false, "date_supervisor_approved": null, "date_representative_approved": null, "ta_trip_took_place_as_planned": false, "created_date": "2016-02-15T15:40:19.491Z", "cancelled_reason": "", "ta_trip_final_claim": false, "constraints": ""}, "model": "trips.trip", "pk": 8}]	2016/8-1   2016-01-01 - 2016-04-22: bring bb-8 to d'qar	83	24
 25	8	8	json	[{"fields": {"ta_trip_repay_travel_allowance": false, "programme_assistant": null, "office": null, "date_human_resources_approved": null, "budget_owner": null, "date_budget_owner_approved": null, "human_resources": null, "ta_required": false, "pending_ta_amendment": false, "to_date": "2016-12-31", "approved_email_sent": true, "owner": 4, "supervisor": 2, "ta_reference": "", "approved_by_human_resources": null, "driver_supervisor": null, "partners": [], "main_observations": "", "representative": null, "submitted_email_sent": true, "section": null, "approved_by_supervisor": true, "opportunities": "", "approved_date": "2016-02-15", "from_date": "2016-01-01", "ta_drafted": false, "ta_drafted_date": null, "travel_type": "technical_support", "driver_trip": null, "status": "approved", "lessons_learned": "", "security_granted": false, "vision_approver": null, "purpose_of_travel": "bring bb-8 to d'qar", "international_travel": false, "driver": null, "representative_approval": null, "approved_by_budget_owner": false, "security_clearance_required": false, "pcas": [], "travel_assistant": null, "transport_booked": false, "date_supervisor_approved": "2016-01-01", "date_representative_approved": null, "ta_trip_took_place_as_planned": false, "created_date": "2016-02-15T15:40:19.491Z", "cancelled_reason": "", "ta_trip_final_claim": false, "constraints": ""}, "model": "trips.trip", "pk": 8}]	2016/8-2   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	83	25
+26	8	8	json	[{"fields": {"ta_trip_repay_travel_allowance": false, "programme_assistant": null, "office": null, "date_human_resources_approved": null, "budget_owner": null, "date_budget_owner_approved": null, "human_resources": null, "ta_required": false, "pending_ta_amendment": false, "to_date": "2016-12-31", "approved_email_sent": false, "owner": 4, "supervisor": 2, "ta_reference": "", "approved_by_human_resources": null, "driver_supervisor": null, "partners": [], "main_observations": "", "representative": null, "submitted_email_sent": true, "section": null, "approved_by_supervisor": false, "opportunities": "", "approved_date": null, "from_date": "2016-01-01", "ta_drafted": false, "ta_drafted_date": null, "travel_type": "technical_support", "driver_trip": null, "status": "submitted", "lessons_learned": "", "security_granted": false, "vision_approver": null, "purpose_of_travel": "bring bb-8 to d'qar", "international_travel": false, "driver": null, "representative_approval": null, "approved_by_budget_owner": false, "security_clearance_required": false, "pcas": [], "travel_assistant": null, "transport_booked": false, "date_supervisor_approved": null, "date_representative_approved": null, "ta_trip_took_place_as_planned": false, "created_date": "2016-02-15T15:40:19.491Z", "cancelled_reason": "", "ta_trip_final_claim": false, "constraints": ""}, "model": "trips.trip", "pk": 8}]	2016/8-3   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	83	26
+27	1	1	json	[{"fields": {"origin": "NYC", "depart": "2016-04-19T21:45:00+03:00", "destination": "LDN", "remarks": "", "arrive": "2016-04-20T08:05:00+03:00", "trip": 8}, "model": "trips.travelroutes", "pk": 1}]	TravelRoutes object	86	26
+28	8	8	json	[{"fields": {"ta_trip_repay_travel_allowance": false, "programme_assistant": null, "office": null, "date_human_resources_approved": null, "budget_owner": null, "date_budget_owner_approved": null, "human_resources": null, "ta_required": false, "pending_ta_amendment": false, "to_date": "2016-12-31", "approved_email_sent": true, "owner": 4, "supervisor": 2, "ta_reference": "", "approved_by_human_resources": null, "driver_supervisor": null, "partners": [], "main_observations": "", "representative": null, "submitted_email_sent": true, "section": null, "approved_by_supervisor": true, "opportunities": "", "approved_date": "2016-04-20", "from_date": "2016-01-01", "ta_drafted": false, "ta_drafted_date": null, "travel_type": "technical_support", "driver_trip": null, "status": "approved", "lessons_learned": "", "security_granted": false, "vision_approver": null, "purpose_of_travel": "bring bb-8 to d'qar", "international_travel": false, "driver": null, "representative_approval": null, "approved_by_budget_owner": false, "security_clearance_required": false, "pcas": [], "travel_assistant": null, "transport_booked": false, "date_supervisor_approved": "2016-04-19", "date_representative_approved": null, "ta_trip_took_place_as_planned": false, "created_date": "2016-02-15T15:40:19.491Z", "cancelled_reason": "", "ta_trip_final_claim": false, "constraints": ""}, "model": "trips.trip", "pk": 8}]	2016/8-4   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	83	27
+29	1	1	json	[{"fields": {"origin": "NYC", "depart": "2016-04-19T18:45:00Z", "destination": "LDN", "remarks": "", "arrive": "2016-04-20T05:05:00Z", "trip": 8}, "model": "trips.travelroutes", "pk": 1}]	TravelRoutes object	86	27
 \.
 
 
@@ -7039,7 +7261,7 @@ COPY reversion_version (id, object_id, object_id_int, format, serialized_data, o
 -- Name: reversion_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('reversion_version_id_seq', 25, true);
+SELECT pg_catalog.setval('reversion_version_id_seq', 29, true);
 
 
 --
@@ -8212,8 +8434,8 @@ COPY spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
 -- Data for Name: users_country; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY users_country (id, domain_url, schema_name, name, business_area_code, initial_zoom, latitude, longitude, country_short_code, vision_sync_enabled) FROM stdin;
-1	hoth	hoth	hoth		8	\N	\N	\N	t
+COPY users_country (id, domain_url, schema_name, name, business_area_code, initial_zoom, latitude, longitude, country_short_code, vision_sync_enabled, vision_last_synced) FROM stdin;
+1	hoth	hoth	hoth		8	\N	\N	\N	t	\N
 \.
 
 
@@ -8288,6 +8510,21 @@ SELECT pg_catalog.setval('users_userprofile_countries_available_id_seq', 1, fals
 --
 
 SELECT pg_catalog.setval('users_userprofile_id_seq', 6, true);
+
+
+--
+-- Data for Name: vision_visionsynclog; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY vision_visionsynclog (id, handler_name, total_records, total_processed, successful, exception_message, date_processed, country_id) FROM stdin;
+\.
+
+
+--
+-- Name: vision_visionsynclog_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('vision_visionsynclog_id_seq', 1, false);
 
 
 SET search_path = topology, pg_catalog;
@@ -8527,6 +8764,14 @@ ALTER TABLE ONLY partners_agreement
 
 
 --
+-- Name: partners_agreementamendmentlog_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_agreementamendmentlog
+    ADD CONSTRAINT partners_agreementamendmentlog_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: partners_amendmentlog_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -8607,11 +8852,11 @@ ALTER TABLE ONLY partners_indicatorreport
 
 
 --
--- Name: partners_partnerorganization_name_key; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+-- Name: partners_partnerorganization_name_586ea92c4b5abec3_uniq; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY partners_partnerorganization
-    ADD CONSTRAINT partners_partnerorganization_name_key UNIQUE (name);
+    ADD CONSTRAINT partners_partnerorganization_name_586ea92c4b5abec3_uniq UNIQUE (name, vendor_number);
 
 
 --
@@ -8620,6 +8865,14 @@ ALTER TABLE ONLY partners_partnerorganization
 
 ALTER TABLE ONLY partners_partnerorganization
     ADD CONSTRAINT partners_partnerorganization_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_partnerorganization_vendor_number_f6bb409b9a59687_uniq; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_partnerorganization
+    ADD CONSTRAINT partners_partnerorganization_vendor_number_f6bb409b9a59687_uniq UNIQUE (vendor_number);
 
 
 --
@@ -8767,11 +9020,11 @@ ALTER TABLE ONLY reports_indicator_activity_info_indicators
 
 
 --
--- Name: reports_indicator_name_key; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+-- Name: reports_indicator_name_1d24d491a9c00847_uniq; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY reports_indicator
-    ADD CONSTRAINT reports_indicator_name_key UNIQUE (name);
+    ADD CONSTRAINT reports_indicator_name_1d24d491a9c00847_uniq UNIQUE (name, result_id, sector_id);
 
 
 --
@@ -8876,6 +9129,14 @@ ALTER TABLE ONLY trips_actionpoint
 
 ALTER TABLE ONLY trips_fileattachment
     ADD CONSTRAINT trips_fileattachment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: trips_linkedpartner_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY trips_linkedpartner
+    ADD CONSTRAINT trips_linkedpartner_pkey PRIMARY KEY (id);
 
 
 --
@@ -9576,6 +9837,14 @@ ALTER TABLE ONLY users_userprofile
     ADD CONSTRAINT users_userprofile_user_id_key UNIQUE (user_id);
 
 
+--
+-- Name: vision_visionsynclog_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY vision_visionsynclog
+    ADD CONSTRAINT vision_visionsynclog_pkey PRIMARY KEY (id);
+
+
 SET search_path = hoth, pg_catalog;
 
 --
@@ -9859,6 +10128,13 @@ CREATE INDEX partners_agreement_9f081af4 ON partners_agreement USING btree (sign
 
 
 --
+-- Name: partners_agreementamendmentlog_410cd312; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_agreementamendmentlog_410cd312 ON partners_agreementamendmentlog USING btree (agreement_id);
+
+
+--
 -- Name: partners_amendmentlog_cd976882; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -9908,17 +10184,17 @@ CREATE INDEX partners_distributionplan_82bfda79 ON partners_distributionplan USI
 
 
 --
+-- Name: partners_distributionplan_9365d6e7; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_distributionplan_9365d6e7 ON partners_distributionplan USING btree (site_id);
+
+
+--
 -- Name: partners_distributionplan_cd976882; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX partners_distributionplan_cd976882 ON partners_distributionplan USING btree (partnership_id);
-
-
---
--- Name: partners_distributionplan_e274a5da; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX partners_distributionplan_e274a5da ON partners_distributionplan USING btree (location_id);
 
 
 --
@@ -10010,13 +10286,6 @@ CREATE INDEX partners_indicatorreport_c7acdb49 ON partners_indicatorreport USING
 --
 
 CREATE INDEX partners_indicatorreport_e274a5da ON partners_indicatorreport USING btree (location_id);
-
-
---
--- Name: partners_partnerorganization_name_470b28680f7017c5_like; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX partners_partnerorganization_name_470b28680f7017c5_like ON partners_partnerorganization USING btree (name varchar_pattern_ops);
 
 
 --
@@ -10314,13 +10583,6 @@ CREATE INDEX reports_indicator_e8175980 ON reports_indicator USING btree (unit_i
 
 
 --
--- Name: reports_indicator_name_7e2c31e2abeab8b2_like; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX reports_indicator_name_7e2c31e2abeab8b2_like ON reports_indicator USING btree (name varchar_pattern_ops);
-
-
---
 -- Name: reports_result_3cfbd988; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -10458,6 +10720,34 @@ CREATE INDEX trips_fileattachment_94757cae ON trips_fileattachment USING btree (
 --
 
 CREATE INDEX trips_fileattachment_c65d32e5 ON trips_fileattachment USING btree (trip_id);
+
+
+--
+-- Name: trips_linkedpartner_123a1ce7; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX trips_linkedpartner_123a1ce7 ON trips_linkedpartner USING btree (intervention_id);
+
+
+--
+-- Name: trips_linkedpartner_4e98b6eb; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX trips_linkedpartner_4e98b6eb ON trips_linkedpartner USING btree (partner_id);
+
+
+--
+-- Name: trips_linkedpartner_57f06544; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX trips_linkedpartner_57f06544 ON trips_linkedpartner USING btree (result_id);
+
+
+--
+-- Name: trips_linkedpartner_c65d32e5; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX trips_linkedpartner_c65d32e5 ON trips_linkedpartner USING btree (trip_id);
 
 
 --
@@ -11316,6 +11606,13 @@ CREATE INDEX users_userprofile_countries_available_9c2a73e9 ON users_userprofile
 CREATE INDEX users_userprofile_f99684b8 ON users_userprofile USING btree (country_override_id);
 
 
+--
+-- Name: vision_visionsynclog_93bfec8a; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX vision_visionsynclog_93bfec8a ON vision_visionsynclog USING btree (country_id);
+
+
 SET search_path = hoth, pg_catalog;
 
 --
@@ -11647,6 +11944,14 @@ ALTER TABLE ONLY partners_agreement
 
 
 --
+-- Name: partner_id_342380ecb702d4ce_fk_partners_partnerorganization_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY trips_linkedpartner
+    ADD CONSTRAINT partner_id_342380ecb702d4ce_fk_partners_partnerorganization_id FOREIGN KEY (partner_id) REFERENCES partners_partnerorganization(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: partner_id_7e980fb6d8a5e729_fk_partners_partnerorganization_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11743,19 +12048,19 @@ ALTER TABLE ONLY partners_pca
 
 
 --
+-- Name: partners_agreement_id_6cf55f50170c31c4_fk_partners_agreement_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_agreementamendmentlog
+    ADD CONSTRAINT partners_agreement_id_6cf55f50170c31c4_fk_partners_agreement_id FOREIGN KEY (agreement_id) REFERENCES partners_agreement(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: partners_amen_partnership_id_be465573a03924f_fk_partners_pca_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
 ALTER TABLE ONLY partners_amendmentlog
     ADD CONSTRAINT partners_amen_partnership_id_be465573a03924f_fk_partners_pca_id FOREIGN KEY (partnership_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: partners_di_location_id_72aafdaceb172d91_fk_locations_region_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
---
-
-ALTER TABLE ONLY partners_distributionplan
-    ADD CONSTRAINT partners_di_location_id_72aafdaceb172d91_fk_locations_region_id FOREIGN KEY (location_id) REFERENCES locations_region(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -11772,6 +12077,14 @@ ALTER TABLE ONLY partners_distributionplan
 
 ALTER TABLE ONLY partners_distributionplan
     ADD CONSTRAINT partners_dist_partnership_id_68b117966c691b1_fk_partners_pca_id FOREIGN KEY (partnership_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_dist_site_id_759ec76219f47b61_fk_locations_location_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_distributionplan
+    ADD CONSTRAINT partners_dist_site_id_759ec76219f47b61_fk_locations_location_id FOREIGN KEY (site_id) REFERENCES locations_location(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -12124,6 +12437,30 @@ ALTER TABLE ONLY trips_fileattachment
 
 ALTER TABLE ONLY trips_fileattachment
     ADD CONSTRAINT trips_fileattachment_trip_id_43d0d11528b46e01_fk_trips_trip_id FOREIGN KEY (trip_id) REFERENCES trips_trip(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: trips_lin_result_id_70e7c7eb577d2d52_fk_partners_resultchain_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY trips_linkedpartner
+    ADD CONSTRAINT trips_lin_result_id_70e7c7eb577d2d52_fk_partners_resultchain_id FOREIGN KEY (result_id) REFERENCES partners_resultchain(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: trips_linke_intervention_id_1e008874902fd40c_fk_partners_pca_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY trips_linkedpartner
+    ADD CONSTRAINT trips_linke_intervention_id_1e008874902fd40c_fk_partners_pca_id FOREIGN KEY (intervention_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: trips_linkedpartner_trip_id_2c8f4c36873228ce_fk_trips_trip_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY trips_linkedpartner
+    ADD CONSTRAINT trips_linkedpartner_trip_id_2c8f4c36873228ce_fk_trips_trip_id FOREIGN KEY (trip_id) REFERENCES trips_trip(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -12726,6 +13063,14 @@ ALTER TABLE ONLY users_userprofile
 
 ALTER TABLE ONLY users_userprofile
     ADD CONSTRAINT users_userprofile_user_id_5c10ccd727779b5d_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: vision_visionsy_country_id_33d90378f535050f_fk_users_country_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY vision_visionsynclog
+    ADD CONSTRAINT vision_visionsy_country_id_33d90378f535050f_fk_users_country_id FOREIGN KEY (country_id) REFERENCES users_country(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
