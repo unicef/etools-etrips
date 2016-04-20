@@ -113,7 +113,7 @@
 
       <div class="list" ng-if="vm.trip.travel_routes.length">
           <h4 class="item-divider txt-grey li-center">{{ 'template.trip.itinerary' | translate }}</h4>
-          <span ng-repeat="route in trip.travel_routes" class="row no-padding">
+          <span ng-repeat="route in vm.trip.travel_routes" class="row no-padding">
               <div class="list col no-padding">
                   <span class="txt-grey padding-left">{{ 'template.trip.from' | translate }}</span>
                   <p class="item-text-wrap li-center less-padding">
@@ -137,7 +137,7 @@
       <div class="list" ng-if="vm.trip.actionpoint_set.length">
           <h4 class="item-divider txt-grey li-center">{{ 'template.trip.action_points' | translate }}</h4>
 
-          <div class="item-inset less-padding" ng-repeat="ap in trip.actionpoint_set">
+          <div class="item-inset less-padding" ng-repeat="ap in vm.trip.actionpoint_set">
               {{ 'template.trip.assigned_to' | translate }} {{ ap.person_responsible_name }}
               <br>
               {{ 'template.trip.due_date' | translate }} {{ ap.due_date | date}}
@@ -148,7 +148,7 @@
       </div>
       <div class="list" ng-if="vm.trip.trip_funds.length">
           <h4 class="item-divider txt-grey li-center">{{ 'template.trip.to' | translate }}</h4>
-          <div class="item-inset less-padding" ng-repeat="tf in trip.trip_funds">
+          <div class="item-inset less-padding" ng-repeat="tf in vm.trip.trip_funds">
               {{ 'template.trip.wbs' | translate }} {{ tf.wbs }}
               <br>
               {{ 'template.trip.grant' | translate }} {{ tf.grant }}
@@ -159,14 +159,14 @@
       </div>
       <div class="list" ng-if="vm.trip.partners.length">
           <h4 class="item-divider txt-grey li-center">{{ 'template.trip.trip_partners' | translate }}</h4>
-          <div class="item-inset less-padding" ng-repeat="partner in trip.partners">
+          <div class="item-inset less-padding" ng-repeat="partner in vm.trip.partners">
               {{ partner }}
               <br>
           </div>
       </div>
       <div class="list" ng-if="vm.trip.partnerships.length">
           <h4 class="item-divider txt-grey li-center">{{ 'template.trip.partnerships' | translate }}</h4>
-          <div class="item-inset less-padding" ng-repeat="partnership in trip.partnerships">
+          <div class="item-inset less-padding" ng-repeat="partnership in vm.trip.partnerships">
               {{ partnership }}
               <br>
           </div>
