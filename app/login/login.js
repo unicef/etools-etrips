@@ -76,8 +76,8 @@
                 // user does not have a country yet or something went wrong on                
                 $ionicLoading.hide();
 
-                var title = a$translate.instant('controller.login.country.title');
-                var template = a$translate.instant('controller.login.country.template');
+                var title = $translate.instant('controller.login.country.title');
+                var template = $translate.instant('controller.login.country.template');
                 
                 if (error.data.detail == 'No country found for user'){
                     title = $translate.instant('controller.login.no_country.title');
