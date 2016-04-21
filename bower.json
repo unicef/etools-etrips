@@ -18,6 +18,7 @@
     "angular": "^1.5.2",
     "ng-lodash": "^0.4.0",
     "async": "^1.5.2",
-    "angular-md5": "^0.1.10"
+    "angular-md5": "^0.1.10",
+    "angular-bootstrap-lightbox": "~0.12.0"
   }
 }
