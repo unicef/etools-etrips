@@ -23,6 +23,7 @@
     "template.dashboard.no_my_trips" : "No trips currently available",
     "template.dashboard.supervised" : "Supervised",
     "template.dashboard.my_trips" : "My Trips",
+    "template.dashboard.my_action_points" : "My Action Points",
 
     "template.trip.report" : "Report",
     "template.trip.notes" : "Notes",

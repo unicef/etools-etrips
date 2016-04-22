@@ -29,7 +29,19 @@
                         controllerAs: 'vm'
                     }
                 }
-            }
+            })
+
+            .state('app.dash.my_action_point_edit', {    
+                url: '/my_action_points/:tripId/action_point/:actionPointId',
+                cache: false,
+                views: {
+                    'tab-action-points': {
+                        templateUrl: 'app/action_points/action_points_edit.html',
+                        controller: 'ActionPointsEdit',
+                        controllerAs: 'vm'
+                    }
+                }
+            }        
         );
     }
 

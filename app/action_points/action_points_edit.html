@@ -4,7 +4,7 @@
             <div class="input-label">
                 {{ 'template.trip.report.action_point.edit.status' | translate }}
             </div>
-            <select ng-model="vm.ap.status" required>
+            <select ng-model="vm.ap.status" required ng-disabled="vm.isMyActionPoint">
                 <option value="open">{{ 'template.trip.report.action_point.edit.open' | translate }}</option>
                 <option value="closed">{{ 'template.trip.report.action_point.edit.closed' | translate }}</option>
                 <option value="ongoing">{{ 'template.trip.report.action_point.edit.on_going' | translate }}</option>
@@ -15,32 +15,24 @@
             {{ 'template.trip.report.action_point.edit.description' | translate }}
         </div>
         <label class="item padding-top item-input">
-            <textarea ng-model="vm.ap.description" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10" ng-maxlength="254" maxlength="254">
-            </textarea>
+            <textarea ng-model="vm.ap.description" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10" ng-maxlength="254" maxlength="254" ng-disabled="vm.isMyActionPoint"></textarea>
         </label>
 
         <div class="item item-divider">
             {{ 'template.trip.report.action_point.edit.comments' | translate }}
         </div>
         <label class="item padding-top item-input">
-            <textarea ng-model="vm.ap.comments" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10">
-            </textarea>
+            <textarea ng-model="vm.ap.comments" placeholder="{{ 'template.trip.report.action_point.edit.insert_findings' | translate }}" rows="6" cols="10" ng-disabled="vm.isMyActionPoint"></textarea>
         </label>
 
         <div class="item item-divider">
             {{ 'template.trip.report.action_point.edit.due_date' | translate }}
         </div>
         <div class="item row">
-              <select class="item item-select col" ng-model="vm.ap.due_day" ng-options="option as option for option in vm.paddedNumber(31)">
-              </select>
-
-              <select class="item item-select col" ng-model="vm.ap.due_month" ng-options="option as vm.allMonths[option-1] for option in vm.paddedNumber(12)">
-              </select>
-
-              <select class="item item-select col" ng-model="vm.ap.due_year" ng-options="option as option for option in vm.yearOptions">
-              </select>
+              <select class="item item-select col" ng-disabled="vm.isMyActionPoint" ng-model="vm.ap.due_day" ng-disabled="vm.isMyActionPoint" ng-options="option as option for option in vm.paddedNumber(31)"></select>
+              <select class="item item-select col" ng-disabled="vm.isMyActionPoint" ng-model="vm.ap.due_month" ng-disabled="vm.isMyActionPoint" ng-options="option as vm.allMonths[option-1] for option in vm.paddedNumber(12)"></select>
+              <select class="item item-select col" ng-disabled="vm.isMyActionPoint" ng-model="vm.ap.due_year" ng-options="option as option for option in vm.yearOptions"></select>
         </div>
-
 
         <div class="item item-divider">
             {{ 'template.trip.report.action_point.edit.person_responsible' | translate }}
@@ -50,7 +42,7 @@
             <div class="input-label">
                 {{ 'template.trip.report.action_point.edit.assign_to' | translate }}
             </div>
-            <select required ng-options="u.user_id as u.full_name for u in vm.users" ng-model="vm.ap.person_responsible" ng-change="vm.isPersonResponsibleCurrentUser()"></select>
+            <select ng-disabled="vm.isMyActionPoint" required ng-options="u.user_id as u.full_name for u in vm.users" ng-model="vm.ap.person_responsible" ng-change="vm.isPersonResponsibleCurrentUser()"></select>
         </label>
 
         <div ng-show="!(vm.isActionPointNew)">

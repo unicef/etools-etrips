@@ -19,12 +19,17 @@
         vm.title = 'template.trip.report.action_point.edit.title';
         vm.today = new Date();        
         vm.yearOptions = [vm.today.getFullYear() + '', vm.today.getFullYear() + 1 + ''];        
+        vm.isMyActionPoint = false;
 
         ionic.Platform.ready(function(){
             // new / edit state
             if ($state.current.name.indexOf('new') > 0) {
                 vm.title = 'template.trip.report.action_point.new';
                 vm.isActionPointNew = true;
+            }
+
+            if ($state.current.name.indexOf('my_action_point_edit') > 0) {             
+                vm.isMyActionPoint = true;               
             }
 
             // get users
