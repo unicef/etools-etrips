@@ -2,7 +2,7 @@
   "name": "app",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.2.4",
+    "ionic": "driftyco/ionic-bower",
     "plugin": "^3.1.0"
   },
   "dependencies": {
