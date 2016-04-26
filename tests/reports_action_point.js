@@ -15,7 +15,7 @@ describe('Reports - Action Points', function() {
         element(by.buttonText('Report')).click();
         
         waitForElement('button#report_text');
-        element(by.buttonText('Action Point')).click();
+        element(by.buttonText('Action Points')).click();
         
         waitForElement('button.back-button:not(.hide)');
         element(by.linkText('New Action Point')).click();
