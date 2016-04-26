@@ -12,11 +12,6 @@
         vm.data = localStorageService.getObject('user_cred');
         vm.login = login;
         vm.other = {};
-        
-        $ionicPlatform.ready(function() {
-            // logout existing user
-            loginService.logout();
-        });
 
         function login() {            
             var loginData = vm.data;
