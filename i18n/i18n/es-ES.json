@@ -6,7 +6,7 @@
     "template.login.remember_me" : "REMEMBER ME",
     "template.login.sign_in" : "Iniciar sesión",
 
-"template.menu.title" : "eTrip Menu",
+    "template.menu.title" : "eTrip Menu",
     "template.menu.country" : "Country:",
     "template.menu.trips" : "Trips",
     "template.menu.settings" : "Settings",
@@ -247,4 +247,4 @@
     "factory.error_handler.default_message" : "Something went wrong, try again later.",
     "factory.error_handler.password" : "The password introduced was incorrect.",
     "factory.error_handler.unknown" : "Something went wrong."
-}
+}   

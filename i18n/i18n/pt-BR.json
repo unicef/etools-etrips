@@ -6,7 +6,7 @@
     "template.login.remember_me" : "REMEMBER ME",
     "template.login.sign_in" : "Fazer login",
     
-"template.menu.title" : "eTrip Menu",
+    "template.menu.title" : "eTrip Menu",
     "template.menu.country" : "Country:",
     "template.menu.trips" : "Trips",
     "template.menu.settings" : "Settings",

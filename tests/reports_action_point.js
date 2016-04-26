@@ -50,7 +50,7 @@ describe('Reports - Action Points', function() {
         
         var data = element.all(by.css('ion-view[nav-view="active"] a.item-content div.action_point > div'));        
 
-        data.get(0).getText().should.eventually.equal('Owner: finn');
+        data.get(0).getText().should.eventually.equal('Person responsible: finn');
         data.get(1).getText().should.eventually.equal('Status: open');
         data.get(2).getText().should.eventually.equal('Due date: 03/01/2017');        
     });
