@@ -85,7 +85,6 @@
     
     "template.trip.report.picture" : "Pictures",
     "template.trip.report.action_point" : "Action Points",
-
     "template.trip.report.text.title" : "Text Reporting",
     "template.trip.report.text.progress" : "Progress Reporting",
     "template.trip.report.text.cco" : "Constraints, Challenges, Opportunities",
@@ -104,11 +103,11 @@
     "template.trip.report.picture.upload" : "Upload Existing Photo",
     "template.trip.report.picture.take" : "Take Picture",
 
-    "controller.trip.action_point.new.title" : "Action Point Created",
-    "controller.trip.action_point.new.template" : "",
-    "controller.trip.action_point.edit.title" : "Action Point Updated",
-    "controller.trip.action_point.edit.template" : "",
-
+    "template.trip.report.action_point.offline" : "Offline Action Points",
+    "template.trip.report.action_point.offline.none" : "There are no offline action points.",
+    "template.trip.report.action_point.non_editable" : "non-editable",
+    "template.trip.report.action_point.saved" : "Saved Action Points",
+    "template.trip.report.action_point.person_responsible" : "Owner:",
     "template.trip.report.action_point.title" : "Action Point",
     "template.trip.report.action_point.current" : "Action Points",
     "template.trip.report.action_point.status" : "Status:",
@@ -123,7 +122,7 @@
     "template.trip.report.action_point.edit.description" : "Description:",
     "template.trip.report.action_point.edit.comments" : "Comments:",
     "template.trip.report.action_point.edit.due_date" : "Due Date:",
-    "template.trip.report.action_point.edit.person_responsible" : "Person Responsible:",
+    "template.trip.report.action_point.edit.person_responsible" : "Owner:",
     "template.trip.report.action_point.edit.assign_to" : "Assign to =>",
     "template.trip.report.action_point.edit.description" : "Please enter a description before continuing",
     "template.trip.report.action_point.edit.assign_to" : "Please assign the action point to a person",
@@ -150,6 +149,9 @@
     "directive.loading.creating_action_point" : "Creating Action Point...",
     "directive.loading.updating_action_point" : "Updating Action Point...",
     "directive.loading.submitting_report" : "Submitting Report. Please wait.",
+
+    "controller.application.logout.offline.title" : "Offline Data",
+    "controller.application.logout.offline.template" : "There are offline action points that will be deleted if you logout. <p></p>Are you sure you want to logout?",
 
     "controller.report.text.observations.access" : "Access to inputs/services:",
     "controller.report.text.observations.quality" : "Quality of inputs/services:",
@@ -190,6 +192,13 @@
     "controller.report.picture.upload.fail.template" : "Please check the network connection and try uploading the picture again.",
     "controller.report.picture.upload.error.already_selected.template" : "The picture has already been selcted for upload.",
 
+    "controller.trip.action_point.new.title" : "Action Point Created",
+    "controller.trip.action_point.new.template" : "",
+    "controller.trip.action_point.edit.title" : "Action Point Updated",
+    "controller.trip.action_point.edit.template" : "",
+    "controller.trip.action_point.delete.title" : "Delete Action Point",
+    "controller.trip.action_point.delete.template" : "Are you sure you want to delete this action point?",
+
     "controller.trip.submit.title" : "Trip Submission",
     "controller.trip.submit.template" : "You succesfully submitted the trip.",    
     "controller.trip.complete.title" : "Trip Submission",
@@ -225,7 +234,11 @@
     "service.my_http.failed_relogin" : "Your session has ended. Please enter your username and password to proceed.",
     
     "service.network.title" : "Connection error",
-    "service.network.content" : "The Internet connection appears to be offline. Please try again in a moment.",
+    "service.network.content" : "The internet connection appears to be offline. Please try again in a moment.",
+
+    "service.action_points.network_status.title" : "Network Status",
+    "service.action_points.network_status.connection" : "You are connected to the internet.",
+    "service.action_points.network_status.offline_uploaded" : "{{ action_points_count }} offline action points were submitted.",
 
     "factory.error_handler.default_message" : "Something went wrong, try again later.",
     "factory.error_handler.password" : "The password introduced was incorrect.",

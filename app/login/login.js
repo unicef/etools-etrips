@@ -5,15 +5,15 @@
         .module('app.login')
         .controller('Login', Login);
 
-    Login.$inject = ['$ionicLoading', '$ionicHistory', 'localStorageService', 'dataService', 'loginService', 'authentication', '$ionicPopup', '$state', 'apiUrlService', 'networkService', '$translate'];
+    Login.$inject = ['$ionicPlatform', '$ionicHistory','$ionicLoading', '$ionicPopup', '$state', '$translate', 'actionPointsService', 'apiUrlService', 'authentication', 'dataService', 'localStorageService', 'loginService', 'networkService', 'lodash'];
 
-    function Login($ionicLoading, $ionicHistory, localStorageService, dataService, loginService, authentication, $ionicPopup, $state, apiUrlService, networkService, $translate) {
+    function Login($ionicPlatform, $ionicHistory, $ionicLoading, $ionicPopup, $state, $translate, actionPointsService, apiUrlService, authentication, dataService, localStorageService, loginService, networkService, _) {
         var vm = this;
         vm.data = localStorageService.getObject('user_cred');
         vm.login = login;
         vm.other = {};
-        
-        function login() {
+
+        function login() {            
             var loginData = vm.data;
 
             if (vm.other.rememberMe) {              
@@ -44,6 +44,8 @@
                     profileFail
                 );
 
+            dataService.getUsersRemote(function(success){});
+            
             function getTrips() {
                 dataService.getTrips(
                     function(res){

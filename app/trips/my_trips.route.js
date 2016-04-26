@@ -9,6 +9,7 @@
         $stateProvider
             .state('app.dash.my_trips', {
                 url: '/my_trips',
+                cache: false,
                 views: {
                     'tab-trips': {
                         templateUrl: 'app/trips/my_trips.html',

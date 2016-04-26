@@ -60,7 +60,7 @@
             if (Object.keys(my_obj).length) {
                 // check for trip
                 if (my_obj[tripId]) {
-                    var validDataTypes = ['text', 'notes', 'main_observations', 'constraints', 'lessons_learned', 'opportunities', 'pictures'];
+                    var validDataTypes = ['text', 'notes', 'main_observations', 'constraints', 'lessons_learned', 'opportunities', 'pictures', 'action_points'];
 
                     for(var i=0; i<validDataTypes.length; i++){
                         if (( validDataTypes[i] === dtype) && (my_obj[tripId][dtype])) {

@@ -3,7 +3,8 @@
 
     angular.module('app.login', [
         'app.core',
-        'app.components'
+        'app.components',
+        'ngLodash'
     ]);
 
 })();
