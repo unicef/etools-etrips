@@ -5,7 +5,7 @@
         .module('app.core')
         .service('loginService', loginService);
 
-    function loginService($q, $rootScope, localStorageService, authentication, apiUrlService) {
+    function loginService($q, $rootScope, localStorageService, authentication, apiUrlService, lodash) {
         var service = {
             loginUser: loginUser,
             logout: logout,
@@ -26,11 +26,25 @@
         }
 
         function logout() {
-            localStorageService.delete('jwtoken');
-            localStorageService.delete('currentUser');
+            if (localStorageService.getObject('currentUser').hasOwnProperty('profile') === true) {
+                var _ = lodash;
+                var country = localStorageService.getObject('currentUser').profile.country;                
+                var draftTrips = localStorageService.getObject('draft-' + country);
+                
+                _.each(draftTrips, function(trip, tripId){
+                    if (trip.hasOwnProperty('action_points')) {
+                        delete trip.action_points;
+                    }
+                });
+
+                localStorageService.setObject('draft-' + country, draftTrips);
+            }
+
+            localStorageService.delete('jwtoken');            
             localStorageService.delete('trips');
             localStorageService.delete('users');
             localStorageService.delete('tokenClaims');
+            localStorageService.delete('currentUser');
         }        
 
         function refreshLogin(retSuccess, retFail, data) {

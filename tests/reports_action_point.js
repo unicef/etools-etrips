@@ -46,12 +46,13 @@ describe('Reports - Action Points', function() {
         element.all(by.css('ion-view[nav-view="active"] a.item-content')).count().should.eventually.equal(1);
 
         // validate new action point
-        element(by.cssContainingText('ion-view[nav-view="active"] a.item-content h2', 'finn')).isPresent().should.eventually.be.true;        
+        element(by.css('ion-view[nav-view="active"] a.item-content p')).getText().should.eventually.equal(description.substring(0, 254));
         
-        var data = element.all(by.css('ion-view[nav-view="active"] a.item-content p'));
-        data.get(0).getText().should.eventually.equal('Status: open');
-        data.get(1).getText().should.eventually.equal(description.substring(0, 254));
-        data.get(2).getText().should.eventually.equal('Due date: Jan 3, 2017');
+        var data = element.all(by.css('ion-view[nav-view="active"] a.item-content div.action_point > div'));        
+
+        data.get(0).getText().should.eventually.equal('Person responsible: finn');
+        data.get(1).getText().should.eventually.equal('Status: open');
+        data.get(2).getText().should.eventually.equal('Due date: 03/01/2017');        
     });
 
     it('should be able to logout', function() {
