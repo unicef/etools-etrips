@@ -73,7 +73,8 @@
     "cordova-plugin-camera",
     "cordova-plugin-file-transfer",
     "cordova-plugin-file",
-    "cordova-plugin-network-information",
+    "cordova-plugin-network-information",    
+    "cordova-plugin-globalization",
     "cordova-plugin-app-version"
   ],
   "cordovaPlatforms": [

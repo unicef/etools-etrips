@@ -12,13 +12,14 @@
         var uid = localStorageService.getObject('currentUser').user_id;
 
         vm.approve = approve;
-        vm.dateFormat = DATE_FORMAT;
+        vm.dateFormat = 'dd/MM/yyyy HH:mm';
         vm.completeTrip = completeTrip;
         vm.goReport = goReport; 
         vm.showConfirm = showConfirm;
         vm.submit = submit;
         vm.takeNotes = takeNotes;
-        vm.trip = tripService.getTrip($stateParams.tripId);
+        vm.timezone = '';
+        vm.trip = tripService.getTrip($stateParams.tripId);        
 
         vm.checks = {
             supervisor: vm.trip.supervisor == uid,
@@ -30,6 +31,16 @@
             is_submitted: vm.trip.status == "submitted",
             report_filled: vm.trip.main_observations
         };
+
+        ionic.Platform.ready(function(){
+            if (navigator.globalization !== undefined) {
+                navigator.globalization.getDatePattern(function(obj){
+                    if (obj.timezone !== undefined) {
+                        vm.timezone = obj.timezone;
+                    }
+                });
+            }
+        });
 
         function approve(tripId){
             if (networkService.isOffline() === true) {
