@@ -19,6 +19,7 @@
   var sh = require('shelljs');
   var stylish = require('jshint-stylish');
   var streamqueue = require('streamqueue');
+  var xml2js = require('xml2js');
 
   var allTestsFilename = 'all_tests.js';
   var appName = 'app';
@@ -339,11 +340,17 @@
   });
 
   gulp.task('update_constants_app', function () {
+    var parser = new xml2js.Parser();
     var env = args.env || 'prod';
     var filename = env + '.json';
     var settings = JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
 
-    return updateConstants(settings);
+    fs.readFile(__dirname + '/config.xml', function(err, data) {
+        parser.parseString(data, function (err, result) {
+            settings['version'] = result.widget['$'].version;
+            return updateConstants(settings);
+        });
+    });
   });
 
   gulp.task('update_constants_circleci', function () {  

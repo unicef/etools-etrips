@@ -5,6 +5,7 @@
         .module('app.core')
         .constant('apiHostDevelopment', '@@apiHostDevelopment')
         .constant('DATE_FORMAT', 'dd/MM/yyyy')
+        .constant('VERSION', '@@version')
         .constant('defaultConnection', @@defaultConnection)
         .constant('LOCALES', {
             'locales': {
