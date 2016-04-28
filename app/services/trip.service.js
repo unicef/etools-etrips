@@ -5,7 +5,8 @@
         .module('app.core')
         .service('tripService', tripService);
 
-    function tripService(dataService, localStorageService, myHttpService, apiUrlService) {
+    function tripService(dataService, localStorageService, myHttpService, apiUrlService, lodash) {
+        var _ = lodash;
         var service = {
             deleteDraft: deleteDraft,
             getAP: getActionPoint,
@@ -26,7 +27,7 @@
             var country = localStorageService.getObject('currentUser').profile.country;
             var obj = localStorageService.getObject('draft-' + country);
 
-            if (dataType in obj[tripId]) {
+            if (_.size(obj) > 0 && dataType in obj[tripId]) {
                 delete obj[tripId][dataType];
                 localStorageService.setObject('draft-' + country, obj);
             }
