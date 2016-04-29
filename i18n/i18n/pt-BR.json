@@ -152,7 +152,7 @@
     "directive.loading.submitting_trip" : "Submitting Trip...",
     "directive.loading.creating_action_point" : "Creating Action Point...",
     "directive.loading.updating_action_point" : "Updating Action Point...",
-    "directive.loading.submitting_report" : "Submitting Report. Please wait.",
+    "directive.loading.submitting_report" : "Submitting Report.<p></p>Please wait.",
 
     "controller.application.logout.offline.title" : "Offline Data",
     "controller.application.logout.offline.template" : "There are offline action points that will be deleted if you logout. <p></p>Are you sure you want to logout?",
