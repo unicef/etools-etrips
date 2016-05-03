@@ -9,7 +9,6 @@
         $stateProvider
             .state('app.dash', {
                 url: '/dash',
-                abstract: true,
                 views: {
                     'menuContent': {
                         templateUrl: 'app/layout/dashboard.html',
