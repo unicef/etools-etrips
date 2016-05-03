@@ -10,12 +10,12 @@
             request: request,
             responseError: responseError
         };
-        
+
         return service;
 
         function request(config) {
             config.headers = config.headers || {};
-            
+
             if (localStorageService.get('jwtoken')) {
                 config.headers.Authorization = 'JWT  ' + localStorageService.get('jwtoken');
             }
@@ -31,5 +31,5 @@
             return $q.reject(response);
         }
     }
-    
+
 })();

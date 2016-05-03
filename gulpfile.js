@@ -6,6 +6,7 @@
 
   var _ = require('lodash');
   var async = require('async');
+  var browserSync = require('browser-sync');
   var beep = require('beepbeep');
   var connectLr = require('connect-livereload');
   var del = require('del');
@@ -14,6 +15,7 @@
   var open = require('open');
   var path = require('path');
   var pg = require('pg');
+  var reload = browserSync.reload;
   var replace = require('gulp-replace-task');
   var runSequence = require('run-sequence');
   var sh = require('shelljs');
@@ -540,6 +542,23 @@
       run ? 'ionic:run' : 'noop',
       buildApp ? 'ionic:build' : 'noop',
       done);
+  });
+
+  gulp.task('lint', function() {
+    return gulp.src([
+        'app/**/*.js'    
+      ])
+      .pipe(reload({
+        stream: true,
+        once: true
+      }))
+
+    .pipe(plugins.if('*.html', plugins.htmlExtract()))
+    .pipe(plugins.jshint())
+    .pipe(plugins.jscs())
+    .pipe(plugins.jscsStylish.combineWithHintResults())
+    .pipe(plugins.jshint.reporter('jshint-stylish'))
+    .pipe(plugins.if(!browserSync.active, plugins.jshint.reporter('fail')));
   });
 
   // global error handler

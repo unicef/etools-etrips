@@ -5,7 +5,7 @@
         .module('app.pictures')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
             .state('app.dash.reporting_picture',{
                 url: '/my_trips/:tripId/pictures',

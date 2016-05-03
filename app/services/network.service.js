@@ -5,32 +5,32 @@
         .module('app.core')
         .service('networkService', networkService);
 
-    function networkService($ionicPopup, $translate, $cordovaNetwork) {
+    function networkService($ionicPopup, $translate) {
         var service = {
-            isOffline : isOffline,
-            showMessage : showMessage
+            isOffline: isOffline,
+            showMessage: showMessage
         };
 
         return service;
 
-        function isOffline(){            
+        function isOffline() {
             return window.Connection && navigator.connection.type === Connection.NONE;
         }
 
-        function showMessage(title, content){
+        function showMessage(title, content) {
             if (title === undefined) {
-              title = $translate.instant('service.network.title');
+                title = $translate.instant('service.network.title');
             }
 
             if (content === undefined) {
-              content = $translate.instant('service.network.content');
+                content = $translate.instant('service.network.content');
             }
 
             $ionicPopup.alert({
-              title  : title,
-              content: content
+                title: title,
+                content: content
             });
-        }        
+        }
     }
 
 })();
