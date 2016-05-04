@@ -5,18 +5,22 @@
         .module('app.login')
         .controller('Login', Login);
 
-    Login.$inject = ['$ionicPlatform', '$ionicHistory','$ionicLoading', '$ionicPopup', '$state', '$translate', 'actionPointsService', 'apiUrlService', 'authentication', 'dataService', 'localStorageService', 'loginService', 'networkService', 'lodash'];
+    Login.$inject = ['$ionicPlatform', '$ionicHistory','$ionicLoading', '$ionicPopup', '$state', '$translate', 'actionPointsService', 'apiUrlService', 'authentication', 'dataService', 'localStorageService', 'loginService', 'networkService', 'lodash', 'tokenService'];
 
-    function Login($ionicPlatform, $ionicHistory, $ionicLoading, $ionicPopup, $state, $translate, actionPointsService, apiUrlService, authentication, dataService, localStorageService, loginService, networkService, _) {
+    function Login($ionicPlatform, $ionicHistory, $ionicLoading, $ionicPopup, $state, $translate, actionPointsService, apiUrlService, authentication, dataService, localStorageService, loginService, networkService, _, tokenService) {
+        if (Object.keys(localStorageService.getObject('currentUser'))) {
+            $state.go('app.dash.my_trips');
+        }
+
         var vm = this;
         vm.data = localStorageService.getObject('user_cred');
         vm.login = login;
         vm.other = {};
 
-        function login() {            
+        function login() {
             var loginData = vm.data;
 
-            if (vm.other.rememberMe) {              
+            if (vm.other.rememberMe) {
                 localStorageService.setObject('user_cred', { username: loginData.username, password: '' });
             } else {
                 localStorageService.delete('user_cred');
@@ -45,7 +49,7 @@
                 );
 
             dataService.getUsersRemote(function(success){});
-            
+
             function getTrips() {
                 dataService.getTrips(
                     function(res){
@@ -53,12 +57,12 @@
                         $ionicHistory.nextViewOptions({
                             disableBack: true
                         });
-                        
+
                         $state.go('app.dash.my_trips');
                     },
                     function(res){
                         $ionicLoading.hide();
-                        
+
                         $ionicPopup.alert({
                             title: $translate.instant('controller.login.success.title'),
                             template: $translate.instant('controller.login.success.template')
@@ -68,12 +72,12 @@
             }
 
             function profileFail(error) {
-                // user does not have a country yet or something went wrong on                
+                // user does not have a country yet or something went wrong on
                 $ionicLoading.hide();
 
                 var title = $translate.instant('controller.login.country.title');
                 var template = $translate.instant('controller.login.country.template');
-                
+
                 if (error.data.detail == 'No country found for user'){
                     title = $translate.instant('controller.login.no_country.title');
                     template = $translate.instant('controller.login.no_country.template');
