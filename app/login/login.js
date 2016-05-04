@@ -8,8 +8,8 @@
     Login.$inject = ['$ionicPlatform', '$ionicHistory','$ionicLoading', '$ionicPopup', '$state', '$translate', 'actionPointsService', 'apiUrlService', 'authentication', 'dataService', 'localStorageService', 'loginService', 'networkService', 'lodash', 'tokenService'];
 
     function Login($ionicPlatform, $ionicHistory, $ionicLoading, $ionicPopup, $state, $translate, actionPointsService, apiUrlService, authentication, dataService, localStorageService, loginService, networkService, _, tokenService) {
-        if (Object.keys(localStorageService.getObject('currentUser')) && tokenService.isTokenExpired() === false) {
-            $state.go('app.dash');
+        if (Object.keys(localStorageService.getObject('currentUser'))) {
+            $state.go('app.dash.my_trips');
         }
 
         var vm = this;
