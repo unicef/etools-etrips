@@ -58,11 +58,6 @@
 
             dataService.getUsersRemote(function() {});
 
-<<<<<<< HEAD
-=======
-            dataService.getUsersRemote(function(success){});
-
->>>>>>> a8514ce11a5eba129bd11429ab5798a69671cf59
             function getTrips() {
                 dataService.getTrips(
                     function() {
