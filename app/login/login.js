@@ -5,9 +5,13 @@
         .module('app.login')
         .controller('Login', Login);
 
-    Login.$inject = ['$ionicPlatform', '$ionicHistory', '$ionicLoading', '$ionicPopup', '$state', '$translate', 'actionPointsService', 'apiUrlService', 'authentication', 'dataService', 'localStorageService', 'loginService', 'networkService'];
+    Login.$inject = ['$ionicPlatform', '$ionicHistory','$ionicLoading', '$ionicPopup', '$state', '$translate', 'actionPointsService', 'apiUrlService', 'authentication', 'dataService', 'localStorageService', 'loginService', 'networkService', 'lodash', 'tokenService'];
 
-    function Login($ionicPlatform, $ionicHistory, $ionicLoading, $ionicPopup, $state, $translate, actionPointsService, apiUrlService, authentication, dataService, localStorageService, loginService, networkService) {
+    function Login($ionicPlatform, $ionicHistory, $ionicLoading, $ionicPopup, $state, $translate, actionPointsService, apiUrlService, authentication, dataService, localStorageService, loginService, networkService, _, tokenService) {
+        if (Object.keys(localStorageService.getObject('currentUser'))) {
+            $state.go('app.dash.my_trips');
+        }
+
         var vm = this;
         vm.data = localStorageService.getObject('user_cred');
         vm.login = login;
@@ -54,6 +58,11 @@
 
             dataService.getUsersRemote(function() {});
 
+<<<<<<< HEAD
+=======
+            dataService.getUsersRemote(function(success){});
+
+>>>>>>> a8514ce11a5eba129bd11429ab5798a69671cf59
             function getTrips() {
                 dataService.getTrips(
                     function() {
