@@ -9,7 +9,7 @@
 
     function Report($stateParams) {
         var vm = this;
-        vm.trip_id = $stateParams.tripId;
+        vm.tripId = $stateParams.tripId;
     }
 
 })();

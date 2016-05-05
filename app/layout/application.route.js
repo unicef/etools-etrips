@@ -5,14 +5,14 @@
         .module('app.login')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
             .state('app', {
                 url: '/app',
                 abstract: true,
                 templateUrl: 'app/layout/application.html',
                 controller: 'Application',
-                controllerAs: 'vm',                
+                controllerAs: 'vm',
                 data: {
                     requireLogin: true
                 }

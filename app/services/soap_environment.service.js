@@ -5,10 +5,12 @@
         .module('app.core')
         .service('soapEnvironmentService', soapEnvironmentService);
 
-    function soapEnvironmentService($window) {
+    function soapEnvironmentService() {
         var adfsEndpoint = 'https://sts.unicef.org/adfs/services/trust/13/UsernameMixed';
         var resourceEndpoint = 'https://etools-staging.unicef.org/API';
-        var headers = { 'Content-Type': 'application/soap+xml; charset=utf-8' };
+        var headers = {
+            'Content-Type': 'application/soap+xml; charset=utf-8'
+        };
 
         var service = {
             body: getSoapBody,
@@ -27,11 +29,11 @@
                 '</a:To>' +
                 '<o:Security s:mustUnderstand="1" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">' +
                 '<o:UsernameToken u:Id="uuid-6a13a244-dac6-42c1-84c5-cbb345b0c4c4-1">' +
-                '<o:Username>'+
-                 username+
+                '<o:Username>' +
+                username +
                 '</o:Username>' +
                 '<o:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' +
-                password+
+                password +
                 '</o:Password>' +
                 '</o:UsernameToken>' +
                 '</o:Security>' +
