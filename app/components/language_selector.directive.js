@@ -17,13 +17,13 @@
 
     function languageSelector(localeService) {
         /*jshint validthis: true */
-        var lang_selector = this;
+        var langSelector = this;
 
-        lang_selector.changeLanguage = changeLanguage;
-        lang_selector.currentLocaleDisplayName = localeService.getLocaleDisplayName();
-        lang_selector.localesDisplayNames = localeService.getLocalesDisplayNames();
-        lang_selector.visible = lang_selector.localesDisplayNames && lang_selector.localesDisplayNames.length > 1;
-        
+        langSelector.changeLanguage = changeLanguage;
+        langSelector.currentLocaleDisplayName = localeService.getLocaleDisplayName();
+        langSelector.localesDisplayNames = localeService.getLocalesDisplayNames();
+        langSelector.visible = langSelector.localesDisplayNames && langSelector.localesDisplayNames.length > 1;
+
         function changeLanguage(locale) {
             localeService.setLocaleByDisplayName(locale);
         }

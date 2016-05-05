@@ -15,10 +15,10 @@
         vm.uploadExisting = getPicturePhotoLibrary;
 
         function getPictureCamera() {
-           pictureService.getPicture('camera', vm.data);
+            pictureService.getPicture('camera', vm.data);
         }
 
-        function getPicturePhotoLibrary(){
+        function getPicturePhotoLibrary() {
             pictureService.getPicture('photolibrary', vm.data);
         }
     }

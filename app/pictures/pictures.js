@@ -5,20 +5,20 @@
         .module('app.pictures')
         .controller('Pictures', Pictures);
 
-    Pictures.$inject = ['$ionicListDelegate', '$ionicModal', '$ionicPopup', '$scope', '$stateParams', '$translate', 'tripService'];
- 
-    function Pictures($ionicListDelegate, $ionicModal, $ionicPopup, $scope, $stateParams, $translate, tripService) {
-        var tripId = $stateParams.tripId;
-        var draftPictures = tripService.getDraft(tripId, 'pictures');        
+    Pictures.$inject = ['$ionicListDelegate', '$ionicModal', '$ionicPopup', '$scope', '$stateParams', '$translate', 'tripService', 'lodash'];
 
-        var vm = this;        
+    function Pictures($ionicListDelegate, $ionicModal, $ionicPopup, $scope, $stateParams, $translate, tripService, _) {
+        var tripId = $stateParams.tripId;
+        var draftPictures = tripService.getDraft(tripId, 'pictures');
+
+        var vm = this;
         vm.deletePicture = deletePicture;
         vm.openModal = openModal;
         vm.closeModal = closeModal;
-        vm.modalPicture = { 'filepath' : ''};
+        vm.modalPicture = {'filepath': ''};
         vm.pictures = draftPictures;
         vm.picturesFilesize = _.sumBy(draftPictures, function(picture) { return picture.filesize; });
-        vm.trip_id = tripId;
+        vm.tripId = tripId;
 
         setPicturesFilesize();
 
@@ -44,7 +44,7 @@
         }
 
         function setPicturesFilesize() {
-            vm.picturesFilesize = _.sumBy(vm.pictures, function(picture) { return picture.filesize; });            
+            vm.picturesFilesize = _.sumBy(vm.pictures, function(picture) { return picture.filesize; });
         }
 
         function deletePicture(id) {
@@ -54,8 +54,8 @@
             }).then(function(result) {
                 if (result) {
 
-                    vm.pictures = _.filter(vm.pictures, function(picture) {                     
-                        return picture.id != id;
+                    vm.pictures = _.filter(vm.pictures, function(picture) {
+                        return picture.id !== id;
                     });
 
                     tripService.setDraft(tripId, 'pictures', vm.pictures);

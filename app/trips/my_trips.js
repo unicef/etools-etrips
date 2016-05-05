@@ -19,7 +19,7 @@
         dataService.getTrips(dataSuccess, dataFailed, $stateParams.refreshed);
 
         function doRefresh() {
-            dataService.getTrips(function(res){
+            dataService.getTrips(function(res) {
                 vm.filteredTrips = $filter('filter')(res, vm.onlyMe);
                 $scope.$broadcast('scroll.refreshComplete');
 
@@ -36,11 +36,14 @@
         }
 
         function goReport(tripId) {
-            $state.go('app.dash.reporting_text', {"tripId":tripId});
+            $state.go('app.dash.reporting_text', {
+                'tripId': tripId
+            });
         }
 
         function onlyMe(trip) {
-            return trip.traveller_id == localStorageService.getObject('currentUser').user_id;
+            // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+            return trip.traveller_id === localStorageService.getObject('currentUser').user_id;
         }
 
         function submit(tripId) {
@@ -49,30 +52,33 @@
 
             } else {
                 $ionicListDelegate.closeOptionButtons();
-                $ionicLoading.show({ template: '<loading message="submitting_trip"></loading>' });
+
+                $ionicLoading.show({
+                    template: '<loading message="submitting_trip"></loading>'
+                });
 
                 tripService.tripAction(tripId, 'submitted', {}).then(
-                    function(actionSuccess){
+                    function() {
                         $ionicLoading.hide();
                         tripService.localSubmit(tripId);
 
-                        var alertPopup = $ionicPopup.alert({
+                        $ionicPopup.alert({
                             title: $translate.instant('controller.my_trips.title'),
                             template: $translate.instant('controller.my_trips.template')
                         });
                     },
-                    function(err){
+                    function(err) {
                         errorHandler.popError(err);
                     }
                 );
-          }
+            }
         }
 
-        function dataSuccess(res){
+        function dataSuccess(res) {
             vm.filteredTrips = $filter('filter')(res, vm.onlyMe);
         }
 
-        function dataFailed(err){
+        function dataFailed(err) {
             errorHandler.popError(err);
         }
     }

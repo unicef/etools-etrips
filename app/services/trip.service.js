@@ -13,7 +13,7 @@
             getDraft: getDraft,
             getTrip: getTrip,
             localApprove: localApprove,
-            localSubmit: localSubmit,            
+            localSubmit: localSubmit,
             localTripUpdate: localTripUpdate,
             reportText: reportText,
             sendAP: sendActionPoint,
@@ -23,7 +23,7 @@
 
         return service;
 
-        function deleteDraft(tripId, dataType){
+        function deleteDraft(tripId, dataType) {
             var country = localStorageService.getObject('currentUser').profile.country;
             var obj = localStorageService.getObject('draft-' + country);
 
@@ -33,9 +33,9 @@
             }
         }
 
-        function getTrip(id){            
-            for (var i=0;i<localStorageService.getObject('trips').length;i++) {
-                if(localStorageService.getObject('trips')[i].id == id){
+        function getTrip(id) {
+            for (var i = 0; i < localStorageService.getObject('trips').length; i++) {
+                if (localStorageService.getObject('trips')[i].id === parseInt(id)) {
                     return localStorageService.getObject('trips')[i];
                 }
             }
@@ -43,17 +43,19 @@
             return null;
         }
 
-        function getActionPoint(trip, ap_id){
-            for (var i=0;i<trip.actionpoint_set.length;i++) {
-                if (trip.actionpoint_set[i].id == ap_id) {
+        function getActionPoint(trip, actionPointId) {
+            // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+            for (var i = 0; i < trip.actionpoint_set.length; i++) {
+                if (trip.actionpoint_set[i].id === actionPointId) {
+                    // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
                     return formatActionPoint(trip.actionpoint_set[i]);
                 }
             }
-            
+
             return null;
         }
 
-        function getDraft(tripId, dtype){
+        function getDraft(tripId, dtype) {
             // if there isn't a currentUser in here we're in big trouble anyway
             var country = localStorageService.getObject('currentUser').profile.country;
             var my_obj = localStorageService.getObject('draft-' + country);
@@ -63,8 +65,8 @@
                 if (my_obj[tripId]) {
                     var validDataTypes = ['text', 'notes', 'main_observations', 'constraints', 'lessons_learned', 'opportunities', 'pictures', 'action_points'];
 
-                    for(var i=0; i<validDataTypes.length; i++){
-                        if (( validDataTypes[i] === dtype) && (my_obj[tripId][dtype])) {
+                    for (var i = 0; i < validDataTypes.length; i++) {
+                        if ((validDataTypes[i] === dtype) && (my_obj[tripId][dtype])) {
                             return my_obj[tripId][dtype];
                         }
                     }
@@ -74,16 +76,16 @@
             return {};
         }
 
-        function localAction(id, action){
+        function localAction(id, action) {
             var currentTrips = localStorageService.getObject('trips');
-            for (var i=0;i<currentTrips.length;i++) {
-                if (currentTrips[i].id == id) {
+            for (var i = 0; i < currentTrips.length; i++) {
+                if (currentTrips[i].id === id) {
                     currentTrips[i].status = action;
-                    localStorageService.setObject("trips", currentTrips);
+                    localStorageService.setObject('trips', currentTrips);
                     return true;
                 }
             }
-            
+
             return;
         }
 
@@ -97,10 +99,10 @@
 
         function localTripUpdate(id, trip) {
             var currentTrips = localStorageService.getObject('trips');
-            for (var i=0; i<currentTrips.length; i++) {
-                if (currentTrips[i].id == id) {
+            for (var i = 0; i < currentTrips.length; i++) {
+                if (currentTrips[i].id === id) {
                     currentTrips[i] = trip;
-                    localStorageService.setObject("trips", currentTrips);
+                    localStorageService.setObject('trips', currentTrips);
                     return true;
                 }
             }
@@ -115,7 +117,9 @@
 
         function sendActionPoint(tripId, ap, success, fail) {
             var actionPoint = formatActionPoint(ap, true);
-            var data = { 'actionpoint_set' : [ actionPoint ] };
+            var data = {
+                'actionpoint_set': [actionPoint]
+            };
             dataService.patchTrip(tripId, data, success, fail);
         }
 
@@ -135,7 +139,7 @@
                 }
             } else {
                 my_obj = {};
-                my_obj[tripId]={};
+                my_obj[tripId] = {};
                 my_obj[tripId][dtype] = draft;
             }
 
@@ -151,17 +155,17 @@
 
         function formatActionPoint(ap, for_upload) {
             if (for_upload === true) {
-                ap.due_date = ap.due_year+"-"+
-                        ap.due_month+"-"+
-                        ap.due_day;
+                ap.due_date = ap.due_year + '-' +
+                    ap.due_month + '-' +
+                    ap.due_day;
                 delete ap.due_day;
                 delete ap.due_year;
                 delete ap.due_month;
                 delete ap.person_responsible_name;
 
             } else {
-                ap.person_responsible += "";
-                var date_array = ap.due_date.split("-");
+                ap.person_responsible += '';
+                var date_array = ap.due_date.split('-');
                 ap.due_year = date_array[0];
                 ap.due_day = date_array[2];
                 ap.due_month = date_array[1];

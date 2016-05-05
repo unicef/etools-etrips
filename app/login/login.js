@@ -21,7 +21,10 @@
             var loginData = vm.data;
 
             if (vm.other.rememberMe) {
-                localStorageService.setObject('user_cred', { username: loginData.username, password: '' });
+                localStorageService.setObject('user_cred', {
+                    username: loginData.username,
+                    password: ''
+                });
             } else {
                 localStorageService.delete('user_cred');
             }
@@ -30,29 +33,34 @@
                 networkService.showMessage(
                     $translate.instant('controller.login.network_offline.title'),
                     $translate.instant('controller.login.network_offline.template')
-              );
+                );
 
             } else {
-                $ionicLoading.show( { template: '<loading></loading>' } );
-                localStorageService.setObject('relogin_cred', { username: loginData.username, password: '' }); //store the username in the background for re-login
+                $ionicLoading.show({
+                    template: '<loading></loading>'
+                });
+                localStorageService.setObject('relogin_cred', {
+                    username: loginData.username,
+                    password: ''
+                }); //store the username in the background for re-login
                 loginService.loginUser(loginData, loginSuccess, loginFail);
             }
 
             vm.data = {};
         }
 
-        function loginSuccess(token){
-            dataService.getProfile(function(success){
+        function loginSuccess() {
+            dataService.getProfile(function() {
                     getTrips();
                 },
-                    profileFail
-                );
+                profileFail
+            );
 
-            dataService.getUsersRemote(function(success){});
+            dataService.getUsersRemote(function() {});
 
             function getTrips() {
                 dataService.getTrips(
-                    function(res){
+                    function() {
                         $ionicLoading.hide();
                         $ionicHistory.nextViewOptions({
                             disableBack: true
@@ -60,7 +68,7 @@
 
                         $state.go('app.dash.my_trips');
                     },
-                    function(res){
+                    function() {
                         $ionicLoading.hide();
 
                         $ionicPopup.alert({
@@ -78,7 +86,7 @@
                 var title = $translate.instant('controller.login.country.title');
                 var template = $translate.instant('controller.login.country.template');
 
-                if (error.data.detail == 'No country found for user'){
+                if (error.data.detail === 'No country found for user') {
                     title = $translate.instant('controller.login.no_country.title');
                     template = $translate.instant('controller.login.no_country.template');
                 }
@@ -92,7 +100,7 @@
             }
         }
 
-        function loginFail(data){
+        function loginFail() {
             $ionicLoading.hide();
 
             $ionicPopup.alert({

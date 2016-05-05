@@ -6,6 +6,7 @@
 
   var _ = require('lodash');
   var async = require('async');
+  var browserSync = require('browser-sync');
   var beep = require('beepbeep');
   var connectLr = require('connect-livereload');
   var del = require('del');
@@ -14,6 +15,7 @@
   var open = require('open');
   var path = require('path');
   var pg = require('pg');
+  var reload = browserSync.reload;
   var replace = require('gulp-replace-task');
   var runSequence = require('run-sequence');
   var sh = require('shelljs');
@@ -41,7 +43,7 @@
       .alias('r', 'run')
       .alias('env', 'environment')
       // remove all debug messages (console.logs, alerts etc) from release build
-      .alias('release', 'strip-debug')      
+      .alias('release', 'strip-debug')
       .default('build', false)
       .default('port', 8100)
       .default('strip-debug', false)
@@ -62,15 +64,15 @@
   if (emulate === true) {
       emulate = 'ios';
   }
-  
+
   if (run === true) {
       run = 'ios';
   }
 
   // clean target dir
-  gulp.task('clean', function(done) {  
-    if (args.dir !== undefined && args.dir.length > 0) {      
-      targetDir = path.resolve(args.dir);      
+  gulp.task('clean', function(done) {
+    if (args.dir !== undefined && args.dir.length > 0) {
+      targetDir = path.resolve(args.dir);
     }
 
     return del([targetDir], done);
@@ -132,17 +134,17 @@
     var scriptStream = gulp
       .src(
       [
-        'templates.js', 
-        'app.module.js', 
-        'app.run.js', 
-        'app.config.js', 
-        'app.routes.js', 
-        'app.constants.js', 
+        'templates.js',
+        'app.module.js',
+        'app.run.js',
+        'app.config.js',
+        'app.routes.js',
+        'app.constants.js',
         'app.filters.js',
         '!app.constants.template.js',
         '**/*.module.js',
         '**/*.js'
-      ], 
+      ],
         { cwd: 'app' })
 
       .pipe(plugins.if(!build, plugins.changed(dest)));
@@ -237,7 +239,7 @@
       // injects 'src' into index.html at position 'tag'
     function _inject(src, tag) {
       return plugins.inject(src, {
-        starttag: '<!-- inject:' + tag + ':{{ext}} -->',      
+        starttag: '<!-- inject:' + tag + ':{{ext}} -->',
         addRootSlash: false
       });
     }
@@ -247,11 +249,11 @@
     // it makes debugging easier.
     function _getAllScriptSources() {
       var scriptStream = gulp.src([
-        'scripts/app.module.js', 
-        'scripts/app.run.js', 
-        'scripts/app.config.js', 
-        'scripts/app.routes.js', 
-        'scripts/app.constants.js', 
+        'scripts/app.module.js',
+        'scripts/app.run.js',
+        'scripts/app.config.js',
+        'scripts/app.routes.js',
+        'scripts/app.constants.js',
         'scripts/app.filters.js',
         'scripts/**/*.module.js',
         'scripts/**/*.js'
@@ -268,7 +270,7 @@
               'serve_app',
               done);
         } else {
-            runSequence(  
+            runSequence(
               'build',
               'serve_app',
               done);
@@ -281,7 +283,7 @@
         .use(!build ? connectLr() : function(){})
         .use(express.static(targetDir))
         .listen(port);
-      
+
       open('http://localhost:' + port + '/');
   });
 
@@ -353,19 +355,20 @@
     });
   });
 
-  gulp.task('update_constants_circleci', function () {  
+  gulp.task('update_constants_circleci', function () {
     var settings = {
       "apiHostDevelopment" : args.ip,
-      "defaultConnection" : 0
+      "defaultConnection" : 0,
+      "debugInfoEnabled" : false
     };
 
     return updateConstants(settings);
   });
 
   function updateConstants(settings) {
-    return gulp.src('app/app.constants.template.js')  
+    return gulp.src('app/app.constants.template.js')
       .pipe(replace({
-        patterns: _.map(_.keys(settings), function(key){ 
+        patterns: _.map(_.keys(settings), function(key){
             return { match: key, replacement: settings[key] };
           })
         }))
@@ -373,8 +376,8 @@
       .pipe(gulp.dest('app'));
   }
 
-  // disconnect any exisiting db connections  
-  gulp.task('postgres_disconnect', function(){  
+  // disconnect any exisiting db connections
+  gulp.task('postgres_disconnect', function(){
     var con = 'postgres://postgres:password@localhost:5432/' + integrationTestDb;
     var client = new pg.Client(con);
 
@@ -402,10 +405,10 @@
             callback(null, true);
           });
       }
-    ],  
+    ],
     function(err, results){
 
-      client.end();      
+      client.end();
     });
   });
 
@@ -421,17 +424,17 @@
   var exec = require('child_process').exec;
   var dockerSeleniumDebugIpPorts = '';
 
-  gulp.task('docker_selenium_start', function(cb) {  
+  gulp.task('docker_selenium_start', function(cb) {
     exec('docker run --name standalone-chrome-debug -d -P selenium/standalone-chrome-debug', function(err, stdout, stderr) {
       if (err) {
-        console.log(err);    
+        console.log(err);
       } else {
         console.log('started: docker selenium');
       }
     });
   });
 
-  gulp.task('docker_selenium_stop', function(cb) {  
+  gulp.task('docker_selenium_stop', function(cb) {
     exec('docker rm -f standalone-chrome-debug', function(err, stdout, stderr) {
       if (err) {
         console.log(err);
@@ -441,7 +444,7 @@
     });
   });
 
-  gulp.task('docker_selenium_debug_ip_ports', function(cb) {  
+  gulp.task('docker_selenium_debug_ip_ports', function(cb) {
     async.series([
         function(callback){
           exec('docker-machine ip', function(err, stdout, stderr) {
@@ -457,7 +460,7 @@
           exec('docker port standalone-chrome-debug 5900', function(err, stdout, stderr) {
             callback(null, stdout.replace(/(\r\n|\n|\r)/gm,"").split('0.0.0.0:')[1] );
           });
-        }      
+        }
     ],
     function(err, results){
       var data = {
@@ -465,13 +468,13 @@
         'selenium_port' : results[1],
         'vnc_port' : results[2]
       };
-      dockerSeleniumDebugIpPorts = data;    
+      dockerSeleniumDebugIpPorts = data;
       cb();
     });
   });
 
-  gulp.task('docker_selenium_vnc', ['docker_selenium_debug_ip_ports'], function(cb) {  
-    exec('open vnc://user:secret@' + dockerSeleniumDebugIpPorts.ip + ':' + dockerSeleniumDebugIpPorts.vnc_port);  
+  gulp.task('docker_selenium_vnc', ['docker_selenium_debug_ip_ports'], function(cb) {
+    exec('open vnc://user:secret@' + dockerSeleniumDebugIpPorts.ip + ':' + dockerSeleniumDebugIpPorts.vnc_port);
   });
 
   gulp.task('protractor', function() {
@@ -482,30 +485,30 @@
       .on('error', function(e) { throw e; });
   });
 
-  gulp.task('protractor_docker', ['docker_selenium_debug_ip_ports'], function() {  
+  gulp.task('protractor_docker', ['docker_selenium_debug_ip_ports'], function() {
     gulp.src(["./tests/*.js"])
       .pipe(plugins.protractor.protractor({
           configFile: "./tests/conf_dev.js",
           args: ['--seleniumAddress', 'http://' + dockerSeleniumDebugIpPorts.ip + ':' + dockerSeleniumDebugIpPorts.selenium_port + '/wd/hub']
       }))
-      .on('error', function(e) { throw e; });    
+      .on('error', function(e) { throw e; });
   });
 
   gulp.task('protractor_android',  function() {
     gulp.src(['./tests/*.js'])
       .pipe(plugins.protractor.protractor({
-          configFile: "./tests/conf_android.js"        
+          configFile: "./tests/conf_android.js"
       }))
       .on('error', function(e) { throw e; });
   });
 
-  gulp.task('protractor_watch', function () {   
+  gulp.task('protractor_watch', function () {
     gulp.watch(['./tests/**/*.js'], ['protractor']);
   });
 
   gulp.task('build', function(done) {
     runSequence(
-      'update_constants_app',      
+      'update_constants_app',
       'clean',
       [
         'fonts',
@@ -520,7 +523,7 @@
   });
 
   gulp.task('copy_tmp_to_www', function(done) {
-    return gulp.src([tmpDirectory + '/**/*'])          
+    return gulp.src([tmpDirectory + '/**/*'])
           .pipe(gulp.dest(wwwDirectory));
   });
 
@@ -528,7 +531,7 @@
     runSequence(
       'build',
       'copy_tmp_to_www',
-      done);      
+      done);
   });
 
   gulp.task('default', function(done) {
@@ -540,6 +543,23 @@
       run ? 'ionic:run' : 'noop',
       buildApp ? 'ionic:build' : 'noop',
       done);
+  });
+
+  gulp.task('lint', function() {
+    return gulp.src([
+        'app/**/*.js'    
+      ])
+      .pipe(reload({
+        stream: true,
+        once: true
+      }))
+
+    .pipe(plugins.if('*.html', plugins.htmlExtract()))
+    .pipe(plugins.jshint())
+    .pipe(plugins.jscs())
+    .pipe(plugins.jscsStylish.combineWithHintResults())
+    .pipe(plugins.jshint.reporter('jshint-stylish'))
+    .pipe(plugins.if(!browserSync.active, plugins.jshint.reporter('fail')));
   });
 
   // global error handler
