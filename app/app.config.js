@@ -11,7 +11,6 @@
         translation();
 
         function debugInfoEnabled(DEBUG_INFO_ENABLED) {
-            console.log(DEBUG_INFO_ENABLED);
             $compileProvider.debugInfoEnabled(DEBUG_INFO_ENABLED);
         }
 
