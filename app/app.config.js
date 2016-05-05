@@ -19,7 +19,7 @@
             $translateProvider.useStaticFilesLoader({
                 prefix: 'i18n/',
                 suffix: '.json'
-            });            
+            });
             $translateProvider.preferredLanguage(LOCALES.preferredLocale);
             $translateProvider.forceAsyncReload(true);
             $translateProvider.useLocalStorage();

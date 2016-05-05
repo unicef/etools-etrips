@@ -23,20 +23,18 @@
                 quality: 50
             };
 
-            if (type == 'camera') {
+            if (type === 'camera') {
                 _.assignIn(
-                    pictureOptions,
-                    {
+                    pictureOptions, {
                         destinationType: navigator.camera.DestinationType.FILE_URI,
                         sourceType: navigator.camera.PictureSourceType.CAMERA,
                         saveToPhotoAlbum: true
                     }
                 );
 
-            } else if (type == 'photolibrary') {
+            } else if (type === 'photolibrary') {
                 _.assignIn(
-                    pictureOptions,
-                    {
+                    pictureOptions, {
                         destinationType: navigator.camera.DestinationType.FILE_URI,
                         sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
                     }
@@ -106,7 +104,7 @@
             }
         }
 
-        function selectPictureFail(error) {
+        function selectPictureFail() {
             $ionicPopup.alert({
                 title: $translate.instant('controller.report.picture.upload.title'),
                 template: $translate.instant('controller.report.picture.upload.selected.failed.template')
@@ -118,7 +116,9 @@
             options.fileKey = 'file';
             options.fileName = 'picture';
             options.mimeType = 'image/jpeg';
-            options.params = { caption:(data.caption) ? data.caption : '' };
+            options.params = {
+                caption: (data.caption) ? data.caption : ''
+            };
             options.chunkedMode = false;
             options.encodeURI = true;
             options.headers = {
@@ -126,6 +126,7 @@
                 Connection: 'close'
             };
 
+            // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
             var uploadUrl = apiUrlService.BASE() + '/trips/api/' + data.trip_id + '/upload/';
 
             return $cordovaFileTransfer.upload(uploadUrl, data.filepath, options, true);

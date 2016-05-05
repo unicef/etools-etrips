@@ -8,13 +8,14 @@
     function Connection(apiUrlService, loginService, $state, $ionicHistory) {
         var vm = this;
         vm.data = {};
+        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
         vm.data.connection_string = apiUrlService.getOptionName();
         vm.changeConnection = changeConnection;
 
-        function changeConnection(connectionString){
-            apiUrlService.setBase(connectionString);            
+        function changeConnection(connectionString) {
+            apiUrlService.setBase(connectionString);
             loginService.logout();
-            $ionicHistory.clearCache().then(function(){ 
+            $ionicHistory.clearCache().then(function() {
                 $state.go('login');
             });
         }
