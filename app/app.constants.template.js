@@ -7,6 +7,7 @@
         .constant('DATE_FORMAT', 'dd/MM/yyyy')
         .constant('VERSION', '@@version')
         .constant('defaultConnection', @@defaultConnection)
+        .constant('DEBUG_INFO_ENABLED', @@debugInfoEnabled)
         .constant('LOCALES', {
             'locales': {
                 'en-US': 'English (US)',
@@ -15,11 +16,11 @@
                 'es-ES': 'Español'
           },
           'preferredLocale': 'en-US'
-        })        
+        })
         .constant(
             'TripVars', {
                 'checkboxes' : [
-                    'ta_drafted', 
+                    'ta_drafted',
                     'security_granted'
                 ],
 
