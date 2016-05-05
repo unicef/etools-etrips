@@ -23,9 +23,15 @@
                 vm.filteredTrips = $filter('filter')(res, vm.onlyMe);
                 $scope.$broadcast('scroll.refreshComplete');
 
-            }, function(err) {
+            }, function(err){
                 $scope.$broadcast('scroll.refreshComplete');
-                errorHandler.popError(err, false, true);
+
+                if (err.status === 0 && err.statusText === '' && networkService.isOffline() === true) {
+                    networkService.showMessage();
+                } else {
+                    errorHandler.popError(err, false, true);
+                }
+
             }, true);
         }
 
@@ -46,6 +52,7 @@
 
             } else {
                 $ionicListDelegate.closeOptionButtons();
+
                 $ionicLoading.show({
                     template: '<loading message="submitting_trip"></loading>'
                 });
