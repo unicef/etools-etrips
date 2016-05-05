@@ -1,4 +1,5 @@
 {
     "apiHostDevelopment" : "https://etools-staging.unicef.org",
-    "defaultConnection" : 2
+    "defaultConnection" : 2,
+    "debugInfoEnabled" : false
 }

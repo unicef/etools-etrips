@@ -5,9 +5,15 @@
         .module('app.core')
         .config(config);
 
-    function config($translateProvider, LOCALES, tmhDynamicLocaleProvider, $httpProvider) {
+    function config($compileProvider, $httpProvider,$translateProvider, DEBUG_INFO_ENABLED, LOCALES, tmhDynamicLocaleProvider) {
+        debugInfoEnabled(DEBUG_INFO_ENABLED);
         httpProviderPush();
         translation();
+
+        function debugInfoEnabled(DEBUG_INFO_ENABLED) {
+            console.log(DEBUG_INFO_ENABLED);
+            $compileProvider.debugInfoEnabled(DEBUG_INFO_ENABLED);
+        }
 
         function httpProviderPush() {
             $httpProvider.interceptors.push('httpInterceptorService');
