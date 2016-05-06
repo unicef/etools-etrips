@@ -64,7 +64,8 @@
                     var newFileName = md5.createHash(file.name + Math.random()) + fileExt;
 
                     $cordovaFile.copyFile(cordova.file.tempDirectory, file.name, cordova.file.dataDirectory, newFileName).then(
-                        function(success) {
+                        function() {
+                            // executed on success
                             selectPictureSuccess(file, cordova.file.dataDirectory + newFileName, fileURI, picturesLocalStorage);
                         },
                         selectPictureFail
