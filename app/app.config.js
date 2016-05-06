@@ -5,7 +5,7 @@
         .module('app.core')
         .config(config);
 
-    function config($compileProvider, $httpProvider,$translateProvider, DEBUG_INFO_ENABLED, LOCALES, tmhDynamicLocaleProvider) {
+    function config($compileProvider, $httpProvider, $translateProvider, DEBUG_INFO_ENABLED, LOCALES, tmhDynamicLocaleProvider) {
         debugInfoEnabled(DEBUG_INFO_ENABLED);
         httpProviderPush();
         translation();

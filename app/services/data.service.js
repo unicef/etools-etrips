@@ -5,7 +5,7 @@
         .module('app.core')
         .service('dataService', dataService);
 
-    function dataService($timeout, apiUrlService, localStorageService, myHttpService) {
+    function dataService($timeout, $translate, apiUrlService, localStorageService, myHttpService, networkService) {
         var service = {
             getProfile: getProfile,
             getTrips: getTrips,
@@ -42,9 +42,13 @@
         function getUserBase(success, error, refresh) {
             if ((refresh === true) ||
                 (!Object.keys(localStorageService.getObject('users')).length) ||
-                (!checkTimestamp('users_timestamp'))) {
+                (!isUserListValid('users_timestamp'))) {
 
-                getUsersRemote(success, error);
+                if (isUserListValid('users_timestamp') === false && networkService.isOffline() === true) {
+                    error($translate.instant('service.data.user_list_expired.template'));
+                } else {
+                    getUsersRemote(success, error);
+                }
 
             } else {
                 return success(localStorageService.getObject('users'));
@@ -66,15 +70,15 @@
             );
         }
 
-        function checkTimestamp(resource) {
-            var myt = localStorageService.get(resource);
-            if (!myt) {
+        function isUserListValid(resource) {
+            var userListTimestamp = localStorageService.get(resource);
+            if (!userListTimestamp) {
                 return false;
             }
-            myt = new Date(Number(myt));
+            userListTimestamp = new Date(Number(userListTimestamp));
             var now = new Date();
 
-            return (now < myt);
+            return (now < userListTimestamp);
         }
 
         function getTripsRemote(success, error) {

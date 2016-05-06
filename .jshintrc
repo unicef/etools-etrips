@@ -16,6 +16,7 @@
   "globals": {
     "angular": true,
     "ionic": true,
+    "cordova": true,
     "$window": true,
     "FileUploadOptions": true,
     "$cordovaNetwork": true,
