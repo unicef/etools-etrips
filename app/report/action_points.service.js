@@ -47,7 +47,9 @@
             var count = 0;
 
             _.each(offlineActionPoints, function(trips) {
-                count = count + trips.actionPoints.length;
+                if (trips.actionPoints !== undefined) {
+                    count = count + trips.actionPoints.length;
+                }
             });
 
             return count;

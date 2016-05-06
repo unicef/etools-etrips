@@ -25,6 +25,9 @@
                             loginService.logout();
                         }
                     });
+                } else {
+                    $state.go('login');
+                    loginService.logout();
                 }
             } else {
                 $state.go('login');

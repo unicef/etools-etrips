@@ -14,12 +14,12 @@
                 'fr-FR': 'Français (France)',
                 'pt-BR': 'Português (Brasil)',
                 'es-ES': 'Español'
-          },
-          'preferredLocale': 'en-US'
+            },
+            'preferredLocale': 'en-US'
         })
         .constant(
             'TripVars', {
-                'checkboxes' : [
+                'checkboxes': [
                     'ta_drafted',
                     'security_granted'
                 ],

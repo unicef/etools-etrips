@@ -19,20 +19,18 @@
         dataService.getTrips(dataSuccess, dataFailed, $stateParams.refreshed);
 
         function doRefresh() {
-            dataService.getTrips(function(res) {
-                vm.filteredTrips = $filter('filter')(res, vm.onlyMe);
-                $scope.$broadcast('scroll.refreshComplete');
+            $scope.$broadcast('scroll.refreshComplete');
 
-            }, function(err){
-                $scope.$broadcast('scroll.refreshComplete');
+            if (networkService.isOffline() === true) {
+                networkService.showMessage();
+            } else {
+                dataService.getTrips(function(res) {
+                    vm.filteredTrips = $filter('filter')(res, vm.onlyMe);
 
-                if (err.status === 0 && err.statusText === '' && networkService.isOffline() === true) {
-                    networkService.showMessage();
-                } else {
+                }, function(err) {
                     errorHandler.popError(err, false, true);
-                }
-
-            }, true);
+                }, true);
+            }
         }
 
         function goReport(tripId) {

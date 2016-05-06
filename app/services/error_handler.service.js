@@ -15,7 +15,8 @@
         return service;
 
         function parse(error) {
-            console.log('error response:', error);
+            defaultMessage = $translate.instant('factory.error_handler.default_message');
+
             if (!error) {
                 return defaultMessage;
             }
@@ -36,8 +37,8 @@
         }
 
         function popError(err, path, stay_on_page) {
-            //console.log("got an error");
             $ionicLoading.hide();
+
             if (path) {
                 $state.go(path);
             } else if (!stay_on_page) {
