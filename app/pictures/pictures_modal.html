@@ -14,11 +14,11 @@
                 </ion-scroll>
             </div>
 
-            <div class="item item-text-wrap" style="font-size: 14px;">
+            <div class="item item-text-wrap" style="font-size: 14px;" ng-if="vm.modalPicture.caption">
                 {{ vm.modalPicture.caption}}
             </div>
 
-            <div class="item" style="font-size: 14px;">
+            <div class="item" style="font-size: 14px;" ng-if="vm.modalPicture.filesize">
                 {{ vm.modalPicture.filesize | bytes }}
             </div>
         </div>

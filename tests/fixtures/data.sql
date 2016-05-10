@@ -900,7 +900,8 @@ ALTER SEQUENCE partners_assessment_id_seq OWNED BY partners_assessment.id;
 CREATE TABLE partners_authorizedofficer (
     id integer NOT NULL,
     agreement_id integer NOT NULL,
-    officer_id integer NOT NULL
+    officer_id integer NOT NULL,
+    amendment_id integer
 );
 
 
@@ -925,6 +926,46 @@ ALTER TABLE partners_authorizedofficer_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE partners_authorizedofficer_id_seq OWNED BY partners_authorizedofficer.id;
+
+
+--
+-- Name: partners_bankdetails; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_bankdetails (
+    id integer NOT NULL,
+    bank_name character varying(255),
+    bank_address character varying(256) NOT NULL,
+    account_title character varying(255),
+    account_number character varying(50),
+    routing_details character varying(255),
+    bank_contact_person character varying(255),
+    agreement_id integer NOT NULL,
+    amendment_id integer
+);
+
+
+ALTER TABLE partners_bankdetails OWNER TO postgres;
+
+--
+-- Name: partners_bankdetails_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_bankdetails_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_bankdetails_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_bankdetails_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_bankdetails_id_seq OWNED BY partners_bankdetails.id;
 
 
 --
@@ -1283,6 +1324,7 @@ CREATE TABLE partners_indicatorreport (
     result_chain_id integer NOT NULL,
     "end" timestamp with time zone,
     start timestamp with time zone,
+    report_status character varying(15) NOT NULL,
     CONSTRAINT partners_indicatorreport_total_check CHECK ((total >= 0))
 );
 
@@ -1321,8 +1363,8 @@ CREATE TABLE partners_partnerorganization (
     short_name character varying(50) NOT NULL,
     description character varying(256) NOT NULL,
     address text,
-    email character varying(255) NOT NULL,
-    phone_number character varying(32) NOT NULL,
+    email character varying(255),
+    phone_number character varying(32),
     vendor_number bigint,
     alternate_id integer,
     alternate_name character varying(255),
@@ -1682,9 +1724,7 @@ CREATE TABLE partners_ramindicator (
     id integer NOT NULL,
     indicator_id integer NOT NULL,
     intervention_id integer NOT NULL,
-    result_id integer NOT NULL,
-    baseline character varying(255),
-    target character varying(255)
+    result_id integer NOT NULL
 );
 
 
@@ -4161,6 +4201,74 @@ ALTER SEQUENCE users_country_id_seq OWNED BY users_country.id;
 
 
 --
+-- Name: users_country_offices; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users_country_offices (
+    id integer NOT NULL,
+    country_id integer NOT NULL,
+    office_id integer NOT NULL
+);
+
+
+ALTER TABLE users_country_offices OWNER TO postgres;
+
+--
+-- Name: users_country_offices_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE users_country_offices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_country_offices_id_seq OWNER TO postgres;
+
+--
+-- Name: users_country_offices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE users_country_offices_id_seq OWNED BY users_country_offices.id;
+
+
+--
+-- Name: users_country_sections; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users_country_sections (
+    id integer NOT NULL,
+    country_id integer NOT NULL,
+    section_id integer NOT NULL
+);
+
+
+ALTER TABLE users_country_sections OWNER TO postgres;
+
+--
+-- Name: users_country_sections_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE users_country_sections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_country_sections_id_seq OWNER TO postgres;
+
+--
+-- Name: users_country_sections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE users_country_sections_id_seq OWNED BY users_country_sections.id;
+
+
+--
 -- Name: users_office; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -4488,6 +4596,13 @@ ALTER TABLE ONLY partners_assessment ALTER COLUMN id SET DEFAULT nextval('partne
 --
 
 ALTER TABLE ONLY partners_authorizedofficer ALTER COLUMN id SET DEFAULT nextval('partners_authorizedofficer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_bankdetails ALTER COLUMN id SET DEFAULT nextval('partners_bankdetails_id_seq'::regclass);
 
 
 --
@@ -5070,6 +5185,20 @@ ALTER TABLE ONLY users_country ALTER COLUMN id SET DEFAULT nextval('users_countr
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
+ALTER TABLE ONLY users_country_offices ALTER COLUMN id SET DEFAULT nextval('users_country_offices_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_country_sections ALTER COLUMN id SET DEFAULT nextval('users_country_sections_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
 ALTER TABLE ONLY users_office ALTER COLUMN id SET DEFAULT nextval('users_office_id_seq'::regclass);
 
 
@@ -5334,6 +5463,14 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 134	reports	0017_auto_20160428_1033	2016-04-29 11:11:17.940153-04
 135	trips	0012_auto_20160425_1243	2016-04-29 11:11:18.624922-04
 136	trips	0013_auto_20160428_1249	2016-04-29 11:11:19.60789-04
+137	partners	0051_auto_20160505_1740	2016-05-10 09:09:44.219784-04
+138	partners	0052_convert_disaggregation_to_json	2016-05-10 09:09:44.286516-04
+139	partners	0053_auto_20160505_1810	2016-05-10 09:09:45.244832-04
+140	partners	0054_bankdetails	2016-05-10 09:09:45.99148-04
+141	partners	0055_auto_20160509_0934	2016-05-10 09:09:47.071812-04
+142	partners	0056_auto_20160509_1330	2016-05-10 09:09:48.0252-04
+143	partners	0057_auto_20160509_1827	2016-05-10 09:09:48.991701-04
+144	users	0013_auto_20160509_2148	2016-05-10 09:09:50.516689-04
 \.
 
 
@@ -5341,7 +5478,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 136, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 144, true);
 
 
 --
@@ -5543,7 +5680,7 @@ SELECT pg_catalog.setval('partners_assessment_id_seq', 1, false);
 -- Data for Name: partners_authorizedofficer; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_authorizedofficer (id, agreement_id, officer_id) FROM stdin;
+COPY partners_authorizedofficer (id, agreement_id, officer_id, amendment_id) FROM stdin;
 \.
 
 
@@ -5552,6 +5689,21 @@ COPY partners_authorizedofficer (id, agreement_id, officer_id) FROM stdin;
 --
 
 SELECT pg_catalog.setval('partners_authorizedofficer_id_seq', 1, false);
+
+
+--
+-- Data for Name: partners_bankdetails; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_bankdetails (id, bank_name, bank_address, account_title, account_number, routing_details, bank_contact_person, agreement_id, amendment_id) FROM stdin;
+\.
+
+
+--
+-- Name: partners_bankdetails_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_bankdetails_id_seq', 1, false);
 
 
 --
@@ -5693,7 +5845,7 @@ SELECT pg_catalog.setval('partners_indicatorduedates_id_seq', 1, false);
 -- Data for Name: partners_indicatorreport; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_indicatorreport (id, created, modified, total, disaggregated, disaggregation, remarks, indicator_id, location_id, partner_staff_member_id, result_chain_id, "end", start) FROM stdin;
+COPY partners_indicatorreport (id, created, modified, total, disaggregated, disaggregation, remarks, indicator_id, location_id, partner_staff_member_id, result_chain_id, "end", start, report_status) FROM stdin;
 \.
 
 
@@ -5843,7 +5995,7 @@ SELECT pg_catalog.setval('partners_pcasectorgoal_id_seq', 1, false);
 -- Data for Name: partners_ramindicator; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_ramindicator (id, indicator_id, intervention_id, result_id, baseline, target) FROM stdin;
+COPY partners_ramindicator (id, indicator_id, intervention_id, result_id) FROM stdin;
 \.
 
 
@@ -6550,6 +6702,9 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 302	Can add Report Due Date	101	add_indicatorduedates
 303	Can change Report Due Date	101	change_indicatorduedates
 304	Can delete Report Due Date	101	delete_indicatorduedates
+305	Can add bank details	102	add_bankdetails
+306	Can change bank details	102	change_bankdetails
+307	Can delete bank details	102	delete_bankdetails
 \.
 
 
@@ -6557,7 +6712,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 304, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 307, true);
 
 
 --
@@ -6831,6 +6986,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 99	partners	governmentintervention
 100	partners	governmentinterventionresult
 101	partners	indicatorduedates
+102	partners	bankdetails
 \.
 
 
@@ -6838,7 +6994,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 101, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 102, true);
 
 
 --
@@ -6982,6 +7138,14 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 134	reports	0017_auto_20160428_1033	2016-04-29 11:09:54.789931-04
 135	trips	0012_auto_20160425_1243	2016-04-29 11:09:55.41374-04
 136	trips	0013_auto_20160428_1249	2016-04-29 11:09:56.028095-04
+137	partners	0051_auto_20160505_1740	2016-05-10 09:09:22.200263-04
+138	partners	0052_convert_disaggregation_to_json	2016-05-10 09:09:22.227415-04
+139	partners	0053_auto_20160505_1810	2016-05-10 09:09:22.773193-04
+140	partners	0054_bankdetails	2016-05-10 09:09:23.253678-04
+141	partners	0055_auto_20160509_0934	2016-05-10 09:09:23.830977-04
+142	partners	0056_auto_20160509_1330	2016-05-10 09:09:24.447978-04
+143	partners	0057_auto_20160509_1827	2016-05-10 09:09:25.154995-04
+144	users	0013_auto_20160509_2148	2016-05-10 09:09:26.268793-04
 \.
 
 
@@ -6989,7 +7153,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 136, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 144, true);
 
 
 --
@@ -8633,6 +8797,36 @@ SELECT pg_catalog.setval('users_country_id_seq', 1, true);
 
 
 --
+-- Data for Name: users_country_offices; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users_country_offices (id, country_id, office_id) FROM stdin;
+\.
+
+
+--
+-- Name: users_country_offices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('users_country_offices_id_seq', 1, false);
+
+
+--
+-- Data for Name: users_country_sections; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users_country_sections (id, country_id, section_id) FROM stdin;
+\.
+
+
+--
+-- Name: users_country_sections_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('users_country_sections_id_seq', 1, false);
+
+
+--
 -- Data for Name: users_office; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -8979,6 +9173,14 @@ ALTER TABLE ONLY partners_assessment
 
 ALTER TABLE ONLY partners_authorizedofficer
     ADD CONSTRAINT partners_authorizedofficer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_bankdetails_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_bankdetails
+    ADD CONSTRAINT partners_bankdetails_pkey PRIMARY KEY (id);
 
 
 --
@@ -9984,6 +10186,22 @@ ALTER TABLE ONLY users_country
 
 
 --
+-- Name: users_country_offices_country_id_office_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users_country_offices
+    ADD CONSTRAINT users_country_offices_country_id_office_id_key UNIQUE (country_id, office_id);
+
+
+--
+-- Name: users_country_offices_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users_country_offices
+    ADD CONSTRAINT users_country_offices_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_country_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -9997,6 +10215,22 @@ ALTER TABLE ONLY users_country
 
 ALTER TABLE ONLY users_country
     ADD CONSTRAINT users_country_schema_name_key UNIQUE (schema_name);
+
+
+--
+-- Name: users_country_sections_country_id_section_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users_country_sections
+    ADD CONSTRAINT users_country_sections_country_id_section_id_key UNIQUE (country_id, section_id);
+
+
+--
+-- Name: users_country_sections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users_country_sections
+    ADD CONSTRAINT users_country_sections_pkey PRIMARY KEY (id);
 
 
 --
@@ -10388,10 +10622,31 @@ CREATE INDEX partners_authorizedofficer_410cd312 ON partners_authorizedofficer U
 
 
 --
+-- Name: partners_authorizedofficer_5b253451; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_authorizedofficer_5b253451 ON partners_authorizedofficer USING btree (amendment_id);
+
+
+--
 -- Name: partners_authorizedofficer_e1d6855c; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX partners_authorizedofficer_e1d6855c ON partners_authorizedofficer USING btree (officer_id);
+
+
+--
+-- Name: partners_bankdetails_410cd312; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_bankdetails_410cd312 ON partners_bankdetails USING btree (agreement_id);
+
+
+--
+-- Name: partners_bankdetails_5b253451; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_bankdetails_5b253451 ON partners_bankdetails USING btree (amendment_id);
 
 
 --
@@ -11797,10 +12052,38 @@ CREATE INDEX users_country_domain_url_713208db75d5deb7_like ON users_country USI
 
 
 --
+-- Name: users_country_offices_93bfec8a; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX users_country_offices_93bfec8a ON users_country_offices USING btree (country_id);
+
+
+--
+-- Name: users_country_offices_cc247b05; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX users_country_offices_cc247b05 ON users_country_offices USING btree (office_id);
+
+
+--
 -- Name: users_country_schema_name_7ef5cec0a33e4061_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX users_country_schema_name_7ef5cec0a33e4061_like ON users_country USING btree (schema_name varchar_pattern_ops);
+
+
+--
+-- Name: users_country_sections_730f6511; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX users_country_sections_730f6511 ON users_country_sections USING btree (section_id);
+
+
+--
+-- Name: users_country_sections_93bfec8a; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX users_country_sections_93bfec8a ON users_country_sections USING btree (country_id);
 
 
 --
@@ -11869,6 +12152,14 @@ CREATE INDEX vision_visionsynclog_93bfec8a ON vision_visionsynclog USING btree (
 SET search_path = hoth, pg_catalog;
 
 --
+-- Name: D093f4d23cc8218cfe190b0f31310ca6; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_authorizedofficer
+    ADD CONSTRAINT "D093f4d23cc8218cfe190b0f31310ca6" FOREIGN KEY (amendment_id) REFERENCES partners_agreementamendmentlog(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: D1945ae4cf01cc91320c6f1bada3f5a5; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11914,6 +12205,14 @@ ALTER TABLE ONLY partners_pca
 
 ALTER TABLE ONLY partners_pca
     ADD CONSTRAINT "D82934fd0d4b4e3520abfe2d384ffa43" FOREIGN KEY (result_structure_id) REFERENCES reports_resultstructure(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: D9bcf20b4dbb779d95203fda3e58bce3; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_bankdetails
+    ADD CONSTRAINT "D9bcf20b4dbb779d95203fda3e58bce3" FOREIGN KEY (amendment_id) REFERENCES partners_agreementamendmentlog(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -12330,6 +12629,14 @@ ALTER TABLE ONLY partners_pca
 
 ALTER TABLE ONLY partners_agreementamendmentlog
     ADD CONSTRAINT partners_agreement_id_6cf55f50170c31c4_fk_partners_agreement_id FOREIGN KEY (agreement_id) REFERENCES partners_agreement(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_agreement_id_7f38a7c4f5ecd9c9_fk_partners_agreement_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_bankdetails
+    ADD CONSTRAINT partners_agreement_id_7f38a7c4f5ecd9c9_fk_partners_agreement_id FOREIGN KEY (agreement_id) REFERENCES partners_agreement(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -13300,6 +13607,38 @@ ALTER TABLE ONLY socialaccount_socialaccount
 
 ALTER TABLE ONLY users_userprofile
     ADD CONSTRAINT users__country_override_id_4de609908747de6b_fk_users_country_id FOREIGN KEY (country_override_id) REFERENCES users_country(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_country_o_country_id_1e55a08f3bcf03b3_fk_users_country_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_country_offices
+    ADD CONSTRAINT users_country_o_country_id_1e55a08f3bcf03b3_fk_users_country_id FOREIGN KEY (country_id) REFERENCES users_country(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_country_off_office_id_52ebc125913460cc_fk_users_office_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_country_offices
+    ADD CONSTRAINT users_country_off_office_id_52ebc125913460cc_fk_users_office_id FOREIGN KEY (office_id) REFERENCES users_office(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_country_s_country_id_4bb5146e7cc75a59_fk_users_country_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_country_sections
+    ADD CONSTRAINT users_country_s_country_id_4bb5146e7cc75a59_fk_users_country_id FOREIGN KEY (country_id) REFERENCES users_country(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_country_s_section_id_43a688ba89de99dc_fk_users_section_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_country_sections
+    ADD CONSTRAINT users_country_s_section_id_43a688ba89de99dc_fk_users_section_id FOREIGN KEY (section_id) REFERENCES users_section(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
