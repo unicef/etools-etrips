@@ -5,9 +5,9 @@
         .module('app.report')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
-            .state('app.dash.reporting_action_point',{      
+            .state('app.dash.reporting_action_point',{
                 url: '/my_trips/:tripId/reporting/action_point',
                 cache: false,
                 views: {
@@ -18,7 +18,7 @@
                     }
                 }
             }
-        );        
+        );
     }
 
 })();

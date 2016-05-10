@@ -1,4 +1,4 @@
-angular.module('app', [  
+angular.module('app', [
     /* shared modules */
     'app.core',
     'app.components',
@@ -10,7 +10,7 @@ angular.module('app', [
     'app.notes',
     'app.report',
     'app.pictures',
-    'app.settings',    
+    'app.settings',
     'app.trips'
 ]);
 

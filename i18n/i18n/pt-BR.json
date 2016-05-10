@@ -5,8 +5,8 @@
     "template.login.password" : "Senha",
     "template.login.remember_me" : "REMEMBER ME",
     "template.login.sign_in" : "Fazer login",
-    
-"template.menu.title" : "eTrip Menu",
+
+    "template.menu.title" : "eTrip Menu",
     "template.menu.country" : "Country:",
     "template.menu.trips" : "Trips",
     "template.menu.settings" : "Settings",
@@ -82,7 +82,7 @@
     "template.trip.report.picture.list.subtitle" : "The following pictures will be uploaded when the trip report is submitted.",
     "template.trip.report.picture.list.subtitle.no_picutres" : "No pictures have been selected for upload.",
     "template.trip.report.picture.list.delete" : "Delete",
-    
+
     "template.trip.report.picture" : "Pictures",
     "template.trip.report.action_point" : "Action Points",
     "template.trip.report.text.title" : "Text Reporting",
@@ -94,11 +94,11 @@
     "template.trip.report.text.submit" : "Submit Report",
     "template.trip.report.text.insert_findings" : "Insert findings here",
     "template.trip.report.text.implementation" : "Implementation constraints that affect achievement of Project",
-    "template.trip.report.text.lessons" : "Lessons learned from addressing the constraints in the course of the reporting period",    
+    "template.trip.report.text.lessons" : "Lessons learned from addressing the constraints in the course of the reporting period",
     "template.trip.report.text.key" : "Key partnerships/collaboration and other highlights",
 
     "template.trip.report.picture.title" : "Add Picture",
-    "template.trip.report.picture.add" : "Add Picture",    
+    "template.trip.report.picture.add" : "Add Picture",
     "template.trip.report.picture.caption" : "Caption",
     "template.trip.report.picture.upload" : "Upload Existing Photo",
     "template.trip.report.picture.take" : "Take Picture",
@@ -132,7 +132,7 @@
     "template.trip.report.action_point.edit.error.template" : "",
     "template.trip.report.action_point.edit.error.description.template" : "A description is required to submit the action point. <p></p>Please enter a description.",
     "template.trip.report.action_point.edit.error.person_responsible.template" : "A person responsible is required to submit the action point. <p></p>Please select a person responsible.",
-    
+
     "template.settings.title" : " Settings",
     "template.settings.connection" : " Connection",
     "template.settings.set_connection" : " Set connection server",
@@ -152,7 +152,7 @@
     "directive.loading.submitting_trip" : "Submitting Trip...",
     "directive.loading.creating_action_point" : "Creating Action Point...",
     "directive.loading.updating_action_point" : "Updating Action Point...",
-    "directive.loading.submitting_report" : "Submitting Report. Please wait.",
+    "directive.loading.submitting_report" : "Submitting Report.<p></p>Please wait.",
 
     "controller.application.logout.offline.title" : "Offline Data",
     "controller.application.logout.offline.template" : "There are offline action points that will be deleted if you logout. <p></p>Are you sure you want to logout?",
@@ -185,7 +185,7 @@
     "controller.report.drafts.submitted.title" : "Report Submitted",
     "controller.report.drafts.submitted.template" : "Text has been successfully submitted.",
 
-    "controller.report.picture.upload.title" : "Picture",    
+    "controller.report.picture.upload.title" : "Picture",
     "controller.report.picture.upload.selected.title" : "The picture was successfully selected. It will be uploaded when the trip report is submitted.",
     "controller.report.picture.upload.selected.failed.template" : "A picture was not selected.",
     "controller.report.picture.upload.delete.title" : "Delete Picture",
@@ -204,7 +204,7 @@
     "controller.trip.action_point.delete.template" : "Are you sure you want to delete this action point?",
 
     "controller.trip.submit.title" : "Trip Submission",
-    "controller.trip.submit.template" : "You succesfully submitted the trip.",    
+    "controller.trip.submit.template" : "You succesfully submitted the trip.",
     "controller.trip.complete.title" : "Trip Submission",
     "controller.trip.complete.template" : "You completed the trip.",
 
@@ -233,10 +233,12 @@
     "controller.login.fail.title" : "Sign In Failed",
     "controller.login.fail.template" : "Invalid username or password.",
 
+    "service.data.user_list_expired.template" : "The internet connection appears to be offline and the user list for action points has expired. Please try again in a moment.",
+
     "service.my_http.session_expired.title" : "Session Expired",
-    "service.my_http.session_expired.password" : "Your password",    
+    "service.my_http.session_expired.password" : "Your password",
     "service.my_http.failed_relogin" : "Your session has ended. Please enter your username and password to proceed.",
-    
+
     "service.network.title" : "Connection error",
     "service.network.content" : "The internet connection appears to be offline. Please try again in a moment.",
 
@@ -244,7 +246,7 @@
     "service.action_points.network_status.connection" : "You are connected to the internet.",
     "service.action_points.network_status.offline_uploaded" : "{{ action_points_count }} offline action points were submitted.",
 
-    "factory.error_handler.default_message" : "Something went wrong, try again later.",
+    "factory.error_handler.default_message" : "Something went wrong. Please try again later.",
     "factory.error_handler.password" : "The password introduced was incorrect.",
-    "factory.error_handler.unknown" : "Something went wrong."
+    "factory.error_handler.unknown" : "Error"
 }}

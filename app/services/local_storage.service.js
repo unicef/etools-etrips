@@ -32,7 +32,7 @@
             $window.localStorage[key] = JSON.stringify(value);
         }
 
-        function deleteObject(key){
+        function deleteObject(key) {
             delete $window.localStorage[key];
         }
     }

@@ -406,7 +406,8 @@ CREATE TABLE funds_grant (
     id integer NOT NULL,
     name character varying(128) NOT NULL,
     donor_id integer NOT NULL,
-    expiry date
+    expiry date,
+    description character varying(255)
 );
 
 
@@ -1085,6 +1086,113 @@ ALTER SEQUENCE partners_fundingcommitment_id_seq OWNED BY partners_fundingcommit
 
 
 --
+-- Name: partners_governmentintervention; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_governmentintervention (
+    id integer NOT NULL,
+    partner_id integer NOT NULL,
+    result_structure_id integer NOT NULL
+);
+
+
+ALTER TABLE partners_governmentintervention OWNER TO postgres;
+
+--
+-- Name: partners_governmentintervention_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_governmentintervention_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_governmentintervention_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_governmentintervention_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_governmentintervention_id_seq OWNED BY partners_governmentintervention.id;
+
+
+--
+-- Name: partners_governmentinterventionresult; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_governmentinterventionresult (
+    id integer NOT NULL,
+    year character varying(4) NOT NULL,
+    planned_amount integer NOT NULL,
+    intervention_id integer NOT NULL,
+    result_id integer NOT NULL,
+    section_id integer,
+    sector_id integer,
+    activities public.hstore
+);
+
+
+ALTER TABLE partners_governmentinterventionresult OWNER TO postgres;
+
+--
+-- Name: partners_governmentinterventionresult_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_governmentinterventionresult_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_governmentinterventionresult_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_governmentinterventionresult_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_governmentinterventionresult_id_seq OWNED BY partners_governmentinterventionresult.id;
+
+
+--
+-- Name: partners_governmentinterventionresult_unicef_managers; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_governmentinterventionresult_unicef_managers (
+    id integer NOT NULL,
+    governmentinterventionresult_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE partners_governmentinterventionresult_unicef_managers OWNER TO postgres;
+
+--
+-- Name: partners_governmentinterventionresult_unicef_managers_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_governmentinterventionresult_unicef_managers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_governmentinterventionresult_unicef_managers_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_governmentinterventionresult_unicef_managers_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_governmentinterventionresult_unicef_managers_id_seq OWNED BY partners_governmentinterventionresult_unicef_managers.id;
+
+
+--
 -- Name: partners_gwpcalocation; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -1121,6 +1229,40 @@ ALTER TABLE partners_gwpcalocation_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE partners_gwpcalocation_id_seq OWNED BY partners_gwpcalocation.id;
+
+
+--
+-- Name: partners_indicatorduedates; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_indicatorduedates (
+    id integer NOT NULL,
+    due_date date,
+    intervention_id integer
+);
+
+
+ALTER TABLE partners_indicatorduedates OWNER TO postgres;
+
+--
+-- Name: partners_indicatorduedates_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_indicatorduedates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_indicatorduedates_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_indicatorduedates_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_indicatorduedates_id_seq OWNED BY partners_indicatorduedates.id;
 
 
 --
@@ -1189,7 +1331,9 @@ CREATE TABLE partners_partnerorganization (
     core_values_assessment character varying(100),
     cso_type character varying(50),
     vision_synced boolean NOT NULL,
-    type_of_assessment character varying(50)
+    type_of_assessment character varying(50),
+    last_assessment_date date,
+    shared_partner character varying(50) NOT NULL
 );
 
 
@@ -1313,27 +1457,11 @@ CREATE TABLE partners_pca (
     review_date date,
     signed_by_unicef_date date,
     signed_by_partner_date date,
-    unicef_mng_first_name character varying(64) NOT NULL,
-    unicef_mng_last_name character varying(64) NOT NULL,
-    unicef_mng_email character varying(128) NOT NULL,
-    partner_mng_first_name character varying(64) NOT NULL,
-    partner_mng_last_name character varying(64) NOT NULL,
-    partner_mng_email character varying(128) NOT NULL,
-    partner_mng_phone character varying(64) NOT NULL,
-    partner_contribution_budget integer,
-    unicef_cash_budget integer,
-    in_kind_amount_budget integer,
-    cash_for_supply_budget integer,
-    total_cash integer,
     sectors character varying(255),
     current boolean NOT NULL,
     created_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    amendment boolean NOT NULL,
-    amended_at timestamp with time zone,
-    amendment_number integer NOT NULL,
     agreement_id integer,
-    original_id integer,
     partner_id integer NOT NULL,
     partner_focal_point_id integer,
     partner_manager_id integer,
@@ -1408,7 +1536,6 @@ ALTER SEQUENCE partners_pca_unicef_managers_id_seq OWNED BY partners_pca_unicef_
 
 CREATE TABLE partners_pcafile (
     id integer NOT NULL,
-    file_id integer,
     pca_id integer NOT NULL,
     type_id integer NOT NULL,
     attachment character varying(255) NOT NULL
@@ -1582,44 +1709,6 @@ ALTER TABLE partners_ramindicator_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE partners_ramindicator_id_seq OWNED BY partners_ramindicator.id;
-
-
---
--- Name: partners_recommendation; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE partners_recommendation (
-    id integer NOT NULL,
-    subject_area character varying(50) NOT NULL,
-    description character varying(254) NOT NULL,
-    level character varying(50) NOT NULL,
-    closed boolean NOT NULL,
-    completed_date date,
-    assessment_id integer NOT NULL
-);
-
-
-ALTER TABLE partners_recommendation OWNER TO postgres;
-
---
--- Name: partners_recommendation_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
---
-
-CREATE SEQUENCE partners_recommendation_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE partners_recommendation_id_seq OWNER TO postgres;
-
---
--- Name: partners_recommendation_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
---
-
-ALTER SEQUENCE partners_recommendation_id_seq OWNED BY partners_recommendation.id;
 
 
 --
@@ -2142,10 +2231,9 @@ ALTER SEQUENCE trips_actionpoint_id_seq OWNED BY trips_actionpoint.id;
 
 CREATE TABLE trips_fileattachment (
     id integer NOT NULL,
-    report character varying(100) NOT NULL,
+    report character varying(255) NOT NULL,
     object_id integer,
     content_type_id integer,
-    file_id integer,
     trip_id integer,
     type_id integer NOT NULL,
     caption text,
@@ -4434,7 +4522,35 @@ ALTER TABLE ONLY partners_fundingcommitment ALTER COLUMN id SET DEFAULT nextval(
 -- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
 --
 
+ALTER TABLE ONLY partners_governmentintervention ALTER COLUMN id SET DEFAULT nextval('partners_governmentintervention_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult ALTER COLUMN id SET DEFAULT nextval('partners_governmentinterventionresult_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_unicef_managers ALTER COLUMN id SET DEFAULT nextval('partners_governmentinterventionresult_unicef_managers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
 ALTER TABLE ONLY partners_gwpcalocation ALTER COLUMN id SET DEFAULT nextval('partners_gwpcalocation_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_indicatorduedates ALTER COLUMN id SET DEFAULT nextval('partners_indicatorduedates_id_seq'::regclass);
 
 
 --
@@ -4512,13 +4628,6 @@ ALTER TABLE ONLY partners_pcasectorgoal ALTER COLUMN id SET DEFAULT nextval('par
 --
 
 ALTER TABLE ONLY partners_ramindicator ALTER COLUMN id SET DEFAULT nextval('partners_ramindicator_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
---
-
-ALTER TABLE ONLY partners_recommendation ALTER COLUMN id SET DEFAULT nextval('partners_recommendation_id_seq'::regclass);
 
 
 --
@@ -5215,6 +5324,16 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 124	trips	0011_linkedpartner	2016-04-20 09:51:11.128772-04
 125	users	0012_country_vision_last_synced	2016-04-20 09:51:11.450803-04
 126	vision	0001_initial	2016-04-20 09:51:12.14766-04
+127	funds	0003_grant_description	2016-04-29 11:11:08.829299-04
+128	partners	0045_remove_pcafile_file	2016-04-29 11:11:09.08614-04
+129	partners	0046_auto_20160426_1521	2016-04-29 11:11:15.083814-04
+130	partners	0047_auto_20160427_2035	2016-04-29 11:11:15.624329-04
+131	partners	0048_indicatorduedates	2016-04-29 11:11:15.889732-04
+132	partners	0049_auto_20160428_0213	2016-04-29 11:11:17.325151-04
+133	partners	0050_partnerorganization_shared_partner	2016-04-29 11:11:17.61184-04
+134	reports	0017_auto_20160428_1033	2016-04-29 11:11:17.940153-04
+135	trips	0012_auto_20160425_1243	2016-04-29 11:11:18.624922-04
+136	trips	0013_auto_20160428_1249	2016-04-29 11:11:19.60789-04
 \.
 
 
@@ -5222,7 +5341,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 126, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 136, true);
 
 
 --
@@ -5244,7 +5363,7 @@ SELECT pg_catalog.setval('funds_donor_id_seq', 1, false);
 -- Data for Name: funds_grant; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY funds_grant (id, name, donor_id, expiry) FROM stdin;
+COPY funds_grant (id, name, donor_id, expiry, description) FROM stdin;
 \.
 
 
@@ -5496,6 +5615,51 @@ SELECT pg_catalog.setval('partners_fundingcommitment_id_seq', 1, false);
 
 
 --
+-- Data for Name: partners_governmentintervention; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_governmentintervention (id, partner_id, result_structure_id) FROM stdin;
+\.
+
+
+--
+-- Name: partners_governmentintervention_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_governmentintervention_id_seq', 1, false);
+
+
+--
+-- Data for Name: partners_governmentinterventionresult; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_governmentinterventionresult (id, year, planned_amount, intervention_id, result_id, section_id, sector_id, activities) FROM stdin;
+\.
+
+
+--
+-- Name: partners_governmentinterventionresult_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_governmentinterventionresult_id_seq', 1, false);
+
+
+--
+-- Data for Name: partners_governmentinterventionresult_unicef_managers; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_governmentinterventionresult_unicef_managers (id, governmentinterventionresult_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: partners_governmentinterventionresult_unicef_managers_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_governmentinterventionresult_unicef_managers_id_seq', 1, false);
+
+
+--
 -- Data for Name: partners_gwpcalocation; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
@@ -5508,6 +5672,21 @@ COPY partners_gwpcalocation (id, tpm_visit, governorate_id, locality_id, locatio
 --
 
 SELECT pg_catalog.setval('partners_gwpcalocation_id_seq', 1, false);
+
+
+--
+-- Data for Name: partners_indicatorduedates; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_indicatorduedates (id, due_date, intervention_id) FROM stdin;
+\.
+
+
+--
+-- Name: partners_indicatorduedates_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_indicatorduedates_id_seq', 1, false);
 
 
 --
@@ -5529,7 +5708,7 @@ SELECT pg_catalog.setval('partners_indicatorreport_id_seq', 1, false);
 -- Data for Name: partners_partnerorganization; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_partnerorganization (id, partner_type, name, short_name, description, address, email, phone_number, vendor_number, alternate_id, alternate_name, rating, core_values_assessment_date, core_values_assessment, cso_type, vision_synced, type_of_assessment) FROM stdin;
+COPY partners_partnerorganization (id, partner_type, name, short_name, description, address, email, phone_number, vendor_number, alternate_id, alternate_name, rating, core_values_assessment_date, core_values_assessment, cso_type, vision_synced, type_of_assessment, last_assessment_date, shared_partner) FROM stdin;
 \.
 
 
@@ -5574,7 +5753,7 @@ SELECT pg_catalog.setval('partners_partnerstaffmember_id_seq', 1, false);
 -- Data for Name: partners_pca; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, unicef_mng_first_name, unicef_mng_last_name, unicef_mng_email, partner_mng_first_name, partner_mng_last_name, partner_mng_email, partner_mng_phone, partner_contribution_budget, unicef_cash_budget, in_kind_amount_budget, cash_for_supply_budget, total_cash, sectors, current, created_at, updated_at, amendment, amended_at, amendment_number, agreement_id, original_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number, project_type, planned_visits) FROM stdin;
+COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, sectors, current, created_at, updated_at, agreement_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number, project_type, planned_visits) FROM stdin;
 \.
 
 
@@ -5604,7 +5783,7 @@ SELECT pg_catalog.setval('partners_pca_unicef_managers_id_seq', 1, false);
 -- Data for Name: partners_pcafile; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_pcafile (id, file_id, pca_id, type_id, attachment) FROM stdin;
+COPY partners_pcafile (id, pca_id, type_id, attachment) FROM stdin;
 \.
 
 
@@ -5673,21 +5852,6 @@ COPY partners_ramindicator (id, indicator_id, intervention_id, result_id, baseli
 --
 
 SELECT pg_catalog.setval('partners_ramindicator_id_seq', 1, false);
-
-
---
--- Data for Name: partners_recommendation; Type: TABLE DATA; Schema: hoth; Owner: postgres
---
-
-COPY partners_recommendation (id, subject_area, description, level, closed, completed_date, assessment_id) FROM stdin;
-\.
-
-
---
--- Name: partners_recommendation_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
---
-
-SELECT pg_catalog.setval('partners_recommendation_id_seq', 1, false);
 
 
 --
@@ -5889,7 +6053,7 @@ SELECT pg_catalog.setval('trips_actionpoint_id_seq', 1, true);
 -- Data for Name: trips_fileattachment; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY trips_fileattachment (id, report, object_id, content_type_id, file_id, trip_id, type_id, caption) FROM stdin;
+COPY trips_fileattachment (id, report, object_id, content_type_id, trip_id, type_id, caption) FROM stdin;
 \.
 
 
@@ -6377,6 +6541,15 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 293	Can add linked partner	98	add_linkedpartner
 294	Can change linked partner	98	change_linkedpartner
 295	Can delete linked partner	98	delete_linkedpartner
+296	Can add government intervention	99	add_governmentintervention
+297	Can change government intervention	99	change_governmentintervention
+298	Can delete government intervention	99	delete_governmentintervention
+299	Can add government intervention result	100	add_governmentinterventionresult
+300	Can change government intervention result	100	change_governmentinterventionresult
+301	Can delete government intervention result	100	delete_governmentinterventionresult
+302	Can add Report Due Date	101	add_indicatorduedates
+303	Can change Report Due Date	101	change_indicatorduedates
+304	Can delete Report Due Date	101	delete_indicatorduedates
 \.
 
 
@@ -6384,7 +6557,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 295, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 304, true);
 
 
 --
@@ -6655,6 +6828,9 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 96	vision	visionsynclog
 97	partners	agreementamendmentlog
 98	trips	linkedpartner
+99	partners	governmentintervention
+100	partners	governmentinterventionresult
+101	partners	indicatorduedates
 \.
 
 
@@ -6662,7 +6838,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 98, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 101, true);
 
 
 --
@@ -6796,6 +6972,16 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 124	trips	0011_linkedpartner	2016-04-20 09:49:43.695923-04
 125	users	0012_country_vision_last_synced	2016-04-20 09:49:44.30225-04
 126	vision	0001_initial	2016-04-20 09:49:45.005898-04
+127	funds	0003_grant_description	2016-04-29 11:09:45.259484-04
+128	partners	0045_remove_pcafile_file	2016-04-29 11:09:45.544624-04
+129	partners	0046_auto_20160426_1521	2016-04-29 11:09:51.931111-04
+130	partners	0047_auto_20160427_2035	2016-04-29 11:09:52.740499-04
+131	partners	0048_indicatorduedates	2016-04-29 11:09:52.991619-04
+132	partners	0049_auto_20160428_0213	2016-04-29 11:09:54.017421-04
+133	partners	0050_partnerorganization_shared_partner	2016-04-29 11:09:54.287804-04
+134	reports	0017_auto_20160428_1033	2016-04-29 11:09:54.789931-04
+135	trips	0012_auto_20160425_1243	2016-04-29 11:09:55.41374-04
+136	trips	0013_auto_20160428_1249	2016-04-29 11:09:56.028095-04
 \.
 
 
@@ -6803,7 +6989,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 126, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 136, true);
 
 
 --
@@ -8836,11 +9022,51 @@ ALTER TABLE ONLY partners_fundingcommitment
 
 
 --
+-- Name: partners_governmentinterventi_governmentinterventionresult__key; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_unicef_managers
+    ADD CONSTRAINT partners_governmentinterventi_governmentinterventionresult__key UNIQUE (governmentinterventionresult_id, user_id);
+
+
+--
+-- Name: partners_governmentintervention_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_governmentintervention
+    ADD CONSTRAINT partners_governmentintervention_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_governmentinterventionresult_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult
+    ADD CONSTRAINT partners_governmentinterventionresult_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_governmentinterventionresult_unicef_managers_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_unicef_managers
+    ADD CONSTRAINT partners_governmentinterventionresult_unicef_managers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: partners_gwpcalocation_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY partners_gwpcalocation
     ADD CONSTRAINT partners_gwpcalocation_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_indicatorduedates_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_indicatorduedates
+    ADD CONSTRAINT partners_indicatorduedates_pkey PRIMARY KEY (id);
 
 
 --
@@ -8961,14 +9187,6 @@ ALTER TABLE ONLY partners_pcasectorgoal
 
 ALTER TABLE ONLY partners_ramindicator
     ADD CONSTRAINT partners_ramindicator_pkey PRIMARY KEY (id);
-
-
---
--- Name: partners_recommendation_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY partners_recommendation
-    ADD CONSTRAINT partners_recommendation_pkey PRIMARY KEY (id);
 
 
 --
@@ -10219,6 +10437,62 @@ CREATE INDEX partners_fundingcommitment_c2418e07 ON partners_fundingcommitment U
 
 
 --
+-- Name: partners_governmentintervention_4e98b6eb; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentintervention_4e98b6eb ON partners_governmentintervention USING btree (partner_id);
+
+
+--
+-- Name: partners_governmentintervention_51f26604; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentintervention_51f26604 ON partners_governmentintervention USING btree (result_structure_id);
+
+
+--
+-- Name: partners_governmentinterventionresult_123a1ce7; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_123a1ce7 ON partners_governmentinterventionresult USING btree (intervention_id);
+
+
+--
+-- Name: partners_governmentinterventionresult_57f06544; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_57f06544 ON partners_governmentinterventionresult USING btree (result_id);
+
+
+--
+-- Name: partners_governmentinterventionresult_5b1d2adf; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_5b1d2adf ON partners_governmentinterventionresult USING btree (sector_id);
+
+
+--
+-- Name: partners_governmentinterventionresult_730f6511; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_730f6511 ON partners_governmentinterventionresult USING btree (section_id);
+
+
+--
+-- Name: partners_governmentinterventionresult_unicef_managers_57f68559; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_unicef_managers_57f68559 ON partners_governmentinterventionresult_unicef_managers USING btree (governmentinterventionresult_id);
+
+
+--
+-- Name: partners_governmentinterventionresult_unicef_managers_e8701ad4; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_unicef_managers_e8701ad4 ON partners_governmentinterventionresult_unicef_managers USING btree (user_id);
+
+
+--
 -- Name: partners_gwpcalocation_0f442f96; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -10258,6 +10532,13 @@ CREATE INDEX partners_gwpcalocation_e274a5da ON partners_gwpcalocation USING btr
 --
 
 CREATE INDEX partners_gwpcalocation_f8d00aa6 ON partners_gwpcalocation USING btree (governorate_id);
+
+
+--
+-- Name: partners_indicatorduedates_123a1ce7; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_indicatorduedates_123a1ce7 ON partners_indicatorduedates USING btree (intervention_id);
 
 
 --
@@ -10338,13 +10619,6 @@ CREATE INDEX partners_pca_51f26604 ON partners_pca USING btree (result_structure
 
 
 --
--- Name: partners_pca_524b09d0; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX partners_pca_524b09d0 ON partners_pca USING btree (original_id);
-
-
---
 -- Name: partners_pca_7dad813f; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -10377,13 +10651,6 @@ CREATE INDEX partners_pca_unicef_managers_e8701ad4 ON partners_pca_unicef_manage
 --
 
 CREATE INDEX partners_pcafile_2c72a097 ON partners_pcafile USING btree (pca_id);
-
-
---
--- Name: partners_pcafile_814552b9; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX partners_pcafile_814552b9 ON partners_pcafile USING btree (file_id);
 
 
 --
@@ -10468,13 +10735,6 @@ CREATE INDEX partners_ramindicator_57f06544 ON partners_ramindicator USING btree
 --
 
 CREATE INDEX partners_ramindicator_a82bd466 ON partners_ramindicator USING btree (indicator_id);
-
-
---
--- Name: partners_recommendation_a4079fcf; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX partners_recommendation_a4079fcf ON partners_recommendation USING btree (assessment_id);
 
 
 --
@@ -10699,13 +10959,6 @@ CREATE INDEX trips_actionpoint_c65d32e5 ON trips_actionpoint USING btree (trip_i
 --
 
 CREATE INDEX trips_fileattachment_417f1b1c ON trips_fileattachment USING btree (content_type_id);
-
-
---
--- Name: trips_fileattachment_814552b9; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX trips_fileattachment_814552b9 ON trips_fileattachment USING btree (file_id);
 
 
 --
@@ -11640,6 +11893,14 @@ ALTER TABLE ONLY trips_trip_partners
 
 
 --
+-- Name: D5c492549784cde8555bda5143c4d738; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_unicef_managers
+    ADD CONSTRAINT "D5c492549784cde8555bda5143c4d738" FOREIGN KEY (governmentinterventionresult_id) REFERENCES partners_governmentinterventionresult(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: D5f7fe000fa89487f2ffccabb9df0066; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11720,11 +11981,27 @@ ALTER TABLE ONLY partners_pca
 
 
 --
+-- Name: d933c1d039111004dfca25d35ee658cd; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentintervention
+    ADD CONSTRAINT d933c1d039111004dfca25d35ee658cd FOREIGN KEY (result_structure_id) REFERENCES reports_resultstructure(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: e36b79af9b3e9a38a291e222f089daf9; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
 ALTER TABLE ONLY partners_agreement
     ADD CONSTRAINT e36b79af9b3e9a38a291e222f089daf9 FOREIGN KEY (partner_manager_id) REFERENCES partners_partnerstaffmember(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: efec5d360b6557ac8ec20c62ff2c6fc5; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult
+    ADD CONSTRAINT efec5d360b6557ac8ec20c62ff2c6fc5 FOREIGN KEY (intervention_id) REFERENCES partners_governmentintervention(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -11920,14 +12197,6 @@ ALTER TABLE ONLY partners_partnershipbudget
 
 
 --
--- Name: partne_assessment_id_450817e6264912c4_fk_partners_assessment_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
---
-
-ALTER TABLE ONLY partners_recommendation
-    ADD CONSTRAINT partne_assessment_id_450817e6264912c4_fk_partners_assessment_id FOREIGN KEY (assessment_id) REFERENCES partners_assessment(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
 -- Name: partne_result_type_id_6cf4907867e3483d_fk_reports_resulttype_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -11941,6 +12210,14 @@ ALTER TABLE ONLY partners_resultchain
 
 ALTER TABLE ONLY partners_agreement
     ADD CONSTRAINT partner_id_1a3efc89825ec0a3_fk_partners_partnerorganization_id FOREIGN KEY (partner_id) REFERENCES partners_partnerorganization(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partner_id_2ae94f13b2c2b256_fk_partners_partnerorganization_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentintervention
+    ADD CONSTRAINT partner_id_2ae94f13b2c2b256_fk_partners_partnerorganization_id FOREIGN KEY (partner_id) REFERENCES partners_partnerorganization(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -12104,6 +12381,38 @@ ALTER TABLE ONLY partners_fundingcommitment
 
 
 --
+-- Name: partners_govern_result_id_2734b63559022f5d_fk_reports_result_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult
+    ADD CONSTRAINT partners_govern_result_id_2734b63559022f5d_fk_reports_result_id FOREIGN KEY (result_id) REFERENCES reports_result(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_govern_section_id_437cb9a400f170b0_fk_users_section_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult
+    ADD CONSTRAINT partners_govern_section_id_437cb9a400f170b0_fk_users_section_id FOREIGN KEY (section_id) REFERENCES public.users_section(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_governm_sector_id_95eae6a501031c2_fk_reports_sector_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult
+    ADD CONSTRAINT partners_governm_sector_id_95eae6a501031c2_fk_reports_sector_id FOREIGN KEY (sector_id) REFERENCES reports_sector(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_governmentint_user_id_79976e851bc26ee1_fk_auth_user_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_unicef_managers
+    ADD CONSTRAINT partners_governmentint_user_id_79976e851bc26ee1_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: partners_gwpc_region_id_6d2b3812d6406385_fk_locations_region_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -12128,19 +12437,19 @@ ALTER TABLE ONLY partners_gwpcalocation
 
 
 --
+-- Name: partners_in_intervention_id_4a5af923c10d7f6b_fk_partners_pca_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_indicatorduedates
+    ADD CONSTRAINT partners_in_intervention_id_4a5af923c10d7f6b_fk_partners_pca_id FOREIGN KEY (intervention_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: partners_par_partnership_id_31a8485d92dcd260_fk_partners_pca_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
 ALTER TABLE ONLY partners_partnershipbudget
     ADD CONSTRAINT partners_par_partnership_id_31a8485d92dcd260_fk_partners_pca_id FOREIGN KEY (partnership_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: partners_pca_original_id_42613ce0f5e3cc51_fk_partners_pca_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
---
-
-ALTER TABLE ONLY partners_pca
-    ADD CONSTRAINT partners_pca_original_id_42613ce0f5e3cc51_fk_partners_pca_id FOREIGN KEY (original_id) REFERENCES partners_pca(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -12181,14 +12490,6 @@ ALTER TABLE ONLY partners_pca
 
 ALTER TABLE ONLY partners_pcafile
     ADD CONSTRAINT partners_pcafi_type_id_57edde389d9bbb14_fk_partners_filetype_id FOREIGN KEY (type_id) REFERENCES partners_filetype(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: partners_pcafile_file_id_2eeef2e5299dd936_fk_filer_file_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
---
-
-ALTER TABLE ONLY partners_pcafile
-    ADD CONSTRAINT partners_pcafile_file_id_2eeef2e5299dd936_fk_filer_file_id FOREIGN KEY (file_id) REFERENCES public.filer_file(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -12421,14 +12722,6 @@ ALTER TABLE ONLY trips_actionpoint
 
 ALTER TABLE ONLY trips_fileattachment
     ADD CONSTRAINT trips_fileatta_type_id_10cf7d8e15ae132c_fk_partners_filetype_id FOREIGN KEY (type_id) REFERENCES partners_filetype(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: trips_fileattachment_file_id_26f2ac72615ac4f6_fk_filer_file_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
---
-
-ALTER TABLE ONLY trips_fileattachment
-    ADD CONSTRAINT trips_fileattachment_file_id_26f2ac72615ac4f6_fk_filer_file_id FOREIGN KEY (file_id) REFERENCES public.filer_file(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --

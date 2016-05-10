@@ -5,7 +5,7 @@
         .module('app.settings')
         .controller('Settings', Settings);
 
-    function Settings() {        
+    function Settings() {
     }
 
 })();

@@ -8,7 +8,7 @@
     runBlock.$inject = ['$ionicPlatform', '$rootScope', '$state', '$http', 'apiUrlService', 'localStorageService', 'actionPointsService'];
 
     function runBlock($ionicPlatform, $rootScope, $state, $http, apiUrlService, localStorageService, actionPointsService) {
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+        $rootScope.$on('$stateChangeStart', function(event, toState) {
             var requireLogin = toState.data.requireLogin;
 
             if (requireLogin && !Object.keys(localStorageService.getObject('currentUser')).length) {
@@ -22,14 +22,14 @@
             }
         });
 
-        $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+        $rootScope.$on('$cordovaNetwork:online', function() {
             actionPointsService.submitOfflineActionPoints();
         });
- 
+
         $ionicPlatform.ready(function() {
             if (window.StatusBar) {
                 StatusBar.styleDefault();
             }
         });
-    }    
+    }
 })();

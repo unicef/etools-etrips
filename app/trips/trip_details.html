@@ -119,7 +119,7 @@
                   <p class="item-text-wrap li-center less-padding">
                       {{ route.origin }}
                       <br>
-                      {{ route.depart | date:'short'}}
+                      {{ route.depart | date:vm.dateFormat}} {{ vm.timezone }}
                   </p>
               </div>
               <div class="list col no-padding">
@@ -127,7 +127,7 @@
                   <p class="item-text-wrap li-center less-padding">
                       {{ route.destination }}
                       <br>
-                      {{ route.arrive | date:'short' }}
+                      {{ route.arrive | date:vm.dateFormat }} {{ vm.timezone }}
                   </p>
               </div>
           </span>
