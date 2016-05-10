@@ -5,17 +5,17 @@
         .module('app.trips')
         .controller('TripDetails', TripDetails);
 
-    TripDetails.$inject = ['$ionicModal', '$scope', '$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate'];
+    TripDetails.$inject = ['$ionicModal', '$scope', '$stateParams', 'tripService', 'localStorageService', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', 'errorHandler', 'networkService', '$translate', 'lodash'];
 
-    function TripDetails($ionicModal, $scope, $stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate) {
+    function TripDetails($ionicModal, $scope, $stateParams, tripService, localStorageService, $ionicLoading, $ionicHistory, $state, $ionicPopup, errorHandler, networkService, $translate, _) {
         var vm = this;
-        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-        var uid = localStorageService.getObject('currentUser').user_id;
-
         vm.approve = approve;
+        vm.closeModal = closeModal;
         vm.dateFormat = 'dd/MM/yyyy HH:mm';
         vm.completeTrip = completeTrip;
         vm.goReport = goReport;
+        vm.modalPicture = {'filepath': ''};
+        vm.openModal = openModal;
         vm.showConfirm = showConfirm;
         vm.submit = submit;
         vm.takeNotes = takeNotes;
@@ -23,9 +23,28 @@
         vm.trip = tripService.getTrip($stateParams.tripId);
         vm.pictureDimension = 0;
 
-        vm.openModal = openModal;
-        vm.closeModal = closeModal;
-        vm.modalPicture = {'filepath': ''};
+        var pictures = _.map(vm.trip.files, function(picture) {
+            return {
+                filepath: 'http://lorempixel.com/800/800/',//picture.file,
+                caption: picture.caption
+            };
+        });
+
+        vm.pictures = pictures;
+
+        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+        var uid = localStorageService.getObject('currentUser').user_id;
+
+        vm.checks = {
+            supervisor: vm.trip.supervisor === uid,
+            owner: vm.trip.traveller_id === uid,
+            is_approved: vm.trip.status === 'approved',
+            not_supervisor_approved: (!vm.trip.approved_by_supervisor),
+            is_planned: vm.trip.status === 'planned',
+            is_canceled: vm.trip.status === 'cancelled',
+            is_submitted: vm.trip.status === 'submitted',
+            report_filled: vm.trip.main_observations
+        };
 
         $ionicModal.fromTemplateUrl('./templates/pictures/pictures_modal.html', {
             scope: $scope,
@@ -41,6 +60,14 @@
         ionic.Platform.ready(function() {
             var pictureGridCount = 3;
             vm.pictureDimension = parseInt(window.innerWidth / pictureGridCount) - pictureGridCount * 4;
+
+            if (navigator.globalization !== undefined) {
+                navigator.globalization.getDatePattern(function(obj) {
+                    if (obj.timezone !== undefined) {
+                        vm.timezone = obj.timezone;
+                    }
+                });
+            }
         });
 
         function openModal(picture) {
@@ -51,57 +78,6 @@
         function closeModal() {
             $scope.modal.hide();
         }
-
-        var pictures = [
-            {
-                filepath: 'http://lorempixel.com/800/800/',
-                caption: 'Proin sapien ipsum porta'
-            },
-            {
-                filepath: 'http://lorempixel.com/600/600/',
-                caption: 'Phasellus volutpat metus eget egestas'
-            },
-            {
-                filepath: 'http://lorempixel.com/700/700/',
-                caption: 'Fusce pharetra convallis urna'
-            },
-            {
-                filepath: 'http://lorempixel.com/650/650/',
-                caption: 'Ut id nisl quis enim'
-            },
-            {
-                filepath: 'http://lorempixel.com/750/750/',
-                caption: 'Nullam nulla eros ultricies sit'
-            },
-            {
-                filepath: 'http://lorempixel.com/550/550/',
-                caption: 'Nunc egestas augue at'
-            }
-        ];
-
-        vm.pictures = pictures;
-
-        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-        vm.checks = {
-            supervisor: vm.trip.supervisor === uid,
-            owner: vm.trip.traveller_id === uid,
-            is_approved: vm.trip.status === 'approved',
-            not_supervisor_approved: (!vm.trip.approved_by_supervisor),
-            is_planned: vm.trip.status === 'planned',
-            is_canceled: vm.trip.status === 'cancelled',
-            is_submitted: vm.trip.status === 'submitted',
-            report_filled: vm.trip.main_observations
-        };
-
-        ionic.Platform.ready(function() {
-            if (navigator.globalization !== undefined) {
-                navigator.globalization.getDatePattern(function(obj) {
-                    if (obj.timezone !== undefined) {
-                        vm.timezone = obj.timezone;
-                    }
-                });
-            }
-        });
 
         function approve(tripId) {
             if (networkService.isOffline() === true) {

@@ -196,8 +196,8 @@
           <h4 class="item-divider txt-grey li-center">Pictures</h4>
           <div class="row gallery">
             <span ng-repeat="picture in vm.pictures" ng-click="vm.openModal(picture)">
-              <img src="{{ picture.filepath }}" style="max-height: {{ vm.pictureDimension }}px; max-width: {{ vm.pictureDimension }}px; padding: 1px;" />
-            </span>            
+              <img ng-src="{{ picture.filepath }}" style="max-height: {{ vm.pictureDimension }}px; max-width: {{ vm.pictureDimension }}px; padding: 1px;" err-src="" />
+            </span>
         </div>
       </span>
 
