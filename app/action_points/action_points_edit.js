@@ -20,43 +20,47 @@
         vm.today = new Date();
         vm.yearOptions = [vm.today.getFullYear() + '', vm.today.getFullYear() + 1 + ''];
 
-        // new / edit state
-        if ($state.current.name.indexOf('new') > 0) {
-            vm.title = 'template.trip.report.action_point.new';
-            vm.isActionPointNew = true;
-        }
-
-        // get users
-        dataService.getUserBase(
-            function(users){
-                vm.users = users;
-            },
-            function(err){
-                errorHandler.popError(err);
+        ionic.Platform.ready(function(){
+                // new / edit state
+            if ($state.current.name.indexOf('new') > 0) {
+                vm.title = 'template.trip.report.action_point.new';
+                vm.isActionPointNew = true;
             }
-        );
 
-        // set current date
-        if (vm.isActionPointNew === true) {
-            var tomorrow = new Date(vm.today.getTime() + 24 * 60 * 60 * 1000);
+            // get users
+            dataService.getUserBase(
+                function(users){
+                    vm.users = users;
+                },
+                function(err){
+                    errorHandler.popError(err);
+                }
+            );
 
-            vm.ap = {'status':'open',
-                         'due_year': tomorrow.getFullYear()+"",
-                         'due_month': ("0" + (tomorrow.getMonth()+1)).slice(-2),
-                         'due_day': ("0" + tomorrow.getDate()).slice(-2)
-                        };
-        } else {
-            if (networkService.isOffline() === true) {
-                var offlineActionPoints = tripService.getDraft(currentTrip.id, 'action_points');
-                vm.ap = _.find(offlineActionPoints, function(actionPoint) { return actionPoint.id === $stateParams.actionPointId; });
+            // set current date
+            if (vm.isActionPointNew === true) {
+                var tomorrow = new Date(vm.today.getTime() + 24 * 60 * 60 * 1000);
 
+                vm.ap = {'status':'open',
+                             'due_year': tomorrow.getFullYear()+"",
+                             'due_month': ("0" + (tomorrow.getMonth()+1)).slice(-2),
+                             'due_day': ("0" + tomorrow.getDate()).slice(-2)
+                            };
             } else {
-                vm.ap = tripService.getAP(currentTrip, $stateParams.actionPointId);
+                if (networkService.isOffline() === true) {
+                    var offlineActionPoints = tripService.getDraft(currentTrip.id, 'action_points');
+                    vm.ap = _.find(offlineActionPoints, function(actionPoint) { return actionPoint.id === $stateParams.actionPointId; });
+
+                } else {
+                    vm.ap = tripService.getAP(currentTrip, $stateParams.actionPointId);
+                }
             }
-        }
+
+            vm.isPersonResponsibleCurrentUser();
+        });
 
         function isPersonResponsibleCurrentUser(){
-            if (parseInt(vm.ap.person_responsible) === parseInt(localStorageService.getObject('currentUser').id)) {
+            if (vm.isActionPointNew === true || parseInt(vm.ap.person_responsible) === parseInt(localStorageService.getObject('currentUser').id)) {
                 vm.personResponsibleIsCurrentUser = true;
             } else {
                 vm.personResponsibleIsCurrentUser = false;
@@ -146,7 +150,6 @@
                     displayPopup();
 
                 } else {
-
                     tripService.sendAP(currentTrip.id, vm.ap,
                         function(success) {
                             $ionicLoading.hide();

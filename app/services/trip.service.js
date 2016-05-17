@@ -120,6 +120,7 @@
             var data = {
                 'actionpoint_set': [actionPoint]
             };
+
             dataService.patchTrip(tripId, data, success, fail);
         }
 
@@ -155,20 +156,34 @@
 
         function formatActionPoint(ap, for_upload) {
             if (for_upload === true) {
-                ap.due_date = ap.due_year + '-' +
-                    ap.due_month + '-' +
-                    ap.due_day;
+                ap.due_date = ap.due_year + '-' + ap.due_month + '-' + ap.due_day;
                 delete ap.due_day;
                 delete ap.due_year;
                 delete ap.due_month;
+
+                if (ap.completed_day) {
+                    ap.completed_date = ap.completed_year + '-' + ap.completed_month + '-' + ap.completed_day;
+                }
+
+                delete ap.completed_day;
+                delete ap.completed_year;
+                delete ap.completed_month;
+
                 delete ap.person_responsible_name;
 
             } else {
                 ap.person_responsible += '';
-                var date_array = ap.due_date.split('-');
-                ap.due_year = date_array[0];
-                ap.due_day = date_array[2];
-                ap.due_month = date_array[1];
+                var dueDate = ap.due_date.split('-');
+                ap.due_year = dueDate[0];
+                ap.due_day = dueDate[2];
+                ap.due_month = dueDate[1];
+
+                if (ap.completed_date) {
+                    var completedDate = ap.completed_date.split('-');
+                    ap.completed_year = completedDate[0];
+                    ap.completed_day = completedDate[2];
+                    ap.completed_month = completedDate[1];
+                }
             }
 
             return ap;
