@@ -5,9 +5,9 @@
         .module('app.notes')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
-            .state('app.dash.notes',{
+            .state('app.dash.notes', {
                 url: '/my_trips/:tripId/notes',
                 cache: false,
                 views: {
@@ -18,7 +18,7 @@
                     }
                 }
             }
-        );   
+        );
     }
 
 })();

@@ -61,6 +61,8 @@ ion-content .subtitle {
 
 .action_point {
     font-size: 12px;
+    line-height: 12px;
+    text-height: 12px;
 }
 
 .action_point .title {
@@ -82,6 +84,11 @@ ion-content .subtitle {
 
 .action_points_no_data {
     font-size: 14px;
+}
+
+.action_point_list a {
+    padding-bottom: 5px !important;
+    padding-top: 5px !important;
 }
 
 .version {

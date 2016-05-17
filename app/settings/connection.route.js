@@ -5,9 +5,9 @@
         .module('app.settings')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
-            .state('app.connection',{
+            .state('app.connection', {
                 url: '/settings/connection',
                 views: {
                     'menuContent': {
