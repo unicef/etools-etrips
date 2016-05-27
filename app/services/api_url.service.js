@@ -10,7 +10,7 @@
         var options = {
             0: apiHostDevelopment,                 //  development
             1: 'https://etools-dev.unicef.org',    //  staging
-            2: 'https://etools-staging.unicef.org' //  production
+            2: 'https://etools.unicef.org' //  production
         };
 
         var service = {
