@@ -1179,6 +1179,40 @@ CREATE TABLE partners_governmentinterventionresult (
 ALTER TABLE partners_governmentinterventionresult OWNER TO postgres;
 
 --
+-- Name: partners_governmentinterventionresult_activities_list; Type: TABLE; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE partners_governmentinterventionresult_activities_list (
+    id integer NOT NULL,
+    governmentinterventionresult_id integer NOT NULL,
+    result_id integer NOT NULL
+);
+
+
+ALTER TABLE partners_governmentinterventionresult_activities_list OWNER TO postgres;
+
+--
+-- Name: partners_governmentinterventionresult_activities_list_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
+--
+
+CREATE SEQUENCE partners_governmentinterventionresult_activities_list_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE partners_governmentinterventionresult_activities_list_id_seq OWNER TO postgres;
+
+--
+-- Name: partners_governmentinterventionresult_activities_list_id_seq; Type: SEQUENCE OWNED BY; Schema: hoth; Owner: postgres
+--
+
+ALTER SEQUENCE partners_governmentinterventionresult_activities_list_id_seq OWNED BY partners_governmentinterventionresult_activities_list.id;
+
+
+--
 -- Name: partners_governmentinterventionresult_id_seq; Type: SEQUENCE; Schema: hoth; Owner: postgres
 --
 
@@ -4651,6 +4685,13 @@ ALTER TABLE ONLY partners_governmentinterventionresult ALTER COLUMN id SET DEFAU
 -- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
 --
 
+ALTER TABLE ONLY partners_governmentinterventionresult_activities_list ALTER COLUMN id SET DEFAULT nextval('partners_governmentinterventionresult_activities_list_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: hoth; Owner: postgres
+--
+
 ALTER TABLE ONLY partners_governmentinterventionresult_unicef_managers ALTER COLUMN id SET DEFAULT nextval('partners_governmentinterventionresult_unicef_managers_id_seq'::regclass);
 
 
@@ -5471,6 +5512,8 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 142	partners	0056_auto_20160509_1330	2016-05-10 09:09:48.0252-04
 143	partners	0057_auto_20160509_1827	2016-05-10 09:09:48.991701-04
 144	users	0013_auto_20160509_2148	2016-05-10 09:09:50.516689-04
+145	partners	0058_governmentinterventionresult_activities_list	2016-05-23 22:06:25.624103-04
+146	trips	0014_auto_20160510_1432	2016-05-23 22:06:25.674938-04
 \.
 
 
@@ -5478,7 +5521,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 144, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 146, true);
 
 
 --
@@ -5486,6 +5529,11 @@ SELECT pg_catalog.setval('django_migrations_id_seq', 144, true);
 --
 
 COPY funds_donor (id, name) FROM stdin;
+1	Maggio Group
+2	Upton, Kub and Stamm
+3	Gaylord - Bergstrom
+4	Strosin, Gibson and Hammes
+5	Cole - Schumm
 \.
 
 
@@ -5531,6 +5579,11 @@ SELECT pg_catalog.setval('locations_cartodbtable_id_seq', 1, false);
 --
 
 COPY locations_gatewaytype (id, name) FROM stdin;
+1	Emmett
+2	Eladio
+3	Arnaldo
+4	Ciara
+5	Reyes
 \.
 
 
@@ -5591,6 +5644,10 @@ SELECT pg_catalog.setval('locations_locality_id_seq', 1, false);
 --
 
 COPY locations_location (id, name, latitude, longitude, p_code, point, gateway_id, locality_id, geom, level, lft, parent_id, rght, tree_id) FROM stdin;
+1	Praesent	\N	\N		0101000020E61000000000000000A202404729584A3B744840	3	\N	\N	0	1	\N	2	1
+2	Cras	\N	\N		0101000020E6100000000000000080C6BF78F3226ADDC94940	4	\N	\N	0	1	\N	2	2
+3	Phasellus	\N	\N		0101000020E610000000000000008B2A40B7B21C5C22594A40	2	\N	\N	0	1	\N	2	3
+4	Maecenas	\N	\N		\N	5	\N	\N	0	1	\N	2	4
 \.
 
 
@@ -5598,7 +5655,7 @@ COPY locations_location (id, name, latitude, longitude, p_code, point, gateway_i
 -- Name: locations_location_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('locations_location_id_seq', 1, false);
+SELECT pg_catalog.setval('locations_location_id_seq', 4, true);
 
 
 --
@@ -5621,6 +5678,9 @@ SELECT pg_catalog.setval('locations_region_id_seq', 1, false);
 --
 
 COPY partners_agreement (id, created, modified, start, "end", agreement_type, agreement_number, attached_agreement, signed_by_unicef_date, signed_by_partner_date, partner_id, partner_manager_id, signed_by_id, account_number, account_title, bank_address, bank_contact_person, bank_name, routing_details) FROM stdin;
+1	2016-05-23 22:27:14.625203-04	2016-05-23 22:27:14.648861-04	\N	\N	SSFA			\N	\N	4	\N	\N	\N	\N		\N	\N	\N
+2	2016-05-23 22:28:54.211088-04	2016-05-23 22:28:54.234731-04	\N	\N	AWP			\N	\N	2	\N	\N	\N	\N		\N	\N	\N
+3	2016-05-23 22:32:02.791001-04	2016-05-23 22:32:02.811332-04	\N	\N	AWP			\N	\N	1	\N	\N	\N	\N		\N	\N	\N
 \.
 
 
@@ -5628,7 +5688,7 @@ COPY partners_agreement (id, created, modified, start, "end", agreement_type, ag
 -- Name: partners_agreement_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('partners_agreement_id_seq', 1, false);
+SELECT pg_catalog.setval('partners_agreement_id_seq', 3, true);
 
 
 --
@@ -5726,6 +5786,8 @@ SELECT pg_catalog.setval('partners_directcashtransfer_id_seq', 1, false);
 --
 
 COPY partners_distributionplan (id, quantity, send, sent, delivered, item_id, partnership_id, site_id, document) FROM stdin;
+1	5	f	f	0	1	2	2	\N
+2	5	f	f	0	1	1	2	\N
 \.
 
 
@@ -5733,7 +5795,7 @@ COPY partners_distributionplan (id, quantity, send, sent, delivered, item_id, pa
 -- Name: partners_distributionplan_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('partners_distributionplan_id_seq', 1, false);
+SELECT pg_catalog.setval('partners_distributionplan_id_seq', 2, true);
 
 
 --
@@ -5790,6 +5852,21 @@ COPY partners_governmentinterventionresult (id, year, planned_amount, interventi
 
 
 --
+-- Data for Name: partners_governmentinterventionresult_activities_list; Type: TABLE DATA; Schema: hoth; Owner: postgres
+--
+
+COPY partners_governmentinterventionresult_activities_list (id, governmentinterventionresult_id, result_id) FROM stdin;
+\.
+
+
+--
+-- Name: partners_governmentinterventionresult_activities_list_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
+--
+
+SELECT pg_catalog.setval('partners_governmentinterventionresult_activities_list_id_seq', 1, false);
+
+
+--
 -- Name: partners_governmentinterventionresult_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
@@ -5816,6 +5893,9 @@ SELECT pg_catalog.setval('partners_governmentinterventionresult_unicef_managers_
 --
 
 COPY partners_gwpcalocation (id, tpm_visit, governorate_id, locality_id, location_id, pca_id, region_id, sector_id) FROM stdin;
+1	f	\N	\N	2	1	\N	5
+2	f	\N	\N	3	2	\N	1
+3	f	\N	\N	2	3	\N	3
 \.
 
 
@@ -5823,7 +5903,7 @@ COPY partners_gwpcalocation (id, tpm_visit, governorate_id, locality_id, locatio
 -- Name: partners_gwpcalocation_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('partners_gwpcalocation_id_seq', 1, false);
+SELECT pg_catalog.setval('partners_gwpcalocation_id_seq', 3, true);
 
 
 --
@@ -5861,6 +5941,11 @@ SELECT pg_catalog.setval('partners_indicatorreport_id_seq', 1, false);
 --
 
 COPY partners_partnerorganization (id, partner_type, name, short_name, description, address, email, phone_number, vendor_number, alternate_id, alternate_name, rating, core_values_assessment_date, core_values_assessment, cso_type, vision_synced, type_of_assessment, last_assessment_date, shared_partner) FROM stdin;
+1	Wolff	Jettie	assumenda iure veritatis	asperiores eos eaque	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	\N	undefined
+2	Renner	Ellsworth	voluptatem ipsa est	quae optio sint	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	\N	undefined
+3	Ruecker	Molly	quia maiores pariatur	ab optio rem	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	\N	undefined
+4	Rowe	Elise	est ipsa ex	sint saepe consequatur	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	\N	undefined
+5	Zieme	Hunter	officia ipsa vel	ea a quos	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	\N	undefined
 \.
 
 
@@ -5906,6 +5991,9 @@ SELECT pg_catalog.setval('partners_partnerstaffmember_id_seq', 1, false);
 --
 
 COPY partners_pca (id, partnership_type, number, title, status, start_date, end_date, initiation_date, submission_date, review_date, signed_by_unicef_date, signed_by_partner_date, sectors, current, created_at, updated_at, agreement_id, partner_id, partner_focal_point_id, partner_manager_id, result_structure_id, unicef_manager_id, fr_number, project_type, planned_visits) FROM stdin;
+3	AWP	\N	Sed fringilla mauris sit	in_process	\N	\N	2016-05-23	\N	\N	\N	\N	\N	t	2016-05-23 22:32:57.443956-04	2016-05-23 22:33:25.822299-04	3	1	\N	\N	5	\N		\N	0
+2	AWP	\N	Duis lobortis massa imperdiet quam	active	\N	\N	2016-05-23	\N	\N	\N	\N	\N	t	2016-05-23 22:29:22.089255-04	2016-05-23 22:34:48.169442-04	2	2	\N	\N	2	\N		\N	0
+1	SSFA	\N	Praesent congue erat at massa	active	\N	\N	2016-05-23	\N	\N	\N	\N	\N	t	2016-05-23 22:27:36.335719-04	2016-05-23 22:36:50.079563-04	1	4	\N	\N	5	\N		\N	0
 \.
 
 
@@ -5913,7 +6001,7 @@ COPY partners_pca (id, partnership_type, number, title, status, start_date, end_
 -- Name: partners_pca_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('partners_pca_id_seq', 1, false);
+SELECT pg_catalog.setval('partners_pca_id_seq', 3, true);
 
 
 --
@@ -5966,6 +6054,7 @@ SELECT pg_catalog.setval('partners_pcagrant_id_seq', 1, false);
 --
 
 COPY partners_pcasector (id, created, modified, amendment_id, pca_id, sector_id) FROM stdin;
+1	2016-05-23 22:36:49.971444-04	2016-05-23 22:36:50.106857-04	\N	1	5
 \.
 
 
@@ -5973,7 +6062,7 @@ COPY partners_pcasector (id, created, modified, amendment_id, pca_id, sector_id)
 -- Name: partners_pcasector_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('partners_pcasector_id_seq', 1, false);
+SELECT pg_catalog.setval('partners_pcasector_id_seq', 1, true);
 
 
 --
@@ -6026,6 +6115,8 @@ SELECT pg_catalog.setval('partners_resultchain_id_seq', 1, false);
 --
 
 COPY partners_supplyplan (id, quantity, item_id, partnership_id) FROM stdin;
+1	10	1	2
+2	10	1	1
 \.
 
 
@@ -6033,7 +6124,7 @@ COPY partners_supplyplan (id, quantity, item_id, partnership_id) FROM stdin;
 -- Name: partners_supplyplan_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('partners_supplyplan_id_seq', 1, false);
+SELECT pg_catalog.setval('partners_supplyplan_id_seq', 2, true);
 
 
 --
@@ -6101,6 +6192,11 @@ SELECT pg_catalog.setval('reports_result_id_seq', 1, false);
 --
 
 COPY reports_resultstructure (id, name, from_date, to_date) FROM stdin;
+1	Predovic Group	2001-01-01	2001-01-01
+2	Mante, Ledner and Lockman	2001-01-01	2001-01-01
+3	McClure, Hills and Luettgen	2001-01-01	2001-01-01
+4	Schinner and Sons	2001-01-01	2001-01-01
+5	Bode - Sporer	2001-01-01	2001-01-01
 \.
 
 
@@ -6131,6 +6227,11 @@ SELECT pg_catalog.setval('reports_resulttype_id_seq', 1, false);
 --
 
 COPY reports_sector (id, name, description, alternate_id, alternate_name, dashboard, color) FROM stdin;
+1	Horizontal systemic ability	\N	\N	\N	t	\N
+2	Distributed cohesive conglomeration	\N	\N	\N	t	\N
+3	User-centric asymmetric database	\N	\N	\N	t	\N
+4	Distributed responsive capacity	\N	\N	\N	t	\N
+5	Centralized object-oriented data-warehouse	\N	\N	\N	t	\N
 \.
 
 
@@ -6161,6 +6262,7 @@ SELECT pg_catalog.setval('reports_unit_id_seq', 1, false);
 --
 
 COPY supplies_supplyitem (id, name, description) FROM stdin;
+1	Praesent egestas tristique	Vivamus laoreet. Fusce commodo aliquam arcu. Phasellus a est. Sed augue ipsum, egestas nec, vestibulum et, malesuada adipiscing, dui. Suspendisse non nisl sit amet velit hendrerit rutrum.
 \.
 
 
@@ -6168,7 +6270,7 @@ COPY supplies_supplyitem (id, name, description) FROM stdin;
 -- Name: supplies_supplyitem_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('supplies_supplyitem_id_seq', 1, false);
+SELECT pg_catalog.setval('supplies_supplyitem_id_seq', 1, true);
 
 
 --
@@ -6191,6 +6293,7 @@ SELECT pg_catalog.setval('tpm_tpmvisit_id_seq', 1, false);
 --
 
 COPY trips_actionpoint (id, description, due_date, actions_taken, completed_date, comments, status, created_date, person_responsible_id, trip_id) FROM stdin;
+2	Impedit praesentium ab dolores molestias commodi et. Quia aut doloremque dolorem est aut. Est inventore quibusdam.	2017-01-03	\N	\N	Voluptas repudiandae voluptatum in quos ea vel ullam minima. Quia enim aspernatur ex qui vel deserunt vel. Et explicabo excepturi doloribus. Optio illum et. Dolores et dolorem ut rerum quam alias similique sapiente in. Est est veniam.	open	2016-05-23 22:12:09.329712-04	5	8
 \.
 
 
@@ -6198,7 +6301,7 @@ COPY trips_actionpoint (id, description, due_date, actions_taken, completed_date
 -- Name: trips_actionpoint_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('trips_actionpoint_id_seq', 1, true);
+SELECT pg_catalog.setval('trips_actionpoint_id_seq', 2, true);
 
 
 --
@@ -6368,6 +6471,8 @@ COPY auth_group (id, name) FROM stdin;
 6	Senior Management Team
 7	Human Resources
 8	Representative Office
+9	read_only
+10	Partnership Manager
 \.
 
 
@@ -6375,7 +6480,7 @@ COPY auth_group (id, name) FROM stdin;
 -- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('auth_group_id_seq', 8, true);
+SELECT pg_catalog.setval('auth_group_id_seq', 10, true);
 
 
 --
@@ -6724,8 +6829,8 @@ COPY auth_user (id, password, last_login, is_superuser, username, first_name, la
 1	pbkdf2_sha256$20000$oLSDagdBJZQe$GjusoFurVNg8wfUZ6TCR7w5SKz1W6QuSGNvfGfxn/oU=	2016-02-15 09:49:48-05	t	luke@force.com	luke		luke@force.com	t	t	2016-02-15 09:27:08-05
 3	pbkdf2_sha256$20000$BwvYLpZCW0cD$v8brgatQrEEYnma9CP8m+6fohtQMw0zFcb0K3Wk/qbQ=	2016-02-15 10:03:00.183242-05	t	leia@force.com	leia		leia@force.com	t	t	2016-02-15 09:27:12-05
 6	pbkdf2_sha256$20000$Ort98H5Fvhah$LZA7OhRpLW9LX0TzGJp9ge+HyJi6K7Y9DIuPhSqgmyU=	\N	t	bb8@force.com	bb8		bb8@force.com	t	t	2016-02-15 10:37:06-05
-4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-04-19 21:47:46.335432-04	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-04-19 21:48:50.793195-04	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
+4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-05-23 22:23:11.26348-04	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 \.
 
 
@@ -6870,6 +6975,28 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 44	2016-02-15 11:24:49.790115-05	8	2016/8-2   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	2	Changed approved_by_supervisor and date_supervisor_approved.	83	2
 45	2016-04-19 21:48:24.019512-04	8	2016/8-3   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	2	Added Travel Itinerary "TravelRoutes object".	83	4
 46	2016-04-19 21:49:22.125306-04	8	2016/8-4   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	2	Changed approved_by_supervisor and date_supervisor_approved.	83	2
+47	2016-05-23 22:25:22.681976-04	1	Praesent (Arnaldo PCode: )	1		48	4
+48	2016-05-23 22:25:48.742328-04	2	Cras (Ciara PCode: )	1		48	4
+49	2016-05-23 22:26:09.568087-04	3	Phasellus (Eladio PCode: )	1		48	4
+50	2016-05-23 22:26:23.836198-04	4	Maecenas (Reyes PCode: )	1		48	4
+51	2016-05-23 22:27:14.654706-04	1	SSFA for Elise ( - )	1		68	4
+52	2016-05-23 22:27:36.382883-04	1	Elise: /SSFA201601	1		70	4
+53	2016-05-23 22:27:44.965836-04	1	Elise: /SSFA201601	2	Changed status.	70	4
+54	2016-05-23 22:27:54.828791-04	1	Elise: /SSFA201601	2	Changed result_structure.	70	4
+55	2016-05-23 22:28:32.972549-04	1	Elise: /SSFA201601	2	Added Partnership Location " -> Cras (Ciara PCode: )".	70	4
+56	2016-05-23 22:28:54.241234-04	2	AWP for Ellsworth ( - )	1		68	4
+57	2016-05-23 22:29:22.133378-04	2	Ellsworth: /AWP201601/AWP201601	1		70	4
+58	2016-05-23 22:29:36.551742-04	2	Ellsworth: /AWP201601/AWP201601	2	Added Partnership Location " -> Phasellus (Eladio PCode: )".	70	4
+59	2016-05-23 22:30:52.906493-04	2	Ellsworth: /AWP201601/AWP201601	2	Changed result_structure.	70	4
+60	2016-05-23 22:32:02.816023-04	3	AWP for Jettie ( - )	1		68	4
+61	2016-05-23 22:32:57.485874-04	3	Jettie: /AWP201602/AWP201601	1		70	4
+62	2016-05-23 22:33:25.871011-04	3	Jettie: /AWP201602/AWP201601	2	Added Partnership Location " -> Cras (Ciara PCode: )".	70	4
+63	2016-05-23 22:34:22.013552-04	1	Praesent egestas tristique	1		90	4
+64	2016-05-23 22:34:27.42199-04	2	Ellsworth: /AWP201601/AWP201601	2	Added supply plan "SupplyPlan object".	70	4
+65	2016-05-23 22:34:48.223955-04	2	Ellsworth: /AWP201601/AWP201601	2	Added distribution plan "Ellsworth: /AWP201601/AWP201601-Praesent egestas tristique-Cras (Ciara PCode: )-5".	70	4
+66	2016-05-23 22:35:36.437234-04	1	Elise: /SSFA201601	2	Added supply plan "SupplyPlan object".	70	4
+67	2016-05-23 22:35:51.644239-04	1	Elise: /SSFA201601	2	Added distribution plan "Elise: /SSFA201601-Praesent egestas tristique-Cras (Ciara PCode: )-5".	70	4
+68	2016-05-23 22:36:50.12372-04	1	Elise: /SSFA201601	2	Added PCA Sector "Elise: None: Centralized object-oriented data-warehouse".	70	4
 \.
 
 
@@ -6877,7 +7004,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 46, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 68, true);
 
 
 --
@@ -7146,6 +7273,8 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 142	partners	0056_auto_20160509_1330	2016-05-10 09:09:24.447978-04
 143	partners	0057_auto_20160509_1827	2016-05-10 09:09:25.154995-04
 144	users	0013_auto_20160509_2148	2016-05-10 09:09:26.268793-04
+145	partners	0058_governmentinterventionresult_activities_list	2016-05-23 22:06:11.646164-04
+146	trips	0014_auto_20160510_1432	2016-05-23 22:06:11.67875-04
 \.
 
 
@@ -7153,7 +7282,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 144, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 146, true);
 
 
 --
@@ -7168,6 +7297,7 @@ dp17ua786fw4yzqzjdzfc9bqbxltt1av	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQ
 h17r2hiydd8v1qw5vw6pr0fzbmdvoeqk	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-04-11 14:46:48.221871-04
 96aeauxcs63hflbxyw50mtneif49wyfk	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-05-03 21:47:46.337835-04
 yu7o3fyoe7bczd7a9ccp6n8di6s9qaa1	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQzNmJhNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjA1NGFkMzAxZDllZDI4MGFlMTBkMDQ5NzVkYzQ0NzgxM2M4YTJmZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=	2016-05-03 21:48:50.796034-04
+j99pbh8of1lhl5ofyy0x8043ikby43k7	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-06-06 22:23:11.265824-04
 \.
 
 
@@ -7466,6 +7596,21 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 16	finn@force.com	finn@force.com, rey@force.com			eTools  - Trip Approved: 2016/7-3	\n    The following trip has been approved: 2016/7-3\n\n    http://example.com/admin/trips/trip/7/\n\n    Thank you.\n    		0	3	2016-03-24 11:33:35.640929-04	2016-03-24 11:33:39.250994-04	\N	\N	\N	\N	
 17	rey@force.com	rey@force.com, han@force.com			eTools  - Trip 2016/8-3 has been Submitted for rey	\n    Dear Colleague,\n\n    Trip 2016/8-3 has been Submitted for rey here:\n    http://example.com/admin/trips/trip/8/\n    Purpose of travel: bring bb-8 to d&#39;qar\n\n    Thank you.\n    		0	3	2016-04-19 21:48:22.351754-04	2016-04-19 21:48:24.005679-04	\N	\N	\N	\N	
 18	rey@force.com	rey@force.com, han@force.com			eTools  - Trip Approved: 2016/8-4	\n    The following trip has been approved: 2016/8-4\n\n    http://example.com/admin/trips/trip/8/\n\n    Thank you.\n    		0	3	2016-04-19 21:49:20.465584-04	2016-04-19 21:49:22.106529-04	\N	\N	\N	\N	
+19	rey@force.com	rey@force.com, finn@force.com, han@force.com			eTools  - Trip action point Created for trip: 2016/8-5	\n    Trip action point by rey for finn was Created:"\n\n    http://example.com/admin/trips/trip/8/#reporting\n\n    Thank you.\n    		0	3	2016-05-23 22:12:09.33969-04	2016-05-23 22:12:09.344215-04	\N	\N	\N	\N	
+20	no-reply@unicef.org				Partnership Elise: /SSFA201601 has been Created	\n    Dear Colleague,\n\n    Partnership Elise: /SSFA201601 has been Created here:\n\n    http://example.com/admin/partners/pca/1/\n\n    Thank you.\n    		0	3	2016-05-23 22:27:36.355973-04	2016-05-23 22:27:36.363189-04	\N	\N	\N	\N	
+21	no-reply@unicef.org				Partnership Elise: /SSFA201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Elise: /SSFA201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/1/\n\n    Thank you.\n    		0	3	2016-05-23 22:27:44.942569-04	2016-05-23 22:27:44.946449-04	\N	\N	\N	\N	
+22	no-reply@unicef.org				Partnership Elise: /SSFA201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Elise: /SSFA201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/1/\n\n    Thank you.\n    		0	3	2016-05-23 22:27:54.805249-04	2016-05-23 22:27:54.808895-04	\N	\N	\N	\N	
+23	no-reply@unicef.org				Partnership Elise: /SSFA201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Elise: /SSFA201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/1/\n\n    Thank you.\n    		0	3	2016-05-23 22:28:32.946163-04	2016-05-23 22:28:32.949377-04	\N	\N	\N	\N	
+24	no-reply@unicef.org				Partnership Ellsworth: /AWP201601/AWP201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Ellsworth: /AWP201601/AWP201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/2/\n\n    Thank you.\n    		0	3	2016-05-23 22:29:22.108449-04	2016-05-23 22:29:22.111798-04	\N	\N	\N	\N	
+25	no-reply@unicef.org				Partnership Ellsworth: /AWP201601/AWP201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Ellsworth: /AWP201601/AWP201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/2/\n\n    Thank you.\n    		0	3	2016-05-23 22:29:36.523149-04	2016-05-23 22:29:36.526658-04	\N	\N	\N	\N	
+26	no-reply@unicef.org				Partnership Ellsworth: /AWP201601/AWP201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Ellsworth: /AWP201601/AWP201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/2/\n\n    Thank you.\n    		0	3	2016-05-23 22:30:52.879025-04	2016-05-23 22:30:52.882874-04	\N	\N	\N	\N	
+27	no-reply@unicef.org				Partnership Jettie: /AWP201602/AWP201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Jettie: /AWP201602/AWP201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/3/\n\n    Thank you.\n    		0	3	2016-05-23 22:32:57.461675-04	2016-05-23 22:32:57.464729-04	\N	\N	\N	\N	
+28	no-reply@unicef.org				Partnership Jettie: /AWP201602/AWP201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Jettie: /AWP201602/AWP201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/3/\n\n    Thank you.\n    		0	3	2016-05-23 22:33:25.839819-04	2016-05-23 22:33:25.843793-04	\N	\N	\N	\N	
+29	no-reply@unicef.org				Partnership Ellsworth: /AWP201601/AWP201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Ellsworth: /AWP201601/AWP201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/2/\n\n    Thank you.\n    		0	3	2016-05-23 22:34:27.394462-04	2016-05-23 22:34:27.398451-04	\N	\N	\N	\N	
+30	no-reply@unicef.org				Partnership Ellsworth: /AWP201601/AWP201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Ellsworth: /AWP201601/AWP201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/2/\n\n    Thank you.\n    		0	3	2016-05-23 22:34:48.187627-04	2016-05-23 22:34:48.191794-04	\N	\N	\N	\N	
+31	no-reply@unicef.org				Partnership Elise: /SSFA201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Elise: /SSFA201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/1/\n\n    Thank you.\n    		0	3	2016-05-23 22:35:36.411294-04	2016-05-23 22:35:36.414869-04	\N	\N	\N	\N	
+32	no-reply@unicef.org				Partnership Elise: /SSFA201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Elise: /SSFA201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/1/\n\n    Thank you.\n    		0	3	2016-05-23 22:35:51.608283-04	2016-05-23 22:35:51.611672-04	\N	\N	\N	\N	
+33	no-reply@unicef.org				Partnership Elise: /SSFA201601 has been Updated	\n    Dear Colleague,\n\n    Partnership Elise: /SSFA201601 has been Updated here:\n\n    http://example.com/admin/partners/pca/1/\n\n    Thank you.\n    		0	3	2016-05-23 22:36:50.094667-04	2016-05-23 22:36:50.097888-04	\N	\N	\N	\N	
 \.
 
 
@@ -7473,7 +7618,7 @@ COPY post_office_email (id, from_email, "to", cc, bcc, subject, message, html_me
 -- Name: post_office_email_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_email_id_seq', 18, true);
+SELECT pg_catalog.setval('post_office_email_id_seq', 33, true);
 
 
 --
@@ -7485,6 +7630,7 @@ COPY post_office_emailtemplate (id, name, description, subject, content, html_co
 2	travel/trip/travel_or_admin_assistant	This e-mail will be sent when the trip is approved by the supervisor. It will go to the travel assistant to prompt them to organise the travel (vehicles, flights etc.) and request security clearance.	eTools {{environment}} - Travel for {{owner_name}}	\n    Dear {{travel_assistant}},\n\n    Please organise the travel and security clearance (if needed) for the following trip:\n\n    {{url}}\n\n    Thanks,\n    {{owner_name}}\n    		2016-02-15 10:23:24.4546-05	2016-02-15 10:23:24.454629-05	\N	
 3	trips/trip/approved	The email that is sent to the traveller if a trip has been approved	eTools {{environment}} - Trip Approved: {{trip_reference}}	\n    The following trip has been approved: {{trip_reference}}\n\n    {{url}}\n\n    Thank you.\n    		2016-02-15 10:23:26.339907-05	2016-02-15 10:23:26.339936-05	\N	
 4	trips/action/created	Sent when trip action points are created	eTools {{environment}} - Trip action point {{state}} for trip: {{trip_reference}}	\n    Trip action point by {{owner_name}} for {{responsible}} was {{state}}:"\n\n    {{url}}\n\n    Thank you.\n    		2016-03-24 11:32:10.098681-04	2016-03-24 11:32:10.098712-04	\N	
+5	partners/partnership/created/updated	The email that is sent when a partnership is added or is updated	Partnership {{number}} has been {{state}}	\n    Dear Colleague,\n\n    Partnership {{number}} has been {{state}} here:\n\n    {{url}}\n\n    Thank you.\n    		2016-05-23 22:27:36.345963-04	2016-05-23 22:27:36.34599-04	\N	
 \.
 
 
@@ -7492,7 +7638,7 @@ COPY post_office_emailtemplate (id, name, description, subject, content, html_co
 -- Name: post_office_emailtemplate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_emailtemplate_id_seq', 4, true);
+SELECT pg_catalog.setval('post_office_emailtemplate_id_seq', 5, true);
 
 
 --
@@ -7518,6 +7664,21 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 16	2016-03-24 11:33:39.254403-04	0			16
 17	2016-04-19 21:48:24.007825-04	0			17
 18	2016-04-19 21:49:22.108774-04	0			18
+19	2016-05-23 22:12:09.346649-04	0			19
+20	2016-05-23 22:27:36.365629-04	0			20
+21	2016-05-23 22:27:44.948416-04	0			21
+22	2016-05-23 22:27:54.811151-04	0			22
+23	2016-05-23 22:28:32.95138-04	0			23
+24	2016-05-23 22:29:22.114585-04	0			24
+25	2016-05-23 22:29:36.529411-04	0			25
+26	2016-05-23 22:30:52.884868-04	0			26
+27	2016-05-23 22:32:57.467125-04	0			27
+28	2016-05-23 22:33:25.845943-04	0			28
+29	2016-05-23 22:34:27.400768-04	0			29
+30	2016-05-23 22:34:48.19405-04	0			30
+31	2016-05-23 22:35:36.416916-04	0			31
+32	2016-05-23 22:35:51.614666-04	0			32
+33	2016-05-23 22:36:50.100393-04	0			33
 \.
 
 
@@ -7525,7 +7686,7 @@ COPY post_office_log (id, date, status, exception_type, message, email_id) FROM 
 -- Name: post_office_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('post_office_log_id_seq', 18, true);
+SELECT pg_catalog.setval('post_office_log_id_seq', 33, true);
 
 
 --
@@ -7560,6 +7721,20 @@ COPY reversion_revision (id, manager_slug, date_created, comment, user_id) FROM 
 25	default	2016-02-15 11:24:49.885674-05	Changed approved_by_supervisor and date_supervisor_approved.	2
 26	default	2016-04-19 21:48:24.03886-04	Added Travel Itinerary "TravelRoutes object".	4
 27	default	2016-04-19 21:49:22.145337-04	Changed approved_by_supervisor and date_supervisor_approved.	2
+28	default	2016-05-23 22:27:36.416995-04	Initial version.	4
+29	default	2016-05-23 22:27:44.992123-04	Changed status.	4
+30	default	2016-05-23 22:27:54.854915-04	Changed result_structure.	4
+31	default	2016-05-23 22:28:32.9989-04	Added Partnership Location " -> Cras (Ciara PCode: )".	4
+32	default	2016-05-23 22:29:22.164922-04	Initial version.	4
+33	default	2016-05-23 22:29:36.583726-04	Added Partnership Location " -> Phasellus (Eladio PCode: )".	4
+34	default	2016-05-23 22:30:52.938883-04	Changed result_structure.	4
+35	default	2016-05-23 22:32:57.51573-04	Initial version.	4
+36	default	2016-05-23 22:33:25.906906-04	Added Partnership Location " -> Cras (Ciara PCode: )".	4
+37	default	2016-05-23 22:34:27.456384-04	Added supply plan "SupplyPlan object".	4
+38	default	2016-05-23 22:34:48.264041-04	Added distribution plan "Ellsworth: /AWP201601/AWP201601-Praesent egestas tristique-Cras (Ciara PCode: )-5".	4
+39	default	2016-05-23 22:35:36.468585-04	Added supply plan "SupplyPlan object".	4
+40	default	2016-05-23 22:35:51.686299-04	Added distribution plan "Elise: /SSFA201601-Praesent egestas tristique-Cras (Ciara PCode: )-5".	4
+41	default	2016-05-23 22:36:50.166129-04	Added PCA Sector "Elise: None: Centralized object-oriented data-warehouse".	4
 \.
 
 
@@ -7567,7 +7742,7 @@ COPY reversion_revision (id, manager_slug, date_created, comment, user_id) FROM 
 -- Name: reversion_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('reversion_revision_id_seq', 27, true);
+SELECT pg_catalog.setval('reversion_revision_id_seq', 41, true);
 
 
 --
@@ -7604,6 +7779,38 @@ COPY reversion_version (id, object_id, object_id_int, format, serialized_data, o
 27	1	1	json	[{"fields": {"origin": "NYC", "depart": "2016-04-19T21:45:00+03:00", "destination": "LDN", "remarks": "", "arrive": "2016-04-20T08:05:00+03:00", "trip": 8}, "model": "trips.travelroutes", "pk": 1}]	TravelRoutes object	86	26
 28	8	8	json	[{"fields": {"ta_trip_repay_travel_allowance": false, "programme_assistant": null, "office": null, "date_human_resources_approved": null, "budget_owner": null, "date_budget_owner_approved": null, "human_resources": null, "ta_required": false, "pending_ta_amendment": false, "to_date": "2016-12-31", "approved_email_sent": true, "owner": 4, "supervisor": 2, "ta_reference": "", "approved_by_human_resources": null, "driver_supervisor": null, "partners": [], "main_observations": "", "representative": null, "submitted_email_sent": true, "section": null, "approved_by_supervisor": true, "opportunities": "", "approved_date": "2016-04-20", "from_date": "2016-01-01", "ta_drafted": false, "ta_drafted_date": null, "travel_type": "technical_support", "driver_trip": null, "status": "approved", "lessons_learned": "", "security_granted": false, "vision_approver": null, "purpose_of_travel": "bring bb-8 to d'qar", "international_travel": false, "driver": null, "representative_approval": null, "approved_by_budget_owner": false, "security_clearance_required": false, "pcas": [], "travel_assistant": null, "transport_booked": false, "date_supervisor_approved": "2016-04-19", "date_representative_approved": null, "ta_trip_took_place_as_planned": false, "created_date": "2016-02-15T15:40:19.491Z", "cancelled_reason": "", "ta_trip_final_claim": false, "constraints": ""}, "model": "trips.trip", "pk": 8}]	2016/8-4   2016-01-01 - 2016-12-31: bring bb-8 to d'qar	83	27
 29	1	1	json	[{"fields": {"origin": "NYC", "depart": "2016-04-19T18:45:00Z", "destination": "LDN", "remarks": "", "arrive": "2016-04-20T05:05:00Z", "trip": 8}, "model": "trips.travelroutes", "pk": 1}]	TravelRoutes object	86	27
+30	1	1	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:27:36.335Z", "number": null, "project_type": null, "partner": 4, "partner_manager": null, "title": "Praesent congue erat at massa", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "in_process", "end_date": null, "agreement": 1, "signed_by_unicef_date": null, "partnership_type": "SSFA", "unicef_managers": [], "result_structure": null, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:27:36.335Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 1}]	Elise: /SSFA201601	70	28
+31	1	1	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:27:44.924Z", "number": null, "project_type": null, "partner": 4, "partner_manager": null, "title": "Praesent congue erat at massa", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 1, "signed_by_unicef_date": null, "partnership_type": "SSFA", "unicef_managers": [], "result_structure": null, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:27:36.335Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 1}]	Elise: /SSFA201601	70	29
+32	1	1	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:27:54.790Z", "number": null, "project_type": null, "partner": 4, "partner_manager": null, "title": "Praesent congue erat at massa", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 1, "signed_by_unicef_date": null, "partnership_type": "SSFA", "unicef_managers": [], "result_structure": 5, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:27:36.335Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 1}]	Elise: /SSFA201601	70	30
+33	1	1	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:28:32.931Z", "number": null, "project_type": null, "partner": 4, "partner_manager": null, "title": "Praesent congue erat at massa", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 1, "signed_by_unicef_date": null, "partnership_type": "SSFA", "unicef_managers": [], "result_structure": 5, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:27:36.335Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 1}]	Elise: /SSFA201601	70	31
+34	1	1	json	[{"fields": {"sector": 5, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 2, "pca": 1}, "model": "partners.gwpcalocation", "pk": 1}]	 -> Cras (Ciara PCode: )	74	31
+35	2	2	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:29:22.089Z", "number": null, "project_type": null, "partner": 2, "partner_manager": null, "title": "Duis lobortis massa imperdiet quam", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 2, "signed_by_unicef_date": null, "partnership_type": "AWP", "unicef_managers": [], "result_structure": null, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:29:22.089Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 2}]	Ellsworth: /AWP201601/AWP201601	70	32
+36	2	2	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:29:36.505Z", "number": null, "project_type": null, "partner": 2, "partner_manager": null, "title": "Duis lobortis massa imperdiet quam", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 2, "signed_by_unicef_date": null, "partnership_type": "AWP", "unicef_managers": [], "result_structure": null, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:29:22.089Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 2}]	Ellsworth: /AWP201601/AWP201601	70	33
+37	2	2	json	[{"fields": {"sector": 1, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 3, "pca": 2}, "model": "partners.gwpcalocation", "pk": 2}]	 -> Phasellus (Eladio PCode: )	74	33
+38	2	2	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:30:52.862Z", "number": null, "project_type": null, "partner": 2, "partner_manager": null, "title": "Duis lobortis massa imperdiet quam", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 2, "signed_by_unicef_date": null, "partnership_type": "AWP", "unicef_managers": [], "result_structure": 2, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:29:22.089Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 2}]	Ellsworth: /AWP201601/AWP201601	70	34
+39	2	2	json	[{"fields": {"sector": 1, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 3, "pca": 2}, "model": "partners.gwpcalocation", "pk": 2}]	 -> Phasellus (Eladio PCode: )	74	34
+40	3	3	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:32:57.443Z", "number": null, "project_type": null, "partner": 1, "partner_manager": null, "title": "Sed fringilla mauris sit", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "in_process", "end_date": null, "agreement": 3, "signed_by_unicef_date": null, "partnership_type": "AWP", "unicef_managers": [], "result_structure": 5, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:32:57.443Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 3}]	Jettie: /AWP201602/AWP201601	70	35
+41	3	3	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:33:25.822Z", "number": null, "project_type": null, "partner": 1, "partner_manager": null, "title": "Sed fringilla mauris sit", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "in_process", "end_date": null, "agreement": 3, "signed_by_unicef_date": null, "partnership_type": "AWP", "unicef_managers": [], "result_structure": 5, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:32:57.443Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 3}]	Jettie: /AWP201602/AWP201601	70	36
+42	3	3	json	[{"fields": {"sector": 3, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 2, "pca": 3}, "model": "partners.gwpcalocation", "pk": 3}]	 -> Cras (Ciara PCode: )	74	36
+43	1	1	json	[{"fields": {"item": 1, "partnership": 2, "quantity": 10}, "model": "partners.supplyplan", "pk": 1}]	SupplyPlan object	81	37
+44	2	2	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:34:27.378Z", "number": null, "project_type": null, "partner": 2, "partner_manager": null, "title": "Duis lobortis massa imperdiet quam", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 2, "signed_by_unicef_date": null, "partnership_type": "AWP", "unicef_managers": [], "result_structure": 2, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:29:22.089Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 2}]	Ellsworth: /AWP201601/AWP201601	70	37
+45	2	2	json	[{"fields": {"sector": 1, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 3, "pca": 2}, "model": "partners.gwpcalocation", "pk": 2}]	 -> Phasellus (Eladio PCode: )	74	37
+46	1	1	json	[{"fields": {"delivered": 0, "partnership": 2, "site": 2, "send": false, "item": 1, "document": null, "sent": false, "quantity": 5}, "model": "partners.distributionplan", "pk": 1}]	Ellsworth: /AWP201601/AWP201601-Praesent egestas tristique-Cras (Ciara PCode: )-5	82	38
+47	2	2	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:34:48.169Z", "number": null, "project_type": null, "partner": 2, "partner_manager": null, "title": "Duis lobortis massa imperdiet quam", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 2, "signed_by_unicef_date": null, "partnership_type": "AWP", "unicef_managers": [], "result_structure": 2, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:29:22.089Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 2}]	Ellsworth: /AWP201601/AWP201601	70	38
+48	2	2	json	[{"fields": {"sector": 1, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 3, "pca": 2}, "model": "partners.gwpcalocation", "pk": 2}]	 -> Phasellus (Eladio PCode: )	74	38
+49	1	1	json	[{"fields": {"item": 1, "partnership": 2, "quantity": 10}, "model": "partners.supplyplan", "pk": 1}]	SupplyPlan object	81	38
+50	1	1	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:35:36.396Z", "number": null, "project_type": null, "partner": 4, "partner_manager": null, "title": "Praesent congue erat at massa", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 1, "signed_by_unicef_date": null, "partnership_type": "SSFA", "unicef_managers": [], "result_structure": 5, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:27:36.335Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 1}]	Elise: /SSFA201601	70	39
+51	2	2	json	[{"fields": {"item": 1, "partnership": 1, "quantity": 10}, "model": "partners.supplyplan", "pk": 2}]	SupplyPlan object	81	39
+52	1	1	json	[{"fields": {"sector": 5, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 2, "pca": 1}, "model": "partners.gwpcalocation", "pk": 1}]	 -> Cras (Ciara PCode: )	74	39
+53	1	1	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:35:51.592Z", "number": null, "project_type": null, "partner": 4, "partner_manager": null, "title": "Praesent congue erat at massa", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 1, "signed_by_unicef_date": null, "partnership_type": "SSFA", "unicef_managers": [], "result_structure": 5, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:27:36.335Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 1}]	Elise: /SSFA201601	70	40
+54	2	2	json	[{"fields": {"delivered": 0, "partnership": 1, "site": 2, "send": false, "item": 1, "document": null, "sent": false, "quantity": 5}, "model": "partners.distributionplan", "pk": 2}]	Elise: /SSFA201601-Praesent egestas tristique-Cras (Ciara PCode: )-5	82	40
+55	2	2	json	[{"fields": {"item": 1, "partnership": 1, "quantity": 10}, "model": "partners.supplyplan", "pk": 2}]	SupplyPlan object	81	40
+56	1	1	json	[{"fields": {"sector": 5, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 2, "pca": 1}, "model": "partners.gwpcalocation", "pk": 1}]	 -> Cras (Ciara PCode: )	74	40
+57	1	1	json	[{"fields": {"submission_date": null, "unicef_manager": null, "review_date": null, "updated_at": "2016-05-24T02:36:50.079Z", "number": null, "project_type": null, "partner": 4, "partner_manager": null, "title": "Praesent congue erat at massa", "signed_by_partner_date": null, "current": true, "initiation_date": "2016-05-23", "start_date": null, "status": "active", "end_date": null, "agreement": 1, "signed_by_unicef_date": null, "partnership_type": "SSFA", "unicef_managers": [], "result_structure": 5, "fr_number": "", "sectors": null, "created_at": "2016-05-24T02:27:36.335Z", "planned_visits": 0, "partner_focal_point": null}, "model": "partners.pca", "pk": 1}]	Elise: /SSFA201601	70	41
+58	2	2	json	[{"fields": {"item": 1, "partnership": 1, "quantity": 10}, "model": "partners.supplyplan", "pk": 2}]	SupplyPlan object	81	41
+59	1	1	json	[{"fields": {"sector": 5, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 2, "pca": 1}, "model": "partners.gwpcalocation", "pk": 1}]	 -> Cras (Ciara PCode: )	74	41
+60	2	2	json	[{"fields": {"delivered": 0, "partnership": 1, "site": 2, "send": false, "item": 1, "document": null, "sent": false, "quantity": 5}, "model": "partners.distributionplan", "pk": 2}]	Elise: /SSFA201601-Praesent egestas tristique-Cras (Ciara PCode: )-5	82	41
+61	1	1	json	[{"fields": {"sector": 5, "amendment": null, "pca": 1, "modified": "2016-05-24T02:36:50.106Z", "created": "2016-05-24T02:36:49.971Z"}, "model": "partners.pcasector", "pk": 1}]	Elise: None: Centralized object-oriented data-warehouse	75	41
 \.
 
 
@@ -7611,7 +7818,7 @@ COPY reversion_version (id, object_id, object_id_int, format, serialized_data, o
 -- Name: reversion_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('reversion_version_id_seq', 29, true);
+SELECT pg_catalog.setval('reversion_version_id_seq', 61, true);
 
 
 --
@@ -9232,11 +9439,27 @@ ALTER TABLE ONLY partners_governmentinterventionresult_unicef_managers
 
 
 --
+-- Name: partners_governmentinterventi_governmentinterventionresult_key1; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_activities_list
+    ADD CONSTRAINT partners_governmentinterventi_governmentinterventionresult_key1 UNIQUE (governmentinterventionresult_id, result_id);
+
+
+--
 -- Name: partners_governmentintervention_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY partners_governmentintervention
     ADD CONSTRAINT partners_governmentintervention_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_governmentinterventionresult_activities_list_pkey; Type: CONSTRAINT; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_activities_list
+    ADD CONSTRAINT partners_governmentinterventionresult_activities_list_pkey PRIMARY KEY (id);
 
 
 --
@@ -10734,6 +10957,20 @@ CREATE INDEX partners_governmentinterventionresult_730f6511 ON partners_governme
 
 
 --
+-- Name: partners_governmentinterventionresult_activities_list_57f06544; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_activities_list_57f06544 ON partners_governmentinterventionresult_activities_list USING btree (result_id);
+
+
+--
+-- Name: partners_governmentinterventionresult_activities_list_57f68559; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX partners_governmentinterventionresult_activities_list_57f68559 ON partners_governmentinterventionresult_activities_list USING btree (governmentinterventionresult_id);
+
+
+--
 -- Name: partners_governmentinterventionresult_unicef_managers_57f68559; Type: INDEX; Schema: hoth; Owner: postgres; Tablespace: 
 --
 
@@ -12176,6 +12413,14 @@ ALTER TABLE ONLY partners_indicatorreport
 
 
 --
+-- Name: D4c9a2de2573d599733c127da34f3460; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_activities_list
+    ADD CONSTRAINT "D4c9a2de2573d599733c127da34f3460" FOREIGN KEY (governmentinterventionresult_id) REFERENCES partners_governmentinterventionresult(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: D4fdc5b3ad3f8e1bc4292c0645e060ad; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
 --
 
@@ -12693,6 +12938,14 @@ ALTER TABLE ONLY partners_fundingcommitment
 
 ALTER TABLE ONLY partners_governmentinterventionresult
     ADD CONSTRAINT partners_govern_result_id_2734b63559022f5d_fk_reports_result_id FOREIGN KEY (result_id) REFERENCES reports_result(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: partners_govern_result_id_572bfc108de611ac_fk_reports_result_id; Type: FK CONSTRAINT; Schema: hoth; Owner: postgres
+--
+
+ALTER TABLE ONLY partners_governmentinterventionresult_activities_list
+    ADD CONSTRAINT partners_govern_result_id_572bfc108de611ac_fk_reports_result_id FOREIGN KEY (result_id) REFERENCES reports_result(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
