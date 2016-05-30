@@ -5514,6 +5514,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 144	users	0013_auto_20160509_2148	2016-05-10 09:09:50.516689-04
 145	partners	0058_governmentinterventionresult_activities_list	2016-05-23 22:06:25.624103-04
 146	trips	0014_auto_20160510_1432	2016-05-23 22:06:25.674938-04
+147	trips	0015_auto_20160526_1916	2016-06-01 10:20:32.184998-04
 \.
 
 
@@ -5521,7 +5522,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 146, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 147, true);
 
 
 --
@@ -7275,6 +7276,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 144	users	0013_auto_20160509_2148	2016-05-10 09:09:26.268793-04
 145	partners	0058_governmentinterventionresult_activities_list	2016-05-23 22:06:11.646164-04
 146	trips	0014_auto_20160510_1432	2016-05-23 22:06:11.67875-04
+147	trips	0015_auto_20160526_1916	2016-06-01 10:20:30.536829-04
 \.
 
 
@@ -7282,7 +7284,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 146, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 147, true);
 
 
 --
