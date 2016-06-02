@@ -21,8 +21,6 @@
     "template.dashboard.i_approve" : "I approve",
     "template.dashboard.not_supervising_trips" : "You're not currently supervising any trips",
     "template.dashboard.no_my_trips" : "No trips currently available",
-    "template.dashboard.supervised" : "Supervised",
-    "template.dashboard.my_trips" : "My Trips",
 
     "template.trip.report" : "Report",
     "template.trip.notes" : "Notes",
@@ -69,6 +67,8 @@
     "template.trip.constraints" : "Constraints:",
     "template.trip.lessons_learned" : "Lessons Learned:",
     "template.trip.opportunities" : "Opportunities:",
+
+    "template.trip.add_trip" : "Add Trip",
 
     "template.trip.notes.title" : "Notes",
     "template.trip.notes.discard" : "Discard Notes",
