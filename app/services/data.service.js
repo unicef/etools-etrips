@@ -60,7 +60,7 @@
         }
 
         function patchTrip(tripId, data, success, fail) {
-            return myHttpService.patch(apiUrlService.BASE() + '/trips/api/' + tripId + '/', data).then(
+            return myHttpService.patch(apiUrlService.BASE() + '/api/trips/' + tripId + '/', data).then(
                 function(succ) {
                     success(succ);
                 },

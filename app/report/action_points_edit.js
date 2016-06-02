@@ -135,17 +135,11 @@
                     displayPopup();
 
                 } else {
-
-                    tripService.sendAP(currentTrip.id, vm.ap,
-                        function(success) {
-                            $ionicLoading.hide();
-                            tripService.localTripUpdate(currentTrip.id, success.data);
-                            displayPopup();
-
-                        }, function(err) {
-                            errorHandler.popError(err);
-                        }
-                    );
+                    if (vm.isActionPointNew === true) {
+                        tripService.saveActionPoint(currentTrip.id, vm.ap).then(updateActionPoints);
+                    } else {
+                        tripService.updateActionPoint(currentTrip.id, vm.ap).then(updateActionPoints);
+                    }
                 }
             }
 
@@ -157,6 +151,19 @@
                     $ionicHistory.goBack(-1);
                     //$state.go('app.dash.reporting_action_point', { 'tripId' :  currentTrip.id });
                 });
+            }
+
+            function updateActionPoints() {
+                dataService.getTrips(
+                    function() {
+                        $ionicLoading.hide();
+                        displayPopup();
+                    },
+                    function(err) {
+                        errorHandler.popError(err);
+                    },
+                    true
+                );
             }
         }
     }
