@@ -6358,9 +6358,9 @@ SELECT pg_catalog.setval('trips_travelroutes_id_seq', 1, true);
 COPY trips_trip (id, status, cancelled_reason, purpose_of_travel, travel_type, security_clearance_required, international_travel, from_date, to_date, main_observations, constraints, lessons_learned, opportunities, ta_required, ta_drafted, ta_drafted_date, ta_reference, transport_booked, security_granted, approved_by_supervisor, date_supervisor_approved, approved_by_budget_owner, date_budget_owner_approved, approved_by_human_resources, date_human_resources_approved, representative_approval, date_representative_approved, approved_date, created_date, approved_email_sent, ta_trip_took_place_as_planned, ta_trip_repay_travel_allowance, ta_trip_final_claim, budget_owner_id, human_resources_id, office_id, owner_id, programme_assistant_id, representative_id, section_id, supervisor_id, travel_assistant_id, vision_approver_id, driver_id, driver_supervisor_id, driver_trip_id, pending_ta_amendment, submitted_email_sent) FROM stdin;
 2	submitted		find luke	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:06:44.415137-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	3	\N	\N	\N	\N	\N	f	t
 6	approved		find han and chewie	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-03-01	f	\N	\N	\N	\N	\N	2016-03-01	2016-02-15 10:27:14.61473-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
-3	planned		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
 7	submitted		leave jakku	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	2016-03-28	f	\N	\N	\N	\N	\N	2016-03-28	2016-02-15 10:29:42.327017-05	t	f	f	f	\N	\N	\N	5	\N	\N	\N	4	\N	\N	\N	\N	\N	f	t
 8	approved		bring bb-8 to d'qar	technical_support	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	t	2016-04-19	f	\N	\N	\N	\N	\N	2016-04-20	2016-02-15 10:40:19.491323-05	t	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
+3	planned		learn how to use a lightsaber	meeting	f	f	2016-01-01	2016-12-31					f	f	\N		f	f	f	\N	f	\N	\N	\N	\N	\N	\N	2016-02-15 10:11:40.388791-05	f	f	f	f	\N	\N	\N	4	\N	\N	\N	2	\N	\N	\N	\N	\N	f	t
 \.
 
 
@@ -6421,6 +6421,7 @@ SELECT pg_catalog.setval('trips_tripfunds_id_seq', 1, false);
 --
 
 COPY trips_triplocation (id, governorate_id, locality_id, location_id, region_id, trip_id) FROM stdin;
+1	\N	\N	2	\N	3
 \.
 
 
@@ -6428,7 +6429,7 @@ COPY trips_triplocation (id, governorate_id, locality_id, location_id, region_id
 -- Name: trips_triplocation_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('trips_triplocation_id_seq', 1, false);
+SELECT pg_catalog.setval('trips_triplocation_id_seq', 1, true);
 
 
 SET search_path = public, pg_catalog;
@@ -6831,7 +6832,7 @@ COPY auth_user (id, password, last_login, is_superuser, username, first_name, la
 3	pbkdf2_sha256$20000$BwvYLpZCW0cD$v8brgatQrEEYnma9CP8m+6fohtQMw0zFcb0K3Wk/qbQ=	2016-02-15 10:03:00.183242-05	t	leia@force.com	leia		leia@force.com	t	t	2016-02-15 09:27:12-05
 6	pbkdf2_sha256$20000$Ort98H5Fvhah$LZA7OhRpLW9LX0TzGJp9ge+HyJi6K7Y9DIuPhSqgmyU=	\N	t	bb8@force.com	bb8		bb8@force.com	t	t	2016-02-15 10:37:06-05
 2	pbkdf2_sha256$20000$6MlpbG8f8UAz$3FJ8f+IfvQ8Sd+INDKZEBhKKP5a9t2VZBzyNqJloYuc=	2016-04-19 21:48:50.793195-04	t	han@force.com	han		han@force.com	t	t	2016-02-15 09:27:10-05
-4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-05-23 22:23:11.26348-04	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
+4	pbkdf2_sha256$20000$BAo8H3WDRa0E$vHMi+E7mTIEWqcHumAFvyl8M00rkKv3C44mdCcVGJCc=	2016-06-03 11:00:40.346872-04	t	rey@force.com	rey		rey@force.com	t	t	2016-02-15 09:27:14-05
 \.
 
 
@@ -6998,6 +6999,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 66	2016-05-23 22:35:36.437234-04	1	Elise: /SSFA201601	2	Added supply plan "SupplyPlan object".	70	4
 67	2016-05-23 22:35:51.644239-04	1	Elise: /SSFA201601	2	Added distribution plan "Elise: /SSFA201601-Praesent egestas tristique-Cras (Ciara PCode: )-5".	70	4
 68	2016-05-23 22:36:50.12372-04	1	Elise: /SSFA201601	2	Added PCA Sector "Elise: None: Centralized object-oriented data-warehouse".	70	4
+69	2016-06-03 12:44:43.902387-04	3	2016/3-4   2016-01-01 - 2016-12-31: learn how to use a lightsaber	2	Added trip location " -> Cras (Ciara)".	83	4
 \.
 
 
@@ -7005,7 +7007,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 68, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 69, true);
 
 
 --
@@ -7300,6 +7302,9 @@ h17r2hiydd8v1qw5vw6pr0fzbmdvoeqk	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjl
 96aeauxcs63hflbxyw50mtneif49wyfk	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-05-03 21:47:46.337835-04
 yu7o3fyoe7bczd7a9ccp6n8di6s9qaa1	YmE2OGY4NWJmNmQ2YTc3ZDQ3OWNkMTNhMjdiOGZlNmQyMWQzNmJhNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjA1NGFkMzAxZDllZDI4MGFlMTBkMDQ5NzVkYzQ0NzgxM2M4YTJmZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=	2016-05-03 21:48:50.796034-04
 j99pbh8of1lhl5ofyy0x8043ikby43k7	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-06-06 22:23:11.265824-04
+6zxsn295a40spvms1na4e1ci8tl18hmd	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-06-16 00:13:51.985957-04
+jyqdnjjinv5mq4yad57cmggoh4m0q7v9	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-06-16 11:51:48.587431-04
+pprso6ydfurumj0t4bsvp6cmjik8sdt6	NmExYjI2YzZjNzI4NzQwODExYjBlMmEyNTZhMWI3NWQyZjljYzZjNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjMwNzkyYjBmZThlNzkwY2EzNWY0MTljMGNlOWJhYTFhYjZkYjk3ODMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2016-06-17 11:00:40.351973-04
 \.
 
 
@@ -7737,6 +7742,7 @@ COPY reversion_revision (id, manager_slug, date_created, comment, user_id) FROM 
 39	default	2016-05-23 22:35:36.468585-04	Added supply plan "SupplyPlan object".	4
 40	default	2016-05-23 22:35:51.686299-04	Added distribution plan "Elise: /SSFA201601-Praesent egestas tristique-Cras (Ciara PCode: )-5".	4
 41	default	2016-05-23 22:36:50.166129-04	Added PCA Sector "Elise: None: Centralized object-oriented data-warehouse".	4
+42	default	2016-06-03 12:44:43.935792-04	Added trip location " -> Cras (Ciara)".	4
 \.
 
 
@@ -7744,7 +7750,7 @@ COPY reversion_revision (id, manager_slug, date_created, comment, user_id) FROM 
 -- Name: reversion_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('reversion_revision_id_seq', 41, true);
+SELECT pg_catalog.setval('reversion_revision_id_seq', 42, true);
 
 
 --
@@ -7813,6 +7819,8 @@ COPY reversion_version (id, object_id, object_id_int, format, serialized_data, o
 59	1	1	json	[{"fields": {"sector": 5, "locality": null, "governorate": null, "region": null, "tpm_visit": false, "location": 2, "pca": 1}, "model": "partners.gwpcalocation", "pk": 1}]	 -> Cras (Ciara PCode: )	74	41
 60	2	2	json	[{"fields": {"delivered": 0, "partnership": 1, "site": 2, "send": false, "item": 1, "document": null, "sent": false, "quantity": 5}, "model": "partners.distributionplan", "pk": 2}]	Elise: /SSFA201601-Praesent egestas tristique-Cras (Ciara PCode: )-5	82	41
 61	1	1	json	[{"fields": {"sector": 5, "amendment": null, "pca": 1, "modified": "2016-05-24T02:36:50.106Z", "created": "2016-05-24T02:36:49.971Z"}, "model": "partners.pcasector", "pk": 1}]	Elise: None: Centralized object-oriented data-warehouse	75	41
+62	1	1	json	[{"fields": {"governorate": null, "region": null, "location": 2, "trip": 3, "locality": null}, "model": "trips.triplocation", "pk": 1}]	 -> Cras (Ciara)	85	42
+63	3	3	json	[{"fields": {"ta_trip_repay_travel_allowance": false, "programme_assistant": null, "office": null, "date_human_resources_approved": null, "budget_owner": null, "date_budget_owner_approved": null, "human_resources": null, "ta_required": false, "pending_ta_amendment": false, "to_date": "2016-12-31", "approved_email_sent": false, "owner": 4, "supervisor": 2, "ta_reference": "", "approved_by_human_resources": null, "driver_supervisor": null, "partners": [], "main_observations": "", "representative": null, "submitted_email_sent": true, "section": null, "approved_by_supervisor": false, "opportunities": "", "approved_date": null, "from_date": "2016-01-01", "ta_drafted": false, "ta_drafted_date": null, "travel_type": "meeting", "driver_trip": null, "status": "planned", "lessons_learned": "", "security_granted": false, "vision_approver": null, "purpose_of_travel": "learn how to use a lightsaber", "international_travel": false, "driver": null, "representative_approval": null, "approved_by_budget_owner": false, "security_clearance_required": false, "pcas": [], "travel_assistant": null, "transport_booked": false, "date_supervisor_approved": null, "date_representative_approved": null, "ta_trip_took_place_as_planned": false, "created_date": "2016-02-15T15:11:40.388Z", "cancelled_reason": "", "ta_trip_final_claim": false, "constraints": ""}, "model": "trips.trip", "pk": 3}]	2016/3-4   2016-01-01 - 2016-12-31: learn how to use a lightsaber	83	42
 \.
 
 
@@ -7820,7 +7828,7 @@ COPY reversion_version (id, object_id, object_id_int, format, serialized_data, o
 -- Name: reversion_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('reversion_version_id_seq', 61, true);
+SELECT pg_catalog.setval('reversion_version_id_seq', 63, true);
 
 
 --
@@ -9040,6 +9048,10 @@ SELECT pg_catalog.setval('users_country_sections_id_seq', 1, false);
 --
 
 COPY users_office (id, name, zonal_chief_id) FROM stdin;
+1	Nullam tincidunt adipiscing enim	\N
+2	Maecenas tempus tellus eget	\N
+3	Ut non enim eleifend felis	\N
+4	Maecenas tempus tellus eget condimentum	\N
 \.
 
 
@@ -9055,6 +9067,9 @@ SELECT pg_catalog.setval('users_office_id_seq', 1, false);
 --
 
 COPY users_section (id, name) FROM stdin;
+1	Fusce egestas elit eget
+2	Suspendisse nisl elit rhoncus eget
+3	Vestibulum turpis sem aliquet eget
 \.
 
 

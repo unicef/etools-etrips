@@ -5,9 +5,9 @@
         .module('app.trips')
         .controller('MyTrips', MyTrips);
 
-    MyTrips.$inject = ['$scope', 'localStorageService', 'dataService', '$state', 'tripService', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicListDelegate', '$filter', 'errorHandler', '$ionicHistory', 'networkService', '$translate', 'DATE_FORMAT'];
+    MyTrips.$inject = ['$scope', 'localStorageService', 'dataService', '$state', 'tripService', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicListDelegate', '$filter', 'errorHandler', '$ionicHistory', 'networkService', '$translate', 'DATE_FORMAT', 'lodash'];
 
-    function MyTrips($scope, localStorageService, dataService, $state, tripService, $stateParams, $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, errorHandler, $ionicHistory, networkService, $translate, DATE_FORMAT) {
+    function MyTrips($scope, localStorageService, dataService, $state, tripService, $stateParams, $ionicLoading, $ionicPopup, $ionicListDelegate, $filter, errorHandler, $ionicHistory, networkService, $translate, DATE_FORMAT, _) {
         var vm = this;
 
         vm.dateFormat = DATE_FORMAT;
@@ -22,6 +22,16 @@
         ionic.Platform.ready(function(){
             if (networkService.isOffline() === true) {
                 vm.showAddButton = false;
+            } else {
+                // pre-fetch all data for adding a trip if greater than expiry timestamp
+                 _.each(tripService.getAddTripDataTypes(), function(dataType) {
+                    var expires = new Date();
+                    var expiresDataType = localStorageService.getObject(dataType + '_timestamp');
+
+                    if (_.isInteger(expiresDataType) === false || expires.getMinutes() > expiresDataType) {
+                        dataService.getRemoteData(dataType, function() {}, function () {});
+                    }
+                });
             }
         });
 

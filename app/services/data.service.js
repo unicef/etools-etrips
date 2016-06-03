@@ -12,6 +12,7 @@
             getTripsRemote: getTripsRemote,
             getUserBase: getUserBase,
             getUsersRemote: getUsersRemote,
+            getRemoteData: getRemoteData,
             refreshTrips: refreshTrips,
             patchTrip: patchTrip,
         };
@@ -107,6 +108,26 @@
                     error(err);
                 }
             );
+        }
+
+        function getRemoteData(type, success, error) {
+            return myHttpService.get(apiUrlService.BASE() + '/api/' + type + '/').then(
+                function(res) {
+                    saveToLocalStorage(type, res.data);
+                    success(res.data);
+                },
+                function(err) {
+                    error(err);
+                }
+            );
+        }
+
+        function saveToLocalStorage(key, data) {
+            localStorageService.setObject(key, data);
+
+            var expires = new Date();
+            expires.setMinutes(expires.getMinutes() + 5);
+            localStorageService.set(key + '_timestamp', expires.getTime());
         }
     }
 

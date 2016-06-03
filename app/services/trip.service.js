@@ -9,6 +9,8 @@
         var _ = lodash;
         var service = {
             deleteDraft: deleteDraft,
+            getAddTripDataTypes: getAddTripDataTypes,
+            saveAddTripDataTypesToLocalStorage: saveAddTripDataTypesToLocalStorage,
             getAP: getActionPoint,
             getDraft: getDraft,
             getTrip: getTrip,
@@ -20,7 +22,8 @@
             saveTrip: saveTrip,
             setDraft: setDraft,
             tripAction: tripAction,
-            updateActionPoint: updateActionPoint,
+            updateActionPoint: updateActionPoint
+
         };
 
         return service;
@@ -43,6 +46,16 @@
             }
 
             return null;
+        }
+
+        function getAddTripDataTypes() {
+            return ['users', 'sections', 'offices', 'partners', 'interventions', 'locations'];
+        }
+
+        function saveAddTripDataTypesToLocalStorage() {
+            _.each(getAddTripDataTypes(), function(dataType) {
+                dataService.getRemoteData(dataType, function(){}, function(){});
+            });
         }
 
         function getActionPoint(trip, actionPointId) {
