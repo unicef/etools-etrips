@@ -33,7 +33,7 @@
 
         function getTrips(success, error, refresh) {
             if ((refresh === true) || (!Object.keys(localStorageService.getObject('trips')).length)) {
-                getTripsRemote(success, error);
+                return getTripsRemote(success, error);
             } else {
                 return success(localStorageService.getObject('trips'));
             }
@@ -56,7 +56,7 @@
         }
 
         function refreshTrips() {
-            getTripsRemote(function() {}, function() {});
+            return getTripsRemote(function() {}, function() {});
         }
 
         function patchTrip(tripId, data, success, fail) {

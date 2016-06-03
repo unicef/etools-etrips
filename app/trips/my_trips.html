@@ -1,6 +1,6 @@
 <ion-view view-title="{{ 'template.dashboard.my_trips' | translate }}">
     <ion-nav-buttons side="right">
-        <button class="button icon ion-plus-circled" ui-sref="app.dash.add_trip()"></button>
+        <button id="add_trip" ng-show="vm.showAddButton" class="button icon ion-plus-circled" ui-sref="app.dash.add_trip()"></button>
     </ion-nav-buttons>
 
     <ion-content>

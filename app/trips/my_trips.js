@@ -14,9 +14,16 @@
         vm.doRefresh = doRefresh;
         vm.goReport = goReport;
         vm.onlyMe = onlyMe;
+        vm.showAddButton = true;
         vm.submit = submit;
 
-        dataService.getTrips(dataSuccess, dataFailed, $stateParams.refreshed);
+        dataService.getTrips(dataSuccess, dataFailed, ($stateParams.refreshed === 'true'));
+
+        ionic.Platform.ready(function(){
+            if (networkService.isOffline() === true) {
+                vm.showAddButton = false;
+            }
+        });
 
         function doRefresh() {
             $scope.$broadcast('scroll.refreshComplete');

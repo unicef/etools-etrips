@@ -8,7 +8,7 @@
     function config($stateProvider) {
         $stateProvider
             .state('app.dash.my_trips', {
-                url: '/my_trips',
+                url: '/my_trips?refreshed',
                 cache: false,
                 views: {
                     'tab-trips': {

@@ -69,6 +69,7 @@
     "template.trip.opportunities" : "Opportunities:",
 
     "template.trip.add_trip" : "Add Trip",
+    "template.trip.add_trip.save_trip" : "Save Trip",
 
     "template.trip.notes.title" : "Notes",
     "template.trip.notes.discard" : "Discard Notes",
@@ -150,6 +151,7 @@
     "directive.loading.sending_report" : "Sending Report...",
     "directive.loading.approving_trip" : "Approving Trip...",
     "directive.loading.submitting_trip" : "Submitting Trip...",
+    "directive.loading.saving_trip" : "Saving Trip...",
     "directive.loading.creating_action_point" : "Creating Action Point...",
     "directive.loading.updating_action_point" : "Updating Action Point...",
     "directive.loading.submitting_report" : "Submitting Report.<p></p>Please wait.",
@@ -222,6 +224,9 @@
     "controller.my_trips.title" : "Trip Submission",
     "controller.my_trips.template" : "You succesfully submitted the trip.",
 
+    "controller.trip.add_trip.save.title" : "Trip Saved",
+    "controller.trip.add_trip.save.template" : "You succesfully saved the trip.",
+
     "controller.login.success.title" : "Sign In Failed",
     "controller.login.success.template" : "Unable to get your trips. Please try logging in again later.",
     "controller.login.no_country.title" : "Sign In Failed",
@@ -249,4 +254,4 @@
     "factory.error_handler.default_message" : "Something went wrong. Please try again later.",
     "factory.error_handler.password" : "The password introduced was incorrect.",
     "factory.error_handler.unknown" : "Error"
-}}
+}

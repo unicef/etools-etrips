@@ -17,6 +17,7 @@
             localTripUpdate: localTripUpdate,
             reportText: reportText,
             saveActionPoint: saveActionPoint,
+            saveTrip: saveTrip,
             setDraft: setDraft,
             tripAction: tripAction,
             updateActionPoint: updateActionPoint,
@@ -156,6 +157,13 @@
             }
 
             localStorageService.setObject('draft-' + country, my_obj);
+        }
+
+        function saveTrip(data) {
+            var url = apiUrlService.BASE() + '/api/trips/';
+            var result = myHttpService.post(url, data);
+
+            return result;
         }
 
         function tripAction(id, action, data) {
