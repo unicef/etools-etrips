@@ -1,5 +1,5 @@
 [
-    "bower_components/ionic/js/ionic.bundle.js",    
+    "bower_components/ionic/js/ionic.bundle.js",
     "bower_components/angular-bootstrap/ui-bootstrap.js",
     "bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js",
     "bower_components/angular-cookies/angular-cookies.js",
@@ -9,8 +9,10 @@
     "bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
     "bower_components/angular-translate-storage-local/angular-translate-storage-local.js",
     "bower_components/angular-translate-handler-log/angular-translate-handler-log.js",
-    "bower_components/angular-dynamic-locale/tmhDynamicLocale.min.js", 
+    "bower_components/angular-dynamic-locale/tmhDynamicLocale.min.js",
     "bower_components/ngCordova/dist/ng-cordova.js",
     "bower_components/ng-lodash/build/ng-lodash.js",
-    "bower_components/async/dist/async.js"
+    "bower_components/async/dist/async.js",
+    "bower_components/moment/moment.js",
+    "bower_components/angular-moment/angular-moment.js"
 ]

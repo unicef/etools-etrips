@@ -6,6 +6,8 @@
     "template.login.remember_me" : "Remember me",
     "template.login.sign_in" : "Sign in",
 
+    "template.required.legend" : "Required - ",
+
     "template.menu.title" : "eTrip Menu",
     "template.menu.country" : "Country:",
     "template.menu.trips" : "Trips",
@@ -70,6 +72,19 @@
 
     "template.trip.add_trip" : "Add Trip",
     "template.trip.add_trip.save_trip" : "Save Trip",
+    "template.trip.add_trip.traveller.text" : "Travellers",
+    "template.trip.add_trip.traveller.header" : "Select a traveller",
+    "template.trip.add_trip.supervisor.text" : "Supervisor",
+    "template.trip.add_trip.supervisor.header" : "Select a supervisor",
+    "template.trip.add_trip.section.text" : "Section",
+    "template.trip.add_trip.section.header" : "Select a section",
+    "template.trip.add_trip.office.text" : "Office",
+    "template.trip.add_trip.office.header" : "Select an office",
+    "template.trip.add_trip.purpose_of_travel" : "Purpose of travel",
+    "template.trip.add_trip.from_date" : "From date",
+    "template.trip.add_trip.to_date" : "To date",
+    "template.trip.add_trip.cant_leave_empty" : "You can't leave this empty.",
+    "template.trip.add_trip.international_travel" : "International travel",
 
     "template.trip.notes.title" : "Notes",
     "template.trip.notes.discard" : "Discard Notes",

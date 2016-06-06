@@ -283,8 +283,6 @@
         .use(!build ? connectLr() : function(){})
         .use(express.static(targetDir))
         .listen(port);
-
-      open('http://localhost:' + port + '/');
   });
 
   // ionic emulate wrapper
@@ -547,7 +545,7 @@
 
   gulp.task('lint', function() {
     return gulp.src([
-        'app/**/*.js'    
+        'app/**/*.js'
       ])
       .pipe(reload({
         stream: true,

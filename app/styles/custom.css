@@ -54,8 +54,8 @@ h2.title img {
 }
 
 ion-content .subtitle {
-    margin-bottom: 10px; 
-    font-size: 13px; 
+    margin-bottom: 10px;
+    font-size: 13px;
     font-weight: normal;
 }
 
@@ -91,4 +91,14 @@ ion-content .subtitle {
 .gallery {
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
+}
+
+.error_required {
+    border: solid 1px #dd4b39;
+}
+
+.error_required_add_trip {
+    color: #dd4b39;
+    margin-bottom: 20px;
+    margin-left: 10px;
 }

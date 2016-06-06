@@ -3,6 +3,7 @@
 
     angular.module('app.trips', [
         'app.notes',
-        'app.report'
+        'app.report',
+        'angularMoment'
     ]);
 })();

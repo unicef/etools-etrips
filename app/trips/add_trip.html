@@ -1,6 +1,108 @@
 <ion-view view-title="{{ 'template.trip.add_trip' | translate }}">
     <ion-content class="padding">
-        <h1>{{ 'template.trip.add_trip' | translate }}</h1>
+        <ionic-select
+            id="travellers"
+            required="true"
+            header-text="{{ 'template.trip.add_trip.traveller.header' | translate }}"
+            text="{{ 'template.trip.add_trip.traveller.text' | translate }}"
+            items="vm.data.users"
+            value="traveller"
+            value-property="user_id"
+            text-property="full_name"
+            allow-empty="false"
+            multi-select="true"
+            modal-template-url="templates/trips/add_trip_modal_template.html"
+            template-url="templates/trips/add_trip_item_template.html"
+            value-changed="vm.onValueChanged('traveller', value)"
+            error="vm.error.traveller">
+        </ionic-select>
+        <div id="error_traveller" ng-show="vm.error.traveller" ng-cloak class="error_required_add_trip">
+            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        </div>
+
+        <ionic-select
+            id="supervisor"
+            required="true"
+            header-text="{{ 'template.trip.add_trip.supervisor.header' | translate }}"
+            text="{{ 'template.trip.add_trip.supervisor.text' | translate }}"
+            items="vm.data.users"
+            value="supervisor"
+            value-property="user_id"
+            text-property="full_name"
+            allow-empty="false"
+            multi-select="false"
+            modal-template-url="templates/trips/add_trip_modal_template.html"
+            template-url="templates/trips/add_trip_item_template.html"
+            value-changed="vm.onValueChanged('supervisor', value)"
+            error="vm.error.supervisor">
+        </ionic-select>
+        <div id="error_supervisor" ng-show="vm.error.supervisor" ng-cloak class="error_required_add_trip">
+            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        </div>
+
+        <ionic-select
+            id="section"
+            header-text="{{ 'template.trip.add_trip.section.header' | translate }}"
+            text="{{ 'template.trip.add_trip.section.text' | translate }}"
+            items="vm.data.sections"
+            value="section"
+            value-property="id"
+            text-property="name"
+            allow-empty="false"
+            multi-select="false"
+            modal-template-url="templates/trips/add_trip_modal_template.html"
+            template-url="templates/trips/add_trip_item_template.html"
+            value-changed="vm.onValueChanged('section', value)">
+        </ionic-select>
+
+        <ionic-select
+            id="office"
+            header-text="{{ 'template.trip.add_trip.office.header' | translate }}"
+            text="{{ 'template.trip.add_trip.office.text' | translate }}"
+            items="vm.data.offices"
+            value="office"
+            value-property="id"
+            text-property="name"
+            allow-empty="false"
+            multi-select="false"
+            modal-template-url="templates/trips/add_trip_modal_template.html"
+            template-url="templates/trips/add_trip_item_template.html"
+            value-changed="vm.onValueChanged('office', value)">
+        </ionic-select>
+
+        <div style="margin-bottom: 10px;">
+            <label class="item item-input" ng-class="{error_required: vm.error.purpose_of_travel === true}">
+                <textarea id="purpose_of_travel" ng-model="vm.trip.purpose_of_travel" onchange="" maxlength="254" placeholder="{{ 'template.trip.add_trip.purpose_of_travel' | translate }} *" style="font-size: 16px; height: 100px;" ng-change="vm.isFormFieldValid('purpose_of_travel')"></textarea>
+            </label>
+        </div>
+        <div id="error_purpose_of_travel" ng-show="vm.error.purpose_of_travel" ng-cloak class="error_required_add_trip">
+            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label class="item item-input" ng-class="{error_required: vm.error.from_date === true}">
+                <span class="input-label">{{ 'template.trip.add_trip.from_date' | translate }} <required-label></required-label></span>
+                <input id="from_date" ng-model="vm.trip.from_date" type="date" ng-change="vm.isFormFieldValid('from_date')">
+                <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
+            </label>
+        </div>
+         <div id="error_from_date" ng-show="vm.error.from_date" ng-cloak class="error_required_add_trip">
+            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label class="item item-input" ng-class="{error_required: vm.error.to_date === true}">
+                <span class="input-label">{{ 'template.trip.add_trip.to_date' | translate }} <required-label></required-label></span>
+                <input id="to_date" ng-model="vm.trip.to_date" type="date" placeholder="Date" ng-change="vm.isFormFieldValid('to_date')">
+                <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
+            </label>
+        </div>
+        <div id="error_to_date" ng-show="vm.error.to_date" ng-cloak class="error_required_add_trip">
+            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        </div>
+
+        <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel">{{ 'template.trip.add_trip.international_travel' | translate }}</ion-checkbox>
+
         <button class="button button-full button-positive" ng-click="vm.save()">
         {{ 'template.trip.add_trip.save_trip' | translate }}
         </button>
