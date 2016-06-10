@@ -42,6 +42,7 @@
 
         <ionic-select
             id="section"
+            required="true"
             header-text="{{ 'template.trip.add_trip.section.header' | translate }}"
             text="{{ 'template.trip.add_trip.section.text' | translate }}"
             items="vm.data.sections"
@@ -52,11 +53,16 @@
             multi-select="false"
             modal-template-url="templates/trips/add_trip_modal_template.html"
             template-url="templates/trips/add_trip_item_template.html"
-            value-changed="vm.onValueChanged('section', value)">
+            value-changed="vm.onValueChanged('section', value)"
+            error="vm.error.section">
         </ionic-select>
+        <div id="error_section" ng-show="vm.error.section" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.section_message | translate }}
+        </div>
 
         <ionic-select
             id="office"
+            required="true"
             header-text="{{ 'template.trip.add_trip.office.header' | translate }}"
             text="{{ 'template.trip.add_trip.office.text' | translate }}"
             items="vm.data.offices"
@@ -67,8 +73,12 @@
             multi-select="false"
             modal-template-url="templates/trips/add_trip_modal_template.html"
             template-url="templates/trips/add_trip_item_template.html"
-            value-changed="vm.onValueChanged('office', value)">
+            value-changed="vm.onValueChanged('office', value)"
+            error="vm.error.office">
         </ionic-select>
+        <div id="error_office" ng-show="vm.error.office" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.office_message | translate }}
+        </div>
 
         <div style="margin-bottom: 10px;">
             <label class="item item-input" ng-class="{error_required: vm.error.purpose_of_travel === true}">
@@ -101,7 +111,45 @@
             {{ vm.error.to_date_message | translate }}
         </div>
 
-        <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel">{{ 'template.trip.add_trip.international_travel' | translate }}</ion-checkbox>
+        <ionic-select
+            id="travel_focal_point"
+            required="true"
+            header-text="{{ 'template.trip.add_trip.travel_focal_point.header' | translate }}"
+            text="{{ 'template.trip.add_trip.travel_focal_point.text' | translate }}"
+            items="vm.data.users"
+            value="travel_focal_point"
+            value-property="user_id"
+            text-property="full_name"
+            allow-empty="false"
+            multi-select="true"
+            modal-template-url="templates/trips/add_trip_modal_template.html"
+            template-url="templates/trips/add_trip_item_template.html"
+            value-changed="vm.onValueChanged('travel_focal_point', value)"
+            error="vm.error.travel_focal_point">
+        </ionic-select>
+        <div id="error_travel_focal_point" ng-show="vm.error.travel_focal_point" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.travel_focal_point_message | translate }}
+        </div>
+
+        <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel" style="margin-bottom: 10px;">
+            {{ 'template.trip.add_trip.international_travel' | translate }}
+        </ion-checkbox>
+
+        <ionic-select
+            id="budget_owner"
+            required="false"
+            header-text="{{ 'template.trip.add_trip.budget_owner.header' | translate }}"
+            text="{{ 'template.trip.add_trip.budget_owner.text' | translate }}"
+            items="vm.data.users"
+            value="budget_owner"
+            value-property="user_id"
+            text-property="full_name"
+            allow-empty="false"
+            multi-select="false"
+            modal-template-url="templates/trips/add_trip_modal_template.html"
+            template-url="templates/trips/add_trip_item_template.html"
+            value-changed="vm.onValueChanged('budget_owner', value)">
+        </ionic-select>
 
         <button class="button button-full button-positive" ng-click="vm.save()">
         {{ 'template.trip.add_trip.save_trip' | translate }}

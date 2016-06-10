@@ -87,6 +87,10 @@
     "template.trip.add_trip.error.to_date_less_than_from" : "The to date must be greater than the from date.",
     "template.trip.add_trip.error.owner_is_supervisor" : "A traveller can't be a supervisor.",
     "template.trip.add_trip.international_travel" : "International travel",
+    "template.trip.add_trip.budget_owner.text" : "Budget owner",
+    "template.trip.add_trip.budget_owner.header" : "Select a budget owner",
+    "template.trip.add_trip.travel_focal_point.text" : "Travel focal point",
+    "template.trip.add_trip.travel_focal_point.header" : "Select a travel focal point",
 
     "template.trip.notes.title" : "Notes",
     "template.trip.notes.discard" : "Discard Notes",

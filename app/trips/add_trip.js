@@ -17,7 +17,7 @@
         vm.onValueChanged = onValueChanged;
         vm.isFormFieldValid = isFormFieldValid;
 
-        var requiredFields = ['traveller', 'supervisor', 'purpose_of_travel', 'from_date', 'to_date'];
+        var requiredFields = ['traveller', 'supervisor', 'purpose_of_travel', 'section', 'office', 'from_date', 'to_date', 'travel_focal_point'];
 
         // check if data type exists in local storage
         _.each(tripService.getAddTripDataTypes(), function(dataType) {
@@ -146,6 +146,9 @@
 
                 // copy traveller value to owner field
                 trip.owner = parseInt(vm.trip.traveller[0]);
+
+                // select travel focal point
+                trip.travel_assistant = parseInt(vm.trip.travel_focal_point[0])
 
                 // set required fields to empty
                 var emptyFields = ['triplocation_set', 'travelroutes_set', 'tripfunds_set', 'actionpoint_set'];
