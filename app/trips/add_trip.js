@@ -17,7 +17,7 @@
         vm.onValueChanged = onValueChanged;
         vm.isFormFieldValid = isFormFieldValid;
 
-        var requiredFields = ['traveller', 'supervisor', 'purpose_of_travel', 'section', 'office', 'from_date', 'to_date', 'travel_focal_point'];
+        var requiredFields = ['traveller', 'supervisor', 'purpose_of_travel', 'section', 'office', 'start_date', 'end_date', 'travel_focal_point'];
 
         // check if data type exists in local storage
         _.each(tripService.getAddTripDataTypes(), function(dataType) {
@@ -88,21 +88,21 @@
                 isFormValid = true;
             }
 
-            // from_date must be less than to_date
-            if (!_.isUndefined(vm.trip.from_date) && !_.isUndefined(vm.trip.to_date)) {
-                var fromDateEpoch = moment(new Date(vm.trip.from_date)).valueOf();
-                var toDateEpoch = moment(new Date(vm.trip.to_date)).valueOf();
+            // start_date must be less than end_date
+            if (!_.isUndefined(vm.trip.start_date) && !_.isUndefined(vm.trip.end_date)) {
+                var startDateEpoch = moment(new Date(vm.trip.start_date)).valueOf();
+                var endDateEpoch = moment(new Date(vm.trip.end_date)).valueOf();
 
-                if (fromDateEpoch > toDateEpoch) {
-                    vm.error.from_date = true;
-                    vm.error.from_date_message = 'template.trip.add_trip.error.to_date_less_than_from';
-                    vm.error.to_date = true;
-                    vm.error.to_date_message = 'template.trip.add_trip.error.to_date_less_than_from';
+                if (startDateEpoch > endDateEpoch) {
+                    vm.error.start_date = true;
+                    vm.error.start_date_message = 'template.trip.add_trip.error.end_date_less_than_start';
+                    vm.error.end_date = true;
+                    vm.error.end_date_message = 'template.trip.add_trip.error.end_date_less_than_start';
                     isFormValid = false;
 
                 } else {
-                    vm.error.from_date = false;
-                    vm.error.to_date = false;
+                    vm.error.start_date = false;
+                    vm.error.end_date = false;
                 }
             }
 
@@ -135,11 +135,14 @@
                 // create new trip object;
                 var trip =  _.cloneDeep(vm.trip);
 
-                // format from_date and to_date from input date format to YYYY-MM-DD
-                var dateFields = ['from_date', 'to_date'];
+                // format start_date and end_date from input date format to YYYY-MM-DD
+                var dateFields = {
+                    'start_date' : 'from_date',
+                    'end_date' : 'to_date'
+                };
 
-                _.each(dateFields, function(dateField){
-                    var date = new Date(vm.trip[dateField]);
+                _.each(dateFields, function(dateField, formField){
+                    var date = new Date(vm.trip[formField]);
                     var formattedDate = moment(date).format('YYYY-MM-DD');
                     trip[dateField] = formattedDate;
                 });
@@ -148,7 +151,7 @@
                 trip.owner = parseInt(vm.trip.traveller[0]);
 
                 // select travel focal point
-                trip.travel_assistant = parseInt(vm.trip.travel_focal_point[0])
+                trip.travel_assistant = parseInt(vm.trip.travel_focal_point[0]);
 
                 // set required fields to empty
                 var emptyFields = ['triplocation_set', 'travelroutes_set', 'tripfunds_set', 'actionpoint_set'];

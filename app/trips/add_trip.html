@@ -90,26 +90,30 @@
         </div>
 
         <div style="margin-bottom: 10px;">
-            <label class="item item-input" ng-class="{error_required: vm.error.from_date === true}">
-                <span class="input-label">{{ 'template.trip.add_trip.from_date' | translate }} <required-label></required-label></span>
-                <input id="from_date" ng-model="vm.trip.from_date" type="date" ng-change="vm.isFormFieldValid('from_date')">
+            <label class="item item-input" ng-class="{error_required: vm.error.start_date === true}">
+                <span class="input-label">{{ 'template.trip.add_trip.start_date' | translate }} <required-label></required-label></span>
+                <input id="start_date" ng-model="vm.trip.start_date" type="date" ng-change="vm.isFormFieldValid('start_date')">
                 <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
             </label>
         </div>
-         <div id="error_from_date" ng-show="vm.error.from_date" ng-cloak class="error_add_trip_form_message">
-            {{ vm.error.from_date_message | translate }}
+         <div id="error_start_date" ng-show="vm.error.start_date" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.start_date_message | translate }}
         </div>
 
         <div style="margin-bottom: 10px;">
-            <label class="item item-input" ng-class="{error_required: vm.error.to_date === true}">
-                <span class="input-label">{{ 'template.trip.add_trip.to_date' | translate }} <required-label></required-label></span>
-                <input id="to_date" ng-model="vm.trip.to_date" type="date" placeholder="Date" ng-change="vm.isFormFieldValid('to_date')">
+            <label class="item item-input" ng-class="{error_required: vm.error.end_date === true}">
+                <span class="input-label">{{ 'template.trip.add_trip.end_date' | translate }} <required-label></required-label></span>
+                <input id="end_date" ng-model="vm.trip.end_date" type="date" placeholder="Date" ng-change="vm.isFormFieldValid('end_date')">
                 <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
             </label>
         </div>
-        <div id="error_to_date" ng-show="vm.error.to_date" ng-cloak class="error_add_trip_form_message">
-            {{ vm.error.to_date_message | translate }}
+        <div id="error_end_date" ng-show="vm.error.end_date" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.end_date_message | translate }}
         </div>
+
+        <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel" style="margin-bottom: 10px;">
+            {{ 'template.trip.add_trip.international_travel' | translate }}
+        </ion-checkbox>
 
         <ionic-select
             id="travel_focal_point"
@@ -131,10 +135,6 @@
             {{ vm.error.travel_focal_point_message | translate }}
         </div>
 
-        <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel" style="margin-bottom: 10px;">
-            {{ 'template.trip.add_trip.international_travel' | translate }}
-        </ion-checkbox>
-
         <ionic-select
             id="budget_owner"
             required="false"
@@ -152,7 +152,7 @@
         </ionic-select>
 
         <button class="button button-full button-positive" ng-click="vm.save()">
-        {{ 'template.trip.add_trip.save_trip' | translate }}
+            {{ 'template.trip.add_trip.save_trip' | translate }}
         </button>
     </ion-content>
 </ion-view>
