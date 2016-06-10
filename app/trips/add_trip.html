@@ -16,8 +16,8 @@
             value-changed="vm.onValueChanged('traveller', value)"
             error="vm.error.traveller">
         </ionic-select>
-        <div id="error_traveller" ng-show="vm.error.traveller" ng-cloak class="error_required_add_trip">
-            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        <div id="error_traveller" ng-show="vm.error.traveller" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.traveller_message | translate }}
         </div>
 
         <ionic-select
@@ -36,8 +36,8 @@
             value-changed="vm.onValueChanged('supervisor', value)"
             error="vm.error.supervisor">
         </ionic-select>
-        <div id="error_supervisor" ng-show="vm.error.supervisor" ng-cloak class="error_required_add_trip">
-            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        <div id="error_supervisor" ng-show="vm.error.supervisor" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.supervisor_message | translate }}
         </div>
 
         <ionic-select
@@ -75,8 +75,8 @@
                 <textarea id="purpose_of_travel" ng-model="vm.trip.purpose_of_travel" onchange="" maxlength="254" placeholder="{{ 'template.trip.add_trip.purpose_of_travel' | translate }} *" style="font-size: 16px; height: 100px;" ng-change="vm.isFormFieldValid('purpose_of_travel')"></textarea>
             </label>
         </div>
-        <div id="error_purpose_of_travel" ng-show="vm.error.purpose_of_travel" ng-cloak class="error_required_add_trip">
-            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        <div id="error_purpose_of_travel" ng-show="vm.error.purpose_of_travel" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.purpose_of_travel_message | translate }}
         </div>
 
         <div style="margin-bottom: 10px;">
@@ -86,8 +86,8 @@
                 <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
             </label>
         </div>
-         <div id="error_from_date" ng-show="vm.error.from_date" ng-cloak class="error_required_add_trip">
-            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+         <div id="error_from_date" ng-show="vm.error.from_date" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.from_date_message | translate }}
         </div>
 
         <div style="margin-bottom: 10px;">
@@ -97,8 +97,8 @@
                 <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
             </label>
         </div>
-        <div id="error_to_date" ng-show="vm.error.to_date" ng-cloak class="error_required_add_trip">
-            {{ 'template.trip.add_trip.cant_leave_empty' | translate }}
+        <div id="error_to_date" ng-show="vm.error.to_date" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.to_date_message | translate }}
         </div>
 
         <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel">{{ 'template.trip.add_trip.international_travel' | translate }}</ion-checkbox>

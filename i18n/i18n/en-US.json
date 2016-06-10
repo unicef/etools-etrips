@@ -83,7 +83,9 @@
     "template.trip.add_trip.purpose_of_travel" : "Purpose of travel",
     "template.trip.add_trip.from_date" : "From date",
     "template.trip.add_trip.to_date" : "To date",
-    "template.trip.add_trip.cant_leave_empty" : "You can't leave this empty.",
+    "template.trip.add_trip.error.cant_leave_empty" : "You can't leave this empty.",
+    "template.trip.add_trip.error.to_date_less_than_from" : "The to date must be greater than the from date.",
+    "template.trip.add_trip.error.owner_is_supervisor" : "A traveller can't be a supervisor.",
     "template.trip.add_trip.international_travel" : "International travel",
 
     "template.trip.notes.title" : "Notes",

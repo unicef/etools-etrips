@@ -97,7 +97,7 @@ ion-content .subtitle {
     border: solid 1px #dd4b39;
 }
 
-.error_required_add_trip {
+.error_add_trip_form_message {
     color: #dd4b39;
     margin-bottom: 20px;
     margin-left: 10px;
