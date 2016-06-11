@@ -1,12 +1,11 @@
-<div style="margin-bottom: 10px;">
+<div style="margin-bottom: 10px;" ng-disabled="true">
     <ion-list>
       <ion-item ng-click="showItems($event)" ng-class="{error_required: error === true}">
         {{ text }}
         <span ng-if="required">
             <required-label></required-label>
         </span>
-        <span class="item-note">{{noteText}}
-            <img class="{{noteImgClass}}" ng-if="noteImg != null" src="{{noteImg}}" />
+        <span class="item-note">
             <i class="icon ion-ios-arrow-right"></i>
         </span>
       </ion-item>

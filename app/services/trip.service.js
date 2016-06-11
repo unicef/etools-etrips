@@ -49,7 +49,7 @@
         }
 
         function getAddTripDataTypes() {
-            return ['users', 'sections', 'offices', 'partners', 'interventions', 'locations'];
+            return ['users', 'sections', 'offices', 'partners', 'interventions', 'locations', 'reports/results', 'funds/grants'];
         }
 
         function saveAddTripDataTypesToLocalStorage() {

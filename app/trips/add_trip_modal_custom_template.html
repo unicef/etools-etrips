@@ -1,0 +1,46 @@
+<ion-modal-view>
+    <ion-header-bar class="bar-positive">
+        <button class="button button-positive button-icon ion-ios-arrow-back" ng-click="vm.closeModal()" />
+        <h1 class="title">{{ vm.modal.headerText }}</h1>
+    </ion-header-bar>
+
+    <ion-content class="padding">
+        <div ng-if="vm.modal.type == 'funding'">
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.wbs }" style="margin-bottom: 10px;">
+                <div class="input-label">
+                    {{ 'template.trip.add_trip.wbs' | translate }} <required-label></required-label>
+                </div>
+                <select ng-change="vm.isFormFieldValid('wbs')" ng-model="vm.trip.wbs" ng-options="item.id as item.name for item in vm.data['reports/results']"></select>
+            </div>
+            <div id="error_wbs" ng-show="vm.error.wbs" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.wbs_message | translate }}
+            </div>
+
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.grant }" style="margin-bottom: 10px;">
+                <div class="input-label">
+                    {{ 'template.trip.add_trip.grant' | translate }} <required-label></required-label>
+                </div>
+                <select ng-change="vm.isFormFieldValid('grant')" ng-model="vm.trip.grant" ng-options="item.id as item.name for item in vm.data['funds/grants']"></select>
+            </div>
+            <div id="error_grant" ng-show="vm.error.grant" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.grant_message | translate }}
+            </div>
+
+            <div class="item item-input ng-class:{ 'error_required': vm.error.percentage }">
+                <span class="input-label">
+                    {{ 'template.trip.add_trip.percentage' | translate }} <required-label></required-label>
+                </span>
+                <input ng-change="vm.isFormFieldValid('percentage')" id="percentage" ng-model="vm.trip.percentage" type="number" style="text-align: right;">
+            </div>
+            <div id="error_percentage" ng-show="vm.error.percentage" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.percentage_message | translate }}
+            </div>
+        </div>
+
+        <br />
+        <div style="text-align: center;">
+        <button class="button button-positive" ng-click="vm.saveModal()">
+            {{ vm.modal.buttonText }}
+        </button>
+    </ion-content>
+</ion-modal-view>

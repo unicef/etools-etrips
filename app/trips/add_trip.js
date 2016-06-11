@@ -5,36 +5,73 @@
         .module('app.trips')
         .controller('AddTrip', AddTrip);
 
-    AddTrip.$inject = ['$scope', '$ionicHistory', '$ionicLoading', '$ionicPopup', '$state', '$translate', 'dataService', 'errorHandler', 'tripService', 'localStorageService', 'lodash', 'moment'];
+    AddTrip.$inject = ['$scope', '$ionicHistory', '$ionicLoading', '$ionicModal', '$ionicPopup', '$state', '$translate', 'dataService', 'errorHandler', 'tripService', 'localStorageService', 'lodash', 'moment'];
 
-    function AddTrip($scope, $ionicHistory, $ionicLoading, $ionicPopup, $state, $translate, dataService, errorHandler, tripService, localStorageService, _, moment) {
+    function AddTrip($scope, $ionicHistory, $ionicLoading, $ionicModal, $ionicPopup, $state, $translate, dataService, errorHandler, tripService, localStorageService, _, moment) {
         var vm = this;
+        vm.closeModal = closeModal;
         vm.data = {};
+        vm.deleteMultiAddItem = deleteMultiAddItem;
         vm.error = {};
-        vm.trip = {};
-        vm.save = save;
-        vm.title = '';
-        vm.onValueChanged = onValueChanged;
         vm.isFormFieldValid = isFormFieldValid;
+        vm.modal = {};
+        vm.onValueChanged = onValueChanged;
+        vm.openModal = openModal;
+        vm.save = save;
+        vm.saveModal = saveModal;
+        vm.title = '';
+        vm.trip = {};
 
         var requiredFields = ['traveller', 'supervisor', 'purpose_of_travel', 'section', 'office', 'start_date', 'end_date', 'travel_focal_point'];
+        var fundingModalRequiredFields = ['wbs', 'grant', 'percentage'];
 
         // check if data type exists in local storage
         _.each(tripService.getAddTripDataTypes(), function(dataType) {
-            var data = _.compact(localStorageService.getObject(dataType));
-
-            if (data.length === 0) {
+            if (_.isUndefined(localStorageService.getObject(dataType).length)) {
                 dataService.getRemoteData(dataType, function() {}, function () {});
             }
         });
 
         ionic.Platform.ready(function(){
+
             _.each(tripService.getAddTripDataTypes(), function(dataType) {
                 vm.data[dataType] = localStorageService.getObject(dataType);
             });
 
             vm.trans = $translate.instant('controller.trip.add_trip.save.title');
+
+            vm.trip.tripfunds_set = [];
+
+            $ionicModal.fromTemplateUrl(
+                'templates/trips/add_trip_modal_custom_template.html', {
+                    scope: $scope,
+                    animation: 'slide-in-up'
+                }).then(function(modal) {
+                    $scope.modal = modal;
+                }
+            );
         });
+
+        function deleteMultiAddItem(type, item) {
+            var headerTypeTitle = '';
+            var itemData = {};
+
+            if (type === 'funding') {
+                headerTypeTitle = $translate.instant('template.trip.add_trip.funding');
+                itemData = 'tripfunds_set';
+            }
+
+            $ionicPopup.confirm({
+                title: $translate.instant('template.trip.add_trip.multi_add_item.delete.title', { 'type' : headerTypeTitle }),
+                template: $translate.instant('template.trip.add_trip.multi_add_item.delete.template')
+            }).then(function(res) {
+                if (res === true) {
+                    vm.trip[itemData] = _.filter(vm.trip[itemData], function(itemDataElement) {
+                        return itemDataElement.$$hashKey !== item.$$hashKey;
+                    });
+                }
+            });
+        }
 
         function onValueChanged(type, val) {
             if (!_.isUndefined(val)) {
@@ -50,18 +87,24 @@
 
         function isFormValid() {
             var isFormValid = true;
+            var fields = [];
 
-            // validate purpose_of_travel
-            if (!_.isUndefined(vm.trip.purpose_of_travel) && vm.trip.purpose_of_travel.length > 254) {
-                vm.trip.purpose_of_travel = vm.trip.purpose_of_travel.substring(0, 254);
-                isFormValid = false;
+            if (!_.isUndefined(vm.modal.type) && vm.modal.type === 'funding') {
+                fields = fundingModalRequiredFields;
 
+            } else {
+                if (!_.isUndefined(vm.trip.purpose_of_travel) && vm.trip.purpose_of_travel.length > 254) {
+                    vm.trip.purpose_of_travel = vm.trip.purpose_of_travel.substring(0, 254);
+                    isFormValid = false;
+                }
+
+                fields = requiredFields;
             }
 
             // validate required fields
             var hasOneInvalidField = false;
 
-            _.each(requiredFields, function(requiredField){
+            _.each(fields, function(requiredField){
                 if (isFormFieldValid(requiredField) === false) {
                     hasOneInvalidField = true;
                 }
@@ -125,6 +168,19 @@
                 }
             }
 
+            // percentage check
+            if (!_.isUndefined(vm.trip.percentage)){
+
+                if (_.isNull(vm.trip.percentage) || (vm.trip.percentage.length > 0 && !_.isInteger(vm.trip.percentage.length))) {
+                    vm.error.percentage = true;
+                    vm.error.percentage_message = 'template.trip.add_trip.error.percentage_must_be_an_integer';
+                    isFormValid = false;
+
+                } else {
+                    vm.error.percentage = false;
+                }
+            }
+
             return isFormValid;
         }
 
@@ -154,7 +210,7 @@
                 trip.travel_assistant = parseInt(vm.trip.travel_focal_point[0]);
 
                 // set required fields to empty
-                var emptyFields = ['triplocation_set', 'travelroutes_set', 'tripfunds_set', 'actionpoint_set'];
+                var emptyFields = ['triplocation_set', 'travelroutes_set', 'actionpoint_set'];
 
                 _.each(emptyFields, function(emptyField) {
                     trip[emptyField] = [];
@@ -186,5 +242,63 @@
                 );
             }
         }
+
+        function saveModal() {
+            var isModalValid = isFormValid();
+
+            if (isModalValid === true) {
+                if (vm.modal.type === 'funding') {
+                    var fundingItem = _.find(vm.data['reports/results'], function(o){
+                        return parseInt(o.id) === parseInt(vm.trip.wbs);
+                    });
+
+                    var grantItem = _.find(vm.data['funds/grants'], function(o){
+                        return parseInt(o.id) === parseInt(vm.trip.grant);
+                    });
+
+                    var funding = {
+                        'wbs' : fundingItem.id,
+                        'wbs_name' : fundingItem.name,
+                        'grant' : grantItem.id,
+                        'grant_name' : grantItem.name,
+                        'amount' : parseInt(vm.trip.percentage)
+                    };
+
+                    vm.trip.tripfunds_set.push(funding);
+                }
+
+                closeModal();
+            }
+        }
+
+        function openModal(field) {
+            resetModalData();
+
+            vm.modal.headerText = $translate.instant('template.trip.add_trip.' + field);
+            vm.modal.buttonText = $translate.instant('template.trip.add_trip.' + field + '.button.text');
+            vm.modal.type = field;
+
+            $scope.modal.show();
+        }
+
+        function closeModal() {
+            resetModalData();
+            $scope.modal.hide();
+        }
+
+        function resetModalData() {
+            var modalFields = ['wbs', 'grant', 'percentage'];
+
+            _.each(modalFields, function(modalField) {
+                delete vm.trip[modalField];
+                delete vm.error[modalField];
+            });
+
+            vm.modal = {};
+        }
+
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
     }
 })();
