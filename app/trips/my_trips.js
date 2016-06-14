@@ -58,7 +58,7 @@
 
         function onlyMe(trip) {
             // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-            return trip.traveller_id === localStorageService.getObject('currentUser').user_id;
+            return trip.owner === localStorageService.getObject('currentUser').user_id;
         }
 
         function submit(tripId) {

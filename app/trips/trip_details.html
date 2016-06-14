@@ -19,7 +19,7 @@
 
       <div class="list col no-padding">
           <h5 class="txt-grey padding-left">{{ 'template.trip.traveller' | translate }}</h5>
-          <p class="item item-text-wrap li-center less-padding">{{ vm.trip.traveller }}</p>
+          <p class="item item-text-wrap li-center less-padding">{{ vm.trip.owner_name }}</p>
       </div>
 
       <div class="row no-padding">
@@ -29,7 +29,7 @@
           </div>
           <div ng-if="vm.trip.travel_assistant" class="list col no-padding">
               <h5 class="txt-grey padding-left">{{ 'template.trip.travel_assistant' | translate }}</h5>
-              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.travel_assistant }}</p>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.travel_assistant_name }}</p>
           </div>
       </div>
       <div class="row no-padding">
@@ -46,11 +46,11 @@
       <div class="row no-padding">
           <div class="list col no-padding">
               <h5 class="txt-grey padding-left">{{ 'template.trip.section' | translate }}</h5>
-              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.section }}</p>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.section_name }}</p>
           </div>
           <div class="list col no-padding">
               <h5 class="txt-grey padding-left">{{ 'template.trip.office' | translate }}</h5>
-              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.office }}</p>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.office_name }}</p>
           </div>
       </div>
       <div class="row no-padding">

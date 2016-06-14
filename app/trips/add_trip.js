@@ -101,6 +101,7 @@
                 fields = requiredFields;
             }
 
+
             // validate required fields
             var hasOneInvalidField = false;
 
@@ -187,6 +188,19 @@
         function save() {
             var isAddTripValid = isFormValid();
 
+            // validate funding percentage totals 100
+            if (!_.isUndefined(vm.trip.tripfunds_set) && vm.trip.tripfunds_set.length > 0) {
+                var totalPercent = _.reduce(vm.trip.tripfunds_set, function(sum, funding) {
+                  return sum + parseInt(funding.amount);
+                }, 0);
+
+                if (totalPercent !== 100) {
+                    vm.error.funding = true;
+                    vm.error.funding_message = 'template.trip.add_trip.error.total_funds_equal_100_percent';
+                    isAddTripValid = false;
+                }
+            }
+
             if (isAddTripValid === true) {
                 // create new trip object;
                 var trip =  _.cloneDeep(vm.trip);
@@ -248,7 +262,7 @@
 
             if (isModalValid === true) {
                 if (vm.modal.type === 'funding') {
-                    var fundingItem = _.find(vm.data['reports/results'], function(o){
+                    var wbs = _.find(vm.data['reports/results'], function(o){
                         return parseInt(o.id) === parseInt(vm.trip.wbs);
                     });
 
@@ -257,25 +271,43 @@
                     });
 
                     var funding = {
-                        'wbs' : fundingItem.id,
-                        'wbs_name' : fundingItem.name,
+                        'wbs' : wbs.id,
+                        'wbs_name' : wbs.wbs,
                         'grant' : grantItem.id,
                         'grant_name' : grantItem.name,
                         'amount' : parseInt(vm.trip.percentage)
                     };
 
-                    vm.trip.tripfunds_set.push(funding);
+                    if (!_.isUndefined(vm.modal.$$hashKey)){
+                        var index = _.indexOf(vm.trip.tripfunds_set, _.find(vm.trip.tripfunds_set, {$$hashKey: vm.modal.$$hashKey}));
+                        vm.trip.tripfunds_set.splice(index, 1, funding);
+                    } else {
+                        vm.trip.tripfunds_set.push(funding);
+                    }
                 }
 
                 closeModal();
             }
         }
 
-        function openModal(field) {
-            resetModalData();
+        function openModal(field, item) {
+            item = typeof item !== 'undefined' ? item : false;
 
-            vm.modal.headerText = $translate.instant('template.trip.add_trip.' + field);
-            vm.modal.buttonText = $translate.instant('template.trip.add_trip.' + field + '.button.text');
+            if (item === false) {
+                resetModalData();
+                vm.modal.headerText = $translate.instant('template.trip.add_trip.' + field + '.add.button.text');
+
+            } else {
+                if (field === 'funding') {
+                    delete vm.error[field];
+                    vm.trip.wbs = item.wbs;
+                    vm.trip.grant = item.grant;
+                    vm.trip.percentage = item.amount;
+                    vm.modal.headerText = $translate.instant('template.trip.add_trip.' + field + '.edit.button.text');
+                    vm.modal.$$hashKey = item.$$hashKey;
+                }
+            }
+
             vm.modal.type = field;
 
             $scope.modal.show();
@@ -287,7 +319,7 @@
         }
 
         function resetModalData() {
-            var modalFields = ['wbs', 'grant', 'percentage'];
+            var modalFields = ['wbs', 'grant', 'percentage', 'funding'];
 
             _.each(modalFields, function(modalField) {
                 delete vm.trip[modalField];

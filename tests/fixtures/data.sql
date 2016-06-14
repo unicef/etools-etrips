@@ -2272,7 +2272,8 @@ CREATE TABLE trips_actionpoint (
     status character varying(254),
     created_date timestamp with time zone NOT NULL,
     person_responsible_id integer NOT NULL,
-    trip_id integer NOT NULL
+    trip_id integer NOT NULL,
+    follow_up boolean NOT NULL
 );
 
 
@@ -5515,6 +5516,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 145	partners	0058_governmentinterventionresult_activities_list	2016-05-23 22:06:25.624103-04
 146	trips	0014_auto_20160510_1432	2016-05-23 22:06:25.674938-04
 147	trips	0015_auto_20160526_1916	2016-06-01 10:20:32.184998-04
+148	trips	0016_auto_20160607_2237	2016-06-14 12:40:37.972389-04
 \.
 
 
@@ -5522,7 +5524,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 147, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 148, true);
 
 
 --
@@ -6303,8 +6305,8 @@ SELECT pg_catalog.setval('tpm_tpmvisit_id_seq', 1, false);
 -- Data for Name: trips_actionpoint; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY trips_actionpoint (id, description, due_date, actions_taken, completed_date, comments, status, created_date, person_responsible_id, trip_id) FROM stdin;
-2	Impedit praesentium ab dolores molestias commodi et. Quia aut doloremque dolorem est aut. Est inventore quibusdam.	2017-01-03	\N	\N	Voluptas repudiandae voluptatum in quos ea vel ullam minima. Quia enim aspernatur ex qui vel deserunt vel. Et explicabo excepturi doloribus. Optio illum et. Dolores et dolorem ut rerum quam alias similique sapiente in. Est est veniam.	open	2016-05-23 22:12:09.329712-04	5	8
+COPY trips_actionpoint (id, description, due_date, actions_taken, completed_date, comments, status, created_date, person_responsible_id, trip_id, follow_up) FROM stdin;
+2	Impedit praesentium ab dolores molestias commodi et. Quia aut doloremque dolorem est aut. Est inventore quibusdam.	2017-01-03	\N	\N	Voluptas repudiandae voluptatum in quos ea vel ullam minima. Quia enim aspernatur ex qui vel deserunt vel. Et explicabo excepturi doloribus. Optio illum et. Dolores et dolorem ut rerum quam alias similique sapiente in. Est est veniam.	open	2016-05-23 22:12:09.329712-04	5	8	f
 \.
 
 
@@ -7297,6 +7299,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 145	partners	0058_governmentinterventionresult_activities_list	2016-05-23 22:06:11.646164-04
 146	trips	0014_auto_20160510_1432	2016-05-23 22:06:11.67875-04
 147	trips	0015_auto_20160526_1916	2016-06-01 10:20:30.536829-04
+148	trips	0016_auto_20160607_2237	2016-06-14 12:40:35.572223-04
 \.
 
 
@@ -7304,7 +7307,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 147, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 148, true);
 
 
 --

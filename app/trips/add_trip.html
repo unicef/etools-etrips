@@ -111,7 +111,7 @@
             {{ vm.error.end_date_message | translate }}
         </div>
 
-        <div style="margin-bottom: 10px; padding-bottom: 0px;" class="item">
+        <div style="margin-bottom: 10px; padding-bottom: 0px;" class="item ng-class:{error_required: vm.error.funding === true}">
             <div class="row" style="padding: 0px;">
                 <div class="col col-50" style="padding: 0px;">
                     <span style="padding: 0px; font-size: 16px; color: #444;">{{ 'template.trip.add_trip.funding' | translate }}</span>
@@ -129,12 +129,15 @@
                             <p>{{ tripfund.grant_name }}</p>
                         </div>
                         <div class="col col-25 col-center" style="text-align: right;">
-                            <button class="button button-small ion-compose"></button>&nbsp;
+                            <button class="button button-small ion-compose" ng-click="vm.openModal('funding', tripfund)"></button>&nbsp;
                             <button class="button button-small ion-ios-close-outline" ng-click="vm.deleteMultiAddItem('funding', tripfund)"></button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="error_funding" ng-show="vm.error.funding" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.funding_message | translate }}
         </div>
 
         <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel" style="margin-bottom: 10px;">

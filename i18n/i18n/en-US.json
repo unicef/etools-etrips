@@ -14,6 +14,10 @@
     "template.menu.settings" : "Settings",
     "template.menu.logout" : "Logout",
 
+    "template.save" : "Save",
+    "template.edit" : "Edit",
+    "template.delete" : "Delete",
+
     "template.dashboard.my_trips" : "My Trips",
     "template.dashboard.supervised" : "Supervised",
     "template.dashboard.pull_to_refresh" : "Pull to refresh...",
@@ -86,8 +90,10 @@
     "template.trip.add_trip.error.cant_leave_empty" : "You can't leave this empty.",
     "template.trip.add_trip.error.end_date_less_than_start" : "The end date must be after than the start date.",
     "template.trip.add_trip.error.owner_is_supervisor" : "A traveller can't be a supervisor.",
+    "template.trip.add_trip.error.total_funds_equal_100_percent" : "The total funds for the trip needs to equal to 100%.",
     "template.trip.add_trip.funding" : "Funding",
-    "template.trip.add_trip.funding.button.text" : "Add Funding",
+    "template.trip.add_trip.funding.add.button.text" : "Add Funding",
+    "template.trip.add_trip.funding.edit.button.text" : "Edit Funding",
     "template.trip.add_trip.wbs" : "WBS grant",
     "template.trip.add_trip.grant" : "Funding",
     "template.trip.add_trip.percentage" : "Percentage (%)",
