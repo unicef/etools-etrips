@@ -111,6 +111,38 @@
             {{ vm.error.end_date_message | translate }}
         </div>
 
+        <div style="margin-bottom: 10px; padding-bottom: 0px;" class="item ng-class:{error_required: vm.error.travel_itinerary === true}">
+            <div class="row" style="padding: 0px;">
+                <div class="col col-50" style="padding: 0px;">
+                    <span style="padding: 0px; font-size: 16px; color: #444;">{{ 'template.trip.add_trip.travel_itinerary' | translate }}</span>
+                </div>
+                <div class="col col-50" style="text-align: right; padding: 0px;">
+                    <button class="button button-small ion-ios-plus-outline pull-right" ng-click="vm.openModal('travel_itinerary')" style="top: -8px;""></button>
+                </div>
+            </div>
+
+            <div ng-repeat="travelroute in vm.trip.travelroutes_set" class="list card" style="font-weight: normal; margin: 10px;">
+                <div class="item">
+                    <div class="row">
+                        <div class="col col-75 item-text-wrap">
+                            <p>{{ travelroute.origin }}</p>
+                            <p>{{ travelroute.destination }}</p>
+                            <p>{{ travelroute.depart }}</p>
+                            <p>{{ travelroute.arrive }}</p>
+                            <p>{{ travelroute.remarks }}</p>
+                        </div>
+                        <div class="col col-25 col-center" style="text-align: right;">
+                            <button class="button button-small ion-compose" ng-click="vm.openModal('travel_itinerary', travelroute)"></button>&nbsp;
+                            <button class="button button-small ion-ios-close-outline" ng-click="vm.deleteMultiAddItem('travel_itinerary', travelroute)"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="error_funding" ng-show="vm.error.funding" ng-cloak class="error_add_trip_form_message">
+            {{ vm.error.funding_message | translate }}
+        </div>
+
         <div style="margin-bottom: 10px; padding-bottom: 0px;" class="item ng-class:{error_required: vm.error.funding === true}">
             <div class="row" style="padding: 0px;">
                 <div class="col col-50" style="padding: 0px;">

@@ -37,6 +37,57 @@
             </div>
         </div>
 
+        <div ng-if="vm.modal.type == 'travel_itinerary'">
+            <div class="item item-input ng-class:{ 'error_required': vm.error.origin }" style="margin-bottom: 10px;">
+                <span class="input-label">
+                    {{ 'template.trip.add_trip.origin' | translate }} <required-label></required-label>
+                </span>
+                <input ng-change="vm.isFormFieldValid('origin')" id="origin" ng-model="vm.trip.origin" type="text" maxlength="254">
+            </div>
+            <div id="error_origin" ng-show="vm.error.origin" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.origin_message | translate }}
+            </div>
+
+            <div class="item item-input ng-class:{ 'error_required': vm.error.destination }" style="margin-bottom: 10px;">
+                <span class="input-label">
+                    {{ 'template.trip.add_trip.destination' | translate }} <required-label></required-label>
+                </span>
+                <input ng-change="vm.isFormFieldValid('destination')" id="destination" ng-model="vm.trip.destination" type="text" maxlength="254">
+            </div>
+            <div id="error_destination" ng-show="vm.error.destination" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.destination_message | translate }}
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <label class="item item-input" ng-class="{error_required: vm.error.depart === true}">
+                    <span class="input-label">{{ 'template.trip.add_trip.depart' | translate }} <required-label></required-label></span>
+                    <input id="depart" ng-model="vm.trip.depart" type="date" ng-change="vm.isFormFieldValid('depart')">
+                    <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
+                </label>
+            </div>
+             <div id="error_depart" ng-show="vm.error.depart" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.depart_message | translate }}
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <label class="item item-input" ng-class="{error_required: vm.error.arrive === true}">
+                    <span class="input-label">{{ 'template.trip.add_trip.arrive' | translate }} <required-label></required-label></span>
+                    <input id="arrive" ng-model="vm.trip.arrive" type="date" ng-change="vm.isFormFieldValid('arrive')">
+                    <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
+                </label>
+            </div>
+             <div id="error_arrive" ng-show="vm.error.arrive" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.arrive_message | translate }}
+            </div>
+
+            <div class="item item-input" style="margin-bottom: 10px;">
+                <span class="input-label">
+                    {{ 'template.trip.add_trip.remarks' | translate }}
+                </span>
+                <input ng-change="vm.isFormFieldValid('remarks')" id="remarks" ng-model="vm.trip.remarks" type="text" maxlength="254">
+            </div>
+        </div>
+
         <br />
         <div style="text-align: center;">
         <button class="button button-positive" ng-click="vm.saveModal()">

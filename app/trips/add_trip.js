@@ -24,6 +24,7 @@
 
         var requiredFields = ['traveller', 'supervisor', 'purpose_of_travel', 'section', 'office', 'start_date', 'end_date', 'travel_focal_point'];
         var fundingModalRequiredFields = ['wbs', 'grant', 'percentage'];
+        var travelItineraryModalRequiredFields = ['origin', 'destination', 'depart', 'arrive'];
 
         // check if data type exists in local storage
         _.each(tripService.getAddTripDataTypes(), function(dataType) {
@@ -41,6 +42,7 @@
             vm.trans = $translate.instant('controller.trip.add_trip.save.title');
 
             vm.trip.tripfunds_set = [];
+            vm.trip.travelroutes_set = [];
 
             $ionicModal.fromTemplateUrl(
                 'templates/trips/add_trip_modal_custom_template.html', {
@@ -56,9 +58,15 @@
             var headerTypeTitle = '';
             var itemData = {};
 
+            console.log(type, item);
+
             if (type === 'funding') {
                 headerTypeTitle = $translate.instant('template.trip.add_trip.funding');
                 itemData = 'tripfunds_set';
+
+            } else if (type === 'travel_itinerary') {
+                headerTypeTitle = $translate.instant('template.trip.add_trip.travel_itinerary');
+                itemData = 'travelroutes_set';
             }
 
             $ionicPopup.confirm({
@@ -89,8 +97,14 @@
             var isFormValid = true;
             var fields = [];
 
-            if (!_.isUndefined(vm.modal.type) && vm.modal.type === 'funding') {
-                fields = fundingModalRequiredFields;
+            if (!_.isUndefined(vm.modal.type)) {
+
+                if (vm.modal.type === 'funding') {
+                    fields = fundingModalRequiredFields;
+
+                } else if (vm.modal.type === 'funding') {
+                    fields = travelItineraryModalRequiredFields;
+                }
 
             } else {
                 if (!_.isUndefined(vm.trip.purpose_of_travel) && vm.trip.purpose_of_travel.length > 254) {
@@ -224,7 +238,7 @@
                 trip.travel_assistant = parseInt(vm.trip.travel_focal_point[0]);
 
                 // set required fields to empty
-                var emptyFields = ['triplocation_set', 'travelroutes_set', 'actionpoint_set'];
+                var emptyFields = ['triplocation_set', 'actionpoint_set'];
 
                 _.each(emptyFields, function(emptyField) {
                     trip[emptyField] = [];
@@ -286,6 +300,30 @@
                     }
                 }
 
+                if (vm.modal.type === 'travel_itinerary') {
+                    var travelroute = {
+                        'origin' : vm.trip.origin,
+                        'destination' : vm.trip.destination,
+                        'remarks' : vm.trip.remarks
+                    };
+
+                    var dateFields = ['depart', 'arrive'];
+
+                    _.each(dateFields, function(dateField) {
+                        var date = new Date(vm.trip[dateField]);
+                        travelroute[dateField] = moment(date).format('YYYY-MM-DD');
+                    });
+
+                    console.log(travelroute);
+
+                    if (!_.isUndefined(vm.modal.$$hashKey)){
+                        var index = _.indexOf(vm.trip.travelroutes_set, _.find(vm.trip.travelroutes_set, {$$hashKey: vm.modal.$$hashKey}));
+                        vm.trip.travelroutes_set.splice(index, 1, travelroute);
+                    } else {
+                        vm.trip.travelroutes_set.push(travelroute);
+                    }
+                }
+
                 closeModal();
             }
         }
@@ -303,9 +341,18 @@
                     vm.trip.wbs = item.wbs;
                     vm.trip.grant = item.grant;
                     vm.trip.percentage = item.amount;
-                    vm.modal.headerText = $translate.instant('template.trip.add_trip.' + field + '.edit.button.text');
-                    vm.modal.$$hashKey = item.$$hashKey;
+
+                } else if (field === 'travel_itinerary') {
+                    delete vm.error[field];
+                    vm.trip.origin = item.origin;
+                    vm.trip.destination = item.destination;
+                    vm.trip.depart = item.depart;
+                    vm.trip.arrive = item.arrive;
+                    vm.trip.remarks = item.remarks;
                 }
+
+                vm.modal.headerText = $translate.instant('template.trip.add_trip.' + field + '.edit.button.text');
+                vm.modal.$$hashKey = item.$$hashKey;
             }
 
             vm.modal.type = field;
@@ -319,7 +366,7 @@
         }
 
         function resetModalData() {
-            var modalFields = ['wbs', 'grant', 'percentage', 'funding'];
+            var modalFields = ['wbs', 'grant', 'percentage', 'funding', 'origin', 'destination', 'arrive', 'depart', 'remarks'];
 
             _.each(modalFields, function(modalField) {
                 delete vm.trip[modalField];
