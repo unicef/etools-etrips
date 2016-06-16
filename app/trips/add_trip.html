@@ -89,25 +89,47 @@
             {{ vm.error.purpose_of_travel_message | translate }}
         </div>
 
-        <div style="margin-bottom: 10px;">
-            <label class="item item-input" ng-class="{error_required: vm.error.start_date === true}">
-                <span class="input-label">{{ 'template.trip.add_trip.start_date' | translate }} <required-label></required-label></span>
-                <input id="start_date" ng-model="vm.trip.start_date" type="date" ng-change="vm.isFormFieldValid('start_date')">
-                <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
-            </label>
+        <div style="margin-bottom: 10px;" class="item ng-class:{error_required: vm.error.start_date === true}">
+             <div class="row" style="padding: 0px;">
+                <div class="col col-50" style="padding: 0px;">
+                    <span style="padding: 0px; font-size: 16px; color: #444;">
+                        <span ng-hide="vm.trip.start_date">
+                            {{ 'template.trip.add_trip.start_date' | translate }}<required-label></required-label>
+                        </span>
+                        <span ng-show="vm.trip.start_date">
+                            {{ vm.trip.start_date | date: vm.dateFormat }}
+                        </span>
+                    </span>
+                </div>
+                <div class="col col-50" style="text-align: right; padding: 0px;">
+                    <div id="start_date" ion-datetime-picker date ng-model="vm.trip.start_date" ng-change="vm.isFormFieldValid('start_date')" title="vm.titleStartDate">
+                        <i class="icon ion-ios-arrow-right item-note"></i></div>
+                </div>
+            </div>
         </div>
          <div id="error_start_date" ng-show="vm.error.start_date" ng-cloak class="error_add_trip_form_message">
             {{ vm.error.start_date_message | translate }}
         </div>
 
-        <div style="margin-bottom: 10px;">
-            <label class="item item-input" ng-class="{error_required: vm.error.end_date === true}">
-                <span class="input-label">{{ 'template.trip.add_trip.end_date' | translate }} <required-label></required-label></span>
-                <input id="end_date" ng-model="vm.trip.end_date" type="date" placeholder="Date" ng-change="vm.isFormFieldValid('end_date')">
-                <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
-            </label>
+        <div style="margin-bottom: 10px;" class="item ng-class:{error_required: vm.error.end_date === true}">
+             <div class="row" style="padding: 0px;">
+                <div class="col col-50" style="padding: 0px;">
+                    <span style="padding: 0px; font-size: 16px; color: #444;">
+                        <span ng-hide="vm.trip.end_date">
+                            {{ 'template.trip.add_trip.end_date' | translate }}<required-label></required-label>
+                        </span>
+                        <span ng-show="vm.trip.end_date">
+                            {{ vm.trip.end_date | date: vm.dateFormat }}
+                        </span>
+                    </span>
+                </div>
+                <div class="col col-50" style="text-align: right; padding: 0px;">
+                    <div id="end_date" ion-datetime-picker date ng-model="vm.trip.end_date" ng-change="vm.isFormFieldValid('end_date')" title="vm.titleEndDate">
+                        <i class="icon ion-ios-arrow-right item-note"></i></div>
+                </div>
+            </div>
         </div>
-        <div id="error_end_date" ng-show="vm.error.end_date" ng-cloak class="error_add_trip_form_message">
+         <div id="error_end_date" ng-show="vm.error.end_date" ng-cloak class="error_add_trip_form_message">
             {{ vm.error.end_date_message | translate }}
         </div>
 
@@ -125,11 +147,13 @@
                 <div class="item">
                     <div class="row">
                         <div class="col col-75 item-text-wrap">
-                            <p>{{ travelroute.origin }}</p>
-                            <p>{{ travelroute.destination }}</p>
-                            <p>{{ travelroute.depart }}</p>
-                            <p>{{ travelroute.arrive }}</p>
-                            <p>{{ travelroute.remarks }}</p>
+                            <h3>
+                                {{ travelroute.origin | truncateCharacters:100:false }} <br />
+                                {{ travelroute.destination | truncateCharacters:100:false }}<br /><br />
+                                {{ travelroute.depart }} <i class="icon ion-arrow-right-c"></i> {{ travelroute.arrive }}
+                            </h3>
+
+                            <p>{{ travelroute.remarks | truncateCharacters:100:false }}</p>
                         </div>
                         <div class="col col-25 col-center" style="text-align: right;">
                             <button class="button button-small ion-compose" ng-click="vm.openModal('travel_itinerary', travelroute)"></button>&nbsp;

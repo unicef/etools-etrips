@@ -58,25 +58,47 @@
                 {{ vm.error.destination_message | translate }}
             </div>
 
-            <div style="margin-bottom: 10px;">
-                <label class="item item-input" ng-class="{error_required: vm.error.depart === true}">
-                    <span class="input-label">{{ 'template.trip.add_trip.depart' | translate }} <required-label></required-label></span>
-                    <input id="depart" ng-model="vm.trip.depart" type="date" ng-change="vm.isFormFieldValid('depart')">
-                    <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
-                </label>
+            <div style="margin-bottom: 10px;" class="item ng-class:{error_required: vm.error.depart === true}">
+                 <div class="row" style="padding: 0px;">
+                    <div class="col col-50" style="padding: 0px;">
+                        <span style="padding: 0px; font-size: 16px; color: #444;">
+                            <span ng-hide="vm.trip.depart">
+                                {{ 'template.trip.add_trip.depart' | translate }}<required-label></required-label>
+                            </span>
+                            <span ng-show="vm.trip.depart">
+                                {{ vm.trip.depart | date: vm.dateTimeFormat }}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="col col-50" style="text-align: right; padding: 0px;">
+                        <div id="depart" ion-datetime-picker date time ng-model="vm.trip.depart" ng-change="vm.isFormFieldValid('depart')" title="vm.titleDepartDateTime">
+                            <i class="icon ion-ios-arrow-right item-note"></i></div>
+                    </div>
+                </div>
             </div>
-             <div id="error_depart" ng-show="vm.error.depart" ng-cloak class="error_add_trip_form_message">
+            <div id="error_depart" ng-show="vm.error.depart" ng-cloak class="error_add_trip_form_message">
                 {{ vm.error.depart_message | translate }}
             </div>
 
-            <div style="margin-bottom: 10px;">
-                <label class="item item-input" ng-class="{error_required: vm.error.arrive === true}">
-                    <span class="input-label">{{ 'template.trip.add_trip.arrive' | translate }} <required-label></required-label></span>
-                    <input id="arrive" ng-model="vm.trip.arrive" type="date" ng-change="vm.isFormFieldValid('arrive')">
-                    <i class="icon ion-ios-arrow-right item-note" style="margin-right: 20px;"></i>
-                </label>
+            <div style="margin-bottom: 10px;" class="item ng-class:{error_required: vm.error.arrive === true}">
+                 <div class="row" style="padding: 0px;">
+                    <div class="col col-50" style="padding: 0px;">
+                        <span style="padding: 0px; font-size: 16px; color: #444;">
+                            <span ng-hide="vm.trip.arrive">
+                                {{ 'template.trip.add_trip.arrive' | translate }}<required-label></required-label>
+                            </span>
+                            <span ng-show="vm.trip.arrive">
+                                {{ vm.trip.arrive | date: vm.dateTimeFormat }}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="col col-50" style="text-align: right; padding: 0px;">
+                        <div id="arrive" ion-datetime-picker date time ng-model="vm.trip.arrive" ng-change="vm.isFormFieldValid('arrive')" title="vm.titleArriveDateTime">
+                            <i class="icon ion-ios-arrow-right item-note"></i></div>
+                    </div>
+                </div>
             </div>
-             <div id="error_arrive" ng-show="vm.error.arrive" ng-cloak class="error_add_trip_form_message">
+            <div id="error_arrive" ng-show="vm.error.arrive" ng-cloak class="error_add_trip_form_message">
                 {{ vm.error.arrive_message | translate }}
             </div>
 

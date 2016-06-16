@@ -4,6 +4,7 @@
     angular.module('app.trips', [
         'app.notes',
         'app.report',
-        'angularMoment'
+        'angularMoment',
+        'ion-datetime-picker'
     ]);
 })();

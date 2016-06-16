@@ -17,6 +17,8 @@
     "template.save" : "Save",
     "template.edit" : "Edit",
     "template.delete" : "Delete",
+    "template.ok" : "OK",
+    "template.cancel" : "Cancel",
 
     "template.dashboard.my_trips" : "My Trips",
     "template.dashboard.supervised" : "Supervised",
@@ -89,6 +91,7 @@
     "template.trip.add_trip.end_date" : "End date",
     "template.trip.add_trip.error.cant_leave_empty" : "You can't leave this empty.",
     "template.trip.add_trip.error.end_date_less_than_start" : "The end date must be after than the start date.",
+    "template.trip.add_trip.error.arrive_less_than_origin" : "The destination date must be after than the arrival date.",
     "template.trip.add_trip.error.owner_is_supervisor" : "A traveller can't be a supervisor.",
     "template.trip.add_trip.error.total_funds_equal_100_percent" : "The total funds for the trip needs to equal to 100%.",
     "template.trip.add_trip.funding" : "Funding",
@@ -263,6 +266,11 @@
     "controller.trip.detail.complete.title" : "Trip Submission",
     "controller.trip.detail.complete.template" : "You completed the trip.",
     "controller.trip.detail.complete.title" : "The trip has not ended yet.",
+
+    "controller.add_trip.modal.arrive_date_time" : "Select an arrival date and time",
+    "controller.add_trip.modal.depart_date_time" : "Select a depart date and time",
+    "controller.add_trip.modal.start_date" : "Select a start date",
+    "controller.add_trip.modal.end_date" : "Select a end date",
 
     "controller.my_trips.title" : "Trip Submission",
     "controller.my_trips.template" : "You succesfully submitted the trip.",

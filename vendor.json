@@ -14,5 +14,6 @@
     "bower_components/ng-lodash/build/ng-lodash.js",
     "bower_components/async/dist/async.js",
     "bower_components/moment/moment.js",
-    "bower_components/angular-moment/angular-moment.js"
+    "bower_components/angular-moment/angular-moment.js",
+    "bower_components/ion-datetime-picker/release/ion-datetime-picker.min.js"
 ]

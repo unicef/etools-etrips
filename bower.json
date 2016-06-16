@@ -20,6 +20,7 @@
     "async": "^1.5.2",
     "angular-md5": "^0.1.10",
     "angular-bootstrap-lightbox": "~0.12.0",
-    "angular-moment": "1.0.0-beta.5"
+    "angular-moment": "1.0.0-beta.5",
+    "ion-datetime-picker": "^0.2.4"
   }
 }

@@ -5,12 +5,14 @@
         .module('app.trips')
         .controller('AddTrip', AddTrip);
 
-    AddTrip.$inject = ['$scope', '$ionicHistory', '$ionicLoading', '$ionicModal', '$ionicPopup', '$state', '$translate', 'dataService', 'errorHandler', 'tripService', 'localStorageService', 'lodash', 'moment'];
+    AddTrip.$inject = ['$locale', '$ionicPickerI18n', '$scope', '$ionicHistory', '$ionicLoading', '$ionicModal', '$ionicPopup', '$state', '$translate', 'dataService', 'errorHandler', 'tripService', 'localStorageService', 'lodash', 'moment', 'DATE_FORMAT', 'DATE_TIME_FORMAT'];
 
-    function AddTrip($scope, $ionicHistory, $ionicLoading, $ionicModal, $ionicPopup, $state, $translate, dataService, errorHandler, tripService, localStorageService, _, moment) {
+    function AddTrip($locale, $ionicPickerI18n, $scope, $ionicHistory, $ionicLoading, $ionicModal, $ionicPopup, $state, $translate, dataService, errorHandler, tripService, localStorageService, _, moment, DATE_FORMAT, DATE_TIME_FORMAT) {
         var vm = this;
         vm.closeModal = closeModal;
         vm.data = {};
+        vm.dateFormat = DATE_FORMAT;
+        vm.dateTimeFormat = DATE_TIME_FORMAT;
         vm.deleteMultiAddItem = deleteMultiAddItem;
         vm.error = {};
         vm.isFormFieldValid = isFormFieldValid;
@@ -19,6 +21,10 @@
         vm.openModal = openModal;
         vm.save = save;
         vm.saveModal = saveModal;
+        vm.titleArriveDateTime = $translate.instant('controller.add_trip.modal.arrive_date_time');
+        vm.titleDepartDateTime = $translate.instant('controller.add_trip.modal.depart_date_time');
+        vm.titleStartDate = $translate.instant('controller.add_trip.modal.start_date');
+        vm.titleEndDate = $translate.instant('controller.add_trip.modal.end_date');
         vm.title = '';
         vm.trip = {};
 
@@ -34,6 +40,10 @@
         });
 
         ionic.Platform.ready(function(){
+            $ionicPickerI18n.weekdays = $locale.DATETIME_FORMATS.SHORTDAY;
+            $ionicPickerI18n.months = $locale.DATETIME_FORMATS.MONTH;
+            $ionicPickerI18n.ok = $translate.instant('template.ok');
+            $ionicPickerI18n.cancel = $translate.instant('template.cancel');
 
             _.each(tripService.getAddTripDataTypes(), function(dataType) {
                 vm.data[dataType] = localStorageService.getObject(dataType);
@@ -57,8 +67,6 @@
         function deleteMultiAddItem(type, item) {
             var headerTypeTitle = '';
             var itemData = {};
-
-            console.log(type, item);
 
             if (type === 'funding') {
                 headerTypeTitle = $translate.instant('template.trip.add_trip.funding');
@@ -97,12 +105,13 @@
             var isFormValid = true;
             var fields = [];
 
+
             if (!_.isUndefined(vm.modal.type)) {
 
                 if (vm.modal.type === 'funding') {
                     fields = fundingModalRequiredFields;
 
-                } else if (vm.modal.type === 'funding') {
+                } else if (vm.modal.type === 'travel_itinerary') {
                     fields = travelItineraryModalRequiredFields;
                 }
 
@@ -114,7 +123,6 @@
 
                 fields = requiredFields;
             }
-
 
             // validate required fields
             var hasOneInvalidField = false;
@@ -156,6 +164,20 @@
                     vm.error.start_date_message = 'template.trip.add_trip.error.end_date_less_than_start';
                     vm.error.end_date = true;
                     vm.error.end_date_message = 'template.trip.add_trip.error.end_date_less_than_start';
+                    isFormValid = false;
+
+                } else {
+                    vm.error.start_date = false;
+                    vm.error.end_date = false;
+                }
+            }
+
+            if (!_.isUndefined(vm.trip.origin) && !_.isUndefined(vm.trip.arrive)) {
+                if (moment(new Date(vm.trip.origin)).valueOf() > moment(new Date(vm.trip.arrive)).valueOf()) {
+                    vm.error.origin = true;
+                    vm.error.origin_message = 'template.trip.add_trip.error.arrive_less_than_origin';
+                    vm.error.arrive = true;
+                    vm.error.arrive_message = 'template.trip.add_trip.error.arrive_less_than_origin';
                     isFormValid = false;
 
                 } else {
@@ -293,8 +315,8 @@
                     };
 
                     if (!_.isUndefined(vm.modal.$$hashKey)){
-                        var index = _.indexOf(vm.trip.tripfunds_set, _.find(vm.trip.tripfunds_set, {$$hashKey: vm.modal.$$hashKey}));
-                        vm.trip.tripfunds_set.splice(index, 1, funding);
+                        var indexFunding = _.indexOf(vm.trip.tripfunds_set, _.find(vm.trip.tripfunds_set, {$$hashKey: vm.modal.$$hashKey}));
+                        vm.trip.tripfunds_set.splice(indexFunding, 1, funding);
                     } else {
                         vm.trip.tripfunds_set.push(funding);
                     }
@@ -311,14 +333,12 @@
 
                     _.each(dateFields, function(dateField) {
                         var date = new Date(vm.trip[dateField]);
-                        travelroute[dateField] = moment(date).format('YYYY-MM-DD');
+                        travelroute[dateField] = moment(date).format('YYYY-MM-DD HH:mm');
                     });
 
-                    console.log(travelroute);
-
                     if (!_.isUndefined(vm.modal.$$hashKey)){
-                        var index = _.indexOf(vm.trip.travelroutes_set, _.find(vm.trip.travelroutes_set, {$$hashKey: vm.modal.$$hashKey}));
-                        vm.trip.travelroutes_set.splice(index, 1, travelroute);
+                        var indexTravelItinerary = _.indexOf(vm.trip.travelroutes_set, _.find(vm.trip.travelroutes_set, {$$hashKey: vm.modal.$$hashKey}));
+                        vm.trip.travelroutes_set.splice(indexTravelItinerary, 1, travelroute);
                     } else {
                         vm.trip.travelroutes_set.push(travelroute);
                     }
@@ -346,8 +366,8 @@
                     delete vm.error[field];
                     vm.trip.origin = item.origin;
                     vm.trip.destination = item.destination;
-                    vm.trip.depart = item.depart;
-                    vm.trip.arrive = item.arrive;
+                    vm.trip.depart = new Date(item.depart);
+                    vm.trip.arrive = new Date(item.arrive);
                     vm.trip.remarks = item.remarks;
                 }
 
