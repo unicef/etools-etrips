@@ -102,3 +102,19 @@ ion-content .subtitle {
     margin-bottom: 20px;
     margin-left: 10px;
 }
+
+.add_trip_modal .item {
+    margin-bottom: 10px;
+}
+
+.add_trip_modal .disabled {
+    background-color: white;
+    filter:alpha(opacity=50);
+    opacity: 0.5;
+    -moz-opacity:0.50;
+    z-index: 1000;
+    background-repeat:no-repeat;
+    background-position:center;
+    cursor: default !important;
+}
+

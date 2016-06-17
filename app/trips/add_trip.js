@@ -21,16 +21,20 @@
         vm.openModal = openModal;
         vm.save = save;
         vm.saveModal = saveModal;
+        vm.setTravelItineraryFields = setTravelItineraryFields;
+        vm.showModalContent = true;
         vm.titleArriveDateTime = $translate.instant('controller.add_trip.modal.arrive_date_time');
         vm.titleDepartDateTime = $translate.instant('controller.add_trip.modal.depart_date_time');
         vm.titleStartDate = $translate.instant('controller.add_trip.modal.start_date');
         vm.titleEndDate = $translate.instant('controller.add_trip.modal.end_date');
         vm.title = '';
         vm.trip = {};
+        vm.travel_type_item_disabled = true;
 
         var requiredFields = ['traveller', 'supervisor', 'purpose_of_travel', 'section', 'office', 'start_date', 'end_date', 'travel_focal_point'];
         var fundingModalRequiredFields = ['wbs', 'grant', 'percentage'];
         var travelItineraryModalRequiredFields = ['origin', 'destination', 'depart', 'arrive'];
+        var travelTypeModalRequiredFields = ['travel_type', 'partner', 'intervention', 'result', 'location'];
 
         // check if data type exists in local storage
         _.each(tripService.getAddTripDataTypes(), function(dataType) {
@@ -39,21 +43,33 @@
             }
         });
 
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+
         ionic.Platform.ready(function(){
+            // load data for drop downs
+            _.each(tripService.getAddTripDataTypes(), function(dataType) {
+                vm.data[dataType] = localStorageService.getObject(dataType);
+            });
+
+            // date-time picker i18n options
             $ionicPickerI18n.weekdays = $locale.DATETIME_FORMATS.SHORTDAY;
             $ionicPickerI18n.months = $locale.DATETIME_FORMATS.MONTH;
             $ionicPickerI18n.ok = $translate.instant('template.ok');
             $ionicPickerI18n.cancel = $translate.instant('template.cancel');
 
-            _.each(tripService.getAddTripDataTypes(), function(dataType) {
-                vm.data[dataType] = localStorageService.getObject(dataType);
-            });
-
             vm.trans = $translate.instant('controller.trip.add_trip.save.title');
-
             vm.trip.tripfunds_set = [];
             vm.trip.travelroutes_set = [];
+            vm.data.travel_type = [];
 
+            // hard coded data set for travel types
+            _.each(tripService.getTravelTypes(), function(travelType) {
+                vm.data.travel_type.push({ id: travelType, name: $translate.instant('template.trip.add_trip.travel_type.' + travelType)});
+            });
+
+            // modal setup
             $ionicModal.fromTemplateUrl(
                 'templates/trips/add_trip_modal_custom_template.html', {
                     scope: $scope,
@@ -104,7 +120,6 @@
         function isFormValid() {
             var isFormValid = true;
             var fields = [];
-
 
             if (!_.isUndefined(vm.modal.type)) {
 
@@ -293,10 +308,27 @@
             }
         }
 
+        function setTravelItineraryFields(field) {
+            if (field === 'spot_check' || field === 'programme_monitoring') {
+                vm.travel_type_item_disabled = false;
+            } else {
+                vm.travel_type_item_disabled = true;
+
+                // vm.trip.partner = '';
+                // vm.error.partner = false;
+                // vm.trip.intervention = '';
+                // vm.error.intervention = false;
+                // vm.trip.result = '';
+                // vm.error.result = false;
+            }
+        }
+
         function saveModal() {
             var isModalValid = isFormValid();
 
             if (isModalValid === true) {
+                vm.showModalContent = false;
+
                 if (vm.modal.type === 'funding') {
                     var wbs = _.find(vm.data['reports/results'], function(o){
                         return parseInt(o.id) === parseInt(vm.trip.wbs);
@@ -350,6 +382,7 @@
 
         function openModal(field, item) {
             item = typeof item !== 'undefined' ? item : false;
+            vm.showModalContent = true;
 
             if (item === false) {
                 resetModalData();
@@ -381,12 +414,13 @@
         }
 
         function closeModal() {
+            vm.showModalContent = false;
             resetModalData();
             $scope.modal.hide();
         }
 
         function resetModalData() {
-            var modalFields = ['wbs', 'grant', 'percentage', 'funding', 'origin', 'destination', 'arrive', 'depart', 'remarks'];
+            var modalFields = ['wbs', 'grant', 'percentage', 'funding', 'origin', 'destination', 'arrive', 'depart', 'remarks', 'partner', 'location', 'travel_type', 'intervention', 'result'];
 
             _.each(modalFields, function(modalField) {
                 delete vm.trip[modalField];
@@ -395,9 +429,5 @@
 
             vm.modal = {};
         }
-
-        $scope.$on('$destroy', function() {
-            $scope.modal.remove();
-        });
     }
 })();

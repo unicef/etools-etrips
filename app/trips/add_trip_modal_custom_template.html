@@ -4,9 +4,9 @@
         <h1 class="title">{{ vm.modal.headerText }}</h1>
     </ion-header-bar>
 
-    <ion-content class="padding">
+    <ion-content class="padding add_trip_modal" ng-show="vm.showModalContent">
         <div ng-if="vm.modal.type == 'funding'">
-            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.wbs }" style="margin-bottom: 10px;">
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.wbs }">
                 <div class="input-label">
                     {{ 'template.trip.add_trip.wbs' | translate }} <required-label></required-label>
                 </div>
@@ -16,7 +16,7 @@
                 {{ vm.error.wbs_message | translate }}
             </div>
 
-            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.grant }" style="margin-bottom: 10px;">
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.grant }">
                 <div class="input-label">
                     {{ 'template.trip.add_trip.grant' | translate }} <required-label></required-label>
                 </div>
@@ -38,7 +38,7 @@
         </div>
 
         <div ng-if="vm.modal.type == 'travel_itinerary'">
-            <div class="item item-input ng-class:{ 'error_required': vm.error.origin }" style="margin-bottom: 10px;">
+            <div class="item item-input ng-class:{ 'error_required': vm.error.origin }">
                 <span class="input-label">
                     {{ 'template.trip.add_trip.origin' | translate }} <required-label></required-label>
                 </span>
@@ -48,7 +48,7 @@
                 {{ vm.error.origin_message | translate }}
             </div>
 
-            <div class="item item-input ng-class:{ 'error_required': vm.error.destination }" style="margin-bottom: 10px;">
+            <div class="item item-input ng-class:{ 'error_required': vm.error.destination }">
                 <span class="input-label">
                     {{ 'template.trip.add_trip.destination' | translate }} <required-label></required-label>
                 </span>
@@ -58,7 +58,7 @@
                 {{ vm.error.destination_message | translate }}
             </div>
 
-            <div style="margin-bottom: 10px;" class="item ng-class:{error_required: vm.error.depart === true}">
+            <div class="item ng-class:{error_required: vm.error.depart === true}">
                  <div class="row" style="padding: 0px;">
                     <div class="col col-50" style="padding: 0px;">
                         <span style="padding: 0px; font-size: 16px; color: #444;">
@@ -72,7 +72,13 @@
                     </div>
                     <div class="col col-50" style="text-align: right; padding: 0px;">
                         <div id="depart" ion-datetime-picker date time ng-model="vm.trip.depart" ng-change="vm.isFormFieldValid('depart')" title="vm.titleDepartDateTime">
-                            <i class="icon ion-ios-arrow-right item-note"></i></div>
+                            <div style="width: 100%; cursor:pointer; white-space: normal;">
+                                <i class="icon ion-ios-arrow-right item-note"></i>
+                                <span style="color: white">
+                                &nsbp;&nsbp;
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,7 +86,7 @@
                 {{ vm.error.depart_message | translate }}
             </div>
 
-            <div style="margin-bottom: 10px;" class="item ng-class:{error_required: vm.error.arrive === true}">
+            <div class="item ng-class:{error_required: vm.error.arrive === true}">
                  <div class="row" style="padding: 0px;">
                     <div class="col col-50" style="padding: 0px;">
                         <span style="padding: 0px; font-size: 16px; color: #444;">
@@ -94,7 +100,11 @@
                     </div>
                     <div class="col col-50" style="text-align: right; padding: 0px;">
                         <div id="arrive" ion-datetime-picker date time ng-model="vm.trip.arrive" ng-change="vm.isFormFieldValid('arrive')" title="vm.titleArriveDateTime">
-                            <i class="icon ion-ios-arrow-right item-note"></i></div>
+                            <i class="icon ion-ios-arrow-right item-note"></i>
+                            <span style="color: white">
+                                &nsbp;&nsbp;
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,11 +112,63 @@
                 {{ vm.error.arrive_message | translate }}
             </div>
 
-            <div class="item item-input" style="margin-bottom: 10px;">
+            <div class="item item-input">
                 <span class="input-label">
                     {{ 'template.trip.add_trip.remarks' | translate }}
                 </span>
                 <input ng-change="vm.isFormFieldValid('remarks')" id="remarks" ng-model="vm.trip.remarks" type="text" maxlength="254">
+            </div>
+        </div>
+
+        <div ng-if="vm.modal.type == 'travel_type'">
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.travel_type }">
+                <div class="input-label">
+                    {{ 'template.trip.add_trip.travel_type' | translate }} <required-label></required-label>
+                </div>
+                <select ng-change="vm.isFormFieldValid('travel_type');vm.setTravelItineraryFields(vm.trip.travel_type);" ng-model="vm.trip.travel_type" ng-options="item.id as item.name for item in vm.data['travel_type']"></select>
+            </div>
+            <div id="error_travel_type" ng-show="vm.error.travel_type" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.travel_type_message | translate }}
+            </div>
+
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.partner, 'disabled' : vm.travel_type_item_disabled }">
+                <div class="input-label">
+                    {{ 'template.trip.add_trip.travel_type.partner' | translate }} <required-label></required-label>
+                </div>
+                <select ng-disabled="vm.travel_type_item_disabled" ng-change="vm.isFormFieldValid('partner')" ng-model="vm.trip.partner" ng-options="item.id as item.name for item in vm.data['partners']"></select>
+            </div>
+            <div id="error_partner" ng-show="vm.error.partner" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.partner | translate }}
+            </div>
+
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.intervention, 'disabled' : vm.travel_type_item_disabled  }">
+                <div class="input-label">
+                    {{ 'template.trip.add_trip.travel_type.intervention' | translate }} <required-label></required-label>
+                </div>
+                <select ng-disabled="vm.travel_type_item_disabled" ng-change="vm.isFormFieldValid('intervention')" ng-model="vm.trip.intervention" ng-options="item.id as (item.pca_number + ' : ' + item.pca_title) for item in vm.data['interventions']"></select>
+            </div>
+            <div id="error_intervention" ng-show="vm.error.intervention" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.intervention | translate }}
+            </div>
+
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.result, 'disabled' : vm.travel_type_item_disabled  }">
+                <div class="input-label">
+                    {{ 'template.trip.add_trip.travel_type.result' | translate }} <required-label></required-label>
+                </div>
+                <select ng-disabled="vm.travel_type_item_disabled" ng-change="vm.isFormFieldValid('result')" ng-model="vm.trip.result" ng-options="item.id as item.wbs for item in vm.data['reports/results']"></select>
+            </div>
+            <div id="error_result" ng-show="vm.error.result" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.result | translate }}
+            </div>
+
+            <div class="item item-input item-select ng-class:{ 'error_required': vm.error.location }">
+                <div class="input-label">
+                    {{ 'template.trip.add_trip.location' | translate }} <required-label></required-label>
+                </div>
+                <select ng-change="vm.isFormFieldValid('location')" ng-model="vm.trip.location" ng-options="item.id as item.name for item in vm.data['locations']"></select>
+            </div>
+            <div id="error_location" ng-show="vm.error.location" ng-cloak class="error_add_trip_form_message">
+                {{ vm.error.location_message | translate }}
             </div>
         </div>
 

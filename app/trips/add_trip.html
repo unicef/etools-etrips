@@ -103,7 +103,11 @@
                 </div>
                 <div class="col col-50" style="text-align: right; padding: 0px;">
                     <div id="start_date" ion-datetime-picker date ng-model="vm.trip.start_date" ng-change="vm.isFormFieldValid('start_date')" title="vm.titleStartDate">
-                        <i class="icon ion-ios-arrow-right item-note"></i></div>
+                        <i class="icon ion-ios-arrow-right item-note"></i>
+                        <span style="color: white">
+                            &nsbp;&nsbp;
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -125,12 +129,43 @@
                 </div>
                 <div class="col col-50" style="text-align: right; padding: 0px;">
                     <div id="end_date" ion-datetime-picker date ng-model="vm.trip.end_date" ng-change="vm.isFormFieldValid('end_date')" title="vm.titleEndDate">
-                        <i class="icon ion-ios-arrow-right item-note"></i></div>
+                        <i class="icon ion-ios-arrow-right item-note"></i>
+                        <span style="color: white">
+                            &nsbp;&nsbp;
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
          <div id="error_end_date" ng-show="vm.error.end_date" ng-cloak class="error_add_trip_form_message">
             {{ vm.error.end_date_message | translate }}
+        </div>
+
+        <div style="margin-bottom: 10px; padding-bottom: 0px;" class="item ng-class:{error_required: vm.error.travel_type === true}">
+            <div class="row" style="padding: 0px;">
+                <div class="col col-50" style="padding: 0px;">
+                    <span style="padding: 0px; font-size: 16px; color: #444;">{{ 'template.trip.add_trip.travel_type' | translate }}</span>
+                </div>
+                <div class="col col-50" style="text-align: right; padding: 0px;">
+                    <button class="button button-small ion-ios-plus-outline pull-right" ng-click="vm.openModal('travel_type')" style="top: -8px;""></button>
+                </div>
+            </div>
+
+            <div ng-repeat="traveltype in vm.trip.traveltypes_set" class="list card" style="font-weight: normal; margin: 10px;">
+                <div class="item">
+                    <div class="row">
+                        <div class="col col-75 item-text-wrap">
+                            <h3>
+                                {{ traveltype.name }}
+                            </h3>
+                        </div>
+                        <div class="col col-25 col-center" style="text-align: right;">
+                            <button class="button button-small ion-compose" ng-click="vm.openModal('travel_type', traveltype)"></button>&nbsp;
+                            <button class="button button-small ion-ios-close-outline" ng-click="vm.deleteMultiAddItem('travel_type', traveltype)"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div style="margin-bottom: 10px; padding-bottom: 0px;" class="item ng-class:{error_required: vm.error.travel_itinerary === true}">
@@ -163,9 +198,6 @@
                 </div>
             </div>
         </div>
-        <div id="error_funding" ng-show="vm.error.funding" ng-cloak class="error_add_trip_form_message">
-            {{ vm.error.funding_message | translate }}
-        </div>
 
         <div style="margin-bottom: 10px; padding-bottom: 0px;" class="item ng-class:{error_required: vm.error.funding === true}">
             <div class="row" style="padding: 0px;">
@@ -191,9 +223,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="error_funding" ng-show="vm.error.funding" ng-cloak class="error_add_trip_form_message">
-            {{ vm.error.funding_message | translate }}
         </div>
 
         <ion-checkbox class="item-checkbox-right" ng-model="vm.trip.international_travel" style="margin-bottom: 10px;">
@@ -230,7 +259,7 @@
             value-property="user_id"
             text-property="full_name"
             allow-empty="false"
-            multi-select="false"
+            multi-select="true"
             modal-template-url="templates/trips/add_trip_modal_template.html"
             template-url="templates/trips/add_trip_item_template.html"
             value-changed="vm.onValueChanged('budget_owner', value)">

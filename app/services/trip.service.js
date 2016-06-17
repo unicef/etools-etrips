@@ -14,6 +14,7 @@
             getAP: getActionPoint,
             getDraft: getDraft,
             getTrip: getTrip,
+            getTravelTypes: getTravelTypes,
             localApprove: localApprove,
             localSubmit: localSubmit,
             localTripUpdate: localTripUpdate,
@@ -89,6 +90,18 @@
             }
 
             return {};
+        }
+
+        function getTravelTypes() {
+            return [
+                'programme_monitoring',
+                'spot_check',
+                'advocacy',
+                'technical_support',
+                'meeting',
+                'staff_development',
+                'staff_entitlement'
+            ];
         }
 
         function localAction(id, action) {
