@@ -43,13 +43,13 @@ describe('Reports - Action Points', function() {
 
     it('should be able have a list of the newly created action point ', function(){
         // validate number of action points
-        element.all(by.css('.online.item')).count().should.eventually.equal(1);
+        element.all(by.css('.online.item')).count().should.eventually.equal(2);
 
         // validate new action point
-        element(by.css('.online.item .description')).getText().should.eventually.equal(description.substring(0, 148) + ' …');
-        element(by.css('.online.item .owner')).getText().should.eventually.equal('finn');
-        element(by.css('.online.item .status')).getText().should.eventually.equal('Open');
-        element(by.css('.online.item .due_date')).getText().should.eventually.equal('03/01/2017');
+        //element.all(by.css('.online.item .description')).get(1).getText().should.eventually.equal(description);
+        element.all(by.css('.online.item .owner')).get(1).getText().should.eventually.equal('finn');
+        element.all(by.css('.online.item .status')).get(1).getText().should.eventually.equal('Open');
+        element.all(by.css('.online.item .due_date')).get(1).getText().should.eventually.equal('03/01/2017');
     });
 
     it('should be able to logout', function() {

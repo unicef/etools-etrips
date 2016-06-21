@@ -8,7 +8,7 @@ describe('Reports', function() {
         element.all(by.css('a.tab-item')).get(0).click();
     });
 
-    it('should be able click the first trip and click the report button', function() {    
+    it('should be able click the first trip and click the report button', function() {
         var trips = element.all(by.css(allTripsCssSelector));
         trips.first().click();
 
@@ -17,12 +17,21 @@ describe('Reports', function() {
         waitForElement('button#report_text');
     });
 
-    it('should be able see ' + buttonTitles.length + ' buttons, click on each button and click on the back button', function() {        
+    it('should be able see ' + buttonTitles.length + ' buttons, click on each button and click on the back button', function() {
         _.each(buttonTitles, function(buttonTitle, tabIndex){
             element(by.buttonText(buttonTitle)).click();
             waitForElement('button.back-button:not(.hide)');
             element.all(by.css('button.back-button:not(.hide)')).get(0).click();
             waitForElement('button#report_text');
         });
+    });
+
+    it('should be able to logout', function() {
+        element.all(by.css('button.back-button:not(.hide)')).get(1).click();
+        waitForElement('button.back-button:not(.hide)');
+
+        element.all(by.css('button.back-button:not(.hide)')).get(0).click();
+        waitForElement('button[menu-toggle="left"]:not(.hide)');
+        auth.logout();
     });
 });

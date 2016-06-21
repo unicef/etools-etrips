@@ -16,9 +16,10 @@
             localSubmit: localSubmit,
             localTripUpdate: localTripUpdate,
             reportText: reportText,
-            sendAP: sendActionPoint,
+            saveActionPoint: saveActionPoint,
             setDraft: setDraft,
-            tripAction: tripAction
+            tripAction: tripAction,
+            updateActionPoint: updateActionPoint,
         };
 
         return service;
@@ -115,13 +116,23 @@
             dataService.patchTrip(tripId, data, success, fail);
         }
 
-        function sendActionPoint(tripId, ap, success, fail) {
-            var actionPoint = formatActionPoint(ap, true);
-            var data = {
-                'actionpoint_set': [actionPoint]
-            };
+        function saveActionPoint(tripId, actionPoint) {
+            actionPoint = formatActionPoint(actionPoint, true);
+            var data = actionPoint;
+            data.trip = tripId;
+            var url = apiUrlService.BASE() + '/api/trips/' + tripId + '/actionpoints/';
+            var result = myHttpService.post(url, data);
 
-            dataService.patchTrip(tripId, data, success, fail);
+            return result;
+        }
+
+        function updateActionPoint(tripId, actionPoint) {
+            actionPoint = formatActionPoint(actionPoint, true);
+            var data = actionPoint;
+            var url = apiUrlService.BASE() + '/api/trips/' + tripId + '/actionpoints/' + actionPoint.id + '/';
+            var result = myHttpService.patch(url, data);
+
+            return result;
         }
 
         function setDraft(tripId, dtype, draft) {
@@ -148,7 +159,7 @@
         }
 
         function tripAction(id, action, data) {
-            var url = apiUrlService.BASE() + '/trips/api/' + id + '/';
+            var url = apiUrlService.BASE() + '/api/trips/' + id + '/change-status/';
             var result = myHttpService.post(url + action + '/', data);
 
             return result;
