@@ -1,1 +1,0 @@
-screen -S etrips_mobile -p 0 -X quit

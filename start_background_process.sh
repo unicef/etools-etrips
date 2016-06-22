@@ -1,1 +1,0 @@
-screen -d -m -S etrips_mobile ionic serve --nolivereload
