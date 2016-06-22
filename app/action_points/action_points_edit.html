@@ -45,22 +45,20 @@
             <select ng-disabled="vm.isMyActionPoint" required ng-options="u.user_id as u.full_name for u in vm.users" ng-model="vm.ap.person_responsible" ng-change="vm.isPersonResponsibleCurrentUser()"></select>
         </label>
 
-        <div ng-show="!(vm.isActionPointNew)">
-            <div class="item item-divider">
-                {{ 'template.trip.report.action_point.edit.actions_taken' | translate }}
-            </div>
-            <label class="item padding-top item-input">
-                <textarea ng-model="vm.ap.actions_taken" rows="6" cols="10" ng-readonly="!(vm.personResponsibleIsCurrentUser)"></textarea>
-            </label>
+        <div class="item item-divider">
+            {{ 'template.trip.report.action_point.edit.actions_taken' | translate }}
+        </div>
+        <label class="item padding-top item-input">
+            <textarea ng-model="vm.ap.actions_taken" rows="6" cols="10" ng-readonly="!(vm.personResponsibleIsCurrentUser)"></textarea>
+        </label>
 
-            <div class="item item-divider">
-                {{ 'template.trip.report.action_point.edit.completed_date' | translate }}
-            </div>
-            <div class="item row">
-                <select class="item item-select col" ng-disabled="!(vm.personResponsibleIsCurrentUser)" ng-model="vm.ap.completd_date_day" ng-options="option as option for option in vm.paddedNumber(31)"></select>
-                <select class="item item-select col" ng-disabled="!(vm.personResponsibleIsCurrentUser)" ng-model="vm.ap.completd_date_month" ng-options="option as vm.allMonths[option-1] for option in vm.paddedNumber(12)"></select>
-                <select class="item item-select col" ng-disabled="!(vm.personResponsibleIsCurrentUser)" ng-model="vm.ap.completd_date_year" ng-options="option as option for option in vm.yearOptions"></select>
-            </div>          
+        <div class="item item-divider">
+            {{ 'template.trip.report.action_point.edit.completed_date' | translate }}
+        </div>
+        <div class="item row">
+            <select class="item item-select col" ng-disabled="!(vm.personResponsibleIsCurrentUser)" ng-model="vm.ap.completed_day" ng-options="option as option for option in vm.paddedNumber(31)"></select>
+            <select class="item item-select col" ng-disabled="!(vm.personResponsibleIsCurrentUser)" ng-model="vm.ap.completed_month" ng-options="option as vm.allMonths[option-1] for option in vm.paddedNumber(12)"></select>
+            <select class="item item-select col" ng-disabled="!(vm.personResponsibleIsCurrentUser)" ng-model="vm.ap.completed_year" ng-options="option as option for option in vm.yearOptions"></select>
         </div>
 
         <div class="item item-icon-left assertive" ng-if="error">

@@ -10,7 +10,7 @@
         var service = {
             delete: deleteCache,
             get: get,
-            getOfflineActionPoints: getOfflineActionPoints, 
+            getOfflineActionPoints: getOfflineActionPoints,
             getOfflineActionPointsCount: getOfflineActionPointsCount,
             setDraft: setCache,
             submitOfflineActionPoints: submitOfflineActionPoints
@@ -20,8 +20,9 @@
 
         function get(tripId, setCache) {
             setCache = typeof setCache !== 'undefined' ? setCache : true;
+            // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
             var actionPoints = tripService.getTrip(tripId).actionpoint_set;
-            
+
             if (setCache === true) {
                 setCache(actionPoints);
             }
@@ -34,8 +35,8 @@
             var draftTrips = localStorageService.getObject('draft-' + country);
             var data = [];
 
-            _.each(draftTrips, function(trip, tripId){                
-                data.push({ "tripId": tripId, "actionPoints": trip.action_points });
+            _.each(draftTrips, function(trip, tripId) {
+                data.push({'tripId': tripId, 'actionPoints': trip.action_points});
             });
 
             return data;
@@ -45,8 +46,10 @@
             var offlineActionPoints = getOfflineActionPoints();
             var count = 0;
 
-            _.each(offlineActionPoints, function(trips){
-                count = count + trips.actionPoints.length;
+            _.each(offlineActionPoints, function(trips) {
+                if (trips.actionPoints !== undefined) {
+                    count = count + trips.actionPoints.length;
+                }
             });
 
             return count;
@@ -60,39 +63,39 @@
             tripService.setDraft(tripId, 'action_points', actionPoints);
         }
 
-        function submitOfflineActionPoints() {            
+        function submitOfflineActionPoints() {
             if (localStorageService.getObject('currentUser').hasOwnProperty('profile') === true) {
                 var country = localStorageService.getObject('currentUser').profile.country;
                 var draftTrips = localStorageService.getObject('draft-' + country);
                 var promises = [];
                 var tripIdWithActionPoints = [];
 
-                _.each(draftTrips, function(trip, tripId){
+                _.each(draftTrips, function(trip, tripId) {
                     var actionPoints = trip.action_points;
 
-                    _.each(actionPoints, function(actionPoint){
+                    _.each(actionPoints, function(actionPoint)  {
                         delete actionPoint.id;
-                        promises.push(tripService.sendAP(tripId, actionPoint, function(){}, function(){}));
+                        promises.push(tripService.sendAP(tripId, actionPoint, function() {}, function() {}));
                         tripIdWithActionPoints.push(tripId);
                     });
                 });
 
-                $q.all(promises).then(function(res) {
+                $q.all(promises).then(function() {
                     if (tripIdWithActionPoints.length > 0) {
                         // delete action points drafts for each trip
-                        _.each(tripIdWithActionPoints, function(tripdId){
-                            tripService.setDraft(tripdId, 'action_points', []);  
+                        _.each(tripIdWithActionPoints, function(tripdId) {
+                            tripService.setDraft(tripdId, 'action_points', []);
                         });
-                        
+
                         // display message about action points uploaded and refresh trip data
                         dataService.getTripsRemote(
-                            function(){
+                            function() {
                                 $ionicPopup.alert({
                                     title: $translate.instant('service.action_points.network_status.title'),
-                                    template: ($translate.instant('service.action_points.network_status.connection') + '<p></p>' + $translate.instant('service.action_points.network_status.offline_uploaded', { action_points_count : tripIdWithActionPoints.length }))
+                                    template: ($translate.instant('service.action_points.network_status.connection') + '<p></p>' + $translate.instant('service.action_points.network_status.offline_uploaded', {action_points_count: tripIdWithActionPoints.length}))
                                 });
                             },
-                            function(){}
+                            function() {}
                         );
                     }
                 });

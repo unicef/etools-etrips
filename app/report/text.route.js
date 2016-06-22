@@ -5,7 +5,7 @@
         .module('app.report')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
             .state('app.dash.reporting_text',{
                 url: '/my_trips/:tripId/reporting/text',

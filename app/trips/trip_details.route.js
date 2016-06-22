@@ -5,7 +5,7 @@
         .module('app.trips')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
             .state('app.dash.my_trip-detail', {
                 url: '/my_trips/:tripId',

@@ -5,21 +5,13 @@
         .module('app.layout')
         .controller('Application', Application);
 
-    Application.$inject = ['$cordovaAppVersion', '$ionicPlatform','$ionicPopup', '$state', '$translate', 'actionPointsService', 'localStorageService', 'loginService', 'networkService', 'lodash'];
+    Application.$inject = ['$ionicPlatform','$ionicPopup', '$state', '$translate', 'actionPointsService', 'localStorageService', 'loginService', 'networkService', 'lodash', 'VERSION'];
 
-    function Application($cordovaAppVersion,$ionicPlatform, $ionicPopup, $state, $translate, actionPointsService, localStorageService, loginService, networkService, _) {
+    function Application($ionicPlatform, $ionicPopup, $state, $translate, actionPointsService, localStorageService, loginService, networkService, _, VERSION) {
         var vm = this;
         vm.currentUser = localStorageService.getObject('currentUser');
         vm.logout = logout;
-        vm.version = '';
-
-        ionic.Platform.ready(function() {
-            if (ionic.Platform.isWebView() === true) {
-                $cordovaAppVersion.getVersionNumber().then(function (version) {
-                    vm.version = version;
-                });
-            }
-        });
+        vm.version = VERSION;
 
         function logout() {
             if (networkService.isOffline() === true) {
@@ -33,6 +25,9 @@
                             loginService.logout();
                         }
                     });
+                } else {
+                    $state.go('login');
+                    loginService.logout();
                 }
             } else {
                 $state.go('login');

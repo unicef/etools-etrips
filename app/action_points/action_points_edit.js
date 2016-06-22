@@ -9,8 +9,8 @@
 
     function ActionPointsEdit($ionicHistory, $ionicLoading, $ionicPopup, $locale, $scope, $state, $stateParams, $translate, dataService, errorHandler, localStorageService, _, md5, networkService, tripService) {
         var currentTrip = tripService.getTrip($stateParams.tripId);
-        var vm = this;        
-        vm.allMonths = $locale.DATETIME_FORMATS.SHORTMONTH;        
+        var vm = this;
+        vm.allMonths = $locale.DATETIME_FORMATS.SHORTMONTH;
         vm.isActionPointNew = false;
         vm.isPersonResponsibleCurrentUser = isPersonResponsibleCurrentUser;
         vm.paddedNumber = paddedNumber;
@@ -22,7 +22,7 @@
         vm.isMyActionPoint = false;
 
         ionic.Platform.ready(function(){
-            // new / edit state
+                // new / edit state
             if ($state.current.name.indexOf('new') > 0) {
                 vm.title = 'template.trip.report.action_point.new';
                 vm.isActionPointNew = true;
@@ -47,9 +47,9 @@
                 var tomorrow = new Date(vm.today.getTime() + 24 * 60 * 60 * 1000);
 
                 vm.ap = {'status':'open',
-                             'due_year': tomorrow.getFullYear()+"",
-                             'due_month': ("0" + (tomorrow.getMonth()+1)).slice(-2),
-                             'due_day': ("0" + tomorrow.getDate()).slice(-2)
+                             'due_year': tomorrow.getFullYear(),
+                             'due_month': ('0' + (tomorrow.getMonth()+1)).slice(-2),
+                             'due_day': ('0' + tomorrow.getDate()).slice(-2)
                             };
             } else {
                 if (networkService.isOffline() === true) {
@@ -65,33 +65,35 @@
         });
 
         function isPersonResponsibleCurrentUser(){
-            if (parseInt(vm.ap.person_responsible) === parseInt(localStorageService.getObject('currentUser').id)) {
+            if (vm.isActionPointNew === true || parseInt(vm.ap.person_responsible) === parseInt(localStorageService.getObject('currentUser').id)) {
                 vm.personResponsibleIsCurrentUser = true;
             } else {
                 vm.personResponsibleIsCurrentUser = false;
             }
         }
 
-        function paddedNumber(limit){
+        function paddedNumber(limit) {
             var result = [];
-            for (var i=1; i<limit+1; i++){
-                result.push(i>9 ? i+'' : "0"+i);
+            for (var i = 1; i < limit + 1; i++) {
+                result.push(i > 9 ? i + '' : '0' + i);
             }
             return result;
         }
 
-        function submit(){            
+        function submit() {
             vm.errors = {};
 
-            if (!vm.ap.person_responsible){
+            // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+            if (!vm.ap.person_responsible) {
+                // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
                 vm.errors.person_responsible = true;
             }
 
-            if (!vm.ap.description){
+            if (!vm.ap.description) {
                 vm.errors.description = true;
             }
 
-            if (Object.keys(vm.errors).length){
+            if (Object.keys(vm.errors).length) {
                 var template = '';
 
                 if (vm.errors.description === true) {
@@ -121,20 +123,20 @@
                 });
 
                 if (networkService.isOffline() === true) {
-                    $ionicLoading.hide();                        
-                    
+                    $ionicLoading.hide();
+
                     // add additional fields
                     if (vm.isActionPointNew === true) {
                         vm.ap.id = md5.createHash((new Date()).getTime().toString());
                     }
-                    
-                    vm.ap.person_responsible_name = _.find(vm.users, function(user) {                        
+
+                    vm.ap.person_responsible_name = _.find(vm.users, function(user) {
                         return parseInt(user.user_id) === parseInt(vm.ap.person_responsible);
-                    }).full_name;                    
+                    }).full_name;
 
                     vm.ap.due_date = vm.ap.due_day + '/' + vm.ap.due_month + '/' + vm.ap.due_year;
                     vm.ap.completed_date = vm.ap.completed_date_day + '/' + vm.ap.completed_date_month + '/' + vm.ap.completed_date_year;
-                
+
                     // add to exisiting action points if applicable
                     var offlineActionPoints = tripService.getDraft(currentTrip.id, 'action_points');
 
@@ -148,21 +150,16 @@
                     } else {
                         vm.ap = [vm.ap];
                     }
-                    
+
                     tripService.setDraft(currentTrip.id, 'action_points', vm.ap);
                     displayPopup();
-                    
+
                 } else {
-
-                    tripService.sendAP(currentTrip.id, vm.ap,
-                        function (success) {
-                            $ionicLoading.hide();
-                            tripService.localTripUpdate(currentTrip.id, success.data);
-                            displayPopup();
-
-                        }, function (err) {
-                            errorHandler.popError(err);
-                    });
+                    if (vm.isActionPointNew === true) {
+                        tripService.saveActionPoint(currentTrip.id, vm.ap).then(updateActionPoints);
+                    } else {
+                        tripService.updateActionPoint(currentTrip.id, vm.ap).then(updateActionPoints);
+                    }
                 }
             }
 
@@ -170,10 +167,23 @@
                 $ionicPopup.alert({
                     title: $translate.instant(alertTitle),
                     template: $translate.instant(alertTemplate)
-                }).then(function(res){                                
+                }).then(function() {
                     $ionicHistory.goBack(-1);
                     //$state.go('app.dash.reporting_action_point', { 'tripId' :  currentTrip.id });
                 });
+            }
+
+            function updateActionPoints() {
+                dataService.getTrips(
+                    function() {
+                        $ionicLoading.hide();
+                        displayPopup();
+                    },
+                    function(err) {
+                        errorHandler.popError(err);
+                    },
+                    true
+                );
             }
         }
     }

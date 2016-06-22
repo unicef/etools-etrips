@@ -5,7 +5,7 @@
         .module('app.action_points')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider) {
         $stateProvider
             .state('app.dash.my_action_points', {
                 url: '/my_action_points',

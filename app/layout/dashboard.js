@@ -5,7 +5,7 @@
         .module('app.layout')
         .controller('Dashboard', Dashboard);
 
-    function Dashboard() {        
+    function Dashboard() {
     }
 
 })();

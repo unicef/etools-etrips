@@ -1,9 +1,8 @@
 <ion-view view-title="{{ 'template.dashboard.my_action_points' | translate }}">
     <ion-content>
-        <!-- <ion-refresher pulling-text="{{ 'template.dashboard.pull_to_refresh' | translate }}" on-refresh="vm.doRefresh()">
+        <ion-refresher pulling-text="{{ 'template.dashboard.pull_to_refresh' | translate }}" on-refresh="vm.doRefresh()">
         </ion-refresher>
-        -->
-
+       
         <ion-list ng-show="!vm.offline">
             <ion-item ng-repeat="action_point in vm.actionPoints" ui-sref="app.dash.my_action_point_edit({ tripId : action_point.trip_id, actionPointId : action_point.id })" class="item-remove-animate online">
                 <ng-include src="'templates/action_points/action_points_item.html'"></ng-include>               
