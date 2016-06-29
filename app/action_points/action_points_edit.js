@@ -17,14 +17,19 @@
         vm.personResponsibleIsCurrentUser = false;
         vm.submit = submit;
         vm.title = 'template.trip.report.action_point.edit.title';
-        vm.today = new Date();
-        vm.yearOptions = [vm.today.getFullYear() + '', vm.today.getFullYear() + 1 + ''];
+        vm.today = new Date();        
+        vm.yearOptions = [vm.today.getFullYear() + '', vm.today.getFullYear() + 1 + ''];        
+        vm.isMyActionPoint = false;
 
         ionic.Platform.ready(function(){
                 // new / edit state
             if ($state.current.name.indexOf('new') > 0) {
                 vm.title = 'template.trip.report.action_point.new';
                 vm.isActionPointNew = true;
+            }
+
+            if ($state.current.name.indexOf('my_action_point_edit') > 0) {             
+                vm.isMyActionPoint = true;               
             }
 
             // get users
@@ -42,9 +47,9 @@
                 var tomorrow = new Date(vm.today.getTime() + 24 * 60 * 60 * 1000);
 
                 vm.ap = {'status':'open',
-                             'due_year': tomorrow.getFullYear()+"",
-                             'due_month': ("0" + (tomorrow.getMonth()+1)).slice(-2),
-                             'due_day': ("0" + tomorrow.getDate()).slice(-2)
+                             'due_year': tomorrow.getFullYear(),
+                             'due_month': ('0' + (tomorrow.getMonth()+1)).slice(-2),
+                             'due_day': ('0' + tomorrow.getDate()).slice(-2)
                             };
             } else {
                 if (networkService.isOffline() === true) {
