@@ -20,7 +20,7 @@
 
         function translation() {
             $translateProvider.useMissingTranslationHandlerLog();
-            $translateProvider.useSanitizeValueStrategy('sanitize');
+            $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
             $translateProvider.useStaticFilesLoader({
                 prefix: 'i18n/',
                 suffix: '.json'

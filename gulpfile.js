@@ -550,7 +550,7 @@
 
   gulp.task('lint', function() {
     return gulp.src([
-        'app/**/*.js'    
+        'app/**/*.js'
       ])
       .pipe(reload({
         stream: true,

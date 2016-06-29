@@ -4,13 +4,12 @@
         <div ng-show="vm.offline">
             <div class="card">
                 <div class="item item-divider">
-                    {{ 'template.trip.report.action_point.offline' | translate }}
+                    {{ 'template.trip.report.action_point.offline' | translate }} ({{ (vm.trips.actionpoint_set).length }})
                 </div>
 
                 <ion-list ng-show="(vm.offlineActionPoints).length">
-                    <ion-item ng-repeat="action_point in vm.offlineActionPoints" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.tripId, actionPointId : action_point.id })" class="item-remove-animate action_points action_point_list">
-                        <ng-include src="'templates/report/action_points_item.html'"></ng-include>
-
+                    <ion-item ng-repeat="action_point in vm.offlineActionPoints" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.tripId, actionPointId : action_point.id })" class="item-remove-animate action_points action_point_list offline">
+                        <ng-include src="'templates/action_points/action_points_item.html'"></ng-include>
                         <ion-option-button class="button-assertive" ng-click="vm.deleteActionPoint(action_point.id)">
                             {{ 'template.trip.report.picture.list.delete' | translate }}
                         </ion-option-button>
@@ -25,18 +24,18 @@
 
         <div class="card saved_action_points" ng-show="(vm.trips.actionpoint_set).length">
             <div class="item item-divider">
-                {{ 'template.trip.report.action_point.saved' | translate }} <small ng-show="vm.offline">({{ 'template.trip.report.action_point.non_editable' | translate }})</small>
+                {{ 'template.trip.report.action_point.saved' | translate }} <small ng-show="vm.offline">({{ 'template.trip.report.action_point.non_editable' | translate }})</small> ({{ (vm.trips.actionpoint_set).length }})
             </div>
 
             <ion-list ng-show="!vm.offline">
-                <ion-item ng-repeat="action_point in vm.trips.actionpoint_set" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.tripId, actionPointId : action_point.id })" class="item-remove-animate action_point_list">
-                    <ng-include src="'templates/report/action_points_item.html'"></ng-include>
+                <ion-item ng-repeat="action_point in vm.trips.actionpoint_set" ui-sref="app.dash.reporting_action_point_edit({ tripId : vm.tripId, actionPointId : action_point.id })" class="item-remove-animate online action_point_list">
+                    <ng-include src="'templates/action_points/action_points_item.html'"></ng-include>
                 </ion-item>
             </ion-list>
 
             <ion-list ng-show="vm.offline">
-                <ion-item ng-repeat="action_point in vm.trips.actionpoint_set" class="item-remove-animate action_point_list">
-                    <ng-include src="'templates/report/action_points_item.html'"></ng-include>
+                <ion-item ng-repeat="action_point in vm.trips.actionpoint_set" class="item-remove-animate">
+                    <ng-include src="'templates/action_points/action_points_item.html'"></ng-include>
                 </ion-item>
             </ion-list>
         </div>
