@@ -4,7 +4,7 @@
   "description": "UNICEF: eTrips",
   "repository": {
     "type": "git",
-    "url": "git://github.com/unicef/etrips.git"
+    "url": "https://github.com/unicef/eTools-eTrips.git"
   },
   "license": "MIT",
   "dependencies": {

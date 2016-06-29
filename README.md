@@ -19,7 +19,7 @@ $ sudo npm install -g ionic
 Using git, clone to a local directory:
 
 ```bash
-$ git clone https://github.com/unicef/etrips .
+$ git clone https://github.com/unicef/eTools-eTrips .
 ```
 
 Install required development node.js packages:
@@ -180,8 +180,8 @@ Update tests/conf_android.js to match the Android device values:
         platformVersion: '5.1.1',
         deviceName: 'oneplusone',
         browserName: "",
-        autoWebview: true,        
-        app: '/Users/chris/unicef/eTrips/platforms/android/build/outputs/apk/android-debug.apk'        
+        autoWebview: true,
+        app: '/Users/chris/unicef/eTrips/platforms/android/build/outputs/apk/android-debug.apk'
     },
 ```
 
