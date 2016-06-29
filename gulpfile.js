@@ -264,8 +264,8 @@
 
   // start local express server
   gulp.task('serve', function(done) {
-    fs.exists(targetDir,  function(err, stat) {
-        if (err == null) {
+    fs.exists(targetDir,  function(exists) {
+        if (exists === true) {
             runSequence(
               'serve_app',
               done);
@@ -283,8 +283,6 @@
         .use(!build ? connectLr() : function(){})
         .use(express.static(targetDir))
         .listen(port);
-
-      open('http://localhost:' + port + '/');
   });
 
   // ionic emulate wrapper
@@ -534,14 +532,19 @@
       done);
   });
 
+  gulp.task('alldone', function() {
+    process.stdout.write('\nBuild completed\n\n');
+  })
+
   gulp.task('default', function(done) {
     runSequence(
       'build',
-      build ? 'noop' : 'watchers',
-      build ? 'noop' : 'serve',
       emulate ? ['ionic:emulate', 'watchers'] : 'noop',
       run ? 'ionic:run' : 'noop',
-      buildApp ? 'ionic:build' : 'noop',
+      buildApp ? 'ionic:build' : 'noop',            
+      build ? 'noop' : 'serve',
+      build ? 'noop' : 'watchers',
+      'alldone',
       done);
   });
 
