@@ -133,18 +133,27 @@
           </span>
       </div>
 
+        <div class="list" ng-if="vm.trip.actionpoint_set.length">
+            <h4 class="item-divider txt-grey li-center">{{ 'template.trip.action_points' | translate }}</h4>
 
-      <div class="list" ng-if="vm.trip.actionpoint_set.length">
-          <h4 class="item-divider txt-grey li-center">{{ 'template.trip.action_points' | translate }}</h4>
-
-          <div class="item-inset less-padding" ng-repeat="ap in vm.trip.actionpoint_set">
-              {{ 'template.trip.assigned_to' | translate }} {{ ap.person_responsible_name }}
-              <br>
-              {{ 'template.trip.due_date' | translate }} {{ ap.due_date | date}}
-              <br>
-              {{ 'template.trip.description' | translate }} {{ ap.description }}
-              <hr>
-          </div>
+            <ion-list>
+                <ion-item ng-repeat="action_point in vm.trip.actionpoint_set" class="item-inset less-padding">
+                    <div class="item-text-wrap action_point wrapping-list">
+                        <div class="row">
+                            <div class="col col-25 title">{{ 'template.trip.report.action_point.description' | translate }}</div> 
+                            <div class="col value description">{{ action_point.description | truncate:true:150 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-25 title">{{ 'template.trip.report.action_point.person_responsible' | translate }}</div> 
+                            <div class="col value owner">{{ action_point.person_responsible_name }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-25 title">{{ 'template.trip.report.action_point.due_date' | translate }}</div>
+                            <div class="col value due_date">{{ action_point.due_date | date:vm.dateFormat }}</div>    
+                        </div>
+                    </div>
+                </ion-item>              
+            </ion-list>
       </div>
       <div class="list" ng-if="vm.trip.trip_funds.length">
           <h4 class="item-divider txt-grey li-center">{{ 'template.trip.to' | translate }}</h4>

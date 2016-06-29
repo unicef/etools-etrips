@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.report')
+        .module('app.action_points')
         .controller('ActionPoints', ActionPoints);
 
     ActionPoints.$inject = ['$ionicPopup', '$ionicListDelegate', '$stateParams', '$translate', 'tripService', 'networkService', 'DATE_FORMAT', 'localStorageService', 'lodash'];
@@ -13,6 +13,7 @@
         var vm = this;
         vm.dateFormat = DATE_FORMAT;
         vm.deleteActionPoint = deleteActionPoint;
+
         vm.trips = tripService.getTrip($stateParams.tripId);
         vm.tripId = $stateParams.tripId;
         vm.offline = (networkService.isOffline() === undefined ? false : networkService.isOffline());

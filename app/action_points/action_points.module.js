@@ -1,8 +1,9 @@
 (function() {
     'use strict';
 
-    angular.module('app.action_points', [
+    angular.module('app.report', [
         'ngLodash',
         'ngMd5'
     ]);
 })();
+

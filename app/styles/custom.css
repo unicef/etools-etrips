@@ -69,6 +69,15 @@ ion-content .subtitle {
     font-weight: bold;
 }
 
+.action_point .value {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.action_point .row, .action_point .col {
+    padding: 0px;
+}
+
 .action_point .item-content {
     padding: 5px;
 }
@@ -91,4 +100,9 @@ ion-content .subtitle {
 .gallery {
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
+}
+
+.wrapping-list .item-content, .wrapping-list .item {
+    overflow: initial;
+    white-space: initial;
 }
