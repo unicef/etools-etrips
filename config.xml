@@ -2,11 +2,11 @@
 <widget id="org.unicef.etools.etrips" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>eTrips</name>
   <description>
-        UNICEF eTools-eTrips application, an application for managing trips within UNICEF
-    </description>
-  <author email="ravram@unicef.org" href="http://etools.unicef.org/">
-      Unicef eTools Team
-    </author>
+    UNICEF eTrips application, an application for managing trips within UNICEF
+  </description>
+  <author email="etools@unicef.org" href="https://etools.unicef.org/">
+    UNICEF eTools Team
+  </author>
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>
