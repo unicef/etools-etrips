@@ -54,15 +54,13 @@ h2.title img {
 }
 
 ion-content .subtitle {
-    margin-bottom: 10px; 
-    font-size: 13px; 
+    margin-bottom: 10px;
+    font-size: 13px;
     font-weight: normal;
 }
 
 .action_point {
-    font-size: 12px;
-    line-height: 12px;
-    text-height: 12px;
+    font-size: 14px;
 }
 
 .action_point .title {
@@ -70,7 +68,7 @@ ion-content .subtitle {
 }
 
 .action_point .value {
-    font-size: 12px;
+    font-size: 14px;
     margin-bottom: 10px;
 }
 
