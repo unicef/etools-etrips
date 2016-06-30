@@ -1,0 +1,5 @@
+{
+    "apiHostDevelopment" : "https://etoolsdev.localtunnel.me",
+    "defaultConnection" : 2,
+    "debugInfoEnabled" : false
+}

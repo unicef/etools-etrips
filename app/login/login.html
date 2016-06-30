@@ -1,0 +1,33 @@
+<ion-view view-title="{{ 'template.login.login' | translate }}" name="login-view">
+  <ion-content class="padding">
+        <h2 class="title text-center unicef-blue center">            
+            <div>
+              <img style="vertical-align:middle; margin-right: 20px;" src="img/ionic.png"/>
+              <span style="margin-left: -35px;">{{ 'template.login.title' | translate }}</span>
+            </div>
+        </h2>
+      <div class="list list-inset">
+          <label class="item item-input">
+              <input type="email" placeholder="{{ 'template.login.username' | translate }}" ng-model="vm.data.username">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="{{ 'template.login.password' | translate }}" ng-model="vm.data.password">
+          </label>
+          <br>
+          <div class="item item-toggle">
+              {{ 'template.login.remember_me' | translate }}
+              <label class="toggle toggle-balanced">
+                <input type="checkbox" ng-model="vm.other.rememberMe">
+                <div class="track">
+                    <div class="handle"></div>
+                </div>
+              </label>
+          </div>
+      </div>
+
+      <div ng-translate-language-select></div>
+
+      <button class="button button-block button-calm" ng-click="vm.login()">{{ 'template.login.sign_in' | translate }}</button>
+      <div class="text-center"><img class="img-logo" src="img/logo.png" style="height: 75px; width: 75px; margin-top: 20px;" /></div>
+  </ion-content>
+</ion-view>

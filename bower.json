@@ -1,0 +1,24 @@
+{
+  "name": "app",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower",
+    "plugin": "^3.1.0"
+  },
+  "dependencies": {
+    "angular-translate": "^2.11.0",
+    "angular-translate-handler-log": "^2.11.0",
+    "angular-translate-loader-static-files": "^2.11.0",
+    "angular-translate-storage-cookie": "^2.11.0",
+    "angular-translate-storage-local": "^2.11.0",
+    "angular-cookies": "^1.5.2",
+    "angular-ios9-uiwebview-patch": "^1.1.1",
+    "angular-dynamic-locale": "^0.1.30",
+    "ngCordova": "^0.1.24-alpha",
+    "angular": "^1.5.2",
+    "ng-lodash": "^0.4.0",
+    "async": "^1.5.2",
+    "angular-md5": "^0.1.10",
+    "angular-bootstrap-lightbox": "~0.12.0"
+  }
+}

@@ -1,0 +1,41 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">{{ 'template.menu.title' | translate }}</h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <ion-item menu-close class="item-divider">{{ 'template.menu.country' | translate }} {{ vm.currentUser.profile.country_name }}</ion-item>
+        <ion-item menu-close href="#/app/dash/my_trips">
+            {{ 'template.menu.trips' | translate }}
+        </ion-item>
+        <ion-item menu-close href="#/app/settings">
+            {{ 'template.menu.settings' | translate }}
+        </ion-item>
+        <!-- <ion-item menu-close href="#/app/resources">
+            Resources
+        </ion-item> -->
+        <ion-item menu-close ng-click="vm.logout()">
+            {{ 'template.menu.logout' | translate }}
+        </ion-item>
+
+        <div ng-translate-language-select></div>
+        
+        <div class="version">{{ vm.version }}</div>        
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

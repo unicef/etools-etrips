@@ -1,0 +1,5 @@
+{
+    "apiHostDevelopment" : "https://etools.unicef.org",
+    "defaultConnection" : 2,
+    "debugInfoEnabled" : false
+}

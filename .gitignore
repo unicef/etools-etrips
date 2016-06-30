@@ -1,0 +1,14 @@
+node_modules/
+platforms/
+plugins/
+bower_components/
+
+.tmp/
+www/
+.sass-cache
+*.DS_Store
+*.log
+tmp.run.file
+*.keystore
+
+app/app.constants.js

@@ -1,0 +1,215 @@
+<ion-view view-title="{{ vm.trip.travel_type | underscoreless | TitleCase}}">
+
+  <ion-content class="padding">
+      <button ng-if="vm.checks.owner && vm.checks.is_approved"  class="button button-block button-calm" ng-click="vm.goReport(vm.trip.id)">{{ 'template.trip.report' | translate }}</button>
+      <button ng-if="vm.checks.owner && vm.checks.is_approved"  class="button button-block button-energized" ng-click="vm.takeNotes(vm.trip.id)">{{ 'template.trip.notes' | translate }}</button>
+
+      <button ng-if="vm.checks.owner && vm.checks.is_approved && vm.checks.report_filled"  class="button button-block button-energized" ng-click="vm.completeTrip(vm.trip.id)">{{ 'template.trip.complete_trip' | translate }}</button>
+      <button ng-if="vm.checks.owner && vm.checks.is_planned"  class="button button-block button-calm" ng-click="vm.submit(vm.trip.id)">{{ 'template.trip.submit' | translate }}</button>
+      <button ng-if="vm.checks.supervisor && vm.checks.not_supervisor_approved" class="button button-block button-balanced" ng-click="vm.approve(vm.trip.id)">{{ 'template.trip.approve' | translate }}</button>
+      <div class="list padding" ng-if="vm.checks.supervisor && vm.checks.is_approved">
+          <h3 class="balanced">{{ 'template.trip.approved' | translate }}</h3>
+      </div>
+      <div class="list padding" ng-if="vm.checks.owner && vm.checks.is_submitted">
+          <h3 class="calm">{{ 'template.trip.awaiting_approval' | translate }}</h3>
+      </div>
+      <div class="list padding" ng-if="vm.checks.is_submitted && trip.approved_by_supervisor">
+          <h3 class="calm">{{ 'template.trip.awaiting_rep_approval' | translate }}</h3>
+      </div>
+
+      <div class="list col no-padding">
+          <h5 class="txt-grey padding-left">{{ 'template.trip.traveller' | translate }}</h5>
+          <p class="item item-text-wrap li-center less-padding">{{ vm.trip.traveller }}</p>
+      </div>
+
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.supervisor' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.supervisor_name }}</p>
+          </div>
+          <div ng-if="vm.trip.travel_assistant" class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.travel_assistant' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.travel_assistant }}</p>
+          </div>
+      </div>
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.from' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.from_date | date : vm.dateFormat }}</p>
+          </div>
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.to' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.to_date | date : vm.dateFormat }}</p>
+          </div>
+      </div>
+
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.section' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.section }}</p>
+          </div>
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.office' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.office }}</p>
+          </div>
+      </div>
+      <div class="row no-padding">
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.travel_type' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.travel_type | underscoreless | TitleCase }}</p>
+          </div>
+          <div class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.trip_status' | translate }}</h5>
+              <p class="item item-text-wrap li-center less-padding">{{ vm.trip.status | TitleCase }}</p>
+          </div>
+      </div>
+
+      <div class="list col no-padding">
+          <h5 class="txt-grey padding-left">{{ 'template.trip.purpose_of_travel' | translate }}</h5>
+          <p class="item item-text-wrap less-padding">{{ vm.trip.purpose_of_travel }}</p>
+      </div>
+
+      <div class="item item-inset item-icon-right">
+          {{ 'template.trip.transport_booked' | translate }}
+          <i ng-class="trip.transport_booked ? 'icon balanced ion-checkmark-circled' : 'icon assertive ion-alert-circled'"></i>
+      </div>
+      <div ng-if="vm.trip.security_clearance_required" class="item item-inset item-icon-right">
+          {{ 'template.trip.security_granted' | translate }}
+          <i ng-class="trip.security_granted ? 'icon balanced ion-checkmark-circled' : 'icon assertive ion-alert-circled'"></i>
+      </div>
+      <div ng-if="vm.trip.ta_required" class="list col no-padding">
+          <br>
+          <h5 class="energized padding-left">{{ 'template.trip.travel_authorization_is_required' | translate }}</h5>
+          <h5 class="padding-left txt-grey">{{ 'template.trip.staff_responsible_for_ta' | translate }}</h5>
+          <p class="item item-text-wrap less-padding">{{ vm.trip.staff_responsible_ta }}</p>
+          <h5 class="padding-left txt-grey">{{ 'template.trip.budget_owner' | translate }}</h5>
+          <p class="item item-text-wrap less-padding">{{ vm.trip.budget_owner }}</p>
+          <div class="item less-padding item-icon-right">
+              {{ 'template.trip.approved_by_budget_owner' | translate }}
+              <i ng-class="trip.approved_by_budget_owner ? 'icon balanced ion-checkmark-circled' : 'icon assertive ion-alert-circled'"></i>
+          </div>
+          <span ng-if="vm.trip.ta_drafted">
+              <span  class="row no-padding">
+                  <div class="list col no-padding">
+                      <h5 class="txt-grey padding-left">{{ 'template.trip.ta_reference' | translate }}</h5>
+                      <p class="item item-text-wrap li-center less-padding">{{ vm.trip.ta_reference }}</p>
+                  </div>
+                  <div class="list col no-padding">
+                      <h5 class="txt-grey padding-left">{{ 'template.trip.ta_drafted_date' | translate }}</h5>
+                      <p class="item item-text-wrap li-center less-padding">{{ vm.trip.ta_drafted_date | date }}</p>
+                  </div>
+              </span>
+              <p class="padding-left txt-grey">{{ 'template.trip.vision_approver' | translate }}</p>
+              <p class="item item-text-wrap less-padding">{{ vm.trip.vision_approver }}</p>
+          </span>
+      </div>
+
+      <div ng-if="vm.trip.international_travel" class="list col no-padding">
+          <br>
+          <h5 class="energized padding-left">{{ 'template.trip.this_is_an_international_trip' | translate }}</h5>
+          <h5 class="padding-left txt-grey">{{ 'template.trip.representative_responsible' | translate }}</h5>
+          <p class="item item-text-wrap less-padding">{{ vm.trip.representative }}</p>
+      </div>
+
+      <div class="list" ng-if="vm.trip.travel_routes.length">
+          <h4 class="item-divider txt-grey li-center">{{ 'template.trip.itinerary' | translate }}</h4>
+          <span ng-repeat="route in vm.trip.travel_routes" class="row no-padding">
+              <div class="list col no-padding">
+                  <span class="txt-grey padding-left">{{ 'template.trip.from' | translate }}</span>
+                  <p class="item-text-wrap li-center less-padding">
+                      {{ route.origin }}
+                      <br>
+                      {{ route.depart | date:vm.dateFormat}} {{ vm.timezone }}
+                  </p>
+              </div>
+              <div class="list col no-padding">
+                  <span class="txt-grey padding-left">{{ 'template.trip.to' | translate }}</span>
+                  <p class="item-text-wrap li-center less-padding">
+                      {{ route.destination }}
+                      <br>
+                      {{ route.arrive | date:vm.dateFormat }} {{ vm.timezone }}
+                  </p>
+              </div>
+          </span>
+      </div>
+
+        <div class="list" ng-if="vm.trip.actionpoint_set.length">
+            <h4 class="item-divider txt-grey li-center">{{ 'template.trip.action_points' | translate }}</h4>
+
+            <ion-list>
+                <ion-item ng-repeat="action_point in vm.trip.actionpoint_set" class="item-inset less-padding">
+                    <div class="item-text-wrap action_point wrapping-list">
+                        <div class="row">
+                            <div class="col col-25 title">{{ 'template.trip.report.action_point.description' | translate }}</div> 
+                            <div class="col value description">{{ action_point.description | truncate:true:150 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-25 title">{{ 'template.trip.report.action_point.person_responsible' | translate }}</div> 
+                            <div class="col value owner">{{ action_point.person_responsible_name }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-25 title">{{ 'template.trip.report.action_point.due_date' | translate }}</div>
+                            <div class="col value due_date">{{ action_point.due_date | date:vm.dateFormat }}</div>    
+                        </div>
+                    </div>
+                </ion-item>              
+            </ion-list>
+      </div>
+      <div class="list" ng-if="vm.trip.trip_funds.length">
+          <h4 class="item-divider txt-grey li-center">{{ 'template.trip.to' | translate }}</h4>
+          <div class="item-inset less-padding" ng-repeat="tf in vm.trip.trip_funds">
+              {{ 'template.trip.wbs' | translate }} {{ tf.wbs }}
+              <br>
+              {{ 'template.trip.grant' | translate }} {{ tf.grant }}
+              <br>
+              {{ 'template.trip.amount' | translate }} {{ tf.amount }}&#37;
+              <hr>
+          </div>
+      </div>
+      <div class="list" ng-if="vm.trip.partners.length">
+          <h4 class="item-divider txt-grey li-center">{{ 'template.trip.trip_partners' | translate }}</h4>
+          <div class="item-inset less-padding" ng-repeat="partner in vm.trip.partners">
+              {{ partner }}
+              <br>
+          </div>
+      </div>
+      <div class="list" ng-if="vm.trip.partnerships.length">
+          <h4 class="item-divider txt-grey li-center">{{ 'template.trip.partnerships' | translate }}</h4>
+          <div class="item-inset less-padding" ng-repeat="partnership in vm.trip.partnerships">
+              {{ partnership }}
+              <br>
+          </div>
+      </div>
+      <br>
+      <span ng-if="vm.trip.main_observations || trip.constraints || trip.lessons_learned || trip.opportunities">
+          <h4 class="item-divider txt-grey li-center">{{ 'template.trip.reporting' | translate }}</h4>
+          <div ng-if="vm.trip.main_observations" class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.main_observations' | translate }}</h5>
+              <p class="item-text-wrap less-padding">{{ vm.trip.main_observations }}</p>
+          </div>
+          <div ng-if="vm.trip.constraints" class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.constraints' | translate }}</h5>
+              <p class="item-text-wrap less-padding">{{ vm.trip.constraints }}</p>
+          </div>
+          <div ng-if="vm.trip.lessons_learned" class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.lessons_learned' | translate }}</h5>
+              <p class="item-text-wrap less-padding">{{ vm.trip.lessons_learned }}</p>
+          </div>
+          <div ng-if="vm.trip.opportunities" class="list col no-padding">
+              <h5 class="txt-grey padding-left">{{ 'template.trip.opportunities' | translate }}</h5>
+              <p class="item-text-wrap less-padding">{{ vm.trip.opportunities }}</p>
+          </div>
+      </span>
+
+       <span ng-if="vm.pictures">
+          <h4 class="item-divider txt-grey li-center">Pictures</h4>
+          <div class="row gallery">
+            <span ng-repeat="picture in vm.pictures" ng-click="vm.openModal(picture)">
+              <img ng-src="{{ picture.filepath }}" style="max-height: {{ vm.pictureDimension }}px; max-width: {{ vm.pictureDimension }}px; padding: 1px;" err-src="" />
+            </span>
+        </div>
+      </span>
+
+
+  </ion-content>
+</ion-view>

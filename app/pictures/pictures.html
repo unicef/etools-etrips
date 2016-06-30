@@ -1,0 +1,33 @@
+<ion-view view-title="{{ 'template.trip.report.picture' | translate }}" cache-view="false">
+    <ion-content class="padding">
+        <h4>{{ 'template.trip.report.picture.list.title' | translate }}</h4>
+
+        <div ng-show="(vm.pictures).length">
+            <div class="subtitle">{{ 'template.trip.report.picture.list.subtitle' | translate }}</div>
+            <div ng-cloak>
+                Total: {{ vm.picturesFilesize | bytes }}
+            </div>
+            <br />
+            <ion-list>
+                <ion-item class="item-remove-animate item item-thumbnail-left" ng-repeat="picture in vm.pictures" ng-click="vm.openModal(picture)">
+                    <img src="{{ picture.filepath }}"/>
+                    <h2 style="font-size: 14px;">{{ picture.caption }}</h2>
+                    <p style="font-size: 14px;">{{ picture.filesize | bytes }}</p>
+
+                    <ion-option-button class="button-assertive" ng-click="vm.deletePicture(picture.id)">
+                        {{ 'template.trip.report.picture.list.delete' | translate }}
+                    </ion-option-button>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <div ng-show="!(vm.pictures).length">
+            <div class="subtitle">{{ 'template.trip.report.picture.list.subtitle.no_picutres' | translate }}</div>
+        </div>
+        <br>
+
+        <a ui-sref="app.dash.reporting_picture_edit({ tripId : vm.tripId })" class="button button-block button-positive padding-botom">
+            {{ 'template.trip.report.picture.add' | translate }}
+        </a>
+    </ion-content>
+</ion-view>
