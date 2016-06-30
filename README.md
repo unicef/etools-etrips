@@ -19,7 +19,7 @@ $ sudo npm install -g ionic
 Using git, clone to a local directory:
 
 ```bash
-$ git clone https://github.com/unicef/eTools-eTrips .
+$ git clone https://github.com/unicef/eTools-eTrips
 ```
 
 Install required development node.js packages:
@@ -49,8 +49,8 @@ $ npm install -g bower
 Install required Ionic platforms:
 
 ```bash
-$ ionic platform add ios
-$ ionic platform add android
+$ mkdir www
+$ ionic state reset
 ```
 
 Install Bower components (and select latest version of Angular):
