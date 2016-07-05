@@ -541,7 +541,7 @@
       'build',
       emulate ? ['ionic:emulate', 'watchers'] : 'noop',
       run ? 'ionic:run' : 'noop',
-      buildApp ? 'ionic:build' : 'noop',            
+      buildApp ? 'ionic:build' : 'noop',
       build ? 'noop' : 'serve',
       build ? 'noop' : 'watchers',
       'alldone',
@@ -564,6 +564,8 @@
     .pipe(plugins.jshint.reporter('jshint-stylish'))
     .pipe(plugins.if(!browserSync.active, plugins.jshint.reporter('fail')));
   });
+
+  gulp.task('bump', require('gulp-cordova-bump'));
 
   // global error handler
   function errorHandler(error) {
