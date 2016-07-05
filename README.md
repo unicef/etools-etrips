@@ -84,6 +84,36 @@ To build and copy the application from a temporary to www folder (to run Ionic c
 $ gulp build_www --env [local/prod/test]
 ```
 
+Build Application (Android)
+---------------------------
+
+To build an Android app, run the following command with the required parameters:
+
+```bash
+./build_android.sh [path_to_properties_file] [path_to_keystore] [crosswalk | native | all]
+./build_android.sh ~/Desktop/eTrips.properties ~/Desktop/eTrips.keystore native
+
+```
+
+path_to_properties_file = path of the file that defines the keystore file name and password for keystore integrity
+path_to_keystore = path of the keystore
+crosswalk = create a build with Crosswalk included (https://crosswalk-project.org/) - a Chromiun browser. Used to create build for older browsers.
+native = create a native build
+all = create crosswalk and native builds
+
+
+Bump Application Version
+------------------------
+
+To bump and sync config.xml, package.json and bower.json semantic versions:
+
+```bash
+$ gulp bump --patch
+$ gulp bump --minor
+$ gulp bump --major
+$ gulp bump --setversion=2.1.0
+```
+
 Run Application
 ---------------
 
