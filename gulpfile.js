@@ -297,7 +297,7 @@
 
   // ionic build wrapper
   gulp.task('ionic:build', plugins.shell.task([
-    'ionic build ' + buildApp
+    'ionic build ' + buildApp + ' --release'
   ]));
 
   // start watchers
