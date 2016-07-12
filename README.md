@@ -84,6 +84,24 @@ To build and copy the application from a temporary to www folder (to run Ionic c
 $ gulp build_www --env [local/prod/test]
 ```
 
+Build Application (iOS)
+---------------------------
+
+To build an iOS app (IPA), run the following commands to install the required components:
+
+```bash
+$ sudo gem install xcodeproj
+$ sudo gem install fastlane --verbose
+```
+
+To generate the IPA file:
+
+```bash
+$ ./build_ios.sh
+```
+
+The IPA file can be installed to an iOS device using Xcode (Window -> Devices) and drag / drop the file.
+
 Build Application (Android)
 ---------------------------
 
@@ -92,7 +110,6 @@ To build an Android app, run the following command with the required parameters:
 ```bash
 ./build_android.sh [path_to_properties_file] [path_to_keystore] [crosswalk | native | all]
 ./build_android.sh ~/Desktop/eTrips.properties ~/Desktop/eTrips.keystore native
-
 ```
 
 path_to_properties_file = path of the file that defines the keystore file name and password for keystore integrity

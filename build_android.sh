@@ -12,7 +12,7 @@ if [ ! -f "$2" ]; then
 fi
 
 rm -fr platforms/android/build/outputs/*
-rm -f release_files/*
+rm -f release_files/android*
 
 BUILD_MODE="all"
 KEYSTORE_PATH="$2"

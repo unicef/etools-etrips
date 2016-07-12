@@ -4,9 +4,10 @@
   <description>
     UNICEF eTrips application, an application for managing trips within UNICEF
   </description>
-  <author email="etools@unicef.org" href="https://etools.unicef.org/">
+    <author email="etools@unicef.org" href="https://etools.unicef.org/">
     UNICEF eTools Team
   </author>
+
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>
