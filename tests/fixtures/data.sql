@@ -1133,7 +1133,9 @@ ALTER SEQUENCE partners_fundingcommitment_id_seq OWNED BY partners_fundingcommit
 CREATE TABLE partners_governmentintervention (
     id integer NOT NULL,
     partner_id integer NOT NULL,
-    result_structure_id integer NOT NULL
+    result_structure_id integer NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    number character varying(45) NOT NULL
 );
 
 
@@ -5517,6 +5519,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 146	trips	0014_auto_20160510_1432	2016-05-23 22:06:25.674938-04
 147	trips	0015_auto_20160526_1916	2016-06-01 10:20:32.184998-04
 148	trips	0016_auto_20160607_2237	2016-06-23 15:52:27.118151-04
+149	partners	0059_auto_20160621_2228	2016-07-13 10:17:21.859074-04
 \.
 
 
@@ -5524,7 +5527,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: hoth; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 148, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 149, true);
 
 
 --
@@ -5835,7 +5838,7 @@ SELECT pg_catalog.setval('partners_fundingcommitment_id_seq', 1, false);
 -- Data for Name: partners_governmentintervention; Type: TABLE DATA; Schema: hoth; Owner: postgres
 --
 
-COPY partners_governmentintervention (id, partner_id, result_structure_id) FROM stdin;
+COPY partners_governmentintervention (id, partner_id, result_structure_id, created_at, number) FROM stdin;
 \.
 
 
@@ -7280,6 +7283,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 146	trips	0014_auto_20160510_1432	2016-05-23 22:06:11.67875-04
 147	trips	0015_auto_20160526_1916	2016-06-01 10:20:30.536829-04
 148	trips	0016_auto_20160607_2237	2016-06-23 15:52:24.019156-04
+149	partners	0059_auto_20160621_2228	2016-07-13 10:17:19.260605-04
 \.
 
 
@@ -7287,7 +7291,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 148, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 149, true);
 
 
 --
