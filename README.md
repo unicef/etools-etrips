@@ -108,8 +108,8 @@ Build Application (Android)
 To build an Android app, run the following command with the required parameters:
 
 ```bash
-./build_android.sh [path_to_properties_file] [path_to_keystore] [crosswalk | native | all]
-./build_android.sh ~/Desktop/eTrips.properties ~/Desktop/eTrips.keystore native
+$ ./build_android.sh [path_to_properties_file] [path_to_keystore] [crosswalk | native | all]
+$ ./build_android.sh ~/Desktop/eTrips.properties ~/Desktop/eTrips.keystore native
 ```
 
 path_to_properties_file = path of the file that defines the keystore file name and password for keystore integrity
@@ -118,6 +118,14 @@ crosswalk = create a build with Crosswalk included (https://crosswalk-project.or
 native = create a native build
 all = create crosswalk and native builds
 
+Deploy Application (Azure)
+--------------------------
+
+To deploy the releases to Microsoft Azure Storage:
+
+```bash
+$ node deploy_release_to_azure_storage.js --type=[android | ios | all]
+```
 
 Bump Application Version
 ------------------------
