@@ -94,6 +94,13 @@ $ sudo gem install xcodeproj
 $ sudo gem install fastlane --verbose
 ```
 
+Update bash user profile with valid values:
+
+```bash
+export ETRIPS_BUILD_APPLE_ID=<apple_id>
+export ETRIPS_BUILD_TEAM_ID=<team_id>
+```
+
 To generate the IPA file:
 
 ```bash
