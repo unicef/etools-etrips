@@ -66,7 +66,7 @@
     "path": "^0.12.7",
     "pg": "^4.5.3",
     "run-sequence": "^1.1.5",
-    "shelljs": "^0.3.0",
+    "shelljs": "^0.7.0",
     "streamqueue": "^1.1.1",
     "wd": "^0.4.0",
     "wd-bridge": "0.0.2",
@@ -86,7 +86,7 @@
     "cordova-plugin-globalization"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }
