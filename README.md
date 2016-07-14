@@ -104,7 +104,7 @@ export ETRIPS_BUILD_TEAM_ID=<team_id>
 To generate the IPA file:
 
 ```bash
-$ ./build_ios.sh
+$ node build_ios
 ```
 
 The IPA file can be installed to an iOS device using Xcode (Window -> Devices) and drag / drop the file.
@@ -115,8 +115,7 @@ Build Application (Android)
 To build an Android app, run the following command with the required parameters:
 
 ```bash
-./build_android.sh [path_to_properties_file] [path_to_keystore] [crosswalk | native | all]
-./build_android.sh ~/Desktop/eTrips.properties ~/Desktop/eTrips.keystore native
+$ node build_android --properties=[path_of_properties_file] --keystore=[path_of_keystore_file] --type=[crosswalk | native | all]
 ```
 
 path_to_properties_file = path of the file that defines the keystore file name and password for keystore integrity

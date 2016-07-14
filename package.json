@@ -85,7 +85,7 @@
     "cordova-plugin-globalization"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }
