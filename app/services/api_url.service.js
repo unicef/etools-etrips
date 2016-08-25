@@ -9,7 +9,7 @@
         var defaultConn = defaultConnection;
         var options = {
             0: apiHostDevelopment,                 //  development
-            1: 'https://etools-dev.unicef.org',    //  staging
+            1: 'https://etools-staging.unicef.org',    //  staging
             2: 'https://etools.unicef.org' //  production
         };
 
