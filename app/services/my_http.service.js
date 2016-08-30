@@ -81,7 +81,8 @@
                     },
                     function(fail) {
                         def.reject(fail);
-                    }
+                    },
+                    reloginCredentials
                 );
             }
 
