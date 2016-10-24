@@ -6,8 +6,8 @@
         .service('soapEnvironmentService', soapEnvironmentService);
 
     function soapEnvironmentService() {
-        var adfsEndpoint = 'https://sts.unicef.org/adfs/services/trust/13/UsernameMixed';
-        var resourceEndpoint = 'https://etools-staging.unicef.org/API';
+        var adfsEndpoint = 'https://login.unicef.org/adfs/services/trust/13/UsernameMixed';
+        var resourceEndpoint = 'https://etools.unicef.org/API';
         var headers = {
             'Content-Type': 'application/soap+xml; charset=utf-8'
         };
