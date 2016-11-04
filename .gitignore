@@ -14,3 +14,4 @@ tmp.run.file
 
 app/app.constants.js
 report.xml
+*.properties
