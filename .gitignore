@@ -13,3 +13,5 @@ tmp.run.file
 *.keystore
 
 app/app.constants.js
+report.xml
+*.properties

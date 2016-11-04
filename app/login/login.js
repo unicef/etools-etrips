@@ -18,8 +18,10 @@
         vm.other = {};
 
         function login() {
-            var loginData = vm.data;
-
+            var loginData = angular.copy(vm.data);
+            if (loginData.username.indexOf('unicef.org') === -1) {
+                loginData.username = loginData.username + '@unicef.org';
+            }
             if (vm.other.rememberMe) {
                 localStorageService.setObject('user_cred', {
                     username: loginData.username,
