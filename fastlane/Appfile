@@ -1,0 +1,3 @@
+app_identifier "org.unicef.etools.etrips"
+apple_id ENV["ETRIPS_BUILD_APPLE_ID"]
+team_id ENV["ETRIPS_BUILD_TEAM_ID"]
