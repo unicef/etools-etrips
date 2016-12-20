@@ -1,0 +1,60 @@
+require 'fileutils'
+
+fastlane_version "1.97.2"
+
+default_platform :ios
+
+platform :ios do
+  desc "Set Team ID"
+  lane :ios_set_team_id do
+    update_project_team(
+      path: "./platforms/ios/eTrips.xcodeproj",
+      teamid: CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+    )
+  end
+
+  desc "Build Provision Profile"
+  lane :ios_build_provision_profile do
+    sigh(
+      app_identifier: CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier),
+      team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
+      username: CredentialsManager::AppfileConfig.try_fetch_value(:apple_id),
+      provisioning_name: "eTrips Enterprise Distribution",
+      development: true,
+      adhoc: true,
+      output_path: "./platforms/ios",
+      filename: "eTrips.mobileprovision"
+    )
+  end
+
+  desc "Build IPA"
+  lane :ios_build_ipa do
+    gym(
+      scheme: "eTrips",
+      export_method: "development",
+      project: "./platforms/ios/eTrips.xcodeproj",
+      output_directory: "./release_files",
+      clean: true,
+      provisioning_profile_path: "./platforms/ios/eTrips.mobileprovision",
+      codesigning_identity: "iPhone Developer",
+      export_options: {
+        method: "ad-hoc",
+        to_plist: "eTrips-manifest.plist",
+        manifest: {
+          appURL: "https://etools.unicef.org/static/app/eTrips/ios/etrips.ipa",
+          displayImageURL: "https://etools.unicef.org/static/app/eTrips/ios/eTrips-display-image.png",
+          fullSizeImageURL: "https://etools.unicef.org/static/app/eTrips/ios/eTrips-full-size-image.png"
+        }
+      }
+    )
+  end
+end
+
+platform :android do
+  desc "Build APK"
+  lane :android_build_apk do |options|
+    type = options[:type]
+    command = 'cd .. && ./build_android.sh ' + options[:properties] +' ' + options[:keystore] + ' ' + options[:type]
+    sh command
+  end
+end

@@ -84,15 +84,38 @@ To build and copy the application from a temporary to www folder (to run Ionic c
 $ gulp build_www --env [local/prod/test]
 ```
 
+Build Application (iOS)
+---------------------------
+
+To build an iOS app (IPA), run the following commands to install the required components:
+
+```bash
+$ sudo gem install xcodeproj
+$ sudo gem install fastlane --verbose
+```
+
+Update bash user profile with valid values:
+
+```bash
+export ETRIPS_BUILD_APPLE_ID=<apple_id>
+export ETRIPS_BUILD_TEAM_ID=<team_id>
+```
+
+To generate the IPA file:
+
+```bash
+$ node build_ios
+```
+
+The IPA file can be installed to an iOS device using Xcode (Window -> Devices) and drag / drop the file.
+
 Build Application (Android)
 ---------------------------
 
 To build an Android app, run the following command with the required parameters:
 
 ```bash
-./build_android.sh [path_to_properties_file] [path_to_keystore] [crosswalk | native | all]
-./build_android.sh ~/Desktop/eTrips.properties ~/Desktop/eTrips.keystore native
-
+$ node build_android --properties=[path_of_properties_file] --keystore=[path_of_keystore_file] --type=[crosswalk | native | all]
 ```
 
 path_to_properties_file = path of the file that defines the keystore file name and password for keystore integrity
@@ -101,6 +124,14 @@ crosswalk = create a build with Crosswalk included (https://crosswalk-project.or
 native = create a native build
 all = create crosswalk and native builds
 
+Deploy Application (Azure)
+--------------------------
+
+To deploy the releases to Microsoft Azure Storage:
+
+```bash
+$ node deploy_release_to_azure_storage --type=[android | ios | all]
+```
 
 Bump Application Version
 ------------------------

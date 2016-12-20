@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "async": "^1.5.2",
+    "azure-storage": "^1.1.0",
     "beepbeep": "^1.2.0",
     "bower": "^1.7.9",
     "browser-sync": "^2.12.5",
@@ -66,7 +67,7 @@
     "path": "^0.12.7",
     "pg": "^4.5.3",
     "run-sequence": "^1.1.5",
-    "shelljs": "^0.3.0",
+    "shelljs": "^0.7.0",
     "streamqueue": "^1.1.1",
     "wd": "^0.4.0",
     "wd-bridge": "0.0.2",
